@@ -1,8 +1,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>antiloki — build +112% more on your weekly limit, at 10× cheaper, with no measurable drop in quality</title>
+<title>antiloki — build +112% more on your weekly limit, at 10× cheaper, at the same code quality</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23211e1b'/%3E%3Ctext x='10' y='47' font-family='Geist,Helvetica,Arial,sans-serif' font-weight='700' font-size='40' fill='%23efe9e2' letter-spacing='-2'%3Ea%3Ctspan fill='%23c97c5c'%3E.%3C/tspan%3E%3C/text%3E%3C/svg%3E">
-<meta name="description" content="Build +112% more on your weekly limit, at 10× cheaper, with no measurable drop in quality. Claude Seek, Kimi Codex — antiloki's smart merging combines the model subscriptions you already have into specialized coding agents: a router gives each job — planning, writing, verifying, judging — to the model measured best for it. No account, no extra subscription, everything stays on your machine.">
+<meta name="description" content="Build +112% more on your weekly limit, at 10× cheaper, at the same code quality. Claude Seek, Kimi Codex — antiloki's smart merging combines the model subscriptions you already have into specialized coding agents: a router gives each job — planning, writing, verifying, judging — to the model measured best for it. No account, no extra subscription, everything stays on your machine.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Geist:wght@700&family=IBM+Plex+Sans:wght@400;500&family=JetBrains+Mono:wght@400;600&display=swap">
 <style>
@@ -407,7 +407,7 @@
   <!-- HERO — what it is, and the one reason -->
   <div class="wrap hero">
     <span class="eyebrow">A desktop app for merging different models into coding agents.<br>macOS · Windows · Linux</span>
-    <h1 style="margin-top:14px"><em>Build +112% more on your weekly limit, at 10× cheaper — with no measurable drop in quality.</em></h1>
+    <h1 style="margin-top:14px"><em>Build +112% more on your weekly limit, at 10× cheaper, at the same code quality.</em></h1>
     <p class="lede" style="margin-top:10px">Claude Seek, Kimi Codex — antiloki's smart merging combines the model subscriptions you already have into specialized coding agents. <b>No account, no extra subscription, everything stays on your machine.</b></p>
     <!-- THE TWO NUMBERS, AND WHERE THEY COME FROM (operator 2026-09-26: "explicitly make the product about make their
          subscription cheaper and limits wider. So our measurement is a calculation how cheaper it gets using antiloki
@@ -423,12 +423,13 @@
            onboarding plan deliberately keeps a path for.
          · "everything stays on your machine" rather than "100% private": it says WHY it is private instead of
            asserting a percentage, and locality is the thing a developer actually checks.
-         · "NO MEASURABLE DROP IN QUALITY" rather than "the same code quality" (operator 2026-09-26, on the fear
-           that cheap model names read as bad code — a fair fear, and the headline owed it an answer).
-           What was measured is 8-of-10 against the frontier's 9-of-10 with `separated()` false: the record CANNOT
-           TELL THEM APART, which is not the same fact as "identical". "No measurable drop" is exactly what the
-           quality band means, it hints there is a measurement behind it, and it is the one claim a sceptical buyer
-           will actually go and test — so it must survive being tested.
+         · "AT THE SAME CODE QUALITY" — the operator's call, made after the argument against it (2026-09-26:
+           "8 to 9 is the same almost, theres no much of a difference"). The argument for it is our own machinery:
+           `merges::separated` returns FALSE for 8-of-10 against 9-of-10 at n=10, which is the record stating that
+           the difference is not real. The reservation on the record: "indistinguishable at this sample size" and
+           "identical" are different sentences, and this is the claim a sceptical buyer will actually go and test.
+           THE BASIS THEREFORE LIVES ON THE PAGE, not only in this comment — the benchmark section carries the
+           counts and the sample size, so the claim can be checked rather than merely believed.
          SPEED LEFT THE HEADLINE on purpose. It was "57% faster", and the routing rule changed on the same day:
          price first, speed second, quality as a tolerance. A headline should not sell the axis the product
          deliberately ranks second. -->
