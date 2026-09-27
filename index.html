@@ -2,7 +2,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>antiloki — build +112% more on your weekly limit, 10× cheaper, with the same code quality</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23211e1b'/%3E%3Ctext x='10' y='47' font-family='Geist,Helvetica,Arial,sans-serif' font-weight='700' font-size='40' fill='%23efe9e2' letter-spacing='-2'%3Ea%3Ctspan fill='%23c97c5c'%3E.%3C/tspan%3E%3C/text%3E%3C/svg%3E">
-<meta name="description" content="Build +112% more on your weekly limit, 10× cheaper, with the same code quality. Claude Seek, Gemini Codex — antiloki merges your existing model subscriptions into specialized coding agents: a router gives each job — planning, writing, verifying, judging — to the model measured best for it. No new account, no extra subscription and everything stays on your machine.">
+<meta name="description" content="Build +112% more on your weekly limit, 10× cheaper, with the same code quality. Claude Grok, Gemini Codex — antiloki merges your existing model subscriptions into specialized coding agents: a router gives each job — planning, writing, verifying, judging — to the model measured best for it. No new account, no extra subscription and everything stays on your machine.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Geist:wght@700&family=IBM+Plex+Sans:wght@400;500&family=JetBrains+Mono:wght@400;600&display=swap">
 <style>
@@ -408,7 +408,7 @@
   <div class="wrap hero">
     <span class="eyebrow">A desktop app for merging the subscriptions you have into one coding agent.<br>macOS · Windows · Linux</span>
     <h1 style="margin-top:14px"><em>Build +112% more on your weekly limit, 10× cheaper, with the same code quality.</em></h1>
-    <p class="lede" style="margin-top:10px">Claude Seek, Gemini Codex — antiloki merges your existing model subscriptions into specialized coding agents. <b>No new account, no extra subscription and everything stays on your machine.</b></p>
+    <p class="lede" style="margin-top:10px">Claude Grok, Gemini Codex — antiloki merges your existing model subscriptions into specialized coding agents. <b>No new account, no extra subscription and everything stays on your machine.</b></p>
     <!-- THE TWO NUMBERS, AND WHERE THEY COME FROM (operator 2026-09-26: "explicitly make the product about make their
          subscription cheaper and limits wider. So our measurement is a calculation how cheaper it gets using antiloki
          and how bigger gets the limit in comparation with raw").
@@ -430,12 +430,29 @@
            "identical" are different sentences, and this is the claim a sceptical buyer will actually go and test.
            THE BASIS THEREFORE LIVES ON THE PAGE, not only in this comment — the benchmark section carries the
            counts and the sample size, so the claim can be checked rather than merely believed.
-         · "GEMINI CODEX" IS A PROMISE, NOT YET A PRODUCT (flagged 2026-09-26, shipped on the operator's call).
-           Gemini is `routed: false` in serve/src/launchers.rs — a raw pane antiloki can OPEN but cannot price,
-           rank or merge with, so this merge does not exist today. Claude Seek does and is measured.
-           The cheapest way to make the line true is PLAN-THE-SUBSCRIPTIONS P1: promote Gemini from launcher to
-           routed engine. It fits the rest of the sentence better than anything else would — Gemini has a real
-           free tier, which is the strongest possible reading of "no extra subscription".
+         · "CLAUDE GROK, GEMINI CODEX" — BOTH NAMES ARE NOW PROMISES (operator 2026-09-27: "I want to take out the
+           Chinese model for the name … Claude Grok. And Gemini Codex. So we don't put Chinese models there to sell").
+           The strategy is right and the reason is price, not taste: Claude, Codex, Gemini, Grok and Cursor are all
+           flat monthly SEATS, so a merge between them costs nothing per task, while the Chinese models are metered
+           credit that ADDS a bill — and Gemini Flash is $0.14/$0.28, identical to the cheapest Chinese model, so
+           they never held a price advantage over Gemini at all (bench/BENCH.md, 2026-09-27).
+           WHAT IS OWED BEFORE THIS LINE IS TRUE. The previous version of this note could say "Claude Seek does and
+           is measured"; this version cannot say that of either name. Both merges now have an engine —
+           Engine::Gemini, Engine::Grok and Engine::Cursor were added to serve/src/cli.rs on 2026-09-27, which is
+           exactly the PLAN-THE-SUBSCRIPTIONS P1 step this note used to ask for — but NEITHER HAS A SINGLE MEASURED
+           SAMPLE, and neither seat is signed in on the build machine: `gemini` wants an auth method, `grok login`
+           reports "Not signed in", and `cursor-agent` is not installed. So the benchmark section below cannot yet
+           back the names in the headline, and until it can, this line is selling a capability that is built but
+           unproven rather than one that is measured. Closing that gap is the next bench, not a copy change.
+           AND GEMINI'S FREE TIER IS NOT A SEAT (researched 2026-09-27, correcting an earlier note on this page that
+           called it "the strongest possible reading of no extra subscription"). Google stopped serving Gemini CLI for
+           Pro, Ultra and free accounts on 18 June 2026 in favour of Antigravity CLI (`agy`), and Antigravity's free
+           tier is about TWENTY agent requests per day on Gemini Flash — down from 250 at launch — refreshed weekly,
+           with a cap that can lock an account out for up to 168 hours. One bench arm spends more than twenty calls,
+           so that is a trial and not a seat; a usable Gemini seat is Google AI Pro at $19.99/month. The engine now
+           exists either way (`agy` preferred, the legacy binary kept as the API-key fallback) because Gemini must not
+           be reachable ONLY through Cursor — that would make this sentence require a Cursor subscription. What
+           cannot be claimed is that it costs nothing.
          SPEED LEFT THE HEADLINE on purpose. It was "57% faster", and the routing rule changed on the same day:
          price first, speed second, quality as a tolerance. A headline should not sell the axis the product
          deliberately ranks second. -->
