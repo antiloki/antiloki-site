@@ -1,0 +1,15 @@
+# WHAT THE PUBLIC SITE PUBLISHES (audit 2026-09-28).
+#
+# antiloki.com serves this repository's root, so every file in it is reachable by URL whether or not anything links
+# to it. The internal sales material was sitting there: `marketing-kit.html` and `marketing/` carry customer
+# acquisition cost, revenue targets, objection handling and the one-to-one call scripts, none of which is written for
+# a visitor to read. Nothing linked to them, which is why it went unnoticed — an unlinked page is still a published
+# page, and a competitor guessing one filename is not a sophisticated attack.
+#
+# They stay in the repository, because they are the team's own working documents; they simply stop being served.
+# Removing an entry here publishes that path again, which is the only thing this file does.
+exclude:
+  - marketing-kit.html
+  - marketing/
+  - scripts/
+  - shoot-prints.mjs
