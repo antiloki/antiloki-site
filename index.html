@@ -34,7 +34,7 @@
   .btn.sm { padding: 8px 13px; font-size: 13.5px; }
 
   /* hero — one problem, one promise, one proof */
-  .hero { padding: 72px 0 0; text-align: center; }
+  .hero { padding-top: 72px; text-align: center; } /* padding-top, not the shorthand: `padding: 72px 0 0` zeroed the .wrap side gutter, so at 390 px the headline sat 6 px from the edge */
   .hero h1 { font-size: clamp(34px, 4.6vw, 60px); font-weight: 800; max-width: 26ch; margin: 0 auto; }
   .hero h1 em { font-style: normal; color: var(--ember); }
   .hero p { margin: 24px auto 0; max-width: 52ch; font-size: clamp(16px, 1.5vw, 19px); color: var(--dim); }
@@ -68,7 +68,7 @@
   /* the number lives INSIDE the track, immediately after the fill — a number floated to the far right breaks the
      one thing a bar chart is for, which is reading length and value as the same glance */
   .brow .btrack { display: flex; align-items: center; gap: 10px; min-width: 0; }
-  .brow .bfill { height: 20px; border-radius: 3px; background: rgba(255,255,255,.16); display: block; flex: none; min-width: 3px; }
+  .brow .bfill { height: 20px; border-radius: 3px; background: rgba(255,255,255,.16); display: block; flex: 0 1 auto; min-width: 3px; } /* may give way to the number: the full-width raw bar pushed "$1.151" over the meta at 390 px */
   .brow.bwin .bfill { background: var(--ember); }
   .brow.braw .bfill { background: rgba(255,255,255,.28); }
   .brow .bnum { font-family: var(--mono); font-size: 13.5px; color: var(--dim); font-weight: 700; white-space: nowrap; }
@@ -79,7 +79,7 @@
   .hero .bench-f b { color: var(--dim); font-weight: 700; }
   .hero .bench-f a { color: var(--ember); text-decoration: underline; text-underline-offset: 2px; }
   @media (max-width: 640px) {
-    .hero .bench { padding: 0 16px; }
+    .hero .bench { padding: 0; }
     .brow { column-gap: 8px; }
     .brow .bmeta { min-width: 0; font-size: 9.5px; }
     .brow .bnum { font-size: 12px; }
@@ -301,14 +301,14 @@
   .deskmock .switch .mid .ring { width: 14px; height: 14px; border-radius: 14px; border: 2px solid var(--rule2); border-top-color: var(--ember); border-right-color: var(--ember); }
 
   /* who + local */
-  .fit { padding: 120px 0 0; text-align: center; }
+  .fit { padding-top: 120px; text-align: center; }
   .fit h2 { font-size: clamp(28px, 3.4vw, 40px); font-weight: 700; }
   .fit p { margin: 18px auto 0; color: var(--dim); font-size: 17px; max-width: 58ch; }
   .fit .row { display: flex; justify-content: center; gap: 28px; flex-wrap: wrap; margin-top: 26px; font-family: var(--mono); font-size: 12.5px; color: var(--ink); }
   .fit .row span::before { content: "◆ "; color: var(--ember); }
 
   /* pricing */
-  .pricing { padding: 120px 0 0; text-align: center; }
+  .pricing { padding-top: 120px; text-align: center; }
   .pricing h2 { font-size: clamp(30px, 3.6vw, 44px); font-weight: 700; }
   .plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 34px; text-align: left; }
   .plan { border: 1px solid var(--rule); border-radius: 14px; padding: 24px; background: var(--panel); display: flex; flex-direction: column; gap: 12px; position: relative; }
@@ -324,7 +324,7 @@
   .terms { margin: 16px auto 0; font-family: var(--mono); font-size: 11.5px; color: var(--muted); max-width: 70ch; }
 
   /* download + faq */
-  .download { padding: 120px 0 0; text-align: center; }
+  .download { padding-top: 120px; text-align: center; }
   .download h2 { font-size: clamp(30px, 3.6vw, 44px); font-weight: 700; }
   .dl { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 34px; }
   .os { border: 1px solid var(--rule); border-radius: 14px; padding: 20px 22px; background: var(--panel); text-decoration: none; display: flex; flex-direction: column; gap: 4px; text-align: left; transition: border-color .15s ease, transform .15s ease; }
@@ -332,7 +332,7 @@
   .os b { font-family: var(--display); font-weight: 700; font-size: 22px; } .os span { font-family: var(--mono); font-size: 11.5px; color: var(--dim); }
   .os em { font-style: normal; margin-top: 8px; color: var(--ember); font-size: 14px; }
   .needs { margin-top: 18px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
-  .faq { padding: 90px 0 80px; max-width: 760px; margin: 0 auto; }
+  .faq { padding-block: 90px 80px; max-width: 760px; margin: 0 auto; }
   .faq details { border-top: 1px solid var(--rule); padding: 16px 0; } .faq details:last-child { border-bottom: 1px solid var(--rule); }
   .faq summary { cursor: pointer; font-weight: 500; font-size: 16px; list-style: none; display: flex; justify-content: space-between; gap: 20px; }
   .faq summary::-webkit-details-marker { display: none; } .faq summary::after { content: "+"; font-family: var(--mono); color: var(--muted); } .faq details[open] summary::after { content: "–"; }
