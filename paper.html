@@ -77,7 +77,7 @@
 </style>
 
 <div class="sheet"><p style="max-width:1040px;margin:0 auto 18px;font-family:var(--mono);font-size:12px"><a href="/" style="color:var(--muted);text-decoration:none">← antiloki.com</a></p><div class="paper">
-  <span class="eyebrow">antiloki · technical report · 2026-09-23</span>
+  <span class="eyebrow">antiloki · technical report · third edition 2026-10-01 · first 2026-09-23, second 2026-09-29</span>
   <h1>Compiled, Not Trained</h1>
   <p class="sub">Heimdall, the merge and the X-ray adapter: how antiloki builds a specialised coding model out of measured parts.</p>
   <!-- WHAT THIS PAPER IS NOW (audit 2026-09-28). Every arm below was measured on 22-23 September against the Chinese
@@ -88,6 +88,13 @@
        said at the top rather than in a footnote. Re-running the paper on the seats is a separate piece of work. -->
   <p class="sub" style="border:1px solid #6a5; border-left-width:3px; padding:10px 12px; border-radius:6px; margin-top:12px">
     <b>Second edition, measured 28–29 September 2026 on the five subscription seats</b> — Claude Code, Codex, Gemini, Grok and Cursor. The first edition (22–23 September) measured Chinese models through OpenCode Zen; those arms are withdrawn and kept on disk as history. §4.2, §4.3, §7.1, §8 and §9 are rewritten; the depth runs still to come are listed in §10.
+  </p>
+  <!-- THIRD EDITION (2026-10-01). The second edition was measured 28-29 September. Between then and 1 October the
+       routing rule, the pipeline and the judges changed again, and the site's headline cost figure was re-derived.
+       Rather than rewrite sections that were true of what they measured, the sections that no longer describe the
+       product are marked in place, and §11 carries what is new and says which day it was measured. -->
+  <p class="sub" style="border:1px solid #6a5; border-left-width:3px; padding:10px 12px; border-radius:6px; margin-top:12px">
+    <b>Third edition, 1 October 2026</b> — adds §11: the one tolerance (a seat wins if it keeps 80 % of the best measured quality, then price, then time), the solo path for asks of size L and smaller, a screening call of its own, obligatory QA, the QA judges' false-accept rates on two defect sets, the cost against a raw Claude session cell by cell (the figure behind the site's &ldquo;10× cheaper&rdquo;), and three X-ray experiments. It <b>supersedes</b> the 0.10 absolute band of §7.1, the planner and screening rows of Table 1, the &ldquo;on request&rdquo; QA of §5, the judge paragraph of §8.1 and the open items of §10 that are now done. Measured 2026-09-28 to 10-01; the Claude subscription has ended, so no Claude arm was re-run.
   </p>
   <div class="byline">
     <span><b>System</b> antiloki-serve (Rust) · antiloki desktop (Tauri)</span>
@@ -121,13 +128,13 @@
     <caption>Table 1 · the ten jobs and their sides</caption>
     <thead><tr><th>job</th><th>side</th><th>what the call does</th><th>fires when</th></tr></thead>
     <tbody>
-      <tr><td class="mono">planner</td><td>brain</td><td>screens the ask and writes the plan: tasks that own disjoint files, each with acceptance lines</td><td>every goal run (one call screens <em>and</em> plans)</td></tr>
-      <tr><td class="mono">screening</td><td>brain</td><td>the blocking/assumable questions before a plan</td><td>inside the planner's call — no call of its own</td></tr>
+      <tr><td class="mono">planner</td><td>brain</td><td>screens the ask and writes the plan: tasks that own disjoint files, each with acceptance lines</td><td>a goal of two or more enumerated tasks or over 600 characters; an ask of size L or smaller skips it (§11.2)</td></tr>
+      <tr><td class="mono">screening</td><td>brain</td><td>the blocking/assumable questions before a plan</td><td>before the planner, as a call of its own on the best screening seat (§11.2)</td></tr>
       <tr><td class="mono">editor-s</td><td>hands</td><td>a change to one file, an ask under 400 characters</td><td>a task that owns one file</td></tr>
       <tr><td class="mono">editor-l</td><td>hands</td><td>a change across files or a long ask</td><td>every other task</td></tr>
       <tr><td class="mono">verifier</td><td>brain</td><td>checks a task's diff against its acceptance; may send it back once</td><td>after every task</td></tr>
       <tr><td class="mono">test-writer</td><td>hands</td><td>writes the tests a contract's acceptance lines imply</td><td>blueprint mode</td></tr>
-      <tr><td class="mono">qa-gate</td><td>brain</td><td>checks each acceptance claim against the final diff; the isolated judge</td><td>QA on</td></tr>
+      <tr><td class="mono">qa-gate</td><td>brain</td><td>checks each acceptance claim against the final diff; the isolated judge</td><td>every run — QA is obligatory (§11.2)</td></tr>
       <tr><td class="mono">report</td><td>hands</td><td>consolidates the tasks' reports into one</td><td>a multi-task run (a single task's report stands)</td></tr>
       <tr><td class="mono">lookup</td><td>brain</td><td>a factual question about the code: where, which, who</td><td>a chat turn the classifier reads as a lookup</td></tr>
       <tr><td class="mono">synthesis</td><td>brain</td><td>why, how, compare, in which order — an answer that reasons</td><td>a chat turn the classifier reads as synthesis</td></tr>
@@ -188,10 +195,10 @@
   <p>A goal run is the unit the benchmark measures. Its stages, and the model that answers each, are what the merge assigns.</p>
   <div class="fig"><b>ask</b> → planner (screens: blocking / assumable questions; one answer round) → <b>plan</b> (tasks · owns · needs · acceptance)
       → ratify → <b>projection</b> (one worker, or a wave?) → fills, in waves → <b>verify</b> each task (once back at most)
-      → <b>join</b> (a report call on multi-task runs) → <b>QA gate</b> (claims vs the final diff; on request) → baseline · savings · the merge row</div>
+      → <b>join</b> (a report call on multi-task runs) → <b>QA gate</b> (claims vs the final diff, with the deterministic expect, coverage and API checks; every run) → baseline · savings · the merge row</div>
   <p><b>The projection.</b> Before a plan fans out, antiloki estimates whether a wave beats one worker. A single session doing <em>k</em> parts is projected at <code>SERIAL_FACTOR = 1.5</code> times the parallel per-part time; the wave's concurrency is bounded by the depth of the plan's dependency chain (<code>effective_concurrency = ceil(fills / chain)</code>, clamped to the operator's cap); and a plan whose single-session projection is under the parallel floor — 900 s by default, <code>ANTILOKI_PARALLEL_FLOOR_S</code>, 0 = off — collapses to one worker. With no history the medians assumed are 120 s per fill and 150 s of orchestration. This is why every S and L row below is a one-worker run: the wave only pays above fifteen minutes of projected serial work.</p>
   <p><b>The verifier's one send-back.</b> A task the verifier rejects goes back to its worker once with the rejection as the brief; a second rejection fails the task. Both rejections observed on L were real defects a compile gate would not catch.</p>
-  <p><b>The QA gate.</b> An isolated judge checks each acceptance claim against the final diff and answers met / unmet / unproven; on a one-worker run the always-branch currently keeps a placeholder claim, so the gate reports <em>unproven</em> — a known gap (§9), not a verdict about the model.</p>
+  <p><b>The QA gate.</b> An isolated judge checks each acceptance claim against the final diff and answers met / unmet / unproven; on a one-worker run the always-branch kept a placeholder claim, so the gate reported <em>unproven</em>. That gap is closed in the third edition: QA is obligatory, runs the deterministic checks (§11.2), sends unmet claims back to their workers a bounded number of times and, when those are spent, turns the run into a question for the person.</p>
 
   <h2><span class="n">6</span>The adapter</h2>
   <p>A LoRA specialises a frozen model by adding a small learned component in front of it. antiloki's adapter is the
@@ -266,11 +273,11 @@
   <h3>7.1 The weight</h3>
   <p>Every record re-weights all rows of that job and size against each other (<code>merges::reweigh</code>, <code>merges::rank</code>):</p>
   <div class="formula">quality  = audit (the deterministic grader's score) when one exists, else pass_first / tasks,  ×  (1 − failed / tasks)
-band     = quality ≥ best_quality − 0.10                      (one instance in ten — the bench's own resolution)
+band     = quality ≥ 0.80 · best_quality                      (ONE tolerance, 2026-09-30 — third edition; the second edition: best_quality − 0.10)
 cost     = band ? best_usd / usd : 0        time = band ? best_s / s : 0
 raw      = 0.15·quality + 0.75·cost + 0.10·time             (Objective::Best, since 2026-09-28)
 weight   = 0.5 + (raw − 0.5) · n / (n + 1)                  (n = 1 → halfway to 0.5)</div>
-  <p><b>Price first, speed last, quality as a gate.</b> The band disqualifies a materially worse answer outright; inside it, the bill decides. The first edition weighted 0.7 / 0.2 / 0.1 with a 0.06 band, which was narrower than the instrument — a ten-instance bench resolves quality in steps of 0.10 — and would pay 6.7× for one instance in ten. Speed was reduced from 0.30 to 0.10 on 2026-09-28, after the fastest frontier planner won a simple frontend task that a model a tenth of its price had measured the same on. A pairing measured on several suites is pooled by samples, never overwritten; a row nobody priced is priced from list rates; a planner row is never cheaper than its own list price.</p>
+  <p><b>Price first, speed last, quality as a gate.</b> <em>Third edition: the gate is now relative — a seat or pair wins if it keeps at least 80 % of the best measured quality (<code>Objective::band()</code> = 0.20), and measured quality outranks claimed; there is no second tolerance anywhere in the product (§11.1).</em> The band disqualifies a materially worse answer outright; inside it, the bill decides. The first edition weighted 0.7 / 0.2 / 0.1 with a 0.06 band, which was narrower than the instrument — a ten-instance bench resolves quality in steps of 0.10 — and would pay 6.7× for one instance in ten. Speed was reduced from 0.30 to 0.10 on 2026-09-28, after the fastest frontier planner won a simple frontend task that a model a tenth of its price had measured the same on. A pairing measured on several suites is pooled by samples, never overwritten; a row nobody priced is priced from list rates; a planner row is never cheaper than its own list price.</p>
   <h3>7.2 Winners</h3>
   <p>A job's winner is its best sized row; a job the benches never sized falls back to its best audited-call row with at least two samples; else it has no winner yet, and the Studio says so. Each winner is named by composition and role — the brain's brand and the hands' suffix as one word, then the job's title: <em>CodexComposer Builder</em>, <em>Composer Tinker</em>, <em>ClaudeComposer Architect</em> — and can be made an agent in one click, carrying its pair. For solo runs the learned table outranks Table 2 once a row has three samples, which is how the static table is meant to retire.</p>
 
@@ -301,7 +308,7 @@ weight   = 0.5 + (raw − 0.5) · n / (n + 1)                  (n = 1 → halfwa
     <li><b>At S, the writer decides and the planner buys nothing.</b> Every pairing writing with Composer scored 1.00 on S2 whatever planned it — Claude Sonnet, Codex, Grok, or Composer itself — so the cell ranks on price: Composer planning and writing alone costs $0.086 a run with its QA check, Sonnet × Composer $0.140. The grader is not blind: raw Haiku scored 0.87 on the same checks (raw Composer 1.00, $0.049, with no pipeline and no QA).</li>
     <li><b>At L, one seat planning and writing is within the band everywhere.</b> Composer × Composer scored 0.88–1.00 across the six domains at $0.080–$0.117 a run, inside 0.10 of the best pairing in each. The operator's "writer plans alone" holds; whether a frontier brain earns its price at L is the question the deeper runs (§10) are for.</li>
     <li><b>Screening is a cheap seat's job, done separately.</b> One screening call per ask on Gemini or Haiku reached 0.94 balanced accuracy — it caught 87.5 % of the damaged prompts and left every clear one alone — for $0.006 and $0.014 a screen; Claude Sonnet caught 68.8 % of the damaged prompts at $0.041. The screening built into today's planner call caught 43.8 % — HumanEvalComm reports models asking on under 37 %.</li>
-    <li><b>Which seat should judge.</b> On must-pass artefacts and re-graded mutants of the same work, qa-gate · Claude Haiku 89 % over 9 cases in 2 domain(s); qa-gate · Composer 83 % over 18 cases in 3 domain(s); qa-gate · Codex low 56 % over 18 cases in 3 domain(s); verifier · Composer 100 % over 18 cases in 3 domain(s); verifier · Codex low 89 % over 18 cases in 3 domain(s); verifier · Claude Haiku 72 % over 18 cases in 3 domain(s). Composer is the verifier to bind: right on every case, the cheapest. As the QA judge no seat is clean — Codex rejects correct work (every one of its errors a false reject), Haiku lets truncated TypeScript through as a verifier and answers the QA prompt in a shape that cannot always be read. A false accept lets a broken change through; the per-case log separates the two error kinds.</li>
+    <li><b>Which seat should judge.</b> <em>(Second edition. Superseded by §11.3, which scores the judges on false accepts over a harder defect set.)</em> On must-pass artefacts and re-graded mutants of the same work, qa-gate · Claude Haiku 89 % over 9 cases in 2 domain(s); qa-gate · Composer 83 % over 18 cases in 3 domain(s); qa-gate · Codex low 56 % over 18 cases in 3 domain(s); verifier · Composer 100 % over 18 cases in 3 domain(s); verifier · Codex low 89 % over 18 cases in 3 domain(s); verifier · Claude Haiku 72 % over 18 cases in 3 domain(s). Composer is the verifier to bind: right on every case, the cheapest. As the QA judge no seat is clean — Codex rejects correct work (every one of its errors a false reject), Haiku lets truncated TypeScript through as a verifier and answers the QA prompt in a shape that cannot always be read. A false accept lets a broken change through; the per-case log separates the two error kinds.</li>
     <li><b>A frontier planner moved the price, not the quality, where it was measured on equal footing.</b> On S2, Sonnet planning cost 1.6× and Grok planning 2.7× what Composer planning for itself did, for the same 1.00. At L the pairings' rows predate the QA-inclusive pricing, so that comparison waits for the deeper runs (§10).</li>
   </ul>
 
@@ -319,13 +326,81 @@ weight   = 0.5 + (raw − 0.5) · n / (n + 1)                  (n = 1 → halfwa
   </ul>
   <h2><span class="n">10</span>What follows</h2>
   <ul>
-    <li><b>Depth where it can change a decision.</b> Every pairing again at L in all six domains under the QA-inclusive pricing (108 arms), then the top two per domain to five more samples, then leader vs runner-up vs raw to twelve more in backend and frontend — 25–45 hours of machine time, scheduled rather than done, because in most cells the evidence is a tie that more repeats would confirm.</li>
-    <li><b>The judges on every domain and seat</b>, and SWT-bench challengers for the test writer.</li>
+    <li><b>Depth where it can change a decision.</b> <em>Third edition: the 108-arm L campaign finished on 2026-09-29 (108 of 108); the deeper repeats below are still to come.</em> Every pairing again at L in all six domains under the QA-inclusive pricing (108 arms), then the top two per domain to five more samples, then leader vs runner-up vs raw to twelve more in backend and frontend — 25–45 hours of machine time, scheduled rather than done, because in most cells the evidence is a tie that more repeats would confirm.</li>
+    <li><b>The judges on every domain and seat</b>, and SWT-bench challengers for the test writer. <em>Third edition: the judge benches ran on five defect classes (§11.3); still open — Codex on the harder set and the Gemini lanes.</em></li>
     <li><b>Real use as the long-run source.</b> Every goal run a pane starts now files its QA-checked row; the benches set a score, observation moves it (§7).</li>
-    <li><b>A dedicated screening call before the planner</b>, on the cheap seat that screened best (§8.1) — a product change.</li>
+    <li><b>A dedicated screening call before the planner</b>, on the cheap seat that screened best (§8.1). <em>Third edition: shipped (§11.2).</em></li>
     <li><b>The reading jobs</b> (lookup, synthesis) need an instrument of their own; until then they are shown as unmeasured.</li>
     <li><b>Larger corpora.</b> The same asks on a codebase with history, laws violated and cycles, where X-ray has something to say.</li>
   </ul>
+  <h2><span class="n">11</span>Third edition: what changed between 29 September and 1 October</h2>
+  <p>Everything here was measured or decided after the second edition's rows were written. The record is the same merge table (§7); a row is only counted once its quality has been audited by an executed check.</p>
+
+  <h3>11.1 One tolerance</h3>
+  <p>The operator's rule, 2026-09-30: a seat or a pair wins if it keeps <b>at least 80 % of the best measured quality</b> in its job and size; among those, the cheapest wins; among equally cheap ones, the fastest. Measured quality outranks claimed quality. The earlier 0.10 absolute band (§7.1) is retired, and with it the per-job and per-role pickers in the app: the choice of AI for a job is automatic, and Settings keeps only the providers, the main provider and a switch for each seat. A seat that is switched off, signed out, or at 95 % or more of its quota window is skipped <em>before</em> the job starts and the work moves to the next seat in the measured ladder.</p>
+
+  <h3>11.2 The solo path, a screening call, and QA on every run</h3>
+  <ul>
+    <li><b>Solo for asks of size L or smaller.</b> The editor runs alone: no planning call, $0.00 for the plan, filed in the record as <code>raw × editor</code>. A planner is still used for an ask with two or more enumerated tasks or over 600 characters. At S and L the router compares measured solo cells against planner × worker pairs under the one tolerance. On a probe over a copy of the live record, solo Composer at <code>editor-s</code> kept 98 % of the best measured quality at $0.016 a run against $0.086 for the cheapest pair inside the band; documentation stays a pair. Only the backend domain is measured at <code>editor-s</code>, and no end-to-end run was watched binding a solo seat.</li>
+    <li><b>Screening is its own call</b>, on the seat that screened best (§8.1), with a fixed set of question kinds and three to seven answer chips. A deterministic front reads closed replies (a yes, a number after a proposal) in six languages without a model.</li>
+    <li><b>QA is obligatory.</b> The checks are deterministic where they can be: <em>expect</em> steps that drive the real page in Chrome and use every button, field and control, a coverage plan scoped to what the ask and the added lines are about, and an HTTP test for servers. A picture is used only when a check failed, none decided, or the styles changed. Unmet claims go back to their workers; once the send-backs are spent the run becomes a question for the person, and a run the person then undoes counts as a false accept against the judge that passed it.</li>
+  </ul>
+
+  <h3>11.3 The QA judges, scored on false accepts</h3>
+  <p>A false accept lets a broken change through, so the QA gate is chosen on it, not on price. Two defect sets, each a broken run or a good run, graded by an executed check. The first (10 broken and 10 good per class, five classes): <b>Opus 0 of 50</b> false accepts, Grok-4.6-high 0, Composer 2.5 0, Gemini 0, Codex 0 (but it rejects 39–41 of 50 good runs), Sonnet 8 of 50, Haiku 6 of 50. The first set is easy — five seats scored zero — so it does not separate them. The second (15 broken and 15 good per class, five classes) does:</p>
+  <div class="tbl"><table>
+    <caption>QA gate · second defect set · false accepts of broken runs, and false rejects of good runs</caption>
+    <thead><tr><th>seat</th><th class="num">false accepts, all classes</th><th class="num">without the frontend class</th><th class="num">false rejects</th></tr></thead>
+    <tbody>
+      <tr class="lead"><td>Claude Opus</td><td class="num">14 / 75 (19 %)</td><td class="num">0 / 60</td><td class="num">26 / 75 (35 %)</td></tr>
+      <tr><td>Grok-4.6-high</td><td class="num">18 / 75 (24 %)</td><td class="num">4 / 60</td><td class="num">8 / 71 (11 %)</td></tr>
+      <tr><td>Cursor Composer 2.5</td><td class="num">20 / 75 (27 %)</td><td class="num">6 / 60</td><td class="num">14 / 73 (19 %)</td></tr>
+      <tr><td>Claude Sonnet</td><td class="num">26 / 74 (35 %)</td><td class="num">12 / 59</td><td class="num">18 / 75 (24 %)</td></tr>
+      <tr><td>Claude Haiku</td><td class="num">27 / 75 (36 %)</td><td class="num">19 / 60</td><td class="num">21 / 74 (28 %)</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">Paired sign tests on the cases where two seats disagreed: Opus against Grok-high 0 : 4 (p = 0.125), Opus against Composer 0 : 6 (p = 0.031), Grok-high against Composer 4 : 6 (p = 0.75), Grok-high against Sonnet 2 : 10 (p = 0.039), Opus against Sonnet 0 : 12 (p = 0.0005); no correction for multiple tests. An earlier ranking in tiers and an unpaired test were withdrawn after this paired recount.</p>
+  <ul>
+    <li><b>The frontend class is the finding.</b> Every seat except Haiku accepts 14 of 15 broken frontend runs. A judge that reads code cannot see that a page is broken; that verdict belongs to the browser checks of §11.2. A deterministic screenshot lifted every QA seat to 8 of 8 on visual defects in the vision bench.</li>
+    <li>The product's QA order is a ladder for when seats are unavailable — Cursor Grok-4.6-high, Composer 2.5, Opus, Sonnet, Gemini flash, Codex — and is <em>not</em> the false-accept order above. Read the table as an order, not as tiers. Gemini was measured only on backend and frontend (its lanes for docs and infra are missing), and Codex was not run on the second set.</li>
+  </ul>
+
+  <h3>11.4 The cost against a raw Claude session, cell by cell</h3>
+  <p>The site's headline figure. A <em>cell</em> is one job × size × domain × suite that holds a raw Claude Sonnet or Opus reference arm with audited quality and at least one non-Claude arm with at least two audited samples. The winner of each cell is picked by the router's own rule (§11.1), five subscription seats only; the ratio is the reference's dollars per run divided by the winner's, API-equivalent list prices.</p>
+  <div class="tbl"><table>
+    <caption>Seven cells · reference → winner · quality is winner against reference</caption>
+    <thead><tr><th>cell</th><th>reference</th><th>winner</th><th class="num">quality</th><th class="num">× cheaper</th></tr></thead>
+    <tbody>
+      <tr><td>S backend · plain</td><td>Sonnet $0.0905</td><td>Composer alone $0.0048</td><td class="num">1.00 vs 1.00</td><td class="num">18.9</td></tr>
+      <tr><td>S backend · edges</td><td>Sonnet $0.0946</td><td>Composer alone $0.0057</td><td class="num">1.00 vs 1.00</td><td class="num">16.6</td></tr>
+      <tr><td>S backend · branches</td><td>Sonnet $0.0941</td><td>Composer alone $0.0062</td><td class="num">0.87 vs 0.87</td><td class="num">15.3</td></tr>
+      <tr><td>S backend · contract</td><td>Sonnet $0.1122</td><td>Composer alone $0.0090</td><td class="num">1.00 vs 0.93</td><td class="num">12.5</td></tr>
+      <tr><td>L backend · eight modules</td><td>Opus $1.151 (n=2)</td><td>Codex low alone $0.1215 (n=1, 2 audits)</td><td class="num">0.97 vs 1.00</td><td class="num">9.5</td></tr>
+      <tr><td>L backend · fix</td><td>Sonnet $0.1159</td><td>Composer alone $0.0150</td><td class="num">0.93 vs 0.90</td><td class="num">7.7</td></tr>
+      <tr><td>L test-writer · SWT-bench</td><td>Sonnet $0.3737 (n=10)</td><td>Gemini × Composer $0.1041 (n=10)</td><td class="num">0.80 vs 0.90</td><td class="num">3.6</td></tr>
+      <tr class="lead"><td>geometric mean</td><td></td><td></td><td class="num"></td><td class="num">10.7</td></tr>
+    </tbody>
+  </table></div>
+  <p>The median is 12.5×; the 95 % bootstrap interval over cells is 7.0–15.2×; dropping any one cell moves the geometric mean between 9.7× and 12.8×. The site rounds it down to 10×. <b>Limits:</b> n is 3 per arm in six cells and 10 in one; four of the seven cells are one synthetic small-ask family (twelve instances) where every arm scores about 1.0, so the cheapest seat wins trivially — without them the geometric mean is 6.5× over three cells. Weighted by what a bill would be (dollars summed over the runs of each cell) the saving is <b>4.5×</b> over the six cells with n of at least 3 and 5.8× with the eight-module cell added; the same-quality swap on SWT-bench (Codex × Composer, 9 of 10 like raw Sonnet, $0.157) is 3.1×. The 6.7× of the first headline was raw Qwen3.6-plus ($0.0558) against raw Sonnet ($0.3737) on that same SWT cell — not an antiloki arm, a metered model that is off by default — and is withdrawn; the five-seat equivalent is the 3.6× above. 8 of 10 against 9 of 10 at n=10 is not separated (<code>merges::separated</code> is false), so &ldquo;same quality&rdquo; means inside the tolerance and not separated at these samples, not identical. Composer, Gemini and Codex dollars are estimated from reported tokens at list rate (Cursor and Antigravity report tokens, not dollars); the Claude references ran 2026-09-22 to 28 and cannot be re-run. Time is not a headline axis: matched cells are about equal, except the eight-module cell, where Composer alone took 61 s against Opus's 278 s (the Opus time moves between 112 s and 303 s from day to day).</p>
+  <p><b>The weekly limit.</b> The site states +112 %, which is 1 / (1 − 0.528) for the share of one machine's tokens that ran off the frontier seat. It was not raised: the share over the whole recorded mix gives a larger number (+471 %) but three other cuts of the same record land at +106 %, +118 % and +122 %, and by dollars the gain is +33 % to +45 %. The figure is stated for the mix measured on this machine, not as a per-task pair, which cannot be measured when the winning cells use no Claude at all.</p>
+  <p><b>The eight-module task, re-run on the five seats</b> (37 checks, 2026-09-28/29; the page's table): Composer alone $0.067, 61 s, 36.3 of 37 (n=3); Composer × Composer with a Composer QA check $0.102, 95 s, 36.0 (n=3); Sonnet × Composer $0.155, 106 s, 36.7 (n=5); Codex × Composer $0.165, 137 s, 36.7 (n=3); Gemini × Composer $0.184, 134 s, 36.3 (n=5); Grok-high × Composer $0.292, 199 s, 36.3 (n=3); raw Opus $1.151, 278 s, 37 (n=2, the 2026-09-22/23 reference).</p>
+
+  <h3>11.5 Does the X-ray map help an agent? Three experiments</h3>
+  <p>Each experiment crossed three agents (Cursor Composer 2.5, Codex, Gemini via Antigravity) with a small and a wide change and three scenarios — the repository only, the X-ray intel only with the agent told not to explore, or both. One run per cell; graded statically, nothing compiled; Gemini reports no tool-call telemetry.</p>
+  <ul>
+    <li><b>A wide TypeScript rename</b> (React Compiler, 30 files, 75 places, real baked intel): intel alone against the repository alone was <b>31 % faster</b> (75 s to 52 s on average) and used <b>48 % fewer input tokens</b> (135k to 70k) at the same pass rate (3 of 3 each); both together was about 15 % faster and 5 % lighter.</li>
+    <li><b>A small change</b>: no measurable difference in quality or time on a 13,000-line TypeScript repository with hidden tests (45, 46 and 44 of 48 tests; 178, 180 and 182 s), and in that repository the intel cost more tokens on the wide change for Codex (472k to 1.15M), because the pack is sent again each turn. In the React Compiler experiment's small change the intel-only agent passed 0 of 3, because the index had excluded the file that needed the change — an agent told not to explore inherits the index's blind spots. That is why the intel now says which files it could not read (excluded, unsupported language, parse failed, changed since the index) and never certifies completeness.</li>
+    <li><b>Flow-typed JavaScript</b> was unreadable to the indexer during the second experiment, so that run used hand-built intel and is not reported as product evidence. The reader was fixed on 2026-10-01 (on a copy of facebook/react, files skipped went from 1,160 to 0 and import edges from 1,689 to 6,510); the experiment has not been re-run since.</li>
+  </ul>
+
+  <h3>11.6 What the third edition did not run</h3>
+  <ul>
+    <li>No Claude arm was re-measured; the subscription that the references need has ended.</li>
+    <li>Codex on the second QA defect set, the Gemini lanes for docs and infra, and any larger-than-L (XXL) run on the five seats. The 6.4× at XXL in the first edition used a Claude brain with DeepSeek hands and is not carried over.</li>
+    <li>No new fresh reference arm on the eight-module task, and no end-to-end run watching the router bind a solo seat.</li>
+    <li>A weekly-limit figure per task. The router's own saved-money ledger over 82 settled runs (3.4× on task tokens, 1.9× once planner, screening and QA costs are added) is <em>not</em> used: its baseline is the same tokens priced at Opus's list rate, not a measured raw run, and 99.5 % of its task tokens are Gemini's.</li>
+  </ul>
+
   <h2><span class="n">A</span>Reproducing a row</h2>
   <pre>bench/merges/run.sh L claude-deepseek false     # one arm: pair · size · QA — clones ministore, drives /cockpit/goals/plan,
                                                   # audits with bench/ladder/audit-dir.sh, POSTs the audit to /settings/merges/record
