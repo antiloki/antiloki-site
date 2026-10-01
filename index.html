@@ -297,7 +297,7 @@
 <main id="top">
   <div class="fog" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
     <div class="wrap hero">
-    <span class="eyebrow">A desktop app for merging the subscriptions you have into one coding agent.<br>macOS · Windows · Linux</span>
+    <span class="eyebrow">A desktop app for merging the subscriptions you have into one coding agent.<br>Windows today · macOS and Linux builds are older, see <a href="#download" style="color:inherit">Download</a></span>
     <h1 style="margin-top:14px"><em>Build +112% more on your weekly limit, 10× cheaper, with the same code quality.</em></h1>
     <p class="lede" style="margin-top:10px">Claude Grok, Gemini Codex — antiloki merges your existing model subscriptions into specialized coding agents. <b>No new account, no extra subscription and everything stays on your machine.</b></p>
     <div class="bench" aria-label="cost per run on the same task">
@@ -514,9 +514,9 @@
     <div class="wrap download" id="download">
     <h2>Install. Open a repo. Ask.</h2>
     <div class="dl">
-      <a class="os" data-os="mac" href="https://github.com/danilosilvadev/antiloki-releases/releases/latest"><b>macOS</b><span>Apple silicon · .dmg</span><em>Download ↓</em></a>
+      <a class="os" data-os="mac" href="https://github.com/danilosilvadev/antiloki-releases/releases/tag/v0.1.0"><b>macOS</b><span>Apple silicon · .dmg · v0.1.0 (older build)</span><em>Download ↓</em></a>
       <a class="os" data-os="win" href="https://github.com/danilosilvadev/antiloki-releases/releases/latest"><b>Windows</b><span>.exe · x64 · installer</span><em>Download ↓</em></a>
-      <a class="os" data-os="linux" href="https://github.com/danilosilvadev/antiloki-releases/releases/latest"><b>Linux</b><span>.deb · x64 · needs glibc 2.44+</span><em>Download ↓</em></a>
+      <a class="os" data-os="linux" href="https://github.com/danilosilvadev/antiloki-releases/releases/tag/v0.1.4"><b>Linux</b><span>.deb from v0.1.4 · needs glibc 2.44 or newer (Arch and other recent rolling distributions); wider support is in progress</span><em>Download ↓</em></a>
     </div>
     <p class="needs">needs git and at least one of <b>Claude</b> · <b>Codex</b> · <b>Cursor</b> · <b>Gemini</b> · <b>Grok</b> <em>signed in</em> — antiloki reads the seat, not the binary, so an unauthenticated CLI is never offered, and the setup wizard shows which seats it found and the command to fix the rest. A <b>merge</b> wants two usable seats: one for the brain and a cheap one for the hands. With one it runs solo, still routed per job. OpenCode, and the Zen and open models behind it, are optional and off by default.</p>
   </div>
@@ -538,7 +538,7 @@
   <span>antiloki · agents · X-ray</span>
   <a href="/blog/">blog</a>
   <a href="/paper.html">the benchmark</a>
-  <a href="https://github.com/danilosilvadev/antiloki-releases/releases/latest">releases</a>
+  <a href="https://github.com/danilosilvadev/antiloki-releases/releases">releases</a>
   <a href="mailto:support@antiloki.com">support@antiloki.com</a>
   <span class="r">© 2026 antiloki · updated 2026-10-01</span>
 </div></footer>
@@ -563,8 +563,11 @@
   if (os) document.querySelector(`.os[data-os="${os}"]`)?.classList.add("me");
   const RELEASES = "danilosilvadev/antiloki-releases";
   const PICK = { mac: [/\.dmg$/], win: [/-setup\.exe$/, /\.msi$/], linux: [/\.AppImage$/, /\.deb$/] };
+  const LIST = `https://github.com/${RELEASES}/releases`;
+  const fallback = () => { for (const key of ["mac", "linux"]) { const a = document.querySelector(`.os[data-os="${key}"]`); if (a) a.href = LIST; } };
   fetch(`https://api.github.com/repos/${RELEASES}/releases?per_page=10`, { headers: { accept: "application/vnd.github+json" } }).then((r) => (r.ok ? r.json() : null)).then((rels) => {
-    if (!Array.isArray(rels)) return;
+    if (!Array.isArray(rels)) { fallback(); return; }
+    const newest = rels.find((x) => !x.draft && !x.prerelease) || rels.find((x) => !x.draft);
     for (const [key, pats] of Object.entries(PICK)) {
       const a = document.querySelector(`.os[data-os="${key}"]`); if (!a) continue;
       for (const rel of rels) {
@@ -572,8 +575,10 @@
         const asset = pats.map((re) => rel.assets.find((x) => re.test(x.name))).find(Boolean);
         if (!asset) continue;
         a.href = asset.browser_download_url; a.querySelector("em").textContent = `Download ${rel.tag_name} ↓`; a.title = `${asset.name} · ${(asset.size / 1048576).toFixed(0)} MB`;
+        const note = a.querySelector("span");
+        if (note && key !== "win") { note.textContent = note.textContent.replace(/v\d+\.\d+\.\d+/, rel.tag_name); if (rel === newest) note.textContent = note.textContent.replace(" (older build)", ""); }
         break;
       }
     }
-  }).catch(() => {});
+  }).catch(() => { fallback(); });
 </script>
