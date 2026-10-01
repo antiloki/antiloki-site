@@ -89,7 +89,8 @@ main() {
   esac
   repo="$(repo_root)"
   tmp="$(mktemp -d)" || { echo "could not create a temp directory" >&2; exit 1; }
-  trap 'rm -rf "$tmp"' EXIT
+  # the EXIT trap runs after main() has returned, when a `local tmp` would already be gone: expand it NOW, into the trap's own text
+  trap "rm -rf '$tmp'" EXIT
   build_tree "$repo" "$tmp"
   summary "$repo" "$tmp"
   safety_check "$tmp" || exit 1
