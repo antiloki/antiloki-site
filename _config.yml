@@ -13,3 +13,5 @@ exclude:
   - marketing/
   - scripts/
   - shoot-prints.mjs
+  - NOTES-INTERNAL.md
+  - _config.yml
