@@ -34,7 +34,7 @@
     <span><a href="/">← antiloki</a></span>
   </div>
 
-  <div class="callout"><p><b>Updated 2026-10-01.</b> The method on this page stands: compiled, not trained; deterministic where it can be, a model's opinion only where it must. Four details moved. The weights and tolerance are different now — <em>one</em> tolerance (a seat wins if it keeps at least 80 % of the best measured quality), then price, then time, rather than the 0.7 / 0.2 / 0.1 and three-point rule below. QA is obligatory and deterministic-first, not &ldquo;switched on when you want it&rdquo;. The board in section 04, and the Qwen and DeepSeek figures, are the first edition's withdrawn arms: the product is five subscription seats. And an ask of size L or smaller now runs on one seat alone with no planner. Current numbers: <a href="/paper.html">the technical report, third edition</a>.</p></div>
+  <div class="callout"><p><b>Updated 2026-10-01.</b> The method on this page stands: compiled, not trained; deterministic where it can be, a model's opinion only where it must. Four details moved. The weights and tolerance are different now — <em>one</em> tolerance (a seat wins if it keeps at least 80 % of the best measured quality), then price, then time, rather than the 0.7 / 0.2 / 0.1 and three-point rule below. QA is obligatory and deterministic-first, not &ldquo;switched on when you want it&rdquo;. The board in section 04, and the Qwen and DeepSeek figures, are the first edition's withdrawn arms: the product is five subscription seats. And an ask of size L or smaller now runs on one seat alone with no planner. Current numbers: <a href="/paper.html">the technical report, fourth edition</a>.</p></div>
 
   <div class="abstract">
     <span class="eyebrow">the claim, in one paragraph</span>
@@ -108,21 +108,22 @@
   <h2><span class="n">05</span>It keeps measuring after you install it</h2>
   <p>The table above is a starting point, not an answer. Every run you do is scored on your machine — which merge,
     which job, how long, what it cost, whether it passed first time — and filed into the same table, which grows with
-    use. Over a few weeks the rows the router reads are mostly yours, measured on your repository and your kind of
-    work, and the shipped defaults stop mattering.</p>
+    use. Your runs adjust the shipped scores, by at most a third, and a pairing that has only been watched working never
+    displaces one that was benched: observation moves a score, it does not set one.</p>
   <p>Nothing leaves the machine to make that happen.</p>
 
   <h2><span class="n">06</span>What is deterministic, and what is not</h2>
   <p>Worth being exact about, because "verified" is the most abused word in this industry.</p>
-  <p><b>Always on, and not a model's opinion:</b> every read, write, search and shell command an agent makes is
-    logged by a hook that sits outside the model, as it happens; every turn is priced and timed; the scope gate
-    refuses a write outside an agent's fences at the tool call rather than asking the model not to; and the codebase
+  <p><b>Always on, and not a model's opinion:</b> every turn is priced and timed; the fence around an agent is enforced
+    where the work lands, for every seat, so a change outside it is shown, can be undone, and stops the merge or the
+    delivery; on Claude panes a hook that sits outside the model also logs each tool call and refuses a write outside
+    the fence before it happens, and the other seats have no such hook; and the codebase
     review's numbers are arithmetic over your ASTs and git history — size, complexity, coupling, density, churn,
     untested — so the same commit scores the same twice.</p>
-  <p><b>Switched on when you want it:</b> the project's own test, build and lint, run the moment an agent claims it
-    is finished, with a failing gate handing the agent the real log to try again; and a QA judge that reads each
-    acceptance claim against the diff. That one <em>is</em> a model, and it is labelled as one wherever its verdict
-    appears.</p>
+  <p><b>On every run:</b> the project's own test, build and lint are available as gates the moment an agent claims it
+    is finished, with a failing gate handing the agent the real log to try again; and QA checks each acceptance claim,
+    deterministically where it can (a real page driven in Chrome, requests sent to a server) and with a judge where it
+    cannot. The judge <em>is</em> a model, and it is labelled as one wherever its verdict appears.</p>
 
   <p style="margin-top:48px"><a href="/blog/">← more from the antiloki blog</a> &nbsp;·&nbsp; <a href="/blog/every-run.html">every run behind the numbers →</a> &nbsp;·&nbsp; <a href="/paper.html">the long version →</a></p>
 
