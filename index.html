@@ -411,12 +411,10 @@
     </div>
         <p class="research">Adoption is finished and control never arrived: <b>90 %</b> of professional developers use
       coding agents weekly and <b>68 %</b> daily, but only <b>29 %</b> trust what comes out — down from 40 %, with
-      <b>3 %</b> who highly trust it and seven in ten refusing to merge without reading it themselves. Output per
-      engineer is up <b>200 %</b> in a year while review throughput stayed flat, so review is the bottleneck, not
-      generation. And the failure mode is not theoretical: an agent quoted the rule that forbade it and deleted a
-      production database and its backups <b>nine seconds</b> later — <b>93 %</b> of organisations have had an
+      <b>3 %</b> who highly trust it. And the failure mode is not theoretical: an agent quoted the rule that
+      forbade it and deleted a production database and its backups, and the deletion call took <b>nine seconds</b> — <b>93 %</b> of organisations have had an
       AI-caused incident, <b>19 %</b> have governance for the next one. Rules in a prompt are not enforcement.
-      <span class="src"><a href="https://blog.jetbrains.com/research/2026/08/ai-coding-agent-adoption-2026/" target="_blank" rel="noopener">JetBrains 2026</a> · <a href="https://byteiota.com/stack-overflow-dev-survey-2026-ai-at-84-trust-at-3/" target="_blank" rel="noopener">Stack Overflow 2026</a> · <a href="https://www.contextstudios.ai/blog/run-10-claude-code-agents-review-is-your-real-bottleneck" target="_blank" rel="noopener">Anthropic, internal</a> · <a href="https://bex.co/blog/2026/07/11/vibe-coding-incident-guardrails" target="_blank" rel="noopener">PocketOS · Spacelift 2026</a></span></p>
+      <span class="src"><a href="https://blog.jetbrains.com/research/2026/08/ai-coding-agent-adoption-2026/" target="_blank" rel="noopener">JetBrains 2026</a> · <a href="https://byteiota.com/stack-overflow-dev-survey-2026-ai-at-84-trust-at-3/" target="_blank" rel="noopener">Stack Overflow 2026</a> · <a href="https://bex.co/blog/2026/07/11/vibe-coding-incident-guardrails" target="_blank" rel="noopener">PocketOS · Spacelift 2026</a></span></p>
   </section>
 
   <section class="wrap premise" id="agents" aria-label="Agents">
@@ -429,7 +427,7 @@
     <span class="eyebrow">X-ray</span>
     <h2>The codebase judged by arithmetic, before anything ships.</h2>
     <p class="lede">X-ray is the deterministic half. Every file gets a verdict — a score and why it is not 100, axis by axis — computed from your ASTs and git history, so the same commit scores the same twice and no model is asked for the number. Around it: file reviews with comments at the lines, the rules your codebase lives by checked at the line, a map of the codebase (every file a box; hubs, orphans, cycles), the coverage gaps, and the blast radius of a change before it lands.</p>
-    <p class="lede">It reads TypeScript and, since 2026-10-01, Flow-typed JavaScript: on a copy of React the Flow files it had to skip went from 1,160 to none, and 11 of 1,177 are still unreadable. It says what it did not index — excluded, an unsupported language, a parse that failed, changed since the index — and never claims to be complete. The same facts reach the agent as its context pack. Measured on a wide TypeScript rename (three agents, one run per cell), the map alone was 31&nbsp;% faster on 48&nbsp;% fewer input tokens at the same pass rate. On a small change the map alone passed 0 of 3, because the index had left out the file that needed the change; that is why the pack now says what it could not read. <a href="/paper.html" style="color:var(--ember)">The report</a> has the cells.</p>
+    <p class="lede">It reads TypeScript and, since 2026-10-01, Flow-typed JavaScript: on a copy of React the Flow files it had to skip went from 1,160 to none, and 11 of 1,177 are still unreadable. It says what it did not index — excluded, an unsupported language, a parse that failed, changed since the index. The same facts reach the agent as its context pack. Measured on a wide TypeScript rename (three agents, one run per cell), the map alone was 31&nbsp;% faster on 48&nbsp;% fewer input tokens at the same pass rate. On a small change the map alone passed 0 of 3, because the index had left out the file that needed the change; that is why the pack now says what it could not read. <a href="/paper.html" style="color:var(--ember)">The report</a> has the cells.</p>
   </section>
     <section class="wrap premise" id="more" aria-label="Around the work">
     <span class="eyebrow">around the work</span>
@@ -452,7 +450,7 @@
       <div>
         <i>seats</i>
         <h3>Switch a whole seat off.</h3>
-        <p>Settings has a switch per seat, and a seat you turn off is never called — not by a chat, a terminal, a
+        <p>Settings has a switch per seat, and a seat you turn off is not called — not by a chat, a terminal, a
           hand-off, QA, a merge or the advice. Nothing is hard-coded to one vendor: a new chat starts on the first
           usable seat, and every role has a measured fallback when its first choice is off or out of quota.</p>
       </div>
