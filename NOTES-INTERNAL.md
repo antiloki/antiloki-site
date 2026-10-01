@@ -20,7 +20,7 @@ published HTML, which leaked process (operator quotes, record ids, internal path
 - Buy buttons were dead (CHECKOUT empty): plans are shown as "coming soon", the 7-day trial download is the only call to action.
 - Lifetime "2 years of updates" is not enforced by license.rs (inside_window is true for a key with no expires_at): the page says only that update terms are set at checkout.
 - Open policy question in the core: a lapsed yearly key stops working even on a build inside its window once the daily re-check stores "expired" (HANDOFF section 15 item 7).
-- Support address: footer keeps support@antiloki.dev; CNAME is antiloki.com and the Tauri allowlist uses antiloki.dev. The operator should confirm which mailbox exists.
+- Support address: the footer now uses support@antiloki.com (the fact-check of 2026-10-01 found antiloki.dev is NXDOMAIN; antiloki.com has the MX records, and CNAME is antiloki.com). The Tauri allowlist still uses antiloki.dev. THE OPERATOR MUST CONFIRM THAT THE support@antiloki.com MAILBOX EXISTS before publishing.
 - Codex chat: the "each seat opens as a chat" claim is kept; Codex's real-account turn awaits the operator's window (memory: Oct 9), so verify before leaning on it.
 
 ## Comments removed from the published files (verbatim)
