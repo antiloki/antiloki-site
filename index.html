@@ -1,8 +1,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>antiloki — build +112% more on your weekly limit, 3× cheaper, with the same code quality</title>
+<title>antiloki — build +112% more on your weekly limit, 10× cheaper, with the same code quality</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23211e1b'/%3E%3Ctext x='10' y='47' font-family='Geist,Helvetica,Arial,sans-serif' font-weight='700' font-size='40' fill='%23efe9e2' letter-spacing='-2'%3Ea%3Ctspan fill='%23c97c5c'%3E.%3C/tspan%3E%3C/text%3E%3C/svg%3E">
-<meta name="description" content="Build +112% more on your weekly limit, 3× cheaper, with the same code quality. Claude Grok, Gemini Codex — antiloki merges your existing model subscriptions into specialized coding agents: a router gives each job — planning, writing, verifying, judging — to the model measured best for it. No new account, no extra subscription and everything stays on your machine.">
+<meta name="description" content="Build +112% more on your weekly limit, 10× cheaper, with the same code quality. Claude Grok, Gemini Codex — antiloki merges your existing model subscriptions into specialized coding agents: a router gives each job — planning, writing, verifying, judging — to the model measured best for it. No new account, no extra subscription and everything stays on your machine.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Geist:wght@700&family=IBM+Plex+Sans:wght@400;500&family=JetBrains+Mono:wght@400;600&display=swap">
 <style>
@@ -23,7 +23,7 @@
   .eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--ember); }
 
   nav.top .wrap { display: flex; align-items: center; height: 60px; gap: 20px; }
-  /* THE MARK = the app's wordmark (shell/logo.tsx): bold lowercase Geist, tight tracking, an ember period */
+
   .mark { display: inline-flex; align-items: baseline; font-family: "Geist", -apple-system, system-ui, sans-serif; font-weight: 700; font-size: 20px; letter-spacing: -.035em; text-decoration: none; color: var(--ink); line-height: 1; }
   .mark em { font-style: normal; color: var(--ember); }
   nav.top .sp { flex: 1; }
@@ -33,15 +33,15 @@
   .btn.ember { background: var(--ember); border-color: var(--ember); color: #1d1410; } .btn.ember:hover { filter: brightness(1.06); }
   .btn.sm { padding: 8px 13px; font-size: 13.5px; }
 
-  /* hero — one problem, one promise, one proof */
-  .hero { padding-top: 72px; text-align: center; } /* padding-top, not the shorthand: `padding: 72px 0 0` zeroed the .wrap side gutter, so at 390 px the headline sat 6 px from the edge */
+
+  .hero { padding-top: 72px; text-align: center; }
   .hero h1 { font-size: clamp(34px, 4.6vw, 60px); font-weight: 800; max-width: 26ch; margin: 0 auto; }
   .hero h1 em { font-style: normal; color: var(--ember); }
   .hero p { margin: 24px auto 0; max-width: 52ch; font-size: clamp(16px, 1.5vw, 19px); color: var(--dim); }
   .hero p.why { max-width: 66ch; text-align: left; font-size: clamp(15px, 1.3vw, 17.5px); line-height: 1.55; } .hero p.why b { color: var(--ink); } .hero p.why span { display: block; } .hero p.why span + span { margin-top: 9px; }
   .hero .cta { display: flex; justify-content: center; gap: 12px; margin-top: 30px; flex-wrap: wrap; align-items: center; }
   .hero .fine { display: block; margin-top: 12px; font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
-  /* the proof: three rows, raw Opus against antiloki, the numbers the benches produced */
+
   .hero .proof { margin: 26px auto 0; max-width: 760px; text-align: left; border: 1px solid var(--line, rgba(255,255,255,.12)); border-radius: 12px; padding: 10px 14px 9px; font-size: clamp(12.5px, 1.05vw, 14px); }
   .hero .proof-h, .hero .proof-r { display: grid; grid-template-columns: 1.25fr 1fr 1fr 1.15fr; gap: 10px; align-items: baseline; padding: 6px 0; }
   .hero .proof-h { font-family: var(--mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--line, rgba(255,255,255,.12)); }
@@ -53,22 +53,16 @@
   .hero .proof-f b { color: var(--dim); font-weight: 700; }
   .hero .proof-f a { color: var(--ember); text-decoration: underline; text-underline-offset: 2px; }
   @media (max-width: 640px) { .hero .proof-h { display: none; } .hero .proof-r { grid-template-columns: 1fr 1fr; } .hero .proof-r span:first-child { grid-column: 1 / -1; } }
-  /* THE BENCHMARK (2026-09-24) — the shape a developer has already read on esbuild's page: one workload, every arm
-     measured on it, one metric, one shared linear axis from zero, the number at the end of each bar, cheapest first.
-     Zero-based always: a truncated axis is the fastest way to lose this audience, and at 5× there is nothing to
-     gain by cheating. The losing arms stay in — a chart where the product wins every row reads as marketing.
-     The widest bar draws at 82% of the track, not 100%: a full-width bar has nowhere to put its own number, and the
-     number at the bar's end is the point. Ratios are untouched; only the drawing scale moves. */
+
   .hero .bench { margin: 26px auto 0; max-width: 700px; text-align: left; display: flex; flex-direction: column; gap: 7px; }
   .hero .bench-h { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: .03em; margin-bottom: 4px; }
   .hero .bench-h code { color: var(--dim); }
   .brow { display: grid; grid-template-columns: 1fr auto; column-gap: 14px; row-gap: 2px; padding: 3px 0; align-items: center; }
   .brow .bname { grid-column: 1 / -1; font-family: var(--mono); font-size: 11.5px; color: var(--dim); }
   .brow.bwin .bname, .brow.braw .bname { color: var(--ink); }
-  /* the number lives INSIDE the track, immediately after the fill — a number floated to the far right breaks the
-     one thing a bar chart is for, which is reading length and value as the same glance */
+
   .brow .btrack { display: flex; align-items: center; gap: 10px; min-width: 0; }
-  .brow .bfill { height: 20px; border-radius: 3px; background: rgba(255,255,255,.16); display: block; flex: 0 1 auto; min-width: 3px; } /* may give way to the number: the full-width raw bar pushed "$1.151" over the meta at 390 px */
+  .brow .bfill { height: 20px; border-radius: 3px; background: rgba(255,255,255,.16); display: block; flex: 0 1 auto; min-width: 3px; }
   .brow.bwin .bfill { background: var(--ember); }
   .brow.braw .bfill { background: rgba(255,255,255,.28); }
   .brow .bnum { font-family: var(--mono); font-size: 13.5px; color: var(--dim); font-weight: 700; white-space: nowrap; }
@@ -77,6 +71,8 @@
   .brow .bmeta { font-family: var(--mono); font-size: 10.5px; color: var(--muted); white-space: nowrap; min-width: 72px; text-align: right; }
   .hero .bench-f { font-family: var(--mono); font-size: 10.5px; color: var(--muted); line-height: 1.65; margin-top: 10px; }
   .hero .bench-f b { color: var(--dim); font-weight: 700; }
+  .hero .bench-f .bf { display: block; margin-top: 9px; }
+  .btn.soon { opacity: .6; cursor: default; pointer-events: none; }
   .hero .bench-f a { color: var(--ember); text-decoration: underline; text-underline-offset: 2px; }
   @media (max-width: 640px) {
     .hero .bench { padding: 0; }
@@ -85,7 +81,7 @@
     .brow .bnum { font-size: 12px; }
   }
   .fog { position: fixed; inset: 0; z-index: 55; pointer-events: none; overflow: hidden; background: #0d0b0a; transition: opacity .9s ease .05s; }
-  .fog i { position: absolute; border-radius: 50%; opacity: .9; mix-blend-mode: screen; will-change: transform; } /* soft by gradient, not by filter — a blur this size costs frames on integrated GPUs */
+  .fog i { position: absolute; border-radius: 50%; opacity: .9; mix-blend-mode: screen; will-change: transform; }
   .fog i:nth-child(1) { width: 70vw; height: 70vw; left: -20vw; top: -10vh; background: radial-gradient(circle, rgba(70,52,44,.9), rgba(70,52,44,.35) 35%, transparent 68%); animation: fogA 14s ease-in-out infinite alternate; }
   .fog i:nth-child(2) { width: 60vw; height: 60vw; right: -15vw; top: 10vh; background: radial-gradient(circle, rgba(52,44,48,.85), rgba(52,44,48,.3) 35%, transparent 68%); animation: fogB 17s ease-in-out infinite alternate; }
   .fog i:nth-child(3) { width: 80vw; height: 50vw; left: 10vw; bottom: -25vh; background: radial-gradient(circle, rgba(72,50,38,.8), rgba(72,50,38,.3) 35%, transparent 68%); animation: fogC 12s ease-in-out infinite alternate; }
@@ -97,121 +93,22 @@
   @keyframes grain { 0% { transform: translate(0, 0); } 25% { transform: translate(-6%, 4%); } 50% { transform: translate(5%, -7%); } 75% { transform: translate(-3%, -2%); } 100% { transform: translate(4%, 5%); } }
   html.headline .fog, html.reduced .fog { opacity: 0; }
   html.gone .fog { display: none; }
-  /* the hero text waits for the prints */
+
   .hero .eyebrow, .hero p, .hero .proof, .hero .cta, .hero .fine { opacity: 0; transform: translateY(10px); transition: opacity .5s ease, transform .5s ease; }
   .hero h1 .w { display: inline-block; opacity: 0; transform: translateY(.45em); filter: blur(10px); transition: opacity .45s ease, transform .6s cubic-bezier(.2,.8,.2,1), filter .5s ease; }
   html.headline .hero h1 .w { opacity: 1; transform: none; filter: none; }
   html.settled .hero .eyebrow, html.settled .hero p, html.settled .hero .proof, html.settled .hero .cta, html.settled .hero .fine { opacity: 1; transform: none; }
   html.reduced .hero .eyebrow, html.reduced .hero p, html.reduced .hero .proof, html.reduced .hero .cta, html.reduced .hero .fine, html.reduced .hero h1 .w { opacity: 1; transform: none; filter: none; transition: none; }
-  /* the stage: two prints fanned in 3D under the headline; they rise out of the deep on the first visit */
-  .stage { position: relative; z-index: 56; height: clamp(220px, 34vw, 430px); margin: 56px auto 0; perspective: 1500px; perspective-origin: 50% 40%; transition: transform 1.5s cubic-bezier(.2,.8,.2,1); }
-  /* while the prints form they sit where the headline will be — mid-screen; they glide down as the words rise */
-  html:not(.headline):not(.reduced) .stage { transform: translateY(clamp(-360px, -38vh, -160px)); }
-  .stage .print { position: absolute; top: 0; width: 58%; aspect-ratio: 16 / 9; border-radius: 14px; overflow: hidden; border: 1px solid rgba(255,255,255,.1); background: var(--panel); cursor: zoom-in;
+
+
                   box-shadow: 0 70px 120px -50px rgba(0,0,0,.95), 0 0 0 1px rgba(255,255,255,.03) inset; transform-style: preserve-3d; will-change: transform, filter, opacity;
                   transition: transform 1.3s cubic-bezier(.16,.84,.24,1), filter 1.1s ease, opacity .9s ease; }
-  .stage .print img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top left; display: block; }
-  .stage .print::after { content: ""; position: absolute; inset: 0; background: linear-gradient(115deg, rgba(255,255,255,.12), transparent 40%, transparent 70%, rgba(255,255,255,.05)); pointer-events: none; }
-  .stage .print.a { left: 0; transform: translate3d(-42vw, 22vh, -1600px) rotateY(58deg) rotateX(26deg) rotateZ(-8deg); opacity: 0; filter: blur(22px) brightness(.35); }
-  .stage .print.b { right: 0; transform: translate3d(42vw, 26vh, -1900px) rotateY(-62deg) rotateX(22deg) rotateZ(9deg); opacity: 0; filter: blur(22px) brightness(.3); transition-delay: .2s; }
-  html.formed .stage .print.a, html.reduced .stage .print.a { transform: translate3d(0, 0, 0) rotateY(22deg) rotateX(6deg) rotateZ(-1deg); opacity: 1; filter: none; }
-  html.formed .stage .print.b, html.reduced .stage .print.b { transform: translate3d(0, 6%, 40px) rotateY(-22deg) rotateX(6deg) rotateZ(1deg); opacity: 1; filter: none; }
-  html.settled .stage .print { transition: transform .35s ease-out; }
-  html.reduced .stage .print { transition: none; }
-  .stage .glow { position: absolute; left: 50%; top: 60%; width: 70%; height: 60%; transform: translate(-50%, -50%); background: radial-gradient(ellipse, rgba(201,124,92,.18), rgba(201,124,92,.06) 40%, transparent 68%); pointer-events: none; opacity: 0; transition: opacity 2s ease 1s; }
-  html.formed .stage .glow, html.reduced .stage .glow { opacity: 1; }
-  @media (max-width: 860px) { .stage { height: clamp(180px, 46vw, 300px); } .stage .print { width: 64%; } html.formed .stage .print.a, html.reduced .stage .print.a { transform: rotateY(18deg) rotateX(5deg); } html.formed .stage .print.b, html.reduced .stage .print.b { transform: translate3d(0, 10%, 30px) rotateY(-18deg) rotateX(5deg); } }
-  /* THE DUO */
-  .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 56px; align-items: start; }
-  .duo-card { display: flex; flex-direction: column; gap: 18px; }
-  .duo-head h2 { font-size: clamp(22px, 2.2vw, 28px); font-weight: 700; margin: 6px 0 0; line-height: 1.2; }
-  .tilt { perspective: 1400px; }
-  .shot { position: relative; border: 1px solid var(--rule); border-radius: 14px; overflow: hidden; background: var(--panel); aspect-ratio: 16 / 9;
-          box-shadow: 0 50px 90px -40px rgba(0,0,0,.85), 0 0 0 1px rgba(255,255,255,.03) inset;
-          transform-style: preserve-3d; transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateZ(0);
-          transition: transform .12s ease-out; will-change: transform; }
-  .shot img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: cover; object-position: top left; }
-  .shot .shine { position: absolute; inset: 0; pointer-events: none; opacity: 0;
-                 background: radial-gradient(600px circle at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,.14), transparent 45%); transition: opacity .25s; }
-  .duo-card:hover .shot .shine { opacity: 1; }
-  .duo-card:not(:hover) .shot { animation: drift 9s ease-in-out infinite; }
-  .duo-card:nth-child(2):not(:hover) .shot { animation-delay: -4.5s; }
-  @keyframes drift { 0%, 100% { transform: rotateX(4deg) rotateY(-6deg) translateY(0); } 50% { transform: rotateX(-3deg) rotateY(6deg) translateY(-6px); } }
-  .benefits { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
-  .benefits li { font-size: 14.5px; color: var(--dim); line-height: 1.5; padding-left: 16px; position: relative; }
-  .benefits li::before { content: ""; position: absolute; left: 0; top: .62em; width: 6px; height: 6px; background: var(--ember); transform: rotate(45deg); }
-  .benefits b { color: var(--ink); font-weight: 600; }
-  @media (max-width: 860px) { .duo { grid-template-columns: 1fr; gap: 44px; } }
-  @media (prefers-reduced-motion: reduce) { .duo-card .shot, .duo-card:not(:hover) .shot { animation: none; transform: none; transition: none; } }
-  /* THE STORIES: sticky print, five steps scrolling past it */
-  .duo { grid-template-columns: 1fr; gap: 120px; margin-top: 120px; max-width: 1320px; }
-  .story { display: grid; grid-template-columns: 1.15fr 1fr; grid-template-areas: "head head" "print steps"; column-gap: 56px; row-gap: 28px; align-items: start; }
-  .story.mirror { grid-template-columns: 1fr 1.15fr; grid-template-areas: "head head" "steps print"; }
-  .story .duo-head { grid-area: head; max-width: 60ch; }
-  .story .sticky { grid-area: print; position: sticky; top: 14vh; }
-  .story .steps { grid-area: steps; list-style: none; margin: 0; padding: 6vh 0 10vh; display: flex; flex-direction: column; gap: 0; }
-  .story .step { min-height: 46vh; display: flex; flex-direction: column; justify-content: center; padding: 24px 0 24px 22px; border-left: 1px solid var(--rule); position: relative;
-                 opacity: .28; transform: translateY(18px); transition: opacity .6s ease, transform .7s cubic-bezier(.2,.8,.2,1); }
-  .story .step::before { content: ""; position: absolute; left: -1px; top: 50%; height: 0; width: 2px; background: var(--ember); transform: translateY(-50%); transition: height .5s cubic-bezier(.2,.8,.2,1); }
-  .story .step.is-on { opacity: 1; transform: none; }
-  .story .step.is-on::before { height: 64%; }
-  .story .step i { font-family: var(--mono); font-style: normal; font-size: 11px; letter-spacing: .14em; color: var(--ember); }
-  .story .step h3 { font-size: clamp(19px, 1.7vw, 24px); margin: 8px 0 10px; line-height: 1.15; }
-  .story .step p { margin: 0; color: var(--dim); font-size: 15px; line-height: 1.55; max-width: 46ch; }
-  .story .step p em { font-style: normal; color: var(--ink); }
-  /* the print leans toward the step in view (the pointer tilt still wins while hovering) */
-  .story .shot { transition: transform .9s cubic-bezier(.2,.8,.2,1); }
-  .story:not(:hover) .shot { animation: none; }
-  .story[data-on="1"]:not(:hover) .shot { transform: rotateX(3deg) rotateY(-7deg); }
-  .story[data-on="2"]:not(:hover) .shot { transform: rotateX(-2deg) rotateY(-4deg) scale(1.02); }
-  .story[data-on="3"]:not(:hover) .shot { transform: rotateX(2deg) rotateY(5deg); }
-  .story[data-on="4"]:not(:hover) .shot { transform: rotateX(-3deg) rotateY(7deg) scale(1.02); }
-  .story[data-on="5"]:not(:hover) .shot { transform: rotateX(4deg) rotateY(-3deg); }
-  .story.mirror[data-on="1"]:not(:hover) .shot { transform: rotateX(3deg) rotateY(7deg); }
-  .story.mirror[data-on="3"]:not(:hover) .shot { transform: rotateX(2deg) rotateY(-5deg); }
-  .story.mirror[data-on="4"]:not(:hover) .shot { transform: rotateX(-3deg) rotateY(-7deg) scale(1.02); }
-  @media (max-width: 860px) {
-    .story, .story.mirror { grid-template-columns: 1fr; grid-template-areas: "head" "print" "steps"; }
-    .story .sticky { position: relative; top: auto; }
-    .story .step { min-height: 0; opacity: 1; transform: none; padding: 18px 0 18px 18px; }
-    .story .steps { padding: 8px 0 0; gap: 8px; }
-  }
-  @media (prefers-reduced-motion: reduce) { .story .step { opacity: 1; transform: none; transition: none; } .story .shot { transition: none; } }
-  /* FIVE PRINTS PER CHAPTER (operator 2026-09-21: "5 prints that prove the claims, zoomed on the part that matters;
-     click expands the whole page"): the shot stacks the five, the step in view fades its print in and zooms it on the
-     part named by `data-zoom` (origin x% y%, scale) — a click opens the whole print in the lightbox. */
-  .story .shot img { opacity: 0; transition: opacity .7s ease, transform 1.1s cubic-bezier(.2,.8,.2,1); transform-origin: var(--zx, 50%) var(--zy, 50%); transform: scale(var(--zs, 1)); will-change: transform, opacity; }
-  .story .shot img.on { opacity: 1; }
-  .story .shot::after { content: "⤢ click to expand"; position: absolute; right: 10px; bottom: 8px; font-family: var(--mono); font-size: 10px; letter-spacing: .08em; color: var(--ink); background: rgba(0,0,0,.55); border: 1px solid rgba(255,255,255,.12); border-radius: 999px; padding: 3px 9px; opacity: 0; transition: opacity .25s; pointer-events: none; }
-  .story:hover .shot::after { opacity: .9; }
-  /* THE LIGHTBOX (operator 2026-09-21: "onclick expands beautifully the prints"): the print flies from its
-     card to the middle of the screen (FLIP), the page dims and blurs behind it, the whole print is shown
-     (no crop), a caption under it; Esc, a click outside or × sends it back the way it came. ← → swap. */
-  .shot { cursor: zoom-in; }
-  .lightbox { position: fixed; inset: 0; z-index: 60; display: none; align-items: center; justify-content: center; padding: 4vh 4vw; }
-  .lightbox.open { display: flex; }
-  .lightbox .veil { position: absolute; inset: 0; background: rgba(6,6,8,.78); backdrop-filter: blur(14px) saturate(.8); -webkit-backdrop-filter: blur(14px) saturate(.8); opacity: 0; transition: opacity .35s ease; }
-  .lightbox.in .veil { opacity: 1; }
-  .lightbox .frame { position: relative; max-width: min(1600px, 92vw); max-height: 88vh; display: flex; flex-direction: column; gap: 12px; }
-  .lightbox .frame img { display: block; max-width: 100%; max-height: calc(88vh - 44px); width: auto; height: auto; border-radius: 14px; border: 1px solid rgba(255,255,255,.12);
+
                           box-shadow: 0 80px 160px -50px rgba(0,0,0,.95), 0 0 0 1px rgba(255,255,255,.04) inset; transform-origin: top left; cursor: zoom-out; }
-  .lightbox .cap { display: flex; align-items: center; justify-content: space-between; gap: 16px; font-family: var(--mono); font-size: 12px; color: var(--muted); opacity: 0; transform: translateY(6px); transition: opacity .3s ease .25s, transform .3s ease .25s; }
-  .lightbox.in .cap { opacity: 1; transform: none; }
-  .lightbox .cap b { color: var(--ink); font-weight: 600; }
-  .lightbox .cap .keys { display: flex; gap: 10px; }
-  .lightbox .cap kbd { font-family: var(--mono); font-size: 10.5px; border: 1px solid var(--rule); border-radius: 5px; padding: 1px 6px; color: var(--dim); }
-  .lightbox .x { position: absolute; top: -14px; right: -14px; width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--rule); background: var(--panel); color: var(--ink); font-size: 18px; line-height: 1; cursor: pointer; display: grid; place-items: center; opacity: 0; transition: opacity .3s ease .25s; }
-  .lightbox.in .x { opacity: 1; }
-  .lightbox .x:hover { border-color: var(--ember); color: var(--ember); }
-  .lightbox .arrow { position: absolute; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--rule); background: var(--panel); color: var(--ink); font-size: 20px; cursor: pointer; display: grid; place-items: center; opacity: 0; transition: opacity .3s ease .25s, border-color .2s; }
-  .lightbox .arrow.prev { left: -22px; } .lightbox .arrow.next { right: -22px; }
-  .lightbox.in .arrow { opacity: .85; } .lightbox .arrow:hover { opacity: 1; border-color: var(--ember); }
-  @media (max-width: 860px) { .lightbox .arrow { display: none; } .lightbox .x { top: -10px; right: -6px; } }
   .screen { position: relative; border: 1px solid var(--rule); border-radius: 14px; overflow: hidden; background: var(--panel); box-shadow: 0 60px 120px -60px rgba(0,0,0,.8); aspect-ratio: 1440 / 860; margin-top: 48px; }
   .screen video { position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: cover; }
-  .cap { margin: 12px auto 0; text-align: center; font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
 
-  /* the problem */
+
   .problem { padding: 110px 0 0; }
   .problem h2 { font-size: clamp(30px, 3.8vw, 46px); font-weight: 700; max-width: 22ch; }
   .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: 14px; overflow: hidden; margin-top: 36px; }
@@ -219,13 +116,12 @@
   .stat b { font-family: var(--mono); font-size: 34px; font-weight: 600; letter-spacing: -.03em; color: var(--ember); line-height: 1; }
   .stat span { font-size: 14px; color: var(--dim); line-height: 1.45; }
   .stat a { margin-top: auto; font-family: var(--mono); font-size: 10.5px; color: var(--muted); text-decoration: none; } .stat a:hover { color: var(--ink); text-decoration: underline; }
-  /* the research as one quiet paragraph (2026-09-24) — smaller than the body around it on purpose: it is the
-     evidence under the argument, not the argument */
+
   .research { margin: 30px 0 0; max-width: 760px; font-size: 13.5px; line-height: 1.7; color: var(--muted); border-left: 2px solid var(--rule); padding-left: 16px; }
   .research b { color: var(--dim); font-weight: 600; }
   .research .src { display: block; margin-top: 8px; font-family: var(--mono); font-size: 10.5px; color: var(--rule); }
   .research .src a { color: var(--muted); text-decoration: none; } .research .src a:hover { color: var(--ember); text-decoration: underline; }
-  /* the method's link, where the method's chapter used to be (2026-09-24) — quiet, and deliberately not a card */
+
   .method-link { margin: 6px 0 0; max-width: 760px; font-size: 14px; line-height: 1.8; color: var(--muted); }
   .method-link a { color: var(--ember); text-decoration: none; border-bottom: 1px solid color-mix(in oklab, var(--ember) 40%, transparent); }
   .method-link a:hover { border-bottom-color: var(--ember); }
@@ -238,7 +134,7 @@
   .bridge p { margin: 18px auto 0; color: var(--dim); font-size: 17px; max-width: 58ch; }
   .pain p { margin: 12px 0 0; color: var(--dim); font-size: 15px; }
 
-  /* the three wow moments */
+
   .wow { padding: 120px 0 0; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 56px; align-items: center; }
   .wow.flip { direction: rtl; } .wow.flip > * { direction: ltr; }
   .wow h2 { font-size: clamp(30px, 3.6vw, 44px); font-weight: 700; margin-top: 12px; }
@@ -247,7 +143,7 @@
   .wow .proof span::before { content: "— "; color: var(--ember); }
   .wow .screen { margin: 0; aspect-ratio: 760 / 800; max-width: 520px; margin-left: auto; margin-right: auto; }
 
-  /* wow 2 · the measurement */
+
   .measure { border: 1px solid var(--rule); border-radius: 14px; background: var(--panel); padding: 24px 26px; }
   .measure .t { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-bottom: 18px; }
   .bars { display: grid; gap: 18px; }
@@ -261,13 +157,13 @@
   .verdict { border: 1px solid var(--rule); border-radius: 8px; padding: 8px 10px; font-family: var(--mono); font-size: 10.5px; color: var(--dim); background: var(--bg); }
   .verdict b { display: block; color: var(--ok); font-weight: 600; }
 
-  /* wow 3 · the record */
+
   .record { border: 1px solid var(--rule); border-radius: 14px; background: var(--bg); padding: 18px 20px; font-family: var(--mono); font-size: 12px; display: grid; gap: 18px; }
   .record .fuel { text-align: right; color: var(--muted); line-height: 1.7; } .record .fuel b { color: var(--ink); font-weight: 600; } .record .fuel .dot { display: inline-block; width: 6px; height: 6px; border-radius: 6px; background: var(--ember); margin-left: 6px; vertical-align: middle; }
   .record .tl { display: grid; gap: 4px; } .record .tl div { display: grid; grid-template-columns: 62px 10px 1fr auto; gap: 10px; align-items: center; color: var(--dim); }
   .record .tl .ts { color: var(--muted); } .record .tl i { width: 8px; height: 8px; border-radius: 8px; background: var(--ember); } .record .tl i.y { background: var(--muted); } .record .tl b { color: var(--ink); font-weight: 600; } .record .tl .no { color: var(--bad); } .record .tl .ok { color: var(--ok); } .record .tl .who { color: var(--muted); font-size: 10.5px; }
 
-  /* the desk · threads */
+
   .desk { padding: 120px 0 0; }
   .desk h2 { font-size: clamp(30px, 3.6vw, 44px); font-weight: 700; margin-top: 12px; max-width: 24ch; }
   .desk > p { margin: 18px 0 0; color: var(--dim); font-size: 17px; max-width: 60ch; }
@@ -300,14 +196,14 @@
   .deskmock .switch .mid svg { width: 14px; height: 14px; stroke: var(--dim); fill: none; stroke-width: 1.75; }
   .deskmock .switch .mid .ring { width: 14px; height: 14px; border-radius: 14px; border: 2px solid var(--rule2); border-top-color: var(--ember); border-right-color: var(--ember); }
 
-  /* who + local */
+
   .fit { padding-top: 120px; text-align: center; }
   .fit h2 { font-size: clamp(28px, 3.4vw, 40px); font-weight: 700; }
   .fit p { margin: 18px auto 0; color: var(--dim); font-size: 17px; max-width: 58ch; }
   .fit .row { display: flex; justify-content: center; gap: 28px; flex-wrap: wrap; margin-top: 26px; font-family: var(--mono); font-size: 12.5px; color: var(--ink); }
   .fit .row span::before { content: "◆ "; color: var(--ember); }
 
-  /* pricing */
+
   .pricing { padding-top: 120px; text-align: center; }
   .pricing h2 { font-size: clamp(30px, 3.6vw, 44px); font-weight: 700; }
   .plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 34px; text-align: left; }
@@ -323,7 +219,7 @@
   .plan .best { position: absolute; top: -11px; left: 22px; font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; background: var(--ember); color: #1d1410; padding: 3px 8px; border-radius: 5px; font-weight: 600; }
   .terms { margin: 16px auto 0; font-family: var(--mono); font-size: 11.5px; color: var(--muted); max-width: 70ch; }
 
-  /* download + faq */
+
   .download { padding-top: 120px; text-align: center; }
   .download h2 { font-size: clamp(30px, 3.6vw, 44px); font-weight: 700; }
   .dl { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 34px; }
@@ -349,16 +245,13 @@
     nav.top a.q { display: none; }
   }
 
-  /* THE METHOD (operator 2026-09-23: focus the whole pitch on measured merges) — benchmark → winner → agent.
-     A numbered sequence because it IS a sequence: nothing is built before it is measured and ranked. */
+
   .method { margin-top: 72px; }
   .method .head { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; margin-bottom: 8px; }
   .method h2 { font-size: clamp(26px, 3vw, 38px); }
   .method .lede { color: var(--dim); max-width: 62ch; margin: 10px 0 30px; font-size: 17px; }
   .method .lede b { color: var(--ink); font-weight: 600; }
-  /* four cards now that "learn" joined control · verify · route (2026-09-24), so the grid takes a count rather
-     than a fixed three — `auto-fit` with a floor keeps three-up and four-up both honest and never strands one
-     card alone on a row at the widths this page is read at */
+
   .steps3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: 14px; overflow: hidden; }
   .steps3 > div { background: var(--panel); padding: 22px 22px 24px; display: flex; flex-direction: column; gap: 8px; }
   .steps3 i { font-family: var(--mono); font-style: normal; font-size: 11px; letter-spacing: .14em; color: var(--ember); }
@@ -366,8 +259,7 @@
   .steps3 p { margin: 0; color: var(--dim); font-size: 14.5px; line-height: 1.55; }
   .steps3 code { font-family: var(--mono); font-size: .85em; color: var(--ink); background: rgba(0,0,0,.25); padding: 1px 5px; border-radius: 4px; }
   @media (max-width: 860px) { .steps3 { grid-template-columns: 1fr; } }
-  /* WHY IT EXISTS (2026-09-24): one section between the hook and the systems — the frame, the problem, the three
-     things antiloki does about it, and the outside research underneath as evidence rather than as a chapter */
+
   .premise { margin-top: 68px; }
   .premise h2 { font-size: clamp(26px, 3vw, 38px); margin: 8px 0 0; }
   .premise .lede { color: var(--dim); max-width: 66ch; margin: 14px 0 0; font-size: 17px; line-height: 1.6; }
@@ -375,7 +267,7 @@
   .premise .lede b { color: var(--ink); font-weight: 600; }
   .premise .steps3 { margin-top: 28px; }
   .premise .stats { margin-top: 22px; }
-  /* the winners board: the table's own rows, as the app shows them */
+
   .board { margin-top: 26px; border: 1px solid var(--rule); border-radius: 14px; overflow: hidden; }
   .board .bh, .board .br { display: grid; grid-template-columns: 1.5fr 1.6fr .7fr .7fr .8fr; gap: 14px; padding: 11px 20px; align-items: baseline; }
   .board .bh { font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); background: var(--panel); border-bottom: 1px solid var(--rule); }
@@ -395,7 +287,7 @@
   <a class="mark" href="#top" aria-label="antiloki">antiloki<em>.</em></a>
   <span class="sp"></span>
   <a class="q" href="#whatis">What it is</a>
-  <a class="q" href="#desk">Cowork</a>
+  <a class="q" href="#agents">Agents</a>
   <a class="q" href="#xray">X-ray</a>
   <a class="q" href="/blog/">Blog</a>
   <a class="q" href="#pricing">Pricing</a>
@@ -404,229 +296,97 @@
 
 <main id="top">
   <div class="fog" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-  <!-- HERO — what it is, and the one reason -->
-  <div class="wrap hero">
+    <div class="wrap hero">
     <span class="eyebrow">A desktop app for merging the subscriptions you have into one coding agent.<br>macOS · Windows · Linux</span>
-    <h1 style="margin-top:14px"><em>Build +112% more on your weekly limit, 3× cheaper, with the same code quality.</em></h1>
+    <h1 style="margin-top:14px"><em>Build +112% more on your weekly limit, 10× cheaper, with the same code quality.</em></h1>
     <p class="lede" style="margin-top:10px">Claude Grok, Gemini Codex — antiloki merges your existing model subscriptions into specialized coding agents. <b>No new account, no extra subscription and everything stays on your machine.</b></p>
-    <!-- THE TWO NUMBERS, AND WHERE THEY COME FROM (operator 2026-09-26: "explicitly make the product about make their
-         subscription cheaper and limits wider. So our measurement is a calculation how cheaper it gets using antiloki
-         and how bigger gets the limit in comparation with raw"). RE-DERIVED 2026-10-01 (operator: "the benchmark is
-         outdated … I believe we have better results today"), from a read-only copy of the merge record
-         (merge_scores, audited by bench/merges/audit-record.py) — five subscription seats only, no Zen/Chinese arm.
-         · CHEAPER is now 3x (2026-10-01, SECOND PASS after a fact-check; the first pass of the day said 10x and was
-           withdrawn). Three things were wrong with 10x: (1) six of its seven cells compared a RAW single-seat session
-           (planner 'raw', qa '') with a raw Claude session, the same kind of comparison the page withdrew for the old
-           6.7x, and the page says every run ends in QA, which those winners do not carry; (2) the Claude reference was
-           the one that made the ratio largest, not the cheapest Claude arm inside the tolerance (raw Haiku is cheaper
-           than Sonnet and keeps >= 80% of the best quality in plain, edges, contract and fix; raw Sonnet 0.973 is
-           inside it on the eight-module task, so Opus was not the fair reference); (3) the bootstrap interval treated
-           the four S cells as independent. NOW: the reference of a cell is the cheapest raw Claude arm (Haiku, Sonnet
-           or Opus) that keeps >= 80% of the cell's best measured quality, the winner is the router's own rule, and the
-           cells are the seven of the record (merge_scores, references 983, 995, 992, 1001, 34, 1230, 193;
-           winners 1010, 1022, 1016, 1028, 120, 1236, 2726). Ratios 7.6, 8.9, 15.3, 5.2, 2.7, 3.8, 3.6: geometric mean 5.7x, median 5.2x,
-           leave-one-out 4.9x-6.5x, the three cells outside the synthetic S family 3.3x. NO CELL CARRIES THE QA STEP:
-           S2 in the same record prices raw Composer at $0.0488 a run (id 2047) and Composer x Composer with its QA check
-           at $0.086 (id 2408), 1.76x; the eight-module task shows 1.5x (id 2572 $0.0671 against id 2480 $0.1017).
-           5.7 / 1.76 = 3.25, an ESTIMATE and not a measurement; on the one cell with a measured QA pipeline (the
-           eight-module task) the pipeline is $0.1017 against raw Sonnet $0.330, 3.2x. 3 is that, rounded DOWN, and it
-           sits under both the 5.7x without QA and the 3.3x of the non-synthetic cells. No interval is printed: the
-           S cells are one family and a bootstrap over seven cells would be the independent-cell figure. The old
-           6.7x stays withdrawn: raw Qwen against raw Sonnet, not an antiloki arm, and Qwen is a metered Chinese model
-           that is off by default. The five-seat repeat of that cell is 3.6x and it is IN the seven. THE PAGE STAYS
-           HONEST (bench-f below): four of the seven cells are one synthetic family where every arm scores ~1.0;
-           weighted by what a bill would be the same six cells give 3.9x; Composer/Gemini/Codex dollars are estimated
-           from reported tokens at list price; the Claude reference ran 2026-09-22..28 and cannot be re-run, the
-           subscription having ended. "Up to 15.3x" would be true and is the weasel the sales rule forbids.
-         · THE LIMIT STAYS +112%. The analyst tried to beat it and could not: share of tokens off the Claude seat gives
-           +471% over the whole mixed record but +106%, +118% and +122% on the three cuts that leave out the bench's
-           raw Gemini calls, the hands jobs and so on, and by dollars only +33..+45%. +112% (= 1/(1-0.528)) is the one
-           figure stable across cuts; it is "on the mix measured on this machine", not a per-task pair. A better
-           number would have been inflation, so the operator's "better percentage" is the cost one only.
-         · "you already HAVE" rather than "already pay for": the clause after it is entirely about not adding cost,
-           so ownership reads truer than expenditure there — and it does not exclude a free tier.
-         · "everything stays on your machine" rather than "100% private": it says WHY it is private instead of
-           asserting a percentage, and locality is the thing a developer actually checks.
-         · "WITH THE SAME CODE QUALITY" — the operator's call (2026-09-26: "8 to 9 is the same almost, theres no much
-           of a difference"). Measured meaning: inside the product's one tolerance. In six of seven cells the cheaper
-           arm is at or above the raw Claude reference; in SWT-bench test-writing it is 8/10 against 9/10,
-           which `merges::separated` calls NOT separated at n=10. "Indistinguishable at this sample" is not
-           "identical", so the basis is on the page, not only here.
-         · "CLAUDE GROK, GEMINI CODEX" — both names are promises the record now backs (operator 2026-09-27: "I want to
-           take out the Chinese model for the name … Claude Grok. And Gemini Codex"). They were unmeasured on
-           2026-09-27; since 2026-09-28 Gemini, Grok, Cursor and Codex have measured samples (paper second edition,
-           L runs, S2, screening, SWT-bench). The headline wording is the operator's and does not change; the Claude
-           seat may be switched off and nothing on the page depends on it.
-         · GEMINI'S FREE TIER IS NOT A SEAT (researched 2026-09-27): Antigravity's free tier is about twenty agent
-           requests a day — a trial — and a usable Gemini seat is Google AI Pro. The page does not say it is free.
-         SPEED LEFT THE HEADLINE on purpose: the routing rule is price first, speed second, quality as a tolerance. -->
-    <!-- THE PROOF, REBUILT 2026-10-01. The 2026-09-22 version (Opus plans, DeepSeek Flash writes) measured arms the
-         product no longer sells. This is the SAME task and the SAME 37-check audit (bench/ladder/L.txt,
-         bench/ministore-8-modules/audit.mjs), re-run 2026-09-28/29 on the five seats; one shared linear axis from
-         zero, cheapest first, as before. Source rows: merge_scores ids 6, 34, 116, 1623, 1632, 1646, 2480, 2572,
-         2575, 2581. The raw Opus bar is the 2026-09-22/23 reference (mean of 2), not re-run. -->
     <div class="bench" aria-label="cost per run on the same task">
-      <div class="bench-h">eight TypeScript modules in a real React store · <code>tsc -b &amp;&amp; vite build</code> must pass · 37 behavioural checks · five subscription seats, measured 2026-09-28/29</div>
-      <div class="brow bwin">
-        <span class="bname">antiloki · Composer alone — no planner (a small ask)</span>
+      <div class="bench-h">eight TypeScript modules in a real React store · <code>tsc -b &amp;&amp; vite build</code> must pass · 37 behavioural checks · cost per run, same task, same checks · pipeline arms measured 2026-09-28/29, Claude references 2026-09-22/23</div>
+      <div class="brow">
+        <span class="bname">antiloki · Composer alone, no planner, no QA step (an ask of size L)</span>
         <span class="btrack"><span class="bfill" style="width:4.8%"></span><span class="bnum">$0.067</span></span>
         <span class="bmeta">36.3/37 · 61 s · n=3</span>
       </div>
-      <div class="brow ">
-        <span class="bname">antiloki · Composer plans, Composer writes, Composer judges</span>
+      <div class="brow bwin">
+        <span class="bname">antiloki · Composer plans, Composer writes, Composer judges (QA included) — the headline arm</span>
         <span class="btrack"><span class="bfill" style="width:7.3%"></span><span class="bnum">$0.102</span></span>
         <span class="bmeta">36.0/37 · 95 s · n=3</span>
       </div>
-      <div class="brow ">
-        <span class="bname">antiloki · Sonnet plans, Composer writes, QA on</span>
-        <span class="btrack"><span class="bfill" style="width:11.0%"></span><span class="bnum">$0.155</span></span>
+      <div class="brow">
+        <span class="bname">antiloki · Sonnet plans, Composer writes, Sonnet judges</span>
+        <span class="btrack"><span class="bfill" style="width:11.1%"></span><span class="bnum">$0.155</span></span>
         <span class="bmeta">36.7/37 · 106 s · n=5</span>
       </div>
-      <div class="brow ">
-        <span class="bname">antiloki · Codex plans, Composer writes</span>
+      <div class="brow">
+        <span class="bname">antiloki · Codex plans, Composer writes, Codex judges</span>
         <span class="btrack"><span class="bfill" style="width:11.8%"></span><span class="bnum">$0.165</span></span>
         <span class="bmeta">36.7/37 · 137 s · n=3</span>
       </div>
-      <div class="brow ">
-        <span class="bname">antiloki · Gemini plans, Composer writes</span>
+      <div class="brow">
+        <span class="bname">antiloki · Gemini plans, Composer writes, Gemini judges</span>
         <span class="btrack"><span class="bfill" style="width:13.1%"></span><span class="bnum">$0.184</span></span>
         <span class="bmeta">36.3/37 · 134 s · n=5</span>
       </div>
-      <div class="brow ">
-        <span class="bname">antiloki · Grok-4.6-high plans, Composer writes</span>
+      <div class="brow">
+        <span class="bname">antiloki · Grok-4.6-high plans, Composer writes, Grok judges</span>
         <span class="btrack"><span class="bfill" style="width:20.8%"></span><span class="bnum">$0.292</span></span>
         <span class="bmeta">36.3/37 · 199 s · n=3</span>
       </div>
       <div class="brow braw">
-        <span class="bname">raw Claude Opus, one session (reference, 2026-09-22/23)</span>
+        <span class="bname">raw Claude Sonnet, one session (the secondary reference, 2026-09-23)</span>
+        <span class="btrack"><span class="bfill" style="width:23.5%"></span><span class="bnum">$0.330</span></span>
+        <span class="bmeta">36/37 · 121 s · n=1</span>
+      </div>
+      <div class="brow braw">
+        <span class="bname">raw Claude Opus, one session (the headline reference, 2026-09-22/23)</span>
         <span class="btrack"><span class="bfill" style="width:82.0%"></span><span class="bnum">$1.151</span></span>
         <span class="bmeta">37/37 · 278 s · n=2</span>
       </div>
-      <div class="bench-f"><b>The eight:</b> fuzzy product search, a stable sort, two localStorage-backed React hooks,
-        money formatting with discount codes, a quantity-stepper component, and checkout validation with a Luhn card
-        check — strict types, no <code>any</code>, JSDoc on every export, no new dependencies, no edits to existing
-        files. Cost per run, linear from zero; checks are the mean over the audited runs of each arm.
-        Every five-seat arm is inside the product's one tolerance (at least 80 % of the best measured quality) and
-        none is separated from raw Opus at these sample sizes. Composer alone is 17× cheaper and 4.6× faster than the
-        Opus reference, and 4.9× cheaper than a raw Sonnet run ($0.330, one run, also inside the tolerance) — and the router lets it run alone, with no planning call, for any ask of size L or smaller.
-        n is how many runs the row averages; raw Opus moves between days ($0.61 and $1.28 on consecutive ones) and
-        cannot be re-run, the Claude subscription it needs having ended. Dollars are API list prices; Cursor, Gemini
-        and Codex report tokens, not dollars, so theirs are estimated from the tokens.
-        <a href="/paper.html">The report, third edition →</a> · <a href="/blog/every-run.html">The first edition, with the scripts →</a></div>
-    </div>
-    <!-- THE CELLS BEHIND "3× CHEAPER" (2026-10-01, second pass): each row is the router's winner in one benchmark cell
-         against the CHEAPEST raw Claude arm (Haiku, Sonnet or Opus) that keeps >= 80% of the cell's best measured
-         quality. Axis linear, 4.339% a time. Quality in the meta is winner vs reference. Neither side carries the QA step;
-         the last row adds it as an estimate (see the derivation comment above the headline). -->
-    <div class="bench" aria-label="cost against the raw Claude run, per benchmark cell">
-      <div class="bench-h">how many times cheaper, cell by cell · the router's winner against the cheapest raw Claude session that keeps the same quality on the same task · quality: winner vs raw</div>
-      <div class="brow">
-        <span class="bname">S backend · plain — Composer alone vs Haiku</span>
-        <span class="btrack"><span class="bfill" style="width:33.0%"></span><span class="bnum">7.6×</span></span>
-        <span class="bmeta">1.00 vs 1.00 · n=3</span>
+      <div class="proof" aria-label="how many times cheaper, on the eight-module task">
+        <div class="proof-h"><span>arm</span><span>cost per run</span><span>against raw Opus</span><span>against raw Sonnet</span></div>
+        <div class="proof-r"><span>Composer alone, no QA step</span><span>$0.0671</span><b>17.2× vs Opus</b><b>4.9× vs Sonnet</b></div>
+        <div class="proof-r"><span>Composer × Composer, with QA</span><span>$0.1017</span><em>11.3× vs Opus</em><b>3.2× vs Sonnet</b></div>
+        <div class="proof-r"><span>Sonnet plans + judges, Composer writes</span><span>$0.1554</span><b>7.4× vs Opus</b><b>2.1× vs Sonnet</b></div>
       </div>
-      <div class="brow">
-        <span class="bname">S backend · edges — Composer alone vs Haiku</span>
-        <span class="btrack"><span class="bfill" style="width:38.8%"></span><span class="bnum">8.9×</span></span>
-        <span class="bmeta">1.00 vs 1.00 · n=3</span>
+      <div class="bench-f">
+        <span class="bf"><b>10× is our best measured result against raw Claude Opus on the eight-module task.</b> Raw Opus, one session: $1.151 a run (n=2, 37 of 37 checks, 278 s). The antiloki pipeline, Composer planning, writing and judging with its QA step: $0.1017 a run (n=3, 36.0 of 37, 95 s). That is 11.3×, and the headline rounds it down to 10×. The reference is Opus because it is the Claude model a Max subscriber reaches for; against raw Sonnet ($0.330, n=1) the same pipeline is 3.2× and the Sonnet-planned run 2.1×, both in the table above.</span>
+        <span class="bf"><b>The honest range is 6×–11×.</b> Raw Opus does not cost the same every day: the ladder run of 2026-09-22 recorded $0.61 for this same task, and against that run the pipeline is about 6.0×. 11.3× is the best measured cell, not the typical one. The 17.2× row has no QA step and is not the product as shipped.</span>
+        <span class="bf"><b>The same code quality</b> here means code that passes the same 37 checks: the pipeline averaged 36.0 of 37 against 37 for raw Opus, which is 0.973 of 1.0 — inside the product's 80 % tolerance, not identical. The checks are executed code written before any arm ran, not a model's opinion; quality is the mean over the audited runs (4 of 5 in the Sonnet and Gemini arms).</span>
+        <span class="bf"><b>+112 % on your weekly limit</b> is a paired task result and not a measured percentage of anyone's weekly limit. On this task the arm where Claude still plans and judges while Composer writes cost $0.1554 against $0.3297 for raw Sonnet: 2.12×, so at least 2.1× further on that task (n=5 against n=1, list-price dollars standing in for an allowance the vendors do not publish). What it does for your limit depends on your mix of work.</span>
+        <span class="bf"><b>Limits.</b> One task in one repository, n of 1 to 5 per arm. Dollars are API list prices; Cursor, Codex and Gemini report tokens, not dollars, so theirs are estimated from the tokens. The shipped path adds a separate screening call before the plan ($0.006 on Gemini, $0.014 on Haiku) that is not in these figures, and the solo path (no planner, for an ask of size L or smaller) has not been watched end to end in a real run. The small-ask suite cuts the other way: on S2, raw Haiku cost $0.0437, Composer alone $0.0488 and the Composer pipeline with QA $0.086, so on a small ask there is no saving against Haiku — and in the report's small-ask cells Composer is priced about ten times lower than on S2 for asks of similar size, cause not found. That family is not the evidence for this headline. Across seven cells against the cheapest Claude arm inside the tolerance the geometric mean was 5.7× before QA and about 3.2× with QA added by estimate; the report keeps them as context.</span>
+        <span class="bf"><b>The eight:</b> fuzzy product search, a stable sort, two localStorage-backed React hooks, money formatting with discount codes, a quantity-stepper component, and checkout validation with a Luhn card check — strict types, no <code>any</code>, JSDoc on every export, no new dependencies, no edits to existing files.</span>
+        <span class="bf"><a href="/paper.html">The report, fourth edition →</a> · <a href="/blog/every-run.html">The first edition, with the scripts →</a></span>
       </div>
-      <div class="brow">
-        <span class="bname">S backend · branches — Composer alone vs Sonnet</span>
-        <span class="btrack"><span class="bfill" style="width:66.3%"></span><span class="bnum">15.3×</span></span>
-        <span class="bmeta">0.87 vs 0.87 · n=3</span>
-      </div>
-      <div class="brow">
-        <span class="bname">S backend · contract — Composer alone vs Haiku</span>
-        <span class="btrack"><span class="bfill" style="width:22.4%"></span><span class="bnum">5.2×</span></span>
-        <span class="bmeta">1.00 vs 1.00 · n=3</span>
-      </div>
-      <div class="brow">
-        <span class="bname">L backend · eight modules — Codex alone (low) vs Sonnet</span>
-        <span class="btrack"><span class="bfill" style="width:11.8%"></span><span class="bnum">2.7×</span></span>
-        <span class="bmeta">0.97 vs 0.97 · n=1 (2 audits) vs n=1</span>
-      </div>
-      <div class="brow">
-        <span class="bname">L backend · fix — Composer alone vs Haiku</span>
-        <span class="btrack"><span class="bfill" style="width:16.7%"></span><span class="bnum">3.8×</span></span>
-        <span class="bmeta">0.93 vs 0.90 · n=3</span>
-      </div>
-      <div class="brow">
-        <span class="bname">L test-writer · SWT-bench — Gemini plans, Composer writes vs Sonnet</span>
-        <span class="btrack"><span class="bfill" style="width:15.6%"></span><span class="bnum">3.6×</span></span>
-        <span class="bmeta">8/10 vs 9/10 · n=10</span>
-      </div>
-      <div class="brow">
-        <span class="bname">geometric mean of the seven, before the QA check</span>
-        <span class="btrack"><span class="bfill" style="width:24.8%"></span><span class="bnum">5.7×</span></span>
-        <span class="bmeta">median 5.2× · range 2.7–15.3×</span>
-      </div>
-      <div class="brow bwin">
-        <span class="bname">the same with the QA step added (estimate)</span>
-        <span class="btrack"><span class="bfill" style="width:14.1%"></span><span class="bnum">3.2×</span></span>
-        <span class="bmeta">5.7 ÷ 1.76, the S2 QA overhead</span>
-      </div>
-      <div class="bench-f"><b>Read it with its limits.</b> Six of the seven winners are one seat running alone with no QA
-        check, set against a raw Claude session that has none either; that is the comparison the price rests on, and it
-        is not the product as shipped, where every run ends in QA. QA is not free: on the S2 suite raw Composer costs
-        $0.049 a run and Composer with its QA check $0.086, 1.76× more, so the last bar divides the 5.7× by that and the
-        headline <b>3×</b> is that figure rounded down. It is an estimate, not a measurement: the one cell where the
-        whole pipeline was priced (the eight-module task, Composer with a Composer QA check, $0.102) is 3.2× under raw
-        Sonnet. The reference is the cheapest Claude arm inside the tolerance — Haiku in four cells, where it keeps
-        at least 80 % of the best quality; Sonnet where Haiku does not (branches, 0.73 against 1.00) and on the
-        eight-module task, where Sonnet is inside it; Opus is not used, though it is the reference of the table above.
-        Sample sizes are small: n=3 per arm in five cells, n=10 in SWT-bench, and the eight-module cell is one run of
-        Codex (two audits) against one of Sonnet. Four of the seven are one synthetic small-ask family where every arm
-        scores about 1.0, so the cheapest seat wins trivially, and they are not independent; no interval is printed
-        for that reason, and without those four the geometric mean is 3.3× over three cells (2.7×, 3.8×, 3.6×).
-        Weighted by what a bill would be — dollars summed over the runs of each cell — the saving is 3.9× over the six
-        cells with n of at least 3. The 6.7× this page carried before was a raw Qwen session against a raw Sonnet
-        one on the SWT cell; the same cell on the five seats is the 3.6× above, and its equal-quality swap (Codex plans,
-        Composer writes, 9 of 10 like raw Sonnet) is 2.4×. Same code quality means inside the one tolerance, not
-        identical: the 8/10 against 9/10 is not separated at n=10. <b>+112 % on your weekly limit</b> is the share of
-        this machine's tokens that ran off the frontier seat, 1/(1−0.528); three other cuts of the record land
-        between +106 % and +122 %, so it is stated for the mix measured here and not as a per-task figure. The
-        reference runs are Claude Haiku, Sonnet and Opus from 2026-09-22 to 28, and cannot be re-run.</div>
     </div>
 
     <div class="cta"><a class="btn ember" href="#download">Download — free for 7 days</a></div>
     <span class="fine">one binary · no account · your current subscription is the engine</span>
-    <div class="stage" aria-hidden="true">
-      <i class="glow"></i>
-      <div class="print a" data-lb="0"><img src="img/10-agents.jpg" alt=""></div>
-      <div class="print b" data-lb="1"><img src="img/11-xray.jpg" alt=""></div>
-    </div>
   </div>
 
 
 
-  <!-- WHY IT EXISTS (2026-09-24) — ONE section between the hook and the systems. It was three (what it is · the
-       research · the three things it does) and the operator's verdict was that they were too big: three headlines and
-       ten cards to walk before the product appeared. The argument only ever had three beats, so it is three
-       paragraphs and three cards now, and the research sits under them as evidence rather than as its own chapter.
-       The order is still the one that matters: widen the frame, name the problem, name what antiloki does about it. -->
-  <section class="wrap premise" id="whatis" aria-label="Why antiloki exists">
+    <section class="wrap premise" id="whatis" aria-label="Why antiloki exists">
     <span class="eyebrow">what it actually is</span>
     <h2>Merging is one part of it.</h2>
     <p class="lede">Your Claude, Codex, Cursor, Gemini and Grok subscriptions, on one repo, as one agent. antiloki <b>routes</b>
       each job of an ask to the seat measured best for it, automatically, under one rule: keep at least 80&nbsp;% of
       the best measured quality, then the cheapest, then the fastest. The frontier seat is asked only for the parts
       that need it, and a seat that is out of quota — or nearly — is skipped before the job, not after it fails. It
-      <b>controls</b> what may be touched, <b>records</b> every read, write and command as it happens, <b>tests</b>
+      <b>controls</b> what may be touched, <b>records</b> every turn — priced, timed and attributed to a seat — <b>tests</b>
       every run before it counts, and <b>measures</b> the whole thing in seconds and dollars. The merge is what
       routing produces — the rest is why it can be trusted.</p>
     <div class="steps3">
       <div>
         <i>control</i>
         <h3>One agent, fenced where you say.</h3>
-        <p>Decide which folders may be written. On Claude and Codex the gate sits at the tool call, outside the
-          model: a write beyond the fence is refused before it happens. On Cursor, Gemini and Grok there is no such hook,
-          so the fence is enforced afterwards — a change beyond it is shown, undone in one click, and stops the merge or
-          the delivery. A fork inherits its parent's fence.</p>
+        <p>Decide which folders may be written. For every seat the fence is enforced where the work lands: a change beyond it
+          is shown, can be undone in one click, and stops the merge or the delivery. On Claude panes a hook at the tool
+          call, outside the model, also refuses the write before it happens; the other seats have no such hook.</p>
       </div>
       <div>
         <i>verify</i>
         <h3>Every run ends in a test.</h3>
-        <p>Every turn is priced and timed, and on Claude and Codex a hook outside the model
+        <p>Every turn is priced and timed, and on Claude panes a hook outside the model
           logs each tool call. Then QA opens the real page in Chrome and uses the controls the change is about, or
           sends requests to the server, with checks written as plain expectations — the judge is shown a picture only
           when a check failed, none could decide, or the styles changed. Unmet claims go back to the worker; when the send-backs are spent, the run
@@ -642,17 +402,14 @@
       </div>
       <div>
         <i>learn</i>
-        <h3>It learns your repo.</h3>
+        <h3>It keeps measuring on your machine.</h3>
         <p>Every run is scored on your machine — which seat, which job, how long, what it cost, whether it passed
-          first time — and filed in a benchmark that grows as you use it. The numbers above are a starting point;
-          the ones the router obeys are <b>yours</b>. The scores stay on the machine.</p>
+          first time — and filed in the benchmark that ships with the app. The numbers above are the starting point;
+          your runs adjust the shipped scores, by at most a third, and a pairing that was only watched working never
+          displaces one that was benched. The scores stay on the machine.</p>
       </div>
     </div>
-    <!-- THE RESEARCH, SHRUNK (operator 2026-09-24: "the percentages section of the problem should be a small
-         discrete section with the sources as it has now, but all smaller and discrete… one paragraph in natural
-         language saying the whole information"). It was four cards with 34px numbers, which gave the outside
-         research more of the screen than the product had. Every figure and every source survives, in a sentence. -->
-    <p class="research">Adoption is finished and control never arrived: <b>90 %</b> of professional developers use
+        <p class="research">Adoption is finished and control never arrived: <b>90 %</b> of professional developers use
       coding agents weekly and <b>68 %</b> daily, but only <b>29 %</b> trust what comes out — down from 40 %, with
       <b>3 %</b> who highly trust it and seven in ten refusing to merge without reading it themselves. Output per
       engineer is up <b>200 %</b> in a year while review throughput stayed flat, so review is the bottleneck, not
@@ -662,57 +419,21 @@
       <span class="src"><a href="https://blog.jetbrains.com/research/2026/08/ai-coding-agent-adoption-2026/" target="_blank" rel="noopener">JetBrains 2026</a> · <a href="https://byteiota.com/stack-overflow-dev-survey-2026-ai-at-84-trust-at-3/" target="_blank" rel="noopener">Stack Overflow 2026</a> · <a href="https://www.contextstudios.ai/blog/run-10-claude-code-agents-review-is-your-real-bottleneck" target="_blank" rel="noopener">Anthropic, internal</a> · <a href="https://bex.co/blog/2026/07/11/vibe-coding-incident-guardrails" target="_blank" rel="noopener">PocketOS · Spacelift 2026</a></span></p>
   </section>
 
-  <!-- THE DUO — the two screens, each with what you get from it (operator 2026-09-21: "not just a code
-       diagnosis project — the two main benefits"). The prints float in 3D: a slow idle drift,
-       and they lean toward the pointer; still under prefers-reduced-motion. -->
-  <!-- THE TWO STORIES: each screen is a scrollytelling chapter — the print stays put (sticky) while five
-       functionalities scroll past it; the one in view lights up and the print leans toward it. Cowork: print
-       left, steps right. X-ray: mirrored.
-       RENAMED 2026-09-23 (operator: "threads is not a good word anymore, agents is the correct word"): the word
-       described a container the product no longer has. You pick an agent and talk to it; a widget opens beside
-       it. There is nothing to compose before you can work. -->
-  <section class="duo wrap" aria-label="Cowork and X-ray">
-    <article class="duo-card story" data-tilt id="desk">
-      <div class="duo-head">
-        <span class="eyebrow">Cowork</span>
-        <h2>Cheaper — one agent that takes the role the ask needs, on the seat that is measured best for it.</h2>
-      </div>
-      <div class="sticky"><div class="tilt"><div class="shot"><img src="img/agents-1.jpg" data-step="1" alt="the New agent window: a name, a purpose, the role templates, and the dial — cheaper, faster, best — over the merge each one measured" class=on><img src="img/agents-2.jpg" data-step="2" alt="the agents sidebar: each agent with its face, its name, the role it was hired as and the two models it is merged from"><img src="img/agents-3.jpg" data-step="3" alt="a widget open beside the conversation: the chat on the left, a shared diff taking the right half of the desk"><img src="img/agents-4.jpg" data-step="4" alt="Heimdall's menu on an agent: the router's three states, sub-agents and QA, and the context and effort dials"><img src="img/agents-5.jpg" data-step="5" alt="an agent's episodes under its row: the last three, the rest one click away, and the button that closes the open one"><i class="shine"></i></div></div></div>
-      <ol class="steps">
-        <li class="step" data-step="1" data-zoom="50 50 1"><i>01</i><h3>One agent that changes role.</h3><p>Not a roster to staff. You ask, and the agent takes the role the ask needs — Backender, Frontend designer, Tester, Reviewer — arriving with the seat the benchmark picked for <em>that</em> kind of work, plus its globs, skills and specialists. The choice of AI per job is automatic: there is no dial and no picker to set per job or per role, only your providers, your main one, and a switch for each seat.</p></li>
-        <li class="step" data-step="2" data-zoom="76 8 2.3"><i>02</i><h3>The conversation is the workspace.</h3><p>Not a thread, not a box you compose first. Claude, Codex, Cursor, Gemini and Grok each open as a real agent chat, reached through their own vendor CLI — nothing to paste, no API key. One conversation carries the role it is in, its scope, its skills and its specialists, and shows what it saved in the header as it works. Fork it and the fork gets its own name and its own box. Switching role does not restart anything: only changing provider does.</p></li>
-        <li class="step" data-step="3" data-zoom="22 26 2.1"><i>03</i><h3>A tool opens beside the conversation.</h3><p>A diff, a board, the code graph, the design frames — one click, and it takes half the screen next to the agent. One at a time, so there is no layout to build. A canvas takes the whole desk. What you put in a board is still there next week.</p></li>
-        <li class="step" data-step="4" data-zoom="72 24 2.1"><i>04</i><h3>Heimdall routes every ask — and checks the claim.</h3><p>The router reads the ask first. Small ones run on one seat alone and the plan costs $0.00; bigger ones, or any ask with two or more tasks, get a planner and a seat bound to every job — from the seats you are actually signed in to and that still have room in their window. If a seat hits its limit, antiloki remembers it and finishes on the next best one instead of dying mid-plan. Then every run ends in QA, with the project's own <b>test</b>, <b>build</b> and <b>lint</b> available as gates: a failed one hands the agent the real log and it goes again — once, not forever.</p></li>
-        <li class="step" data-step="5" data-zoom="78 74 1.7"><i>05</i><h3>Episodes, and a report at the end of every turn.</h3><p>A long conversation is not one wall of scrollback. Close an episode and it consolidates into a summary and the story of what happened; <code>!</code> brings a closed one back as context. And every turn closes with what it actually did — who decided and who wrote, each stage in plain English, every gate labelled a machine's or a model's, the diff beside the old version of each file, the QA verdict, and the count: files, tools, tokens, the clock, and what the router did not spend.</p></li>
-      </ol>
-    </article>
-    <article class="duo-card story mirror" data-tilt id="xray">
-      <div class="duo-head">
-        <span class="eyebrow">X-ray</span>
-        <h2>Safety — every file judged, every number explained, before anything ships.</h2>
-      </div>
-      <div class="sticky"><div class="tilt"><div class="shot"><img src="img/xray-1.jpg" data-step="1" alt="a file review: score 64, why not 100 axis by axis, comments at the lines with the move" class=on><img src="img/xray-2.jpg" data-step="2" alt="the laws: 17 rules, 250 violations across 7 laws, the ones broken most"><img src="img/xray-3.jpg" data-step="3" alt="the codebase as a map: every file a box, area its mass, colour its health; the blast-radius cascade"><img src="img/xray-4.jpg" data-step="4" alt="the review over the snapshots: most improved, most regressed, the axis drift"><img src="img/xray-5.jpg" data-step="5" alt="the design system harvested from the running app: 361 tokens, 108 components, 41 drift"><i class="shine"></i></div></div></div>
-      <ol class="steps">
-        <li class="step" data-step="1" data-zoom="18 12 2.2"><i>01</i><h3>The verdict, not a vibe.</h3><p>Every file reviewed and scored — and <em>why not 100</em>, axis by axis: <b>size</b>, <b>complexity</b>, <b>coupling</b> (fan-in and fan-out), <b>density</b>, <b>churn</b> and <b>untested</b>. Arithmetic over your ASTs and your git history; no model is asked for the score and the same commit scores the same twice.</p></li>
-        <li class="step" data-step="2" data-zoom="16 26 1.9"><i>02</i><h3>Laws, not lint.</h3><p>The rules your codebase lives by, checked at the line: what breaks a law, where, and what compliance is worth. A senior review that reads the same way every time.</p></li>
-        <li class="step" data-step="3" data-zoom="24 56 1.9"><i>03</i><h3>The codebase as a map.</h3><p>Every file a box, area its mass, colour its health; hubs, orphans, cycles, the most central and the most risky — at a glance, and per folder. It reads TypeScript and Flow-typed JavaScript, follows monorepo package names and ESM <code>./x.js</code> imports to the <code>.ts</code> behind them, and returns every file, not a sample: on a copy of React the files it had to skip went from 1,160 to none.</p></li>
-        <li class="step" data-step="4" data-zoom="78 24 2"><i>04</i><h3>What the tests never reach. What a change would touch.</h3><p>Coverage gaps by file, the blast radius before a change lands, and the review over the snapshots — the score's history, scrubbable.</p></li>
-        <li class="step" data-step="5" data-zoom="28 22 1.8"><i>05</i><h3>The same intel feeds the agent — and says where it stops.</h3><p>Reviews, graph, docs and ASTs become the context pack every ask starts from. The pack states which files it could not read — excluded, an unsupported language, a parse that failed, changed since the index — and never claims to be complete. Measured on a wide TypeScript rename, with the map alone and the agent told not to explore: 31&nbsp;% faster on 48&nbsp;% fewer input tokens at the same pass rate, 3 of 3 agents. On a small change it made no difference in one repo; in the repo of the rename, the map alone passed 0 of 3 agents, because the index had left out the file that needed the change — which is why the pack now says what it could not read. Three agents, one run per cell; <a href="/paper.html">the report</a> has the cells. Design too: your screens captured from the running app, the design system and its drift.</p></li>
-      </ol>
-    </article>
+  <section class="wrap premise" id="agents" aria-label="Agents">
+    <span class="eyebrow">agents</span>
+    <h2>One agent per role, on the seat measured best for the job.</h2>
+    <p class="lede">You do not staff a roster. A setup wizard finds the AIs on your machine — Claude, Codex, Cursor, Gemini and Grok, each listed as ready, not signed in or not installed, with the command that fixes it — and asks for one main provider. Then you ask, and the agent takes the role the ask needs (Backender, Frontend designer, Tester, Reviewer and others), arriving with its scope, skills and specialists. The router chooses the seat for every job, from the seats you are signed in to and that still have room in their window; there is no per-job picker to set.</p>
+    <p class="lede">Each agent keeps a queue of asks you can reorder, cancel and re-prompt, with a checkpoint per response to undo to. A run can be paused, resumed or stopped, and the QA can be stopped on its own. The QA test is filmed — a live browser frame while it runs and the kept recording afterwards — and every turn closes with what it did, which seat did it, what it cost, and the QA verdict. A long conversation closes into episodes that consolidate into a summary.</p>
   </section>
-  <div class="wrap"><p class="cap">the real app, as shot on 21–24 September · the same codebase on both screens · Cowork is where the work happens, X-ray is what it knows. Since the prints: the dial and the per-job pickers are gone (the router chooses), every seat is a chat pane, and every run ends in QA — see below.</p>
-  </div>
-  <!-- AROUND THE WORK (2026-10-01, operator: "see the work that we are doing now, the last five days … update
-       everything there"). The two chapters above are tied to their prints, and the prints are older than most of
-       this: seats as chat panes, QA that tests, the live film, stop and pause, the queue, the setup wizard, the PR
-       button and the per-seat limits all landed 2026-09-27 to 10-01 and have no screenshot here yet. They live in
-       cards, not in chapter steps, so no step points at a picture that does not show it. Every card is a feature the
-       inventory of the core and FE commits verified exists; the plan-replay-as-regression-test, the file-description
-       budget and the X-ray A/B are API-only or experiments and are NOT claimed as screens. -->
-  <section class="wrap premise" id="more" aria-label="Around the work">
+  <section class="wrap premise" id="xray" aria-label="X-ray">
+    <span class="eyebrow">X-ray</span>
+    <h2>The codebase judged by arithmetic, before anything ships.</h2>
+    <p class="lede">X-ray is the deterministic half. Every file gets a verdict — a score and why it is not 100, axis by axis — computed from your ASTs and git history, so the same commit scores the same twice and no model is asked for the number. Around it: file reviews with comments at the lines, the rules your codebase lives by checked at the line, a map of the codebase (every file a box; hubs, orphans, cycles), the coverage gaps, and the blast radius of a change before it lands.</p>
+    <p class="lede">It reads TypeScript and, since 2026-10-01, Flow-typed JavaScript: on a copy of React the Flow files it had to skip went from 1,160 to none, and 11 of 1,177 are still unreadable. It says what it did not index — excluded, an unsupported language, a parse that failed, changed since the index — and never claims to be complete. The same facts reach the agent as its context pack. Measured on a wide TypeScript rename (three agents, one run per cell), the map alone was 31&nbsp;% faster on 48&nbsp;% fewer input tokens at the same pass rate. On a small change the map alone passed 0 of 3, because the index had left out the file that needed the change; that is why the pack now says what it could not read. <a href="/paper.html" style="color:var(--ember)">The report</a> has the cells.</p>
+  </section>
+    <section class="wrap premise" id="more" aria-label="Around the work">
     <span class="eyebrow">around the work</span>
-    <h2>What the last days put around it.</h2>
+    <h2>What sits around the work.</h2>
     <div class="steps3">
       <div>
         <i>QA</i>
@@ -769,41 +490,31 @@
     </div>
   </section>
 
-  <!-- THE METHOD — the pitch is not "we route", it is "we measure, then we build the winner" (2026-09-23). -->
-  <!-- THE METHOD LEFT THE PAGE (operator 2026-09-24: "the section The method on the landing is not required you
-       can remove and create a blog post to explain completely how antiloki works and at the landing just add the
-       link somewhere at the bottom"). It was a whole chapter — two ledes, three cards and a five-column board —
-       between the product and the price, and the argument it makes is one a reader either wants in full or does
-       not want at the moment they are deciding. It is /blog/how-a-merge-is-made.html now, in full, and the link
-       sits at the bottom where someone who wants it will go looking. -->
-  <section class="wrap" aria-label="How antiloki works" style="padding-top:8px">
+      <section class="wrap" aria-label="How antiloki works" style="padding-top:8px">
     <p class="method-link">How a merge is actually made — every run measured, the combinations ranked, the winner
       bound to a role, and what is deterministic versus what is a model's opinion:
       <a href="/blog/how-a-merge-is-made.html">Compiled, not trained →</a><br>
-      The numbers on this page, the seven cells and the losses, measured on the five seats:
-      <a href="/paper.html">the technical report, third edition →</a> — and the first edition's arms, with their
+      The numbers on this page, the cells behind them and the losses, measured on the five seats:
+      <a href="/paper.html">the technical report, fourth edition →</a> — and the first edition's arms, with their
       scripts: <a href="/blog/every-run.html">Every run →</a></p>
   </section>
 
-  <!-- PRICING -->
-  <div class="wrap pricing" id="pricing">
-    <h2>Free for a week. Then $200 a year, or $500 once.</h2>
-    <p class="lede" style="color:var(--dim);max-width:60ch;margin:10px auto 26px;font-size:16px;text-align:center;text-wrap:balance">Lifetime is one payment, not a
-      subscription, with two years of updates — about two and a half years of the annual price. Updates after the
-      two years are a renewal.</p>
+    <div class="wrap pricing" id="pricing">
+    <h2>Free for a week. Paid plans are coming.</h2>
+    <p class="lede" style="color:var(--dim);max-width:60ch;margin:10px auto 26px;font-size:16px;text-align:center;text-wrap:balance">Planned prices: $200 a year, or $500 once. Checkout is not open yet, so the 7-day
+      trial is the only way in today.</p>
     <div class="plans">
-      <div class="plan"><div class="name">Trial</div><div class="price num">$0<small>7 days</small></div><ul><li><b>everything</b> — Cowork and X-ray</li><li>no card, no account</li><li>a week is real work on a real repo</li><li>your projects stay when it ends</li></ul><a class="btn" href="#download">Download</a></div>
-      <div class="plan"><div class="name">Annual</div><div class="price num">$200<small>/ year</small></div><ul><li><b>updates + support</b> while it is active</li><li>the routing table stays current — that is what renews</li><li>one machine at a time, move it anytime</li><li>cancel anytime — runs to the end of the year</li></ul><a class="btn" href="#download" data-checkout="yearly">Buy a year</a></div>
-      <div class="plan lift"><span class="best">pay once · ≈ 2.5 years of Annual</span><div class="name">Lifetime</div><div class="price num">$500<small>once</small></div><ul><li><b>one payment</b> — no yearly subscription</li><li><b>2 years</b> of updates + support; newer versions after that are a renewal</li><li>one machine at a time, move it anytime</li></ul><a class="btn ember" href="#download" data-checkout="lifetime">Buy lifetime</a></div>
+      <div class="plan"><div class="name">Trial</div><div class="price num">$0<small>7 days</small></div><ul><li><b>everything</b> — agents and X-ray</li><li>no card, no account</li><li>a week is real work on a real repo</li><li>your projects stay when it ends</li></ul><a class="btn ember" href="#download">Download</a></div>
+      <div class="plan"><div class="name">Annual</div><div class="price num">$200<small>/ year, planned</small></div><ul><li><b>updates + support</b> while it is active</li><li>the shipped routing table stays current — that is what renews</li><li>activated on a machine, deactivated to move it</li></ul><span class="btn soon" aria-disabled="true">Coming soon</span></div>
+      <div class="plan"><div class="name">Lifetime</div><div class="price num">$500<small>once, planned</small></div><ul><li><b>one payment</b> — no yearly subscription</li><li>the update terms are set at checkout</li><li>activated on a machine, deactivated to move it</li></ul><span class="btn soon" aria-disabled="true">Coming soon</span></div>
     </div>
-    <p class="terms">USD · tax at checkout · key by email, pasted once · works offline up to 14 days between checks · invoices with VAT for companies</p>
+    <p class="terms">Prices are USD and may change before checkout opens. The app works offline for up to 14 days between license checks, once a key is activated; the trial makes no check.</p>
   </div>
 
-  <!-- DOWNLOAD -->
-  <div class="wrap download" id="download">
+    <div class="wrap download" id="download">
     <h2>Install. Open a repo. Ask.</h2>
     <div class="dl">
-      <a class="os" data-os="mac" href="https://github.com/danilosilvadev/antiloki-releases/releases/latest"><b>macOS</b><span>Apple silicon · .dmg · older 0.1.0 build</span><em>Download ↓</em></a>
+      <a class="os" data-os="mac" href="https://github.com/danilosilvadev/antiloki-releases/releases/latest"><b>macOS</b><span>Apple silicon · .dmg</span><em>Download ↓</em></a>
       <a class="os" data-os="win" href="https://github.com/danilosilvadev/antiloki-releases/releases/latest"><b>Windows</b><span>.exe · x64 · installer</span><em>Download ↓</em></a>
       <a class="os" data-os="linux" href="https://github.com/danilosilvadev/antiloki-releases/releases/latest"><b>Linux</b><span>.deb · x64 · needs glibc 2.44+</span><em>Download ↓</em></a>
     </div>
@@ -815,14 +526,16 @@
     <details><summary>Does it replace Claude Code, Codex, Cursor, Gemini or Grok?</summary><p>No — it runs them, twice over: as the agent in its box, and as the engine behind antiloki's own AI (the chat, the reviews, the ultra review), each through its own vendor CLI. Keep your subscriptions; there is no API key to paste.</p></details>
     <details><summary>What does the X-ray do that a linter doesn't?</summary><p>It judges every file against your rules and its own measurements (tests, coupling, structure, change) and tells you why a file is not 100. Then the ultra review: a $0 survey of the territory, and your engine reading the worst units to report what it can verify — with the fix. The chat sees all of it, so "why is this file 81?" gets a real answer — and the intel handed to an agent says which files it could not read.</p></details>
     <details><summary>Do I need two subscriptions?</summary><p>For a <b>merge</b>, two usable seats. A merge never puts two frontier models together; it puts cheap hands under a good brain. Gemini's free tier is about twenty agent requests a day — enough to try, not a seat to rely on. antiloki only offers a provider you are actually <b>signed in to</b>: it reads the seat, not the installed binary, so a CLI sitting on your machine unauthenticated is never offered as something it can bind. With one seat it runs solo — still routed per job, still tested, just not merged.</p></details>
-    <details><summary>Isn't this just worktrees and tmux?</summary><p>Worktrees are the easy part. The write gate at the tool call, the verifier before merge and the cost-per-task record are what you can't script in an afternoon — and what the trial is for.</p></details>
+    <details><summary>Isn't this just worktrees and tmux?</summary><p>Worktrees are the easy part. The fence enforced where the work lands, the verifier before merge, the QA test and the cost-per-task record are what you can't script in an afternoon — and what the trial is for.</p></details>
+    <details><summary>Why is the headline measured against Opus, not a cheaper Claude?</summary><p>Because Opus is the Claude model a Max subscriber reaches for, and the headline is our best measured result against it on one task: 11.3×, rounded down to 10×. Against raw Sonnet the same pipeline is 3.2× and a Sonnet-planned run 2.1×; against the cost Opus recorded on another day (the 2026-09-22 ladder run, $0.61) it is about 6×. The honest range is 6× to 11×, and the table under the headline shows every arm with its n.</p></details>
+    <details><summary>Is +112&nbsp;% a measured share of my weekly limit?</summary><p>No. It is a paired task result: on the eight-module task, the run where Claude plans and judges while Composer writes cost $0.1554 against $0.3297 for raw Sonnet, 2.12×. That is dollars at list price standing in for an allowance the vendors do not publish, so how much further your own limit goes depends on your mix of work.</p></details>
     <details><summary>More calls must mean a bigger bill.</summary><p>More <em>calls</em>, less <em>money</em>: the expensive model is asked only for the part that needs it, and the cheap one does the rest. That is the whole trade, and it is why the bill is on screen for every turn — including the runs where the router declined to split because splitting was not worth it, and the small asks it runs on one seat with no planning call. A failed run reports what it spent and claims no saving.</p></details>
     <details><summary>Can my company install it?</summary><p>One binary, local, no account, no telemetry. The network calls are: your CLIs' own calls; a license check once a day, once you have activated a key (the trial makes none); an update check against a static file on GitHub Releases; the window's fonts, fetched from Google Fonts (fonts.googleapis.com and fonts.gstatic.com) when it opens; api.openai.com or openrouter.ai only if you set up the optional OpenCode route with your own key; and GitHub only if you add a token or open a pull request. Send that to security.</p></details>
   </div>
 </main>
 
 <footer><div class="wrap">
-  <span>antiloki · Cowork · X-ray</span>
+  <span>antiloki · agents · X-ray</span>
   <a href="/blog/">blog</a>
   <a href="/paper.html">the benchmark</a>
   <a href="https://github.com/danilosilvadev/antiloki-releases/releases/latest">releases</a>
@@ -830,45 +543,13 @@
   <span class="r">© 2026 antiloki · updated 2026-10-01</span>
 </div></footer>
 
-<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="the print, expanded">
-  <div class="veil"></div>
-  <div class="frame">
-    <button class="x" aria-label="close" title="close (Esc)">×</button>
-    <button class="arrow prev" aria-label="previous print" title="previous (←)">‹</button>
-    <button class="arrow next" aria-label="next print" title="next (→)">›</button>
-    <img alt="">
-    <div class="cap"><span><b></b> <span class="what"></span></span><span class="keys"><kbd>←</kbd><kbd>→</kbd> switch · <kbd>esc</kbd> close</span></div>
-  </div>
-</div>
 <script>
-  // store links — set once the store exists; until then every buy button leads to the trial
-  const CHECKOUT = { yearly: "", lifetime: "" };
-  for (const a of document.querySelectorAll("[data-checkout]")) { const u = CHECKOUT[a.dataset.checkout]; if (u) { a.href = u; a.target = "_blank"; a.rel = "noopener"; } }
-  // the bars grow when they come into view (or sit at full width without motion)
-  const fills = document.querySelectorAll(".bar .fill");
-  const grow = () => fills.forEach((f) => { f.style.width = f.dataset.w + "%"; });
-  if (matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) grow();
-  else if (fills.length) { const io = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) { grow(); io.disconnect(); } }, { threshold: .4 }); io.observe(fills[0].closest("section") ?? fills[0]); }
-  // THE DUO'S 3D: each print leans toward the pointer (±9°), the shine follows it; leaving it resumes the idle drift
-  for (const card of document.querySelectorAll(".duo-card[data-tilt]")) {
-    const shot = card.querySelector(".shot");
-    card.addEventListener("pointermove", (e) => {
-      const r = shot.getBoundingClientRect(); const px = (e.clientX - r.left) / r.width; const py = (e.clientY - r.top) / r.height;
-      shot.style.setProperty("--ry", `${((px - .5) * 18).toFixed(2)}deg`); shot.style.setProperty("--rx", `${((.5 - py) * 14).toFixed(2)}deg`);
-      shot.style.setProperty("--mx", `${(px * 100).toFixed(1)}%`); shot.style.setProperty("--my", `${(py * 100).toFixed(1)}%`);
-    });
-    card.addEventListener("pointerleave", () => { shot.style.removeProperty("--rx"); shot.style.removeProperty("--ry"); });
-  }
-  // THE REVEAL: fog → the prints form (0.15s) → the fog thins and the headline rises word by word (0.5s) → the
-  // rest (1.1s) → the fog is gone (1.9s). Short on purpose (feedback 2026-09-21: a five-second opening lost the
-  // low-attention visitor): the headline is readable inside a second. A scroll, a click or a key cuts to the end.
   const root = document.documentElement, h1 = document.querySelector(".hero h1");
   const wrapWords = (el) => { for (const node of Array.from(el.childNodes)) { if (node.nodeType === 3) { const frag = document.createDocumentFragment(); node.textContent.split(/(\s+)/).forEach((t) => { if (!t) return; if (/^\s+$/.test(t)) frag.appendChild(document.createTextNode(t)); else { const w = document.createElement("span"); w.className = "w"; w.textContent = t; frag.appendChild(w); } }); node.replaceWith(frag); } else if (node.nodeType === 1) wrapWords(node); } };
   wrapWords(h1);
   h1.querySelectorAll(".w").forEach((w, i) => { w.style.transitionDelay = `${i * 40}ms`; });
   const timers = []; const at = (ms, fn) => timers.push(setTimeout(fn, ms));
   const settle = () => { timers.forEach(clearTimeout); root.classList.add("formed", "headline", "settled"); setTimeout(() => root.classList.add("gone"), 900); };
-  // every load plays it (operator 2026-09-21: "on reload the animation should show again")
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) { root.classList.add("reduced", "gone"); }
   else {
     at(150, () => root.classList.add("formed"));
@@ -878,85 +559,8 @@
     const cut = () => { settle(); for (const ev of ["wheel", "touchstart", "keydown", "pointerdown"]) window.removeEventListener(ev, cut); };
     for (const ev of ["wheel", "touchstart", "keydown", "pointerdown"]) window.addEventListener(ev, cut, { passive: true });
   }
-  // after the reveal the pair leans with the pointer (a few degrees), and each print opens the lightbox
-  const stage = document.querySelector(".stage");
-  stage.addEventListener("pointermove", (e) => {
-    if (!root.classList.contains("settled") && !root.classList.contains("reduced")) return;
-    const r = stage.getBoundingClientRect(); const px = (e.clientX - r.left) / r.width - .5, py = (e.clientY - r.top) / r.height - .5;
-    stage.querySelector(".print.a").style.transform = `translate3d(${(px * 14).toFixed(1)}px, ${(py * 10).toFixed(1)}px, 0) rotateY(${(22 + px * 8).toFixed(1)}deg) rotateX(${(6 - py * 8).toFixed(1)}deg) rotateZ(-1deg)`;
-    stage.querySelector(".print.b").style.transform = `translate3d(${(px * 14).toFixed(1)}px, calc(6% + ${(py * 10).toFixed(1)}px), 40px) rotateY(${(-22 + px * 8).toFixed(1)}deg) rotateX(${(6 - py * 8).toFixed(1)}deg) rotateZ(1deg)`;
-  });
-  stage.addEventListener("pointerleave", () => { for (const p of stage.querySelectorAll(".print")) p.style.transform = ""; });
-  // THE STORIES' SCROLL: the step nearest the middle of the viewport is the one on; the chapter's print leans to it
-  for (const story of document.querySelectorAll(".story")) {
-    const steps = Array.from(story.querySelectorAll(".step"));
-    const pick = () => {
-      const mid = innerHeight * 0.5; let best = null, d = Infinity;
-      for (const st of steps) { const r = st.getBoundingClientRect(); const c = r.top + r.height / 2; const dist = Math.abs(c - mid); if (dist < d) { d = dist; best = st; } }
-      const r0 = steps[0].getBoundingClientRect(), rn = steps[steps.length - 1].getBoundingClientRect();
-      const within = r0.top < innerHeight * 0.9 && rn.bottom > innerHeight * 0.1;
-      for (const st of steps) st.classList.toggle("is-on", within && st === best);
-      story.dataset.on = within && best ? best.dataset.step : "";
-      // the print of the step, zoomed on what it claims (before the first step / after the last: the first print, whole)
-      const cur = within && best ? best : steps[0];
-      const [zx, zy, zs] = (within && best ? (best.dataset.zoom ?? "50 50 1") : "50 50 1").split(" ");
-      const shot = story.querySelector(".shot");
-      for (const img of shot.querySelectorAll("img")) { const on = img.dataset.step === cur.dataset.step; img.classList.toggle("on", on); if (on) { img.style.setProperty("--zx", `${zx}%`); img.style.setProperty("--zy", `${zy}%`); img.style.setProperty("--zs", zs); } }
-    };
-    addEventListener("scroll", pick, { passive: true }); addEventListener("resize", pick); pick();
-  }
-  // THE LIGHTBOX: FLIP from the card's print to the centered full print and back
-  const lb = document.getElementById("lightbox"), lbImg = lb.querySelector("img"), lbCap = lb.querySelector(".cap b"), lbWhat = lb.querySelector(".cap .what");
-  const shots = Array.from(document.querySelectorAll(".duo-card[data-tilt] .shot"));
-  let lbIndex = -1, lbFrom = null, lbOrigin = null; // lbOrigin: the element the print flew from (a duo card or a stage print)
-  const shotOf = (i) => shots[(i + shots.length) % shots.length];
-  const flipIn = (fromRect) => {
-    const to = lbImg.getBoundingClientRect(); if (!fromRect || !to.width) return;
-    const sx = fromRect.width / to.width, sy = fromRect.height / to.height;
-    lbImg.style.transition = "none";
-    lbImg.style.transform = `translate(${fromRect.left - to.left}px, ${fromRect.top - to.top}px) scale(${sx}, ${sy})`;
-    lbImg.style.borderRadius = "14px";
-    requestAnimationFrame(() => requestAnimationFrame(() => { lbImg.style.transition = "transform .55s cubic-bezier(.2,.8,.2,1)"; lbImg.style.transform = "none"; }));
-  };
-  const show = (i, animate = true, origin) => {
-    const shot = shotOf(i); const img = shot.querySelector("img.on") ?? shot.querySelector("img"); const card = shot.closest(".duo-card");
-    lbIndex = (i + shots.length) % shots.length;
-    lbImg.src = img.src; lbImg.alt = img.alt;
-    const step = card.querySelector(`.step[data-step="${img.dataset.step ?? ""}"] h3`);
-    lbCap.textContent = card.querySelector(".eyebrow")?.textContent ?? ""; lbWhat.textContent = step?.textContent ?? card.querySelector("h2")?.textContent ?? "";
-    const wasOpen = lb.classList.contains("open");
-    if (!wasOpen) lbOrigin = origin ?? shot;
-    lbFrom = lbOrigin.getBoundingClientRect();
-    lb.classList.add("open"); document.body.style.overflow = "hidden";
-    if (!wasOpen) { lbOrigin.style.visibility = "hidden"; requestAnimationFrame(() => lb.classList.add("in")); }
-    if (animate && !wasOpen) { if (lbImg.complete) flipIn(lbFrom); else lbImg.onload = () => flipIn(lbFrom); }
-    else { lbImg.style.transition = "opacity .25s ease"; lbImg.style.opacity = "0"; requestAnimationFrame(() => { lbImg.style.opacity = "1"; }); }
-  };
-  const hide = () => {
-    if (!lb.classList.contains("open")) return;
-    const back = (lbOrigin ?? shotOf(lbIndex)).getBoundingClientRect(); const cur = lbImg.getBoundingClientRect();
-    lb.classList.remove("in");
-    const done = () => { lb.classList.remove("open"); lbImg.style.transform = "none"; lbImg.style.opacity = "1"; document.body.style.overflow = ""; for (const s of shots) s.style.visibility = ""; for (const s of document.querySelectorAll(".stage .print")) s.style.visibility = ""; lbImg.removeEventListener("transitionend", done); };
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches || !back.width) { done(); return; }
-    lbImg.style.transition = "transform .45s cubic-bezier(.4,0,.2,1), opacity .35s ease .1s";
-    lbImg.style.transform = `translate(${back.left - cur.left}px, ${back.top - cur.top}px) scale(${back.width / cur.width}, ${back.height / cur.height})`;
-    lbImg.style.opacity = "0";
-    lbImg.addEventListener("transitionend", done); setTimeout(done, 600);
-  };
-  shots.forEach((shot, i) => shot.addEventListener("click", () => show(i)));
-  for (const p of document.querySelectorAll(".stage .print")) p.addEventListener("click", () => show(Number(p.dataset.lb), true, p));
-  lb.querySelector(".veil").addEventListener("click", hide); lb.querySelector(".x").addEventListener("click", hide); lbImg.addEventListener("click", hide);
-  lb.querySelector(".prev").addEventListener("click", () => show(lbIndex - 1, false)); lb.querySelector(".next").addEventListener("click", () => show(lbIndex + 1, false));
-  window.addEventListener("keydown", (e) => { if (!lb.classList.contains("open")) return; if (e.key === "Escape") hide(); else if (e.key === "ArrowLeft") show(lbIndex - 1, false); else if (e.key === "ArrowRight") show(lbIndex + 1, false); });
-  // light up the visitor's OS
   const ua = navigator.userAgent, os = /Mac/.test(ua) ? "mac" : /Win/.test(ua) ? "win" : /Linux/.test(ua) ? "linux" : null;
   if (os) document.querySelector(`.os[data-os="${os}"]`)?.classList.add("me");
-  // THE DOWNLOAD BUTTONS (2026-09-21): each links straight to the installer of the NEWEST RELEASE THAT HAS ONE FOR
-  // THAT OS — resolved from the public releases repository at load time (the GitHub API answers cross-origin for a
-  // public repo; the list is newest first, pre-releases included, drafts excluded). Platforms ship at different
-  // times (a Linux or Windows build made locally lands before the mac one from CI), so one OS can be on v0.1.3
-  // while another still offers v0.1.0. Until the API answers, or if it never does, the buttons keep pointing at
-  // the releases page itself.
   const RELEASES = "danilosilvadev/antiloki-releases";
   const PICK = { mac: [/\.dmg$/], win: [/-setup\.exe$/, /\.msi$/], linux: [/\.AppImage$/, /\.deb$/] };
   fetch(`https://api.github.com/repos/${RELEASES}/releases?per_page=10`, { headers: { accept: "application/vnd.github+json" } }).then((r) => (r.ok ? r.json() : null)).then((rels) => {
