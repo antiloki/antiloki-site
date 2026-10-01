@@ -1,8 +1,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>antiloki — build +112% more on your weekly limit, 10× cheaper, with the same code quality</title>
+<title>antiloki — build +112% more on your weekly limit, 3× cheaper, with the same code quality</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23211e1b'/%3E%3Ctext x='10' y='47' font-family='Geist,Helvetica,Arial,sans-serif' font-weight='700' font-size='40' fill='%23efe9e2' letter-spacing='-2'%3Ea%3Ctspan fill='%23c97c5c'%3E.%3C/tspan%3E%3C/text%3E%3C/svg%3E">
-<meta name="description" content="Build +112% more on your weekly limit, 10× cheaper, with the same code quality. Claude Grok, Gemini Codex — antiloki merges your existing model subscriptions into specialized coding agents: a router gives each job — planning, writing, verifying, judging — to the model measured best for it. No new account, no extra subscription and everything stays on your machine.">
+<meta name="description" content="Build +112% more on your weekly limit, 3× cheaper, with the same code quality. Claude Grok, Gemini Codex — antiloki merges your existing model subscriptions into specialized coding agents: a router gives each job — planning, writing, verifying, judging — to the model measured best for it. No new account, no extra subscription and everything stays on your machine.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Geist:wght@700&family=IBM+Plex+Sans:wght@400;500&family=JetBrains+Mono:wght@400;600&display=swap">
 <style>
@@ -407,26 +407,37 @@
   <!-- HERO — what it is, and the one reason -->
   <div class="wrap hero">
     <span class="eyebrow">A desktop app for merging the subscriptions you have into one coding agent.<br>macOS · Windows · Linux</span>
-    <h1 style="margin-top:14px"><em>Build +112% more on your weekly limit, 10× cheaper, with the same code quality.</em></h1>
+    <h1 style="margin-top:14px"><em>Build +112% more on your weekly limit, 3× cheaper, with the same code quality.</em></h1>
     <p class="lede" style="margin-top:10px">Claude Grok, Gemini Codex — antiloki merges your existing model subscriptions into specialized coding agents. <b>No new account, no extra subscription and everything stays on your machine.</b></p>
     <!-- THE TWO NUMBERS, AND WHERE THEY COME FROM (operator 2026-09-26: "explicitly make the product about make their
          subscription cheaper and limits wider. So our measurement is a calculation how cheaper it gets using antiloki
          and how bigger gets the limit in comparation with raw"). RE-DERIVED 2026-10-01 (operator: "the benchmark is
          outdated … I believe we have better results today"), from a read-only copy of the merge record
          (merge_scores, audited by bench/merges/audit-record.py) — five subscription seats only, no Zen/Chinese arm.
-         · CHEAPER is now 10x. It is the GEOMETRIC MEAN over the seven cells of the record that hold a raw Claude
-           reference (Sonnet or Opus) and an audited non-Claude arm with at least two samples: 18.9, 16.6, 15.3, 12.5,
-           9.5, 7.7, 3.6 — geometric mean 10.7x, median 12.5x, 95% bootstrap interval over cells 7.0-15.2x. The winner
-           of a cell is the router's own rule (keep >= 80% of the best measured quality, then the cheapest), so the
-           number is the product's choice and not a hand-picked arm. 10 is 10.7 rounded DOWN. The old 6.7x is gone
-           for two reasons: it was raw Qwen against raw Sonnet (not an antiloki arm), and Qwen is a metered Chinese
-           model that is off by default now. The five-seat repeat of that same cell is 3.6x and it is IN the seven.
-           WHAT THE PAGE MUST STAY HONEST ABOUT, and does (bench-f below): four of the seven cells are one synthetic
-           S family where every arm scores ~1.0, so the cheapest seat wins trivially (without them: 3 cells,
-           geometric mean 6.5x); weighted by what a bill would be the same cells give 4.5x-5.8x, which is BELOW the
-           old 6.7x; Composer/Gemini/Codex dollars are estimated from reported tokens at list price; the Claude
-           reference ran 2026-09-22..28 and cannot be re-run, the subscription having ended. "Up to 18.9x" would be
-           true and is the weasel the sales rule forbids.
+         · CHEAPER is now 3x (2026-10-01, SECOND PASS after a fact-check; the first pass of the day said 10x and was
+           withdrawn). Three things were wrong with 10x: (1) six of its seven cells compared a RAW single-seat session
+           (planner 'raw', qa '') with a raw Claude session, the same kind of comparison the page withdrew for the old
+           6.7x, and the page says every run ends in QA, which those winners do not carry; (2) the Claude reference was
+           the one that made the ratio largest, not the cheapest Claude arm inside the tolerance (raw Haiku is cheaper
+           than Sonnet and keeps >= 80% of the best quality in plain, edges, contract and fix; raw Sonnet 0.973 is
+           inside it on the eight-module task, so Opus was not the fair reference); (3) the bootstrap interval treated
+           the four S cells as independent. NOW: the reference of a cell is the cheapest raw Claude arm (Haiku, Sonnet
+           or Opus) that keeps >= 80% of the cell's best measured quality, the winner is the router's own rule, and the
+           cells are the seven of the record (merge_scores, references 983, 995, 992, 1001, 34, 1230, 193;
+           winners 1010, 1022, 1016, 1028, 120, 1236, 2726). Ratios 7.6, 8.9, 15.3, 5.2, 2.7, 3.8, 3.6: geometric mean 5.7x, median 5.2x,
+           leave-one-out 4.9x-6.5x, the three cells outside the synthetic S family 3.3x. NO CELL CARRIES THE QA STEP:
+           S2 in the same record prices raw Composer at $0.0488 a run (id 2047) and Composer x Composer with its QA check
+           at $0.086 (id 2408), 1.76x; the eight-module task shows 1.5x (id 2572 $0.0671 against id 2480 $0.1017).
+           5.7 / 1.76 = 3.25, an ESTIMATE and not a measurement; on the one cell with a measured QA pipeline (the
+           eight-module task) the pipeline is $0.1017 against raw Sonnet $0.330, 3.2x. 3 is that, rounded DOWN, and it
+           sits under both the 5.7x without QA and the 3.3x of the non-synthetic cells. No interval is printed: the
+           S cells are one family and a bootstrap over seven cells would be the independent-cell figure. The old
+           6.7x stays withdrawn: raw Qwen against raw Sonnet, not an antiloki arm, and Qwen is a metered Chinese model
+           that is off by default. The five-seat repeat of that cell is 3.6x and it is IN the seven. THE PAGE STAYS
+           HONEST (bench-f below): four of the seven cells are one synthetic family where every arm scores ~1.0;
+           weighted by what a bill would be the same six cells give 3.9x; Composer/Gemini/Codex dollars are estimated
+           from reported tokens at list price; the Claude reference ran 2026-09-22..28 and cannot be re-run, the
+           subscription having ended. "Up to 15.3x" would be true and is the weasel the sales rule forbids.
          · THE LIMIT STAYS +112%. The analyst tried to beat it and could not: share of tokens off the Claude seat gives
            +471% over the whole mixed record but +106%, +118% and +122% on the three cuts that leave out the bench's
            raw Gemini calls, the hands jobs and so on, and by dollars only +33..+45%. +112% (= 1/(1-0.528)) is the one
@@ -438,7 +449,7 @@
            asserting a percentage, and locality is the thing a developer actually checks.
          · "WITH THE SAME CODE QUALITY" — the operator's call (2026-09-26: "8 to 9 is the same almost, theres no much
            of a difference"). Measured meaning: inside the product's one tolerance. In six of seven cells the cheaper
-           arm is at or within 3% of the raw Claude reference; in SWT-bench test-writing it is 8/10 against 9/10,
+           arm is at or above the raw Claude reference; in SWT-bench test-writing it is 8/10 against 9/10,
            which `merges::separated` calls NOT separated at n=10. "Indistinguishable at this sample" is not
            "identical", so the basis is on the page, not only here.
          · "CLAUDE GROK, GEMINI CODEX" — both names are promises the record now backs (operator 2026-09-27: "I want to
@@ -497,44 +508,46 @@
         files. Cost per run, linear from zero; checks are the mean over the audited runs of each arm.
         Every five-seat arm is inside the product's one tolerance (at least 80 % of the best measured quality) and
         none is separated from raw Opus at these sample sizes. Composer alone is 17× cheaper and 4.6× faster than the
-        Opus reference — and the router lets it run alone, with no planning call, for any ask of size L or smaller.
+        Opus reference, and 4.9× cheaper than a raw Sonnet run ($0.330, one run, also inside the tolerance) — and the router lets it run alone, with no planning call, for any ask of size L or smaller.
         n is how many runs the row averages; raw Opus moves between days ($0.61 and $1.28 on consecutive ones) and
         cannot be re-run, the Claude subscription it needs having ended. Dollars are API list prices; Cursor, Gemini
         and Codex report tokens, not dollars, so theirs are estimated from the tokens.
         <a href="/paper.html">The report, third edition →</a> · <a href="/blog/every-run.html">The first edition, with the scripts →</a></div>
     </div>
-    <!-- THE CELLS BEHIND "10× CHEAPER" (2026-10-01): each row is the router's winner in one benchmark cell against
-         the raw Claude run in the same cell. Axis linear from zero to 18.9. Quality in the meta is winner vs raw. -->
+    <!-- THE CELLS BEHIND "3× CHEAPER" (2026-10-01, second pass): each row is the router's winner in one benchmark cell
+         against the CHEAPEST raw Claude arm (Haiku, Sonnet or Opus) that keeps >= 80% of the cell's best measured
+         quality. Axis linear, 4.339% a time. Quality in the meta is winner vs reference. Neither side carries the QA step;
+         the last row adds it as an estimate (see the derivation comment above the headline). -->
     <div class="bench" aria-label="cost against the raw Claude run, per benchmark cell">
-      <div class="bench-h">how many times cheaper, cell by cell · the router's winner against a raw Claude session on the same task · quality: winner vs raw</div>
+      <div class="bench-h">how many times cheaper, cell by cell · the router's winner against the cheapest raw Claude session that keeps the same quality on the same task · quality: winner vs raw</div>
       <div class="brow">
-        <span class="bname">S backend · plain — Composer alone vs Sonnet</span>
-        <span class="btrack"><span class="bfill" style="width:82.0%"></span><span class="bnum">18.9×</span></span>
+        <span class="bname">S backend · plain — Composer alone vs Haiku</span>
+        <span class="btrack"><span class="bfill" style="width:33.0%"></span><span class="bnum">7.6×</span></span>
         <span class="bmeta">1.00 vs 1.00 · n=3</span>
       </div>
       <div class="brow">
-        <span class="bname">S backend · edges — Composer alone vs Sonnet</span>
-        <span class="btrack"><span class="bfill" style="width:72.0%"></span><span class="bnum">16.6×</span></span>
+        <span class="bname">S backend · edges — Composer alone vs Haiku</span>
+        <span class="btrack"><span class="bfill" style="width:38.8%"></span><span class="bnum">8.9×</span></span>
         <span class="bmeta">1.00 vs 1.00 · n=3</span>
       </div>
       <div class="brow">
         <span class="bname">S backend · branches — Composer alone vs Sonnet</span>
-        <span class="btrack"><span class="bfill" style="width:66.4%"></span><span class="bnum">15.3×</span></span>
+        <span class="btrack"><span class="bfill" style="width:66.3%"></span><span class="bnum">15.3×</span></span>
         <span class="bmeta">0.87 vs 0.87 · n=3</span>
       </div>
       <div class="brow">
-        <span class="bname">S backend · contract — Composer alone vs Sonnet</span>
-        <span class="btrack"><span class="bfill" style="width:54.2%"></span><span class="bnum">12.5×</span></span>
-        <span class="bmeta">1.00 vs 0.93 · n=3</span>
+        <span class="bname">S backend · contract — Composer alone vs Haiku</span>
+        <span class="btrack"><span class="bfill" style="width:22.4%"></span><span class="bnum">5.2×</span></span>
+        <span class="bmeta">1.00 vs 1.00 · n=3</span>
       </div>
       <div class="brow">
-        <span class="bname">L backend · eight modules — Codex alone (low) vs Opus</span>
-        <span class="btrack"><span class="bfill" style="width:41.2%"></span><span class="bnum">9.5×</span></span>
-        <span class="bmeta">0.97 vs 1.00 · n=1–2</span>
+        <span class="bname">L backend · eight modules — Codex alone (low) vs Sonnet</span>
+        <span class="btrack"><span class="bfill" style="width:11.8%"></span><span class="bnum">2.7×</span></span>
+        <span class="bmeta">0.97 vs 0.97 · n=1 (2 audits) vs n=1</span>
       </div>
       <div class="brow">
-        <span class="bname">L backend · fix — Composer alone vs Sonnet</span>
-        <span class="btrack"><span class="bfill" style="width:33.4%"></span><span class="bnum">7.7×</span></span>
+        <span class="bname">L backend · fix — Composer alone vs Haiku</span>
+        <span class="btrack"><span class="bfill" style="width:16.7%"></span><span class="bnum">3.8×</span></span>
         <span class="bmeta">0.93 vs 0.90 · n=3</span>
       </div>
       <div class="brow">
@@ -542,23 +555,37 @@
         <span class="btrack"><span class="bfill" style="width:15.6%"></span><span class="bnum">3.6×</span></span>
         <span class="bmeta">8/10 vs 9/10 · n=10</span>
       </div>
-      <div class="brow bwin">
-        <span class="bname">geometric mean of the seven</span>
-        <span class="btrack"><span class="bfill" style="width:46.4%"></span><span class="bnum">10.7×</span></span>
-        <span class="bmeta">95 % interval 7.0–15.2×</span>
+      <div class="brow">
+        <span class="bname">geometric mean of the seven, before the QA check</span>
+        <span class="btrack"><span class="bfill" style="width:24.8%"></span><span class="bnum">5.7×</span></span>
+        <span class="bmeta">median 5.2× · range 2.7–15.3×</span>
       </div>
-      <div class="bench-f"><b>Read it with its limits.</b> Seven cells, small samples (n=3 in six of them, n=10 in SWT-bench,
-        n=2 for the Opus reference). Four of the seven are one synthetic small-ask family where every arm scores about
-        1.0, so the cheapest seat wins trivially; without those four the geometric mean is 6.5×. Weighted by what a
-        bill would be — dollars summed over the runs of each cell — the saving is 4.5× over the six cells with n of at
-        least 3, and 5.8× with the eight-module one added. The 6.7× this
-        page carried before was a raw Qwen session against a raw Sonnet one on the SWT cell; the same cell on the five
-        seats is the 3.6× above. The eight-module cell is counted with Codex at low effort (n=1, two audits), not the
-        17× that Composer alone gets in the table above, because that run sits under another suite label in the record.
-        Same code quality means inside the one tolerance, not identical: the 8/10 against 9/10 is not separated at n=10.
-        <b>+112 % on your weekly limit</b> is the share of this machine's tokens that ran off the frontier seat,
-        1/(1−0.528); three other cuts of the record land between +106 % and +122 %, so it is stated for the mix
-        measured here and not as a per-task figure. The reference runs are Claude Sonnet and Opus from 2026-09-22 to 28.</div>
+      <div class="brow bwin">
+        <span class="bname">the same with the QA step added (estimate)</span>
+        <span class="btrack"><span class="bfill" style="width:14.1%"></span><span class="bnum">3.2×</span></span>
+        <span class="bmeta">5.7 ÷ 1.76, the S2 QA overhead</span>
+      </div>
+      <div class="bench-f"><b>Read it with its limits.</b> Six of the seven winners are one seat running alone with no QA
+        check, set against a raw Claude session that has none either; that is the comparison the price rests on, and it
+        is not the product as shipped, where every run ends in QA. QA is not free: on the S2 suite raw Composer costs
+        $0.049 a run and Composer with its QA check $0.086, 1.76× more, so the last bar divides the 5.7× by that and the
+        headline <b>3×</b> is that figure rounded down. It is an estimate, not a measurement: the one cell where the
+        whole pipeline was priced (the eight-module task, Composer with a Composer QA check, $0.102) is 3.2× under raw
+        Sonnet. The reference is the cheapest Claude arm inside the tolerance — Haiku in four cells, where it keeps
+        at least 80 % of the best quality; Sonnet where Haiku does not (branches, 0.73 against 1.00) and on the
+        eight-module task, where Sonnet is inside it; Opus is not used, though it is the reference of the table above.
+        Sample sizes are small: n=3 per arm in five cells, n=10 in SWT-bench, and the eight-module cell is one run of
+        Codex (two audits) against one of Sonnet. Four of the seven are one synthetic small-ask family where every arm
+        scores about 1.0, so the cheapest seat wins trivially, and they are not independent; no interval is printed
+        for that reason, and without those four the geometric mean is 3.3× over three cells (2.7×, 3.8×, 3.6×).
+        Weighted by what a bill would be — dollars summed over the runs of each cell — the saving is 3.9× over the six
+        cells with n of at least 3. The 6.7× this page carried before was a raw Qwen session against a raw Sonnet
+        one on the SWT cell; the same cell on the five seats is the 3.6× above, and its equal-quality swap (Codex plans,
+        Composer writes, 9 of 10 like raw Sonnet) is 2.4×. Same code quality means inside the one tolerance, not
+        identical: the 8/10 against 9/10 is not separated at n=10. <b>+112 % on your weekly limit</b> is the share of
+        this machine's tokens that ran off the frontier seat, 1/(1−0.528); three other cuts of the record land
+        between +106 % and +122 %, so it is stated for the mix measured here and not as a per-task figure. The
+        reference runs are Claude Haiku, Sonnet and Opus from 2026-09-22 to 28, and cannot be re-run.</div>
     </div>
 
     <div class="cta"><a class="btn ember" href="#download">Download — free for 7 days</a></div>
@@ -591,17 +618,18 @@
       <div>
         <i>control</i>
         <h3>One agent, fenced where you say.</h3>
-        <p>Decide which folders may be written. The gate sits at the tool call, outside the model — a change beyond
-          the fence is refused, shown, and undone in one click. A fork inherits its parent's fence, and the fence is
-          enforced again before an episode is merged or delivered.</p>
+        <p>Decide which folders may be written. On Claude and Codex the gate sits at the tool call, outside the
+          model: a write beyond the fence is refused before it happens. On Cursor, Gemini and Grok there is no such hook,
+          so the fence is enforced afterwards — a change beyond it is shown, undone in one click, and stops the merge or
+          the delivery. A fork inherits its parent's fence.</p>
       </div>
       <div>
         <i>verify</i>
         <h3>Every run ends in a test.</h3>
-        <p>Every read, write and command is logged by a hook outside the model, and every turn is priced and timed.
-          Then QA opens the real page in Chrome and uses every button, field and control, or sends requests to the
-          server, with checks written as plain expectations — a picture is taken only when a check failed, none could
-          decide, or the styles changed. Unmet claims go back to the worker; when the send-backs are spent, the run
+        <p>Every turn is priced and timed, and on Claude and Codex a hook outside the model
+          logs each tool call. Then QA opens the real page in Chrome and uses the controls the change is about, or
+          sends requests to the server, with checks written as plain expectations — the judge is shown a picture only
+          when a check failed, none could decide, or the styles changed. Unmet claims go back to the worker; when the send-backs are spent, the run
           becomes a question to <b>you</b>. The judge is chosen on how often it let a broken run through.</p>
       </div>
       <div>
@@ -617,7 +645,7 @@
         <h3>It learns your repo.</h3>
         <p>Every run is scored on your machine — which seat, which job, how long, what it cost, whether it passed
           first time — and filed in a benchmark that grows as you use it. The numbers above are a starting point;
-          the ones the router obeys are <b>yours</b>. Nothing leaves the machine.</p>
+          the ones the router obeys are <b>yours</b>. The scores stay on the machine.</p>
       </div>
     </div>
     <!-- THE RESEARCH, SHRUNK (operator 2026-09-24: "the percentages section of the problem should be a small
@@ -669,7 +697,7 @@
         <li class="step" data-step="2" data-zoom="16 26 1.9"><i>02</i><h3>Laws, not lint.</h3><p>The rules your codebase lives by, checked at the line: what breaks a law, where, and what compliance is worth. A senior review that reads the same way every time.</p></li>
         <li class="step" data-step="3" data-zoom="24 56 1.9"><i>03</i><h3>The codebase as a map.</h3><p>Every file a box, area its mass, colour its health; hubs, orphans, cycles, the most central and the most risky — at a glance, and per folder. It reads TypeScript and Flow-typed JavaScript, follows monorepo package names and ESM <code>./x.js</code> imports to the <code>.ts</code> behind them, and returns every file, not a sample: on a copy of React the files it had to skip went from 1,160 to none.</p></li>
         <li class="step" data-step="4" data-zoom="78 24 2"><i>04</i><h3>What the tests never reach. What a change would touch.</h3><p>Coverage gaps by file, the blast radius before a change lands, and the review over the snapshots — the score's history, scrubbable.</p></li>
-        <li class="step" data-step="5" data-zoom="28 22 1.8"><i>05</i><h3>The same intel feeds the agent — and says where it stops.</h3><p>Reviews, graph, docs and ASTs become the context pack every ask starts from. The pack states which files it could not read — excluded, an unsupported language, a parse that failed, changed since the index — and never claims to be complete. Measured on a wide TypeScript rename: with the map alone an agent finished 31&nbsp;% faster on 48&nbsp;% fewer input tokens at the same pass rate; on a small change it bought nothing. One repo, three agents, one run per cell. Design too: your screens captured from the running app, the design system and its drift.</p></li>
+        <li class="step" data-step="5" data-zoom="28 22 1.8"><i>05</i><h3>The same intel feeds the agent — and says where it stops.</h3><p>Reviews, graph, docs and ASTs become the context pack every ask starts from. The pack states which files it could not read — excluded, an unsupported language, a parse that failed, changed since the index — and never claims to be complete. Measured on a wide TypeScript rename, with the map alone and the agent told not to explore: 31&nbsp;% faster on 48&nbsp;% fewer input tokens at the same pass rate, 3 of 3 agents. On a small change it made no difference in one repo; in the repo of the rename, the map alone passed 0 of 3 agents, because the index had left out the file that needed the change — which is why the pack now says what it could not read. Three agents, one run per cell; <a href="/paper.html">the report</a> has the cells. Design too: your screens captured from the running app, the design system and its drift.</p></li>
       </ol>
     </article>
   </section>
@@ -709,11 +737,12 @@
       </div>
       <div>
         <i>limits</i>
-        <h3>A window for every seat, for this workspace.</h3>
+        <h3>Where each seat stands.</h3>
         <p>Claude and Codex show their 5-hour and weekly windows. Cursor, Gemini and Grok publish no quota, so they
           show the calls and tokens sent in the last 5 hours and 7 days — a count, never dressed up as a percentage.
           The saving on screen counts only the current workspace's runs, and drops the old number the moment you
-          switch.</p>
+          switch; the windows and the counts are the account's and this machine's, whatever workspace made the call —
+          and the counts cover only what went through antiloki.</p>
       </div>
       <div>
         <i>setup</i>
@@ -759,13 +788,13 @@
   <!-- PRICING -->
   <div class="wrap pricing" id="pricing">
     <h2>Free for a week. Then $200 a year, or $500 once.</h2>
-    <p class="lede" style="color:var(--dim);max-width:60ch;margin:10px auto 26px;font-size:16px;text-align:center;text-wrap:balance">Lifetime is the app,
-      yours permanently, with two years of updates — about two and a half years of the annual price. When the two
-      years are up nothing stops working: you keep the version you have, and more updates cost money again.</p>
+    <p class="lede" style="color:var(--dim);max-width:60ch;margin:10px auto 26px;font-size:16px;text-align:center;text-wrap:balance">Lifetime is one payment, not a
+      subscription, with two years of updates — about two and a half years of the annual price. Updates after the
+      two years are a renewal.</p>
     <div class="plans">
       <div class="plan"><div class="name">Trial</div><div class="price num">$0<small>7 days</small></div><ul><li><b>everything</b> — Cowork and X-ray</li><li>no card, no account</li><li>a week is real work on a real repo</li><li>your projects stay when it ends</li></ul><a class="btn" href="#download">Download</a></div>
       <div class="plan"><div class="name">Annual</div><div class="price num">$200<small>/ year</small></div><ul><li><b>updates + support</b> while it is active</li><li>the routing table stays current — that is what renews</li><li>one machine at a time, move it anytime</li><li>cancel anytime — runs to the end of the year</li></ul><a class="btn" href="#download" data-checkout="yearly">Buy a year</a></div>
-      <div class="plan lift"><span class="best">pay once · ≈ 2.5 years of Annual</span><div class="name">Lifetime</div><div class="price num">$500<small>once</small></div><ul><li><b>the app is yours permanently</b> — the licence never expires</li><li><b>2 years</b> of updates + support; after that you keep the version you have</li><li>one machine at a time, move it anytime</li></ul><a class="btn ember" href="#download" data-checkout="lifetime">Buy lifetime</a></div>
+      <div class="plan lift"><span class="best">pay once · ≈ 2.5 years of Annual</span><div class="name">Lifetime</div><div class="price num">$500<small>once</small></div><ul><li><b>one payment</b> — no yearly subscription</li><li><b>2 years</b> of updates + support; newer versions after that are a renewal</li><li>one machine at a time, move it anytime</li></ul><a class="btn ember" href="#download" data-checkout="lifetime">Buy lifetime</a></div>
     </div>
     <p class="terms">USD · tax at checkout · key by email, pasted once · works offline up to 14 days between checks · invoices with VAT for companies</p>
   </div>
@@ -788,7 +817,7 @@
     <details><summary>Do I need two subscriptions?</summary><p>For a <b>merge</b>, two usable seats. A merge never puts two frontier models together; it puts cheap hands under a good brain. Gemini's free tier is about twenty agent requests a day — enough to try, not a seat to rely on. antiloki only offers a provider you are actually <b>signed in to</b>: it reads the seat, not the installed binary, so a CLI sitting on your machine unauthenticated is never offered as something it can bind. With one seat it runs solo — still routed per job, still tested, just not merged.</p></details>
     <details><summary>Isn't this just worktrees and tmux?</summary><p>Worktrees are the easy part. The write gate at the tool call, the verifier before merge and the cost-per-task record are what you can't script in an afternoon — and what the trial is for.</p></details>
     <details><summary>More calls must mean a bigger bill.</summary><p>More <em>calls</em>, less <em>money</em>: the expensive model is asked only for the part that needs it, and the cheap one does the rest. That is the whole trade, and it is why the bill is on screen for every turn — including the runs where the router declined to split because splitting was not worth it, and the small asks it runs on one seat with no planning call. A failed run reports what it spent and claims no saving.</p></details>
-    <details><summary>Can my company install it?</summary><p>One binary, local, no account, no telemetry. The complete list of network calls is: your CLIs' own calls, a daily license check, an update check against a static file, and GitHub only if you add a token or open a pull request. Send that to security.</p></details>
+    <details><summary>Can my company install it?</summary><p>One binary, local, no account, no telemetry. The network calls are: your CLIs' own calls; a license check once a day, once you have activated a key (the trial makes none); an update check against a static file on GitHub Releases; the window's fonts, fetched from Google Fonts (fonts.googleapis.com and fonts.gstatic.com) when it opens; api.openai.com or openrouter.ai only if you set up the optional OpenCode route with your own key; and GitHub only if you add a token or open a pull request. Send that to security.</p></details>
   </div>
 </main>
 
