@@ -5,27 +5,32 @@
 <meta name="description" content="How antiloki works: measure every run, rank the combinations, bind the winner to a role, and let a router give each job to the model that earned it. Nothing is trained; what is produced is a pipeline with its own score, price and speed.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><text y=%2213%22 font-size=%2213%22>⚡</text></svg>">
 <title>How a Merge Is Made — antiloki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Geist:wght@700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="post.css">
 </head><body>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=JetBrains+Mono:wght@400;600&display=swap">
-<link rel="stylesheet" href="/blog/post.css">
-<style>
-  .board2 { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 12.5px; margin: 18px 0 8px; }
-  .board2 th { text-align: left; font-weight: 600; color: var(--muted); border-bottom: 1px solid var(--line); padding: 7px 10px 7px 0; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; }
-  .board2 td { padding: 8px 10px 8px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
-  .board2 td.n { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
-  .board2 b { color: var(--ink); }
-  .note { font-family: var(--mono); font-size: 12px; color: var(--muted); line-height: 1.7; }
-  .scrollx { overflow-x: auto; }
-  .steps { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); margin: 24px 0 8px; }
-  .steps > div { background: var(--paper); padding: 18px 20px 20px; }
-  .steps i { font-family: var(--mono); font-style: normal; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--ember); }
-  .steps h3 { font-family: var(--display); font-weight: 500; font-size: 20px; margin: 6px 0 6px; }
-  .steps p { margin: 0; font-size: 16px; color: var(--muted); }
-</style>
-<div class="sheet"><article class="paper">
+<nav class="top"><div class="wrap">
+  <a class="mark" href="/" aria-label="antiloki">antiloki<em>.</em></a>
+  <span class="sp"></span>
+  <a class="q" href="/">Home</a>
+  <a class="q" href="/#compare">Compared</a>
+  <a class="q" href="/blog/">Blog</a>
+  <a class="q" href="/#pricing">Pricing</a>
+  <a class="btn sm ember" href="/#download">Download · free 14 days</a>
+</div></nav>
+<main class="pwrap">
+  <nav class="toc" aria-label="Contents"><details id="toc-d" open><summary class="eyebrow">contents</summary><ol>
+      <li><a href="#s-no-weights-change"><i>1</i>No weights change</a></li>
+      <li><a href="#s-the-adapter-what-a-fine-tune-would-have-"><i>2</i>The adapter: what a fine-tune would have had to learn</a></li>
+      <li><a href="#s-the-three-steps"><i>3</i>The three steps</a></li>
+      <li><a href="#s-what-the-board-looked-like"><i>4</i>What the board looked like</a></li>
+      <li><a href="#s-it-keeps-measuring-after-you-install-it"><i>5</i>It keeps measuring after you install it</a></li>
+      <li><a href="#s-what-is-deterministic-and-what-is-not"><i>6</i>What is deterministic, and what is not</a></li>
+    </ol></details></nav>
+  <article class="paper">
 
   <span class="eyebrow">antiloki · the method</span>
-  <h1>Compiled, not trained.</h1>
+  <h1>Compiled, <em>not trained.</em></h1>
   <p class="sub">Measure every run. Rank the combinations. Bind the winner to a role. Let a router give each job to the model that earned it.</p>
 
   <div class="byline">
@@ -44,7 +49,7 @@
       model, a checked one, at the cheap model's price.</p>
   </div>
 
-  <h2><span class="n">01</span>No weights change</h2>
+  <h2 id="s-no-weights-change"><span class="n">01</span>No weights change</h2>
   <p>A merge is not a fine-tune and not a distillation. Nothing is trained, and no weights exist afterwards that did
     not exist before. What a merge produces is a <b>pipeline</b> — a binding of one model to each job of a task, with
     its own measured score, price and speed.</p>
@@ -56,7 +61,7 @@
   <p>A merge gives each job to whichever model the benchmark measured best <em>at that job</em> — which, for the two
     jobs that dominate the token count, is usually not the expensive one.</p>
 
-  <h2><span class="n">02</span>The adapter: what a fine-tune would have had to learn</h2>
+  <h2 id="s-the-adapter-what-a-fine-tune-would-have-"><span class="n">02</span>The adapter: what a fine-tune would have had to learn</h2>
   <p>Binding models is half of it. The other half is that a general model knows nothing about your codebase, and a
     fine-tune's whole value proposition is that it has been made to know something.</p>
   <p>antiloki supplies that knowledge instead of training it in: the laws your repository lives by, the dependency
@@ -66,7 +71,7 @@
     produce.</p>
   <p class="note">Same models. Better orchestration. Measured results.</p>
 
-  <h2><span class="n">03</span>The three steps</h2>
+  <h2 id="s-the-three-steps"><span class="n">03</span>The three steps</h2>
   <div class="steps">
     <div>
       <i>01 · measure</i>
@@ -89,7 +94,7 @@
     </div>
   </div>
 
-  <h2><span class="n">04</span>What the board looked like</h2>
+  <h2 id="s-what-the-board-looked-like"><span class="n">04</span>What the board looked like</h2>
   <div class="scrollx"><table class="board2">
     <thead><tr><th>the role you hire</th><th>its merge, measured on its own work</th><th class="n">score</th><th class="n">time</th><th class="n">cost / run</th></tr></thead>
     <tbody>
@@ -105,14 +110,14 @@
     call is pure overhead, and the router obeys it.</p>
   <p class="note">A ranking that always recommended the product's most elaborate arrangement would not be a ranking.</p>
 
-  <h2><span class="n">05</span>It keeps measuring after you install it</h2>
+  <h2 id="s-it-keeps-measuring-after-you-install-it"><span class="n">05</span>It keeps measuring after you install it</h2>
   <p>The table above is a starting point, not an answer. Every run you do is scored on your machine — which merge,
     which job, how long, what it cost, whether it passed first time — and filed into the same table, which grows with
     use. Your runs adjust the shipped scores, by at most a third, and a pairing that has only been watched working never
     displaces one that was benched: observation moves a score, it does not set one.</p>
   <p>Nothing leaves the machine to make that happen.</p>
 
-  <h2><span class="n">06</span>What is deterministic, and what is not</h2>
+  <h2 id="s-what-is-deterministic-and-what-is-not"><span class="n">06</span>What is deterministic, and what is not</h2>
   <p>Worth being exact about, because "verified" is the most abused word in this industry.</p>
   <p><b>Always on, and not a model's opinion:</b> every turn is priced and timed; the fence around an agent is enforced
     where the work lands, for every seat, so a change outside it is shown, can be undone, and stops the merge or the
@@ -125,7 +130,30 @@
     deterministically where it can (a real page driven in Chrome, requests sent to a server) and with a judge where it
     cannot. The judge <em>is</em> a model, and it is labelled as one wherever its verdict appears.</p>
 
-  <p style="margin-top:48px"><a href="/blog/">← more from the antiloki blog</a> &nbsp;·&nbsp; <a href="/blog/every-run.html">every run behind the numbers →</a> &nbsp;·&nbsp; <a href="/paper.html">the long version →</a></p>
-
-</article></div>
+  <p class="postnav"><a href="/blog/">← more from the antiloki blog</a> &nbsp;·&nbsp; <a href="/blog/every-run.html">every run behind the numbers →</a> &nbsp;·&nbsp; <a href="/paper.html">the long version →</a></p>
+  </article>
+</main>
+<footer><div class="wrap">
+  <span>antiloki · agents · X-ray</span>
+  <a href="/blog/">blog</a>
+  <a href="/paper.html">the benchmark</a>
+  <a href="https://github.com/danilosilvadev/antiloki-releases/releases">releases</a>
+  <a href="mailto:support@antiloki.com">support@antiloki.com</a>
+  <span class="r">© 2026 antiloki · updated 2026-10-01</span>
+</div></footer>
+<script>
+/* the contents list follows the section you are reading */
+(function () {
+  var d = document.getElementById("toc-d");
+  if (d && window.matchMedia) { var mq = matchMedia("(max-width: 1000px)"), fit = function () { if (mq.matches) d.removeAttribute("open"); else d.setAttribute("open", ""); }; fit(); (mq.addEventListener ? mq.addEventListener("change", fit) : mq.addListener(fit)); }
+  document.querySelectorAll(".toc a").forEach(function (a) { a.addEventListener("click", function () { if (d && window.matchMedia && matchMedia("(max-width: 1000px)").matches) d.removeAttribute("open"); }); });
+  var links = [].slice.call(document.querySelectorAll(".toc a")), map = {};
+  links.forEach(function (a) { map[a.getAttribute("href").slice(1)] = a; });
+  var heads = links.map(function (a) { return document.getElementById(a.getAttribute("href").slice(1)); }).filter(Boolean);
+  if (!heads.length || !("IntersectionObserver" in window)) return;
+  var cur = null;
+  var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { if (cur) cur.classList.remove("on"); cur = map[e.target.id]; if (cur) cur.classList.add("on"); } }); }, { rootMargin: "-84px 0px -72% 0px", threshold: 0 });
+  heads.forEach(function (h) { io.observe(h); });
+})();
+</script>
 </body></html>
