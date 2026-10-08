@@ -1,0 +1,415 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>antiloki Demo</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Geist:wght@400;500;600&display=swap">
+<style>
+  :root { --bg:#221f1c; --panel:#2a2622; --panel2:#332e29; --border:#3b3631; --fg:#efe9e2; --dim:#a89f96; --muted:#7a716a; --brand:#c97c5c; --brand-soft:rgba(201,124,92,.14); --ok:#7fc48f; --warn:#d9b45a; --bad:#d9705a; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace; --nav:"Geist",-apple-system,system-ui,sans-serif; color-scheme:dark; }
+  * { box-sizing:border-box; }
+  html, body { height:100%; }
+  body { margin:0; background:var(--bg); color:var(--fg); font-family:var(--mono); font-size:11.5px; overflow:hidden; -webkit-font-smoothing:antialiased; }
+  button { font:inherit; color:inherit; background:transparent; border:none; cursor:pointer; }
+  input, textarea { font:inherit; color:var(--fg); background:var(--panel); border:1px solid var(--border); border-radius:6px; padding:5px 8px; outline:none; }
+  input:focus, textarea:focus { border-color:var(--brand); }
+  .app { display:grid; grid-template-columns:248px 1fr; height:100vh; }
+  /* banner */
+  .banner { position:fixed; left:50%; bottom:12px; transform:translateX(-50%); z-index:300; background:color-mix(in oklab,var(--panel) 92%,transparent); border:1px solid var(--border); border-radius:9px; padding:6px 12px; font-size:10.5px; color:var(--dim); display:flex; gap:12px; align-items:center; backdrop-filter:blur(8px); }
+  .banner b { color:var(--brand); font-weight:600; } .banner a { color:var(--fg); text-decoration:none; border:1px solid var(--border); border-radius:6px; padding:2px 8px; } .banner a:hover { border-color:var(--brand); }
+  /* sidebar */
+  .side { border-right:1px solid var(--border); overflow-y:auto; padding:10px 0 60px; }
+  .cat { margin-bottom:6px; }
+  .cat > .h { display:flex; align-items:center; gap:6px; padding:6px 14px 4px; color:var(--muted); font-size:9.5px; letter-spacing:1.2px; text-transform:uppercase; cursor:pointer; user-select:none; }
+  .cat > .h .tri { width:10px; display:inline-block; transition:transform .2s ease; font-size:8px; } .cat.closed > .h .tri { transform:rotate(-90deg); }
+  .cat > .h .name:hover { color:var(--dim); }
+  .cat .body { display:grid; grid-template-rows:1fr; transition:grid-template-rows .26s ease; } .cat.closed .body { grid-template-rows:0fr; }
+  .cat .body > div { overflow:hidden; min-height:0; }
+  .row { display:flex; align-items:center; gap:8px; padding:5px 14px; cursor:pointer; border-left:2px solid transparent; color:var(--muted); white-space:nowrap; }
+  .row:hover { background:var(--panel); color:var(--dim); }
+  .row.active { color:var(--fg); }
+  .row.shown { border-left-color:var(--brand); background:var(--panel); }
+  .row .g { width:12px; text-align:center; font-size:10px; color:var(--dim); } .row.active .g { color:var(--brand); }
+  .row .lbl { flex:1; overflow:hidden; text-overflow:ellipsis; } .row .uid { font-size:9px; color:var(--muted); }
+  .row .b { opacity:0; color:var(--muted); font-size:11px; padding:0 2px; } .row:hover .b { opacity:1; } .row .b:hover { color:var(--fg); }
+  .row.catalog { opacity:.6; } .row.catalog:hover { opacity:1; } .row.catalog .plus { margin-left:auto; color:var(--muted); }
+  .row.sess { padding-left:30px; font-size:10.5px; } .row.sess.cur { color:var(--fg); } .row.sess.cur .g { color:var(--brand); } .row.sess .t { color:var(--muted); font-size:9.5px; margin-left:auto; }
+  .newcat { margin:10px 14px 0; border:1px dashed var(--border); border-radius:7px; padding:6px 10px; color:var(--muted); font-size:10.5px; cursor:pointer; } .newcat:hover { color:var(--dim); border-color:var(--dim); }
+  /* stage */
+  .stage { position:relative; display:flex; flex-direction:column; min-width:0; min-height:0; }
+  .pill { position:absolute; top:8px; left:50%; transform:translateX(-50%); z-index:60; display:flex; gap:2px; padding:2px; border-radius:9px; background:color-mix(in oklab,var(--panel) 78%,transparent); border:1px solid var(--border); backdrop-filter:blur(8px); font-family:var(--nav); font-size:11px; }
+  .pill button { padding:3px 11px; border-radius:7px; color:var(--dim); } .pill button.on { background:var(--brand-soft); color:var(--brand); font-weight:600; }
+  .scroll { flex:1; min-height:0; overflow-y:auto; overflow-x:hidden; display:flex; flex-direction:column; }
+  .grid { flex:1 1 0; min-height:0; display:grid; gap:1px; background:var(--border); }
+  [hidden] { display:none !important; }
+  .cell { background:var(--bg); display:flex; flex-direction:column; min-width:0; min-height:0; overflow:hidden; animation:rise .3s ease both; }
+  @keyframes rise { from { opacity:0; transform:translateY(4px) } to { opacity:1; transform:none } }
+  .cell .hd { flex-shrink:0; display:flex; align-items:center; gap:8px; padding:8px 14px; border-bottom:1px solid var(--border); }
+  .cell .hd .g { color:var(--brand); font-size:11px; } .cell .hd .name { font-weight:700; font-size:11.5px; } .cell .hd .uid { color:var(--muted); font-size:9px; } .cell .hd .sp { flex:1; }
+  .cell .hd button { color:var(--muted); font-size:12px; padding:0 3px; } .cell .hd button:hover { color:var(--fg); }
+  .cell .bd { flex:1; min-height:0; overflow:auto; padding:10px 14px; color:var(--dim); line-height:1.5; }
+  .cell .bd.tight { padding:0; }
+  /* blocks view */
+  .blocks { flex:1; min-height:0; overflow-y:auto; display:flex; flex-direction:column; }
+  .blocks .rowb { display:flex; flex:0 0 100%; min-height:0; overflow-x:auto; border-top:2px solid var(--border); } .blocks .rowb:first-child { border-top:none; }
+  .blocks .tile { flex:1 0 320px; min-width:0; border-right:1px solid var(--border); display:flex; flex-direction:column; min-height:0; }
+  .blocks .tile .hd { display:flex; align-items:center; gap:8px; padding:8px 14px; border-bottom:1px solid var(--border); } .blocks .tile .bd { flex:1; overflow:auto; padding:10px 14px; color:var(--dim); line-height:1.5; }
+  .empty { flex:1; display:grid; place-items:center; color:var(--muted); font-size:11px; text-align:center; line-height:1.7; }
+  /* ghosts */
+  .ghosts { position:absolute; top:44px; right:14px; z-index:50; display:flex; flex-direction:column; align-items:flex-end; gap:22px; pointer-events:none; }
+  .ghost { pointer-events:auto; cursor:pointer; text-align:right; color:var(--muted); font-size:10px; line-height:1.55; opacity:.6; transition:opacity .18s ease; }
+  .ghost:hover { opacity:1; } .ghost .l { color:var(--dim); } .ghost b { color:var(--fg); font-weight:600; } .ghost .dot { display:inline-block; width:6px; height:6px; border-radius:6px; background:var(--muted); margin-left:6px; vertical-align:middle; } .ghost .dot.on { background:var(--brand); }
+  .ghost .more { letter-spacing:2px; color:var(--dim); } .ghost .t { color:var(--muted); margin-right:6px; }
+  /* modals */
+  .modal { position:fixed; inset:0; z-index:400; background:rgba(0,0,0,.55); display:grid; place-items:center; animation:fade .15s ease both; }
+  @keyframes fade { from { opacity:0 } to { opacity:1 } }
+  .win { background:var(--bg); border:1px solid var(--border); border-radius:12px; display:flex; flex-direction:column; overflow:hidden; box-shadow:0 30px 80px rgba(0,0,0,.5); }
+  .win .wh { display:flex; align-items:center; gap:10px; padding:11px 16px; border-bottom:1px solid var(--border); } .win .wh b { font-size:12.5px; } .win .wh .sub { color:var(--muted); font-size:9.5px; } .win .wh .sp { flex:1; }
+  .win .wh .x { border:1px solid var(--border); border-radius:6px; padding:2px 9px; color:var(--muted); font-size:10px; } .win .wh .x:hover { color:var(--fg); }
+  .win .wb { flex:1; min-height:0; overflow:auto; padding:14px 16px; }
+  .lab { font-size:8.5px; letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin:12px 0 5px; }
+  .chip { border:1px solid var(--border); border-radius:7px; padding:4px 11px; color:var(--dim); font-size:11px; } .chip.on { border-color:var(--brand); color:var(--brand); background:var(--brand-soft); }
+  .chips { display:flex; flex-wrap:wrap; gap:6px; } .chips .chip { padding:2px 8px; font-size:10px; border-radius:5px; }
+  .tree label { display:flex; align-items:center; gap:8px; padding:2px 0; cursor:pointer; color:var(--dim); } .tree label:hover { color:var(--fg); } .tree input { accent-color:var(--brand); width:12px; height:12px; margin:0; }
+  .tree .ind { padding-left:20px; }
+  .primary { background:var(--brand); color:#1d1410; font-weight:700; border-radius:6px; padding:6px 16px; } .primary:disabled { background:transparent; color:var(--muted); border:1px solid var(--border); font-weight:400; cursor:not-allowed; }
+  .hint { color:var(--muted); font-size:9.5px; }
+  /* terminal */
+  .term { background:#15181e; color:#dfe3ea; font-size:11px; padding:10px 12px; height:100%; overflow:auto; white-space:pre-wrap; line-height:1.55; cursor:text; }
+  .term .p { color:#c97c5c; } .term .br { color:#7dc6d6; } .term .c { color:#7fc48f; } .term .e { color:#d9705a; } .term .cur { display:inline-block; width:7px; height:12px; background:#dfe3ea; vertical-align:-2px; animation:blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity:0 } }
+  /* code */
+  .code { display:grid; grid-template-columns:200px 1fr; height:100%; }
+  .code .tr { border-right:1px solid var(--border); padding:8px 0; overflow:auto; } .code .tr div { padding:2px 12px; cursor:pointer; color:var(--dim); display:flex; gap:6px; align-items:center; } .code .tr div:hover { color:var(--fg); } .code .tr div.on { background:oklch(.30 .05 295); color:var(--fg); }
+  .code .tr i { width:7px; height:7px; border-radius:7px; background:#4f8fd8; display:inline-block; } .code .tr .d { color:var(--muted); cursor:default; }
+  .code .vw { overflow:auto; } .code .vw .path { padding:5px 10px; border-bottom:1px solid var(--border); color:var(--muted); font-size:10px; display:flex; gap:8px; align-items:center; } .code .vw .path .sc { margin-left:auto; color:var(--ok); border:1px solid color-mix(in oklab,var(--ok) 45%,var(--border)); border-radius:4px; padding:0 6px; }
+  .code pre { margin:0; padding:8px 12px; font-size:10.5px; line-height:1.5; color:#d8d2ca; } .code .ln { color:var(--muted); display:inline-block; width:28px; text-align:right; margin-right:14px; user-select:none; }
+  .k { color:#c98bdb } .s { color:#e0a872 } .f { color:#7fb7e6 } .t { color:#8fd0c0 } .cm { color:#7a716a }
+  /* agent pane */
+  .agent .meta { display:flex; gap:10px; flex-wrap:wrap; font-size:10px; color:var(--muted); margin-bottom:8px; } .agent .meta b { color:var(--dim); font-weight:600; }
+  .agent .line { display:flex; gap:8px; padding:1.5px 0; } .agent .line .ts { color:var(--muted); font-size:9.5px; width:56px; flex-shrink:0; } .agent .line .k { color:var(--brand); }
+  .agent .line.gate { color:var(--bad); } .agent .line.ok { color:var(--ok); } .agent .line.me { color:var(--fg); }
+  .strip { display:flex; align-items:center; gap:7px; margin:8px 0 4px; } .node { width:9px; height:9px; border-radius:9px; border:1px solid var(--border); transition:all .3s ease; } .node.run { border-color:var(--brand); background:var(--brand); animation:breathe 1.4s ease-in-out infinite } .node.done { border-color:var(--ok); background:var(--ok) } .node.join { width:16px; border-radius:3px } .strip .ph { margin-left:auto; color:var(--muted); font-size:10px; }
+  @keyframes breathe { 0%,100%{transform:scale(1)} 50%{transform:scale(1.35);opacity:.7} }
+  .ask { display:flex; gap:6px; margin-top:8px; } .ask input { flex:1; } .ask button { border:1px solid var(--border); border-radius:6px; padding:0 10px; color:var(--dim); }
+  /* kanban / todo / notes */
+  .kan { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; height:100%; } .kan .col { border:1px solid var(--border); border-radius:8px; display:flex; flex-direction:column; min-height:0; } .kan .col h5 { margin:0; padding:7px 10px; border-bottom:1px solid var(--border); font-size:10px; letter-spacing:1px; color:var(--dim); } .kan .col h5 span { color:var(--muted); margin-left:6px; }
+  .kan .cards { flex:1; overflow:auto; padding:8px; display:flex; flex-direction:column; gap:6px; } .card { border:1px solid var(--border); border-left:2px solid var(--brand); border-radius:6px; padding:6px 8px; color:var(--fg); font-size:10.5px; cursor:pointer; background:var(--panel); } .card:hover { border-color:var(--dim); } .card small { display:block; color:var(--muted); font-size:9px; margin-top:2px; }
+  .kan .col input { margin:0 8px 8px; font-size:10.5px; }
+  .todo label { display:flex; gap:8px; align-items:center; padding:3px 0; color:var(--fg); cursor:pointer; } .todo input[type=checkbox] { accent-color:var(--brand); } .todo label.done { color:var(--muted); text-decoration:line-through; }
+  .notes textarea { width:100%; height:100%; resize:none; background:transparent; border:none; padding:0; color:var(--fg); line-height:1.6; }
+  /* constitution */
+  .con .top { display:flex; gap:14px; align-items:baseline; margin-bottom:10px; } .con .top b { font-size:20px; color:var(--fg); } .con .ax { display:grid; grid-template-columns:90px 1fr 34px; gap:10px; align-items:center; padding:3px 0; font-size:10.5px; } .con .bar { height:6px; background:var(--panel2); border-radius:3px; overflow:hidden; } .con .bar i { display:block; height:100%; background:var(--ok); } .con .bar i.w { background:var(--warn) } .con .bar i.b { background:var(--bad) } .con .n { text-align:right; color:var(--fg); }
+  .con .law { display:flex; gap:8px; padding:4px 0; border-top:1px solid var(--border); font-size:10.5px; } .con .law .c { color:var(--muted); margin-left:auto; }
+  /* chat */
+  .chat { display:flex; flex-direction:column; height:100%; } .chat .msgs { flex:1; overflow:auto; padding:14px 18px; display:flex; flex-direction:column; gap:10px; } .msg { max-width:70ch; line-height:1.55; font-family:var(--nav); font-size:13px; } .msg.me { align-self:flex-end; background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:8px 12px; color:var(--fg); } .msg.ai { color:var(--dim); } .msg.ai b { color:var(--fg); font-weight:600; }
+  .chat .comp { margin:10px 18px 14px; border:1px solid var(--border); border-radius:12px; background:var(--panel); padding:10px 12px 8px; } .chat .comp input { width:100%; background:transparent; border:none; padding:0; font-family:var(--nav); font-size:14px; } .chat .comp .bar { display:flex; align-items:center; gap:10px; margin-top:8px; color:var(--muted); font-size:10px; } .chat .comp .eng { margin-left:auto; color:var(--brand); cursor:pointer; }
+  /* diff */
+  .diff pre { margin:0; font-size:10.5px; line-height:1.5; } .diff .a { color:var(--ok) } .diff .r { color:var(--bad) } .diff .h { color:var(--muted) }
+  /* timeline window */
+  .tl .lane { display:grid; grid-template-columns:60px 20px 1fr auto; gap:8px; align-items:center; padding:3px 0; font-size:10.5px; } .tl .lane .ts { color:var(--muted); } .tl .lane .dt { width:8px; height:8px; border-radius:8px; justify-self:center; } .tl .lane .who { color:var(--muted); font-size:9.5px; }
+  .tl .filters { display:flex; gap:6px; margin-bottom:10px; }
+  /* fuel window */
+  .fuel .eng { border:1px solid var(--border); border-radius:10px; padding:12px 14px; margin-bottom:10px; } .fuel .eng h4 { margin:0 0 6px; font-size:11.5px; display:flex; gap:8px; align-items:center; } .fuel .eng h4 .st { margin-left:auto; color:var(--muted); font-weight:400; font-size:10px; } .fuel .kv { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; font-size:10.5px; color:var(--muted); } .fuel .kv b { display:block; color:var(--fg); font-size:13px; } .fuel .lim { margin-top:8px; display:grid; grid-template-columns:60px 1fr 40px; gap:8px; align-items:center; font-size:10px; color:var(--muted); } .fuel .lim .bar { height:5px; background:var(--panel2); border-radius:3px; overflow:hidden } .fuel .lim .bar i { display:block; height:100%; background:var(--brand) }
+  /* the other widgets */
+  .dzbar { display:flex; align-items:center; gap:8px; margin-bottom:8px; font-size:10px; color:var(--muted); } .dzbar .sp { flex:1; } .dzbar button { border:1px solid var(--border); border-radius:5px; padding:2px 8px; color:var(--dim); font-size:10px; } .dzbar button.on, .dzbar button:hover { color:var(--brand); border-color:var(--brand); } .dzbar button:disabled { opacity:.4; cursor:not-allowed; }
+  .dz .canvas { position:relative; border:1px solid var(--border); border-radius:8px; overflow:hidden; background:#f7f5f1; color:#1f1d1a; font-family:var(--nav); } .dz .canvas.draw { cursor:crosshair; outline:2px dashed var(--brand); outline-offset:-2px; }
+  .app-mock { padding:12px 16px 16px; } .app-mock .nav { display:flex; justify-content:space-between; font-size:11px; margin-bottom:10px; } .app-mock .nav span { border:1px solid #e6e1d8; border-radius:999px; padding:1px 8px; } .app-mock .nav i { background:#1f1d1a; color:#fff; border-radius:999px; padding:0 5px; font-style:normal; font-size:9px; margin-left:4px; }
+  .app-mock h1 { font-size:18px; margin:0 0 2px; letter-spacing:-.02em; } .app-mock p { margin:0 0 10px; color:#7a746b; font-size:10px; } .app-mock .pg { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; } .pc { background:#fff; border:1px solid #e6e1d8; border-radius:8px; overflow:hidden; font-size:9.5px; } .pc .sw { height:34px; display:grid; place-items:center; } .pc .sw i { width:12px; height:12px; border-radius:50%; } .pc span { display:block; padding:5px 7px 0; } .pc em { display:block; padding:0 7px 6px; font-style:normal; color:#7a746b; }
+  .dz .mark { position:absolute; transform:translate(-4px,-4px); background:var(--brand); color:#1d1410; font-family:var(--mono); font-size:9.5px; padding:2px 6px; border-radius:4px; max-width:160px; } .dz .mark span { display:inline-block; background:#1d1410; color:var(--brand); border-radius:3px; padding:0 4px; margin-right:4px; }
+  .tabs2 { display:flex; gap:4px; margin-bottom:4px; } .tabs2 span { border:1px solid var(--border); border-radius:6px; padding:2px 9px; color:var(--muted); font-size:10px; } .tabs2 span.on { color:var(--brand); border-color:var(--brand); }
+  .intent .chips .chip { cursor:pointer; }
+  .ctx .kpis { display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin-bottom:4px; } .ctx .kpis div { border:1px solid var(--border); border-radius:7px; padding:6px 8px; font-size:9px; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; } .ctx .kpis b { display:block; font-size:16px; color:var(--brand); letter-spacing:0; } .ctx .doc { display:flex; gap:8px; align-items:center; padding:5px 8px; border:1px solid var(--border); border-radius:6px; margin-bottom:4px; color:var(--fg); font-size:10.5px; } .ctx .doc span { flex:1; } .ctx .doc button { color:var(--muted); } .ctx textarea { resize:vertical; }
+  .standup .rep { border:1px solid var(--border); border-radius:8px; padding:8px 10px; margin-bottom:6px; color:var(--dim); font-size:10.5px; line-height:1.5; } .standup .rep b { color:var(--fg); display:block; margin-bottom:2px; }
+  .sk { height:100%; display:flex; flex-direction:column; } .sk canvas { flex:1; border:1px solid var(--border); border-radius:8px; background:var(--panel); touch-action:none; cursor:crosshair; } .sk .col { width:16px; height:16px; border-radius:50%; padding:0; border:2px solid transparent; } .sk .col.on { border-color:var(--fg); }
+  .dg { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; } .dg .box { border:1px solid var(--ok); border-radius:8px; padding:10px 12px; cursor:pointer; color:var(--dim); } .dg .box:hover { background:var(--panel); } .dg .box b { display:block; color:var(--fg); } .dg .box span { font-size:9.5px; color:var(--muted); } .dg .box.logic { grid-column:span 2; }
+  .xr { width:100%; border-collapse:collapse; font-size:10.5px; } .xr th { text-align:left; color:var(--muted); font-weight:400; font-size:9px; letter-spacing:.8px; text-transform:uppercase; padding:3px 6px; border-bottom:1px solid var(--border); } .xr td { padding:4px 6px; border-bottom:1px solid var(--border); color:var(--dim); } .xr tr[data-f] { cursor:pointer; } .xr tr[data-f]:hover td { background:var(--panel); color:var(--fg); }
+  .gg .gr { display:grid; grid-template-columns:28px 64px 1fr auto; gap:8px; align-items:center; padding:4px 0; border-bottom:1px solid var(--border); font-size:10.5px; } .gg .lanes { display:flex; gap:4px; } .gg .lanes i { width:8px; height:8px; border-radius:8px; border:1px solid var(--border); } .gg .lanes i.l0.on { background:var(--dim); border-color:var(--dim); } .gg .lanes i.l1.on { background:var(--brand); border-color:var(--brand); } .gg .sha { color:var(--brand); } .gg .msg { color:var(--fg); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; } .gg .who { color:var(--muted); font-size:9.5px; }
+  .toast { position:fixed; top:56px; left:50%; transform:translateX(-50%); z-index:500; background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:6px 12px; color:var(--fg); font-size:10.5px; animation:rise .25s ease both; }
+</style>
+
+<div class="app">
+  <aside class="side" id="side"></aside>
+  <main class="stage">
+    <div class="pill"><button id="vBlocks">Blocks</button><button id="vThreads" class="on">Threads</button></div>
+    <div class="ghosts">
+      <div class="ghost" id="fuelG"></div>
+      <div class="ghost" id="tlG"></div>
+    </div>
+    <div class="scroll" id="scroll"><div class="grid" id="grid"></div></div>
+    <div class="blocks" id="blocks" hidden></div>
+  </main>
+</div>
+<div class="banner"><b>demo</b> a replica of the first antiDesk (2026-09-17: three engines, simulated agents) · the app today has five seats — Claude, Codex, Cursor, Gemini, Grok — and every run ends in QA <a href="index.html#download">get the real thing ↗</a></div>
+<div id="modal"></div>
+
+<script>
+// ─────────────────────────────────────────────────────────────────────────────────────────────
+// a small store: items (active widgets), the split selection, the timeline, fuel, sessions
+const $ = (s, r = document) => r.querySelector(s);
+const el = (h) => { const t = document.createElement("template"); t.innerHTML = h.trim(); return t.content.firstChild; };
+const now = () => new Date().toTimeString().slice(0, 8);
+const esc = (s) => String(s).replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+const S = {
+  view: "threads",
+  items: [{ id: "chat", kind: "chat", label: "chat", cat: "chat", obligatory: true }],
+  shown: ["chat"],
+  closed: new Set(),
+  sessions: [{ id: 4, turns: 0, at: "05:47 PM" }, { id: 3, turns: 0, at: "05:17 PM" }, { id: 2, turns: 0, at: "05:06 PM" }],
+  timeline: [],
+  fuel: { claude: { tok: 0, usd: 0, h5: 62, wk: 18, on: false }, codex: { tok: 0, usd: 0, h5: 0, wk: 0, on: false }, opencode: { tok: 0, usd: 0, h5: 0, wk: 0, on: false } },
+  uid: 22,
+  custom: [],
+};
+const CATALOG = {
+  agents: [{ kind: "claude-code", label: "Claude Code", g: "✦" }, { kind: "codex", label: "Codex", g: "◇" }, { kind: "opencode", label: "OpenCode", g: "☽" }],
+  tools: [{ kind: "terminal", label: "Terminal", g: "❯" }, { kind: "design", label: "Design canvas", g: "❯" }, { kind: "intent", label: "Intent", g: "◎" }, { kind: "context", label: "Context", g: "❯" }, { kind: "standup", label: "Standup", g: "❯" }, { kind: "diff", label: "Diff / review", g: "❯" }, { kind: "todo", label: "Todo", g: "◇" }, { kind: "kanban", label: "Kanban", g: "◇" }, { kind: "notes", label: "Notes", g: "◇" }, { kind: "sketch", label: "Sketch", g: "◇" }],
+  codebase: [{ kind: "graph", label: "Code graph", g: "◇" }, { kind: "diagram", label: "System design", g: "◇" }, { kind: "xray", label: "X-ray", g: "◇" }, { kind: "constitution", label: "Constitution", g: "◇" }, { kind: "code", label: "Code", g: "◇" }, { kind: "git", label: "Git graph", g: "◇" }],
+};
+const FILES = {
+  "src/App.tsx": `import { useEffect, useState } from "react";\nimport { products, formatPrice, type Product } from "./products";\nimport { useCart } from "./cart";\n\nfunction ProductCard({ product, onAdd, index }: { product: Product; onAdd: () => void; index: number }) {\n  const [pulse, setPulse] = useState(false);\n  const add = () => {\n    onAdd();\n    setPulse(true);\n    setTimeout(() => setPulse(false), 400);\n  };\n  return (\n    <article className="card" style={{ animationDelay: \`\${index * 70}ms\` }}>\n      <div className="swatch" style={{ background: \`hsl(\${product.hue} 40% 82%)\` }} />\n      <div className="card-body">\n        <span className="tag">{product.tag}</span>\n        <h3>{product.name}</h3>\n        <div className="row">\n          <span className="price">{formatPrice(product.price)}</span>\n          <button className={\`add \${pulse ? "pulse" : ""}\`} onClick={add}>+</button>\n        </div>\n      </div>\n    </article>\n  );\n}`,
+  "src/cart.ts": `import { useCallback, useMemo, useState } from "react";\nimport { products, type Product } from "./products";\n\nexport type CartLine = { product: Product; qty: number };\n\nexport function useCart() {\n  const [lines, setLines] = useState<Record<string, number>>({});\n\n  const add = useCallback((id: string) => {\n    setLines((l) => ({ ...l, [id]: (l[id] ?? 0) + 1 }));\n  }, []);\n\n  const remove = useCallback((id: string) => {\n    setLines((l) => {\n      const next = { ...l };\n      if ((next[id] ?? 0) <= 1) delete next[id];\n      else next[id] -= 1;\n      return next;\n    });\n  }, []);\n\n  const clear = useCallback(() => setLines({}), []);\n\n  const items = useMemo<CartLine[]>(\n    () => Object.entries(lines).map(([id, qty]) => ({ product: products.find((p) => p.id === id)!, qty })).filter((l) => l.product),\n    [lines],\n  );\n  const count = items.reduce((n, l) => n + l.qty, 0);\n  const total = items.reduce((n, l) => n + l.qty * l.product.price, 0);\n  return { items, count, total, add, remove, clear };\n}`,
+  "src/products.ts": `export type Product = { id: string; name: string; price: number; tag: string; hue: number };\n\nexport const products: Product[] = [\n  { id: "mug", name: "Stoneware mug", price: 24, tag: "kitchen", hue: 28 },\n  { id: "lamp", name: "Paper lamp", price: 89, tag: "light", hue: 45 },\n  { id: "throw", name: "Wool throw", price: 140, tag: "textile", hue: 20 },\n  { id: "bowl", name: "Ash bowl", price: 38, tag: "kitchen", hue: 60 },\n  { id: "vase", name: "Clay vase", price: 52, tag: "objects", hue: 15 },\n  { id: "board", name: "Oak board", price: 46, tag: "kitchen", hue: 38 },\n];\n\nexport const formatPrice = (n: number) => \`$\${n.toFixed(0)}\`;`,
+  "src/main.tsx": `import { StrictMode } from "react";\nimport { createRoot } from "react-dom/client";\nimport "./index.css";\nimport App from "./App";\n\ncreateRoot(document.getElementById("root")!).render(\n  <StrictMode>\n    <App />\n  </StrictMode>,\n);`,
+  "vite.config.ts": `import { defineConfig } from "vite";\nimport react from "@vitejs/plugin-react";\n\nexport default defineConfig({ plugins: [react()] });`,
+};
+const SCORES = { "src/App.tsx": 85, "src/cart.ts": 92, "src/products.ts": 100, "src/main.tsx": 100, "vite.config.ts": 100 };
+
+// ─────────────────────────────────────────────────────────────────────────────────────────────
+function note(kind, label, who = "you") { S.timeline.unshift({ ts: now(), kind, label, who }); S.timeline = S.timeline.slice(0, 200); renderGhosts(); }
+function toast(t) { const d = el(`<div class="toast">${esc(t)}</div>`); document.body.appendChild(d); setTimeout(() => d.remove(), 1800); }
+function addItem(kind, label, cat, extra = {}) { const id = `w${++S.uid}`; S.items.push({ id, kind, label, cat, uid: `${kind}-${id}`, ...extra }); S.shown = S.shown.filter((x) => x !== "chat").concat(id); if (S.shown.length === 0) S.shown = [id]; note("opened", label); render(); return id; }
+function closeItem(id) { S.items = S.items.filter((x) => x.id !== id); S.shown = S.shown.filter((x) => x !== id); if (!S.shown.length) S.shown = ["chat"]; render(); }
+function toggleShown(id) { if (S.shown.includes(id)) { if (S.shown.length > 1) S.shown = S.shown.filter((x) => x !== id); } else S.shown.push(id); render(); }
+
+// the grid rule, same as the product: ≤3 across, rows below, no empty quarter
+function layout(n) { const cols = Math.min(3, Math.ceil(Math.sqrt(Math.max(1, n)))); const rows = Math.ceil(n / cols); const spans = Array.from({ length: n }, () => [1, 1]); const empty = cols * rows - n; if (empty > 0) { if (rows <= 2) for (let i = 0; i < empty; i++) spans[i][1] = rows; else spans[n - 1][0] = empty + 1; } return { cols, rows, spans }; }
+
+// ─────────────────────────────────────────────────────────────────────────────────────────────
+// sidebar
+function renderSide() {
+  const side = $("#side"); side.innerHTML = "";
+  const cat = (key, title, rowsHtml, opts = {}) => {
+    const c = el(`<div class="cat ${S.closed.has(key) ? "closed" : ""}"><div class="h"><span class="tri">▾</span><span class="name" title="show all of ${title}">${title}</span>${opts.plus ? '<span style="margin-left:auto;color:var(--muted)" title="add">+</span>' : ""}</div><div class="body"><div></div></div></div>`);
+    c.querySelector(".tri").onclick = (e) => { e.stopPropagation(); S.closed.has(key) ? S.closed.delete(key) : S.closed.add(key); c.classList.toggle("closed"); };
+    c.querySelector(".name").onclick = () => { const ids = S.items.filter((i) => (i.cat === key || (i.shortcuts ?? []).includes(key)) && i.id !== "chat").map((i) => i.id); if (ids.length) { S.shown = ids; render(); } };
+    c.querySelector(".body > div").innerHTML = rowsHtml; side.appendChild(c); return c;
+  };
+  const activeRow = (it) => `<div class="row active ${S.shown.includes(it.id) ? "shown" : ""}" data-id="${it.id}"><span class="g">◆</span><span class="lbl" title="double-click to rename">${esc(it.label)}</span>${it.uid ? `<span class="uid">#${it.uid}</span>` : ""}<button class="b sp" title="add to the split">⊞</button>${it.obligatory ? "" : '<button class="b x" title="close">✕</button>'}</div>`;
+  const catalogRow = (k, cat) => `<div class="row catalog" data-kind="${k.kind}" data-cat="${cat}"><span class="g">${k.g}</span><span class="lbl">${k.label}</span><span class="plus">+</span></div>`;
+  // chat + sessions
+  cat("chat", "chat", activeRow(S.items[0]) + S.sessions.map((s, i) => `<div class="row sess ${i === 0 ? "cur" : ""}"><span class="g">${i === 0 ? "●" : "○"}</span><span class="lbl">episode #${s.id}</span><span class="t">${s.turns} turns · ${s.at}</span></div>`).join("") + `<div class="row sess" id="newSess"><span class="g">+</span><span class="lbl">new session</span></div>`);
+  for (const [key, list] of Object.entries(CATALOG)) {
+    const active = S.items.filter((i) => i.cat === key);
+    cat(key, key, active.map(activeRow).join("") + list.filter((k) => key === "agents" || !active.some((a) => a.kind === k.kind)).map((k) => catalogRow(k, key)).join(""));
+  }
+  for (const cc of S.custom) cat(cc, cc, S.items.filter((i) => (i.shortcuts ?? []).includes(cc)).map(activeRow).join("") || `<div class="row catalog" style="cursor:default"><span class="lbl">right-click any widget → add here</span></div>`);
+  side.appendChild(el(`<div class="newcat">+ category</div>`));
+  // wiring
+  side.querySelectorAll(".row.active").forEach((r) => {
+    const id = r.dataset.id; const it = S.items.find((x) => x.id === id);
+    r.onclick = (e) => { if (e.target.closest(".b")) return; S.shown = [id]; render(); };
+    r.querySelector(".sp").onclick = (e) => { e.stopPropagation(); toggleShown(id); };
+    r.querySelector(".x")?.addEventListener("click", (e) => { e.stopPropagation(); closeItem(id); });
+    r.querySelector(".lbl").ondblclick = (e) => { e.stopPropagation(); const v = prompt("rename", it.label); if (v) { it.label = v; note("renamed", v); render(); } };
+    r.oncontextmenu = (e) => { e.preventDefault(); if (!S.custom.length) { toast("create a custom category first (+ category)"); return; } const c = S.custom[S.custom.length - 1]; it.shortcuts = [...new Set([...(it.shortcuts ?? []), c])]; toast(`shortcut → ${c}`); render(); };
+  });
+  side.querySelectorAll(".row.catalog[data-kind]").forEach((r) => { r.onclick = () => { const k = r.dataset.kind, c = r.dataset.cat; if (c === "agents") openAgentCard(k); else addItem(k, CATALOG[c].find((x) => x.kind === k).label, c); }; });
+  $("#newSess").onclick = () => { S.sessions.unshift({ id: S.sessions[0].id + 1, turns: 0, at: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) }); chatLog = []; note("session", `episode #${S.sessions[0].id}`); render(); };
+  side.querySelector(".newcat").onclick = () => { const v = prompt("category name", "mine"); if (v) { S.custom.push(v); render(); } };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────────────────────
+// widgets
+const bodies = {};
+function body(it) {
+  if (bodies[it.id]) return bodies[it.id];
+  const b = document.createElement("div"); b.className = "bd" + (["terminal", "code", "chat"].includes(it.kind) ? " tight" : ""); b.style.cssText = "flex:1;min-height:0;overflow:auto;padding:10px 14px;color:var(--dim);line-height:1.5"; if (["terminal", "code", "chat"].includes(it.kind)) b.style.padding = "0";
+  (WIDGETS[it.kind] ?? WIDGETS.plain)(b, it); bodies[it.id] = b; return b;
+}
+let chatLog = [];
+const WIDGETS = {
+  plain(b, it) { b.innerHTML = `<div class="empty">${esc(it.label)} — in the real app this is the live ${esc(it.label.toLowerCase())} pane<br><span class="hint">this demo keeps the desk, the agents, the gate and the timeline</span></div>`; },
+  chat(b) {
+    b.innerHTML = `<div class="chat"><div class="msgs"></div><div class="comp"><input placeholder="Message antiloki… (read-only — agents write, chat answers)"><div class="bar"><span>a.</span><span>@</span><span>⊕</span><span class="eng" title="the engine underneath">✦ Claude Code · ⇄</span></div></div></div>`;
+    const msgs = b.querySelector(".msgs"), inp = b.querySelector("input"), eng = b.querySelector(".eng"); const engines = ["✦ Claude Code", "◇ Codex", "☽ OpenCode"]; let ei = 0;
+    eng.onclick = () => { ei = (ei + 1) % 3; eng.textContent = engines[ei] + " · ⇄"; toast(`antiChat now answers on ${engines[ei].slice(2)}`); };
+    const draw = () => { msgs.innerHTML = chatLog.length ? chatLog.map((m) => `<div class="msg ${m.me ? "me" : "ai"}">${m.html}</div>`).join("") : `<div class="empty">No turns in this session yet.</div>`; msgs.scrollTop = 1e9; };
+    inp.onkeydown = (e) => { if (e.key !== "Enter" || !inp.value.trim()) return; const q = inp.value.trim(); inp.value = ""; chatLog.push({ me: true, html: esc(q) }); S.sessions[0].turns++; draw(); note("turn", q.slice(0, 32), "you"); S.fuel.claude.tok += 1200; S.fuel.claude.usd += 0.02; setTimeout(() => { chatLog.push({ me: false, html: reply(q) }); draw(); renderGhosts(); renderSide(); }, 900); };
+    draw();
+  },
+  terminal(b) {
+    const cwd = "ministore"; let hist = [`$ /usr/bin/bash`, ``]; let cur = ""; const out = document.createElement("div"); out.className = "term"; b.appendChild(out);
+    const prompt = () => `<span class="p">${cwd}</span> <span class="br">main</span> ❯ `;
+    const draw = () => { out.innerHTML = hist.join("\n") + "\n" + prompt() + esc(cur) + '<span class="cur"></span>'; out.scrollTop = 1e9; };
+    const run = (c) => { hist.push(prompt() + esc(c)); const cmd = c.trim(); const r = cmd === "ls" || cmd === "ls src" ? "App.tsx  cart.ts  index.css  main.tsx  products.ts" : cmd.startsWith("git log") ? '<span class="s">80f0b2e</span> cart bump from the add event, not an effect\n<span class="s">1935fb6</span> ministore: a minimal store page (vite + react)' : cmd.startsWith("npm test") || cmd.startsWith("npm run test") ? ' ✓ src/cart.test.ts (4)\n\n <span class="c">Test Files  1 passed (1)</span>\n      Tests  4 passed (4)' : cmd === "help" ? "ls · git log · npm test · clear" : cmd === "clear" ? null : cmd ? `<span class="e">bash: ${esc(cmd.split(" ")[0])}: command not found</span>` : ""; if (r === null) hist = []; else if (r) hist.push(r); note("shell", cmd.slice(0, 30)); };
+    out.tabIndex = 0; out.onclick = () => out.focus(); out.onkeydown = (e) => { if (e.key === "Enter") { run(cur); cur = ""; } else if (e.key === "Backspace") cur = cur.slice(0, -1); else if (e.key.length === 1 && !e.ctrlKey && !e.metaKey) cur += e.key; else return; e.preventDefault(); draw(); };
+    draw(); setTimeout(() => { hist.push(`<span class="c">·</span> live shell · workspace root — type <b>help</b>`); draw(); }, 300);
+  },
+  code(b, it) {
+    b.innerHTML = `<div class="code"><div class="tr"><div class="d">▾ src</div>${Object.keys(FILES).filter((f) => f.startsWith("src/")).map((f) => `<div data-f="${f}" style="padding-left:24px"><i></i>${f.slice(4)}</div>`).join("")}<div data-f="vite.config.ts"><i></i>vite.config.ts</div></div><div class="vw"><div class="path">no file open</div><div class="empty" style="height:80%">select a file from the tree</div></div></div>`;
+    const open = (f) => { b.querySelectorAll(".tr [data-f]").forEach((d) => d.classList.toggle("on", d.dataset.f === f)); b.querySelector(".vw").innerHTML = `<div class="path">${f}<span class="sc">§ ${SCORES[f]}</span><span style="color:var(--muted)">${FILES[f].split("\n").length} lines</span></div><pre>${hl(FILES[f])}</pre>`; note("opened", f, "you"); };
+    b.querySelectorAll(".tr [data-f]").forEach((d) => { d.onclick = () => open(d.dataset.f); }); if (it.path) open(it.path);
+  },
+  constitution(b) {
+    const ax = [["compliance", 100], ["defects", 100], ["structure", 80], ["coupling", 39], ["cohesion", 100], ["change", 100]];
+    b.innerHTML = `<div class="con"><div class="top"><span>§ constitution</span><b>92</b><span>health</span><span>5 files · 0 violations · 17 laws</span></div>${ax.map(([n, v]) => `<div class="ax"><span>${n}</span><div class="bar"><i class="${v < 50 ? "b" : v < 85 ? "w" : ""}" style="width:${v}%"></i></div><span class="n">${v}</span></div>`).join("")}<div class="lab">laws · ratified</div>${[["no-lone-dispatch", 0], ["eqeqeq · allow-null", 0], ["no-nested-ternary", 0], ["max-cognitive-15", 0], ["imports-runtime-only", 0]].map(([l, c]) => `<div class="law"><span>${l}</span><span class="c">${c} violations</span></div>`).join("")}<div class="hint" style="margin-top:8px">every file judged deterministically — the same rules the agents are checked against</div></div>`;
+  },
+  kanban(b) {
+    const cols = { "TO DO": ["quantity stepper on cart lines"], DOING: ["migrate products to v3 schema"], DONE: ["flaky checkout test — fixed"] };
+    const draw = () => { b.innerHTML = `<div class="kan">${Object.entries(cols).map(([k, cards]) => `<div class="col" data-k="${k}"><h5>${k}<span>${cards.length}</span></h5><div class="cards">${cards.map((c, i) => `<div class="card" data-i="${i}" title="click to move right">${esc(c)}<small>click → next column</small></div>`).join("")}</div><input placeholder="+ card (Enter)"></div>`).join("")}</div>`;
+      const keys = Object.keys(cols); b.querySelectorAll(".col").forEach((col) => { const k = col.dataset.k; col.querySelector("input").onkeydown = (e) => { if (e.key === "Enter" && e.target.value.trim()) { cols[k].push(e.target.value.trim()); note("card", e.target.value.trim().slice(0, 28)); draw(); } }; col.querySelectorAll(".card").forEach((c) => { c.onclick = () => { const i = +c.dataset.i, ni = keys.indexOf(k) + 1; const [card] = cols[k].splice(i, 1); cols[keys[Math.min(ni, 2)]].push(card); note("moved", card.slice(0, 28)); draw(); }; }); }); };
+    draw();
+  },
+  todo(b) { const items = [["read the context pack", true], ["quantity stepper", false], ["release notes", false]]; const draw = () => { b.innerHTML = `<div class="todo">${items.map(([t, d], i) => `<label class="${d ? "done" : ""}"><input type="checkbox" data-i="${i}" ${d ? "checked" : ""}>${esc(t)}</label>`).join("")}<div class="ask" style="margin-top:10px"><input placeholder="add a todo… (Enter)"></div></div>`; b.querySelectorAll("input[type=checkbox]").forEach((c) => { c.onchange = () => { items[+c.dataset.i][1] = c.checked; draw(); }; }); b.querySelector(".ask input").onkeydown = (e) => { if (e.key === "Enter" && e.target.value.trim()) { items.push([e.target.value.trim(), false]); draw(); } }; }; draw(); },
+  notes(b) { b.innerHTML = `<div class="notes" style="height:100%"><textarea placeholder="your annotations for this session — every agent can read them">agents may not touch products.ts until the v3 schema lands.\nkeep the public API of useCart stable.</textarea></div>`; },
+  diff(b) { b.dataset.role = "diff"; b.innerHTML = S.lastDiff ?? `<div class="diff"><div class="empty">no agent worktrees in this session yet — start an agent and its diff lands here</div></div>`; },
+  // ── every remaining widget, as a working example ──
+  design(b) {
+    const marks = []; let drawMode = false;
+    const draw = () => { b.innerHTML = `<div class="dz"><div class="dzbar"><span>workspace root</span><button class="run">▶ run design</button><span class="sp"></span><button class="mode ${drawMode ? "on" : ""}">${drawMode ? "◻ draw · click the app to mark an area" : "◻ draw"}</button><button class="send" ${marks.length ? "" : "disabled"}>send ${marks.length} intent${marks.length === 1 ? "" : "s"} → context</button></div><div class="canvas ${drawMode ? "draw" : ""}"><div class="app-mock"><div class="nav"><b>ministore</b><span>cart <i>2</i></span></div><h1>Fewer things, made well.</h1><p>Six objects for a quiet home.</p><div class="pg">${[["Stoneware mug", 24, 28], ["Paper lamp", 89, 45], ["Wool throw", 140, 20], ["Ash bowl", 38, 60], ["Clay vase", 52, 15], ["Oak board", 46, 38]].map(([n, p, h]) => `<div class="pc"><div class="sw" style="background:hsl(${h} 40% 82%)"><i style="background:hsl(${h} 45% 45%)"></i></div><span>${n}</span><em>$${p}</em></div>`).join("")}</div>${marks.map((m, i) => `<div class="mark" style="left:${m.x}%;top:${m.y}%"><span>${i + 1}</span>${esc(m.note)}</div>`).join("")}</div></div><div class="hint" style="margin-top:6px">the REAL app runs here as a canvas — palette truth from the Design screen rides along · ${marks.length ? marks.map((m, i) => `${i + 1}. ${esc(m.note)}`).join(" · ") : "no marks yet"}</div></div>`;
+      b.querySelector(".mode").onclick = () => { drawMode = !drawMode; draw(); };
+      b.querySelector(".run").onclick = () => { toast("dev server booted · the app is live in the canvas"); note("design", "run · vite dev", "you"); };
+      b.querySelector(".send").onclick = () => { note("intent", `${marks.length} design marks → shared context`, "you"); toast("marks sent to the shared context — every agent reads them"); marks.length = 0; draw(); };
+      b.querySelector(".canvas").onclick = (e) => { if (!drawMode) return; const r = e.currentTarget.getBoundingClientRect(); const note_ = prompt("what should change here?", "make the price bolder"); if (!note_) return; marks.push({ x: ((e.clientX - r.left) / r.width * 100).toFixed(1), y: ((e.clientY - r.top) / r.height * 100).toFixed(1), note: note_ }); draw(); }; };
+    draw();
+  },
+  intent(b) {
+    const st = { what: "feature", where: "whole app", bold: "balanced", flags: new Set(["must add tests"]), src: new Set(["mission", "shared docs · RFCs", "Digest"]) };
+    const draw = () => { const chip = (group, v, on) => `<button class="chip ${on ? "on" : ""}" data-g="${group}" data-v="${v}">${v}</button>`;
+      b.innerHTML = `<div class="intent"><div class="tabs2"><span class="on">◎ intent</span><span>RFC drawer</span><span>judgment</span></div><div class="lab">what</div><div class="chips">${["feature", "fix", "refactor", "design", "perf", "tests"].map((v) => chip("what", v, st.what === v)).join("")}</div><div class="lab">where</div><div class="chips">${["whole app", "src/", "src/cart.ts"].map((v) => chip("where", v, st.where === v)).join("")}</div><div class="lab">bold</div><div class="chips">${["surgical", "balanced", "ambitious"].map((v) => chip("bold", v, st.bold === v)).join("")}${["must add tests", "design-system strict", "no new deps"].map((v) => chip("flag", v, st.flags.has(v))).join("")}</div><div class="lab">sources</div><div class="chips">${["mission", "shared docs · RFCs", "AST", "Descriptions", "Digest", "Entry points", "Design", "Tests", "Git", "Timeline", "Memory"].map((v) => chip("src", v, st.src.has(v))).join("")}</div><div class="lab">the intent · what every agent boots with</div><div class="card" style="cursor:default;line-height:1.6">${esc(st.what)} · ${esc(st.where)} · ${esc(st.bold)}${st.flags.size ? " · " + [...st.flags].join(" · ") : ""}<small>reads ${st.src.size} sources · ${st.what === "feature" ? "ship the smallest complete version, then iterate" : st.what === "fix" ? "reproduce first, fix the cause, add the regression test" : "keep behaviour identical; measure before and after"}</small></div></div>`;
+      b.querySelectorAll(".chip").forEach((c) => { c.onclick = () => { const g = c.dataset.g, v = c.dataset.v; if (g === "flag") st.flags.has(v) ? st.flags.delete(v) : st.flags.add(v); else if (g === "src") st.src.has(v) ? st.src.delete(v) : st.src.add(v); else st[g] = v; note("intent", `${st.what} · ${st.where} · ${st.bold}`, "you"); draw(); }; }); };
+    draw();
+  },
+  context(b) {
+    const docs = ["agents may not touch products.ts until the v3 schema lands", "keep the public API of useCart stable"]; let mission = "a minimal store page — six objects, one cart, no accounts";
+    const draw = () => { b.innerHTML = `<div class="ctx"><div class="kpis"><div><b>${docs.length}</b>notes & docs</div><div><b>${S.items.filter((i) => i.kind === "agent").length}</b>live sources</div><div><b>${S.timeline.filter((e) => e.kind === "intent").length}</b>intents</div><div><b>${mission ? "✓" : "—"}</b>mission</div></div><div class="lab">mission — shared, every agent reads it</div><textarea rows="2" style="width:100%">${esc(mission)}</textarea><div class="lab">inserted context — every agent's prompt carries it</div>${docs.map((d, i) => `<div class="doc"><span>${esc(d)}</span><button data-i="${i}" title="remove">✕</button></div>`).join("")}<div class="ask"><input placeholder="paste new context (docs, requirements, decisions)… Enter"><button>+ add</button></div></div>`;
+      b.querySelector("textarea").onchange = (e) => { mission = e.target.value; note("mission", mission.slice(0, 30), "you"); };
+      const inp = b.querySelector(".ask input"); const add = () => { if (!inp.value.trim()) return; docs.push(inp.value.trim()); note("context", inp.value.trim().slice(0, 30), "you"); draw(); }; inp.onkeydown = (e) => { if (e.key === "Enter") add(); }; b.querySelector(".ask button").onclick = add;
+      b.querySelectorAll(".doc button").forEach((x) => { x.onclick = () => { docs.splice(+x.dataset.i, 1); draw(); }; }); };
+    draw();
+  },
+  standup(b) {
+    const draw = () => { const agents = S.items.filter((i) => i.kind === "agent"); b.innerHTML = `<div class="standup"><div class="dzbar"><span>standup · ${agents.length} agent${agents.length === 1 ? "" : "s"} report</span><span class="sp"></span><button class="run">🔊 run standup</button></div>${agents.length ? agents.map((a) => { const ev = S.timeline.filter((e) => e.who === NAMES[a.engine][2]); const done = ev.some((e) => e.kind === "delivered"); return `<div class="rep"><b>${NAMES[a.engine][0]} ${esc(a.label)}</b><div>${done ? "delivered — 3 tasks verified, one join, tests 6/6" : ev.length ? `working — ${ev.length} actions so far, last: ${esc(ev[0].kind)} ${esc(ev[0].label)}` : "booting its worktree"}</div><div class="hint">${ev.filter((e) => e.kind === "refused").length} refused write${ev.filter((e) => e.kind === "refused").length === 1 ? "" : "s"} · ${ev.filter((e) => e.kind === "edit" || e.kind === "task").length} changes · blockers: none</div></div>`; }).join("") : `<div class="empty">no agent pane in this session yet — add claude / codex / opencode from the agents category</div>`}</div>`;
+      b.querySelector(".run").onclick = () => { note("standup", `${agents.length} agents reported`, "you"); toast(agents.length ? "standup read aloud — every agent reported in one paragraph" : "nothing to report yet — start an agent"); draw(); }; };
+    draw(); setInterval(() => { if (b.isConnected) draw(); }, 2500);
+  },
+  sketch(b) {
+    b.innerHTML = `<div class="sk"><div class="dzbar"><button class="tool on" data-t="pen">✎</button><button class="tool" data-t="rect">▭</button><button class="tool" data-t="text">T</button>${["#efe9e2", "#c97c5c", "#7fc48f", "#d9b45a", "#d9705a"].map((c, i) => `<button class="col ${i === 1 ? "on" : ""}" data-c="${c}" style="background:${c}"></button>`).join("")}<span class="sp"></span><button class="clr">✕ clear</button></div><canvas></canvas></div>`;
+    const cv = b.querySelector("canvas"), ctx = cv.getContext("2d"); let tool = "pen", color = "#c97c5c", down = false, x0 = 0, y0 = 0, snap = null;
+    const fit = () => { const r = cv.parentElement.getBoundingClientRect(); const w = Math.max(200, r.width - 2), h = Math.max(120, r.height - 40); if (cv.width !== w || cv.height !== h) { const img = cv.width ? ctx.getImageData(0, 0, cv.width, cv.height) : null; cv.width = w; cv.height = h; if (img) ctx.putImageData(img, 0, 0); } }; new ResizeObserver(fit).observe(cv.parentElement); fit();
+    const pos = (e) => { const r = cv.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
+    cv.onpointerdown = (e) => { down = true; [x0, y0] = pos(e); snap = ctx.getImageData(0, 0, cv.width, cv.height); if (tool === "text") { const t = prompt("text", "stepper here"); if (t) { ctx.fillStyle = color; ctx.font = "12px JetBrains Mono"; ctx.fillText(t, x0, y0); } down = false; note("sketch", "text", "you"); } };
+    cv.onpointermove = (e) => { if (!down) return; const [x, y] = pos(e); ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.lineCap = "round"; if (tool === "pen") { ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x, y); ctx.stroke(); [x0, y0] = [x, y]; } else { ctx.putImageData(snap, 0, 0); ctx.strokeRect(x0, y0, x - x0, y - y0); } };
+    cv.onpointerup = () => { if (down) note("sketch", tool, "you"); down = false; };
+    b.querySelectorAll(".tool").forEach((t) => { t.onclick = () => { tool = t.dataset.t; b.querySelectorAll(".tool").forEach((x) => x.classList.toggle("on", x === t)); }; });
+    b.querySelectorAll(".col").forEach((c) => { c.onclick = () => { color = c.dataset.c; b.querySelectorAll(".col").forEach((x) => x.classList.toggle("on", x === c)); }; });
+    b.querySelector(".clr").onclick = () => ctx.clearRect(0, 0, cv.width, cv.height);
+  },
+  graph(b) {
+    const N = [["main.tsx", 80, 60], ["App.tsx", 240, 60], ["cart.ts", 400, 40], ["products.ts", 400, 120], ["index.css", 80, 140], ["vite.config.ts", 560, 90]]; const E = [[0, 1], [1, 2], [1, 3], [2, 3], [0, 4]];
+    b.innerHTML = `<div class="dzbar"><span>codebase · ${N.length} nodes · ${E.length} runtime edges · 0 cycles</span><span class="sp"></span><span class="hint">hover a node · scroll to zoom</span></div><svg viewBox="0 0 640 180" style="width:100%;height:calc(100% - 34px)">${E.map(([a, z]) => `<line x1="${N[a][1]}" y1="${N[a][2]}" x2="${N[z][1]}" y2="${N[z][2]}" stroke="var(--border)" stroke-width="1.5" data-e="${a}-${z}"/>`).join("")}${N.map(([n, x, y], i) => `<g class="node" data-i="${i}" style="cursor:pointer"><circle cx="${x}" cy="${y}" r="${i === 1 ? 14 : 9}" fill="${n.endsWith(".css") ? "#c97c5c" : "#4f8fd8"}" opacity=".85"/><text x="${x}" y="${y + 26}" text-anchor="middle" fill="var(--dim)" font-size="10" font-family="JetBrains Mono">${n}</text></g>`).join("")}</svg>`;
+    const svg = b.querySelector("svg"); let z = 1; svg.onwheel = (e) => { e.preventDefault(); z = Math.min(2.5, Math.max(.6, z - Math.sign(e.deltaY) * .1)); svg.style.transform = `scale(${z})`; };
+    b.querySelectorAll(".node").forEach((g) => { g.onmouseenter = () => { const i = g.dataset.i; b.querySelectorAll("line").forEach((l) => { l.setAttribute("stroke", l.dataset.e.split("-").includes(i) ? "var(--brand)" : "var(--border)"); }); }; g.onmouseleave = () => b.querySelectorAll("line").forEach((l) => l.setAttribute("stroke", "var(--border)")); g.onclick = () => { const f = "src/" + N[+g.dataset.i][0]; if (FILES[f]) { addItem("code", "Code", "codebase", { path: f }); } }; });
+  },
+  diagram(b) {
+    b.innerHTML = `<div class="dzbar"><span>codebase · shift-drag to box-select folders</span></div><div class="dg"><div class="box logic"><b>src/</b><span>4 files · logic</span><div class="hint">App · cart · products · main</div></div><div class="box"><b>vite.config.ts</b><span>build</span></div><div class="box"><b>public/</b><span>assets</span></div><div class="box" style="border-color:var(--brand)"><b>index.css</b><span>design tokens · 7</span></div></div><div class="hint" style="margin-top:8px">boxes are folders the atlas indexes; click one to open its files in Code</div>`;
+    b.querySelectorAll(".box").forEach((x) => { x.onclick = () => addItem("code", "Code", "codebase", { path: x.textContent.includes("src/") ? "src/App.tsx" : "vite.config.ts" }); });
+  },
+  xray(b) {
+    const rows = [["src/App.tsx", 85, 112, 2, 1, "coupling 39 — imports store + data"], ["src/cart.ts", 92, 31, 2, 1, "structure 80 — nested setState"], ["src/products.ts", 100, 12, 0, 2, "—"], ["src/main.tsx", 100, 10, 2, 0, "—"], ["vite.config.ts", 100, 4, 1, 0, "—"]];
+    b.innerHTML = `<div class="dzbar"><span>x-ray · every file, measured · $0</span><span class="sp"></span><span class="hint">click a row → Code</span></div><table class="xr"><tr><th>file</th><th>§</th><th>lines</th><th>imports</th><th>imported by</th><th>weakest</th></tr>${rows.map(([f, s, l, i, ib, w]) => `<tr data-f="${f}"><td>${f}</td><td style="color:${s >= 90 ? "var(--ok)" : "var(--warn)"}">${s}</td><td>${l}</td><td>${i}</td><td>${ib}</td><td class="hint">${w}</td></tr>`).join("")}</table><div class="hint" style="margin-top:8px">blast radius of a change to cart.ts: App.tsx · main.tsx · 1 test</div>`;
+    b.querySelectorAll("tr[data-f]").forEach((r) => { r.onclick = () => addItem("code", "Code", "codebase", { path: r.dataset.f }); });
+  },
+  git(b) {
+    const draw = () => { const agents = S.items.filter((i) => i.kind === "agent"); const rows = [...agents.map((a) => ({ lane: 1, sha: `wt/${a.id}`, msg: `${a.label} — ${S.timeline.some((e) => e.who === NAMES[a.engine][2] && e.kind === "delivered") ? "3 files · ready to review" : "in progress"}`, who: NAMES[a.engine][2] })), { lane: 0, sha: "80f0b2e", msg: "cart bump from the add event, not an effect", who: "dev · main" }, { lane: 0, sha: "1935fb6", msg: "ministore: a minimal store page (vite + react)", who: "danj · main" }];
+      b.innerHTML = `<div class="dzbar"><span>git graph · main${agents.length ? ` + ${agents.length} agent worktree${agents.length === 1 ? "" : "s"}` : ""}</span></div><div class="gg">${rows.map((r, i) => `<div class="gr"><span class="lanes"><i class="l0 ${r.lane === 0 ? "on" : ""}"></i><i class="l1 ${r.lane === 1 ? "on" : ""}"></i></span><span class="sha">${r.sha}</span><span class="msg">${esc(r.msg)}</span><span class="who">${r.who}</span></div>`).join("")}</div><div class="hint" style="margin-top:8px">every agent works on its own worktree branch; the join lands one change list back on main</div>`; };
+    draw(); setInterval(() => { if (b.isConnected) draw(); }, 3000);
+  },
+  agent(b, it) { renderAgent(b, it); },
+};
+function hl(src) { return src.split("\n").map((l, i) => { let s = esc(l); s = s.replace(/"([^"]*)"/g, '\u0001$1\u0002').replace(/`([^`]*)`/g, '\u0003$1\u0004'); s = s.replace(/\b(import|export|from|function|const|return|type|if|else|delete|new)\b/g, '<span class="k">$1</span>').replace(/\b(useState|useCallback|useMemo|useEffect|formatPrice|setTimeout|createRoot|defineConfig)\b/g, '<span class="f">$1</span>'); s = s.replace(/\u0001([^\u0002]*)\u0002/g, '<span class="s">"$1"</span>').replace(/\u0003([^\u0004]*)\u0004/g, '<span class="s">`$1`</span>'); return `<span class="ln">${i + 1}</span>` + s; }).join("\n"); }
+function reply(q) { const l = q.toLowerCase(); if (/cart|stepper|qty/.test(l)) return `<b>Read-only, so here's the plan, not the edit.</b> <code>useCart</code> already exposes <code>add</code>/<code>remove</code>; a stepper is two buttons on each line in <code>App.tsx</code> calling them. Start an agent scoped to <code>src/**</code> and paste this ask — it will also add a test.`; if (/test/.test(l)) return `The suite is <b>4 tests, all passing</b> (<code>src/cart.test.ts</code>). Nothing covers <code>App.tsx</code> yet — the constitution flags coupling 39 there.`; if (/score|constitution|law/.test(l)) return `Health <b>92</b>. Weakest axis is coupling (39): <code>App.tsx</code> imports both the store and the data module. The laws are all clean — 0 violations across 5 files.`; return `I can read everything in the repo and answer — writing is for agents, each in a box you draw. Try: <i>what does useCart expose?</i> or start an agent under <b>agents</b>.`; }
+
+// ─────────────────────────────────────────────────────────────────────────────────────────────
+// the agent card → a simulated agent with the real rules: scope gate, delegation, verify, join
+const NAMES = { "claude-code": ["✦", "Claude Code", "claude"], codex: ["◇", "Codex", "codex"], opencode: ["☽", "OpenCode", "opencode"] };
+function openAgentCard(kind) {
+  const m = $("#modal"); let engine = kind; const scope = new Set(); let ask = "";
+  const draw = () => {
+    const files = ["package.json", "public", "src", ...Object.keys(FILES).filter((f) => f.startsWith("src/")).map((f) => "  " + f), "vite.config.ts"];
+    const writable = [...scope].flatMap((g) => g === "src" ? Object.keys(FILES).filter((f) => f.startsWith("src/")) : g.startsWith("src/") ? [g] : g === "public" ? [] : [g]).length;
+    m.innerHTML = `<div class="modal"><div class="win" style="width:min(720px,94vw);max-height:90vh"><div class="wh"><b>new agent</b><span class="sub">engine · what it may write · what it should do</span><span class="sp"></span><button class="x">✕</button></div><div class="wb">
+      <div style="display:flex;gap:8px">${Object.entries(NAMES).map(([k, [g, n]]) => `<button class="chip ${engine === k ? "on" : ""}" data-e="${k}">${g} ${n}</button>`).join("")}</div>
+      <div class="lab">what should it do</div><textarea rows="3" placeholder="add a quantity stepper to the cart lines — keep the public API stable, add a test" style="width:100%;resize:vertical">${esc(ask)}</textarea><div class="hint">becomes the thread's name and its first prompt · ⌘⏎ starts</div>
+      <div class="lab">what it may write</div><div class="tree">${files.map((f) => { const g = f.trim(); return `<label class="${f.startsWith("  ") ? "ind" : ""}"><input type="checkbox" data-g="${g}" ${scope.has(g) || (g.startsWith("src/") && scope.has("src")) ? "checked" : ""}>${g === "src" || g === "public" ? "▸ " : ""}${g.replace(/^src\//, "")}</label>`; }).join("")}</div>
+      <div class="hint" style="color:${scope.size ? "var(--ok)" : "var(--muted)"}">${scope.size ? `${scope.size} glob${scope.size > 1 ? "s" : ""} · ${writable} file${writable === 1 ? "" : "s"} writable · reads everything, writes only here` : "tick at least one folder or file — a write outside it is refused"}</div>
+      <div class="lab">what it reads first · antiIDE context</div><div class="chips">${["file review", "folder review", "§ the ratified laws", "import graph", "blast radius", "test map", "coverage", "code digest"].map((c, i) => `<span class="chip ${i < 3 ? "on" : ""}">${c}</span>`).join("")}</div>
+    </div><div class="wh" style="border-top:1px solid var(--border);border-bottom:none"><span class="hint">${ask.trim() && scope.size ? `“${esc(ask.trim().slice(0, 48))}”` : "the ask and a scope are both required"}</span><span class="sp"></span><button class="primary" ${ask.trim() && scope.size ? "" : "disabled"}>▶ start</button></div></div></div>`;
+    m.querySelector(".x").onclick = close; m.querySelector(".modal").onclick = (e) => { if (e.target.classList.contains("modal")) close(); };
+    m.querySelectorAll("[data-e]").forEach((c) => { c.onclick = () => { engine = c.dataset.e; draw(); }; });
+    const ta = m.querySelector("textarea"); ta.oninput = () => { ask = ta.value; m.querySelector(".primary").disabled = !(ask.trim() && scope.size); m.querySelectorAll(".wh .hint")[0].textContent = ask.trim() && scope.size ? `“${ask.trim().slice(0, 48)}”` : "the ask and a scope are both required"; }; ta.onkeydown = (e) => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) start(); };
+    m.querySelectorAll(".tree input").forEach((c) => { c.onchange = () => { c.checked ? scope.add(c.dataset.g) : scope.delete(c.dataset.g); if (c.dataset.g === "src" && !c.checked) for (const f of Object.keys(FILES)) scope.delete(f); draw(); }; });
+    m.querySelectorAll(".chips .chip").forEach((c) => { c.onclick = () => c.classList.toggle("on"); });
+    m.querySelector(".primary").onclick = start; if (!ask) ta.focus();
+  };
+  const close = () => { m.innerHTML = ""; };
+  const start = () => { if (!(ask.trim() && scope.size)) return; close(); const title = ask.trim().split("\n")[0].slice(0, 48); const id = addItem("agent", title, "agents", { engine, scope: [...scope].map((g) => g === "src" ? "src/**" : g), ask: ask.trim() }); S.fuel[NAMES[engine][2]].on = true; note("agent", `${NAMES[engine][1]} · ${title}`, NAMES[engine][2]); };
+  draw();
+}
+const inScope = (scope, p) => scope.some((g) => g.endsWith("/**") ? p.startsWith(g.slice(0, -3) + "/") : g === p);
+function renderAgent(b, it) {
+  const [g, name, who] = NAMES[it.engine]; const lines = []; const push = (cls, html) => { lines.push({ cls, html, ts: now() }); draw(); };
+  let strip = null, phrase = "";
+  const draw = () => { b.innerHTML = `<div class="agent"><div class="meta"><span>${g} <b>${name}</b></span><span>writes <b>${it.scope.join(", ")}</b></span><span>reads everything</span><span>worktree <b>wt/${it.id}</b></span></div>${lines.map((l) => `<div class="line ${l.cls}"><span class="ts">${l.ts}</span><span>${l.html}</span></div>`).join("")}${strip ? `<div class="strip">${strip.map((s) => `<span class="node ${s}"></span>`).join("")}<span class="ph">${phrase}</span></div>` : ""}<div class="ask"><input placeholder="say something to the agent… (Enter)"><button>send</button></div></div>`; b.scrollTop = 1e9; const inp = b.querySelector(".ask input"); const send = () => { if (!inp.value.trim()) return; push("me", `<span class="k">you ›</span> ${esc(inp.value.trim())}`); const q = inp.value.trim(); inp.value = ""; setTimeout(() => push("", `<span class="k">›</span> ${esc(reply(q).replace(/<[^>]+>/g, "").slice(0, 160))}`), 900); }; inp.onkeydown = (e) => { if (e.key === "Enter") send(); }; b.querySelector(".ask button").onclick = send; };
+  const spend = (tok) => { const f = S.fuel[who]; f.tok += tok; f.usd += tok * 0.000012; renderGhosts(); };
+  const t = (ms, f) => setTimeout(f, ms);
+  push("me", `<span class="k">you ›</span> ${esc(it.ask)}`);
+  t(700, () => { push("", `<span class="k">›</span> reading .antiloki/context/INDEX.md · laws · folder review · 2 file reviews`); spend(3100); });
+  t(1900, () => { push("", `<span class="k">›</span> Read src/cart.ts · Read src/App.tsx`); spend(2400); note("read", "src/cart.ts · src/App.tsx", who); });
+  const outside = it.scope.some((s) => s.startsWith("src")) ? "package.json" : "src/cart.ts";
+  t(3200, () => { push("gate", `⊘ Edit ${outside} — <b>refused</b>: outside ${it.scope.join(", ")} (the agent is told why)`); note("refused", `write ${outside}`, who); toast(`gate: ${outside} is outside the box — refused before the file changed`); });
+  t(4400, () => { const f = inScope(it.scope, "src/App.tsx") ? "src/App.tsx" : it.scope[0].replace("/**", "/index.ts"); push("ok", `✓ Edit ${f} · +18 −3 · inside scope`); spend(5200); note("edit", `${f} +18 −3`, who); setDiff(it, f); });
+  t(5600, () => { push("", `<span class="k">›</span> the ask has 3 independent parts — delegating a goal run (speed · isolation · a verdict each)`); strip = ["done", "run", "run", "run", "join"]; phrase = "3 subagents · wave 1"; draw(); note("goal", "planned · 3 tasks", who); });
+  [[7200, 1, "stepper UI · src/App.tsx"], [8100, 3, "test · src/cart.test.ts"], [9000, 2, "cart api · src/cart.ts"]].forEach(([ms, i, what]) => t(ms, () => { strip[i] = "done"; phrase = `task ${i} done`; push("ok", `✓ task ${i} · ${what} · owned files only`); spend(4100); note("task", what, who); }));
+  t(10200, () => { phrase = "verifying · 3 verdicts"; draw(); });
+  t(11600, () => { push("ok", `✓ verify · PASS · PASS · PASS`); strip[4] = "join run"; phrase = "joining"; draw(); note("verify", "3/3 PASS", who); });
+  t(12800, () => { strip[4] = "join done"; phrase = "delivered · 12.8 s"; push("ok", `⇢ join · one change list · 3 files · tests 6/6 · <b>delivered</b>`); spend(1800); note("delivered", `${it.label}`, who); toast("goal run delivered — 3 tasks, 3 verdicts, one join"); renderSide(); });
+  draw();
+}
+function setDiff(it, f) { S.lastDiff = `<div class="diff"><div class="hint" style="margin-bottom:8px">${NAMES[it.engine][1]} · wt/${it.id} · ${f} · +18 −3 · <span style="color:var(--ok)">no overlap with other worktrees</span></div><pre><span class="h">@@ -18,7 +18,22 @@ function ProductCard</span>\n<span class="r">-        &lt;button className="add" onClick={add}&gt;+&lt;/button&gt;</span>\n<span class="a">+        &lt;div className="qty"&gt;</span>\n<span class="a">+          &lt;button className="ghost" onClick={() =&gt; cart.remove(product.id)} aria-label="less"&gt;−&lt;/button&gt;</span>\n<span class="a">+          &lt;b&gt;{qty}&lt;/b&gt;</span>\n<span class="a">+          &lt;button className="ghost" onClick={add} aria-label="more"&gt;+&lt;/button&gt;</span>\n<span class="a">+        &lt;/div&gt;</span>\n<span class="h">@@ tests/cart.test.ts (new)</span>\n<span class="a">+  it("steps quantity up and down", () =&gt; { … })</span></pre></div>`; for (const b of Object.values(bodies)) if (b.dataset.role === "diff") b.innerHTML = S.lastDiff; }
+
+// ─────────────────────────────────────────────────────────────────────────────────────────────
+// ghosts: fuel + timeline previews → focused windows
+function renderGhosts() {
+  const f = S.fuel; const fmt = (n) => n >= 1000 ? `${(n / 1000).toFixed(n >= 10000 ? 0 : 1)}k` : String(n);
+  $("#fuelG").innerHTML = `<div class="l">claude — <b>${f.claude.on || f.claude.tok ? fmt(f.claude.tok) + " tok · $" + f.claude.usd.toFixed(2) : "tok · $ —"}</b> · 5h ${f.claude.h5}% · wk ${f.claude.wk}%<span class="dot ${f.claude.on ? "on" : ""}"></span></div><div class="l">codex ${f.codex.on ? `<b>${fmt(f.codex.tok)} tok · $${f.codex.usd.toFixed(2)}</b>` : "not running"}<span class="dot ${f.codex.on ? "on" : ""}"></span></div><div>opencode ${f.opencode.on ? `<b>${fmt(f.opencode.tok)} tok · $${f.opencode.usd.toFixed(2)}</b>` : "not running"}<span class="dot ${f.opencode.on ? "on" : ""}"></span></div><div>fuel <span class="more">···</span></div>`;
+  const tl = S.timeline.slice(0, 3); const agents = S.items.filter((i) => i.kind === "agent").length;
+  $("#tlG").innerHTML = (tl.length ? tl.map((e) => `<div><span class="t">${e.ts}</span><b>${esc(e.kind)} ${esc(e.label)}</b><span class="dot ${e.who === "you" ? "" : "on"}"></span></div>`).join("") : `<div>timeline — nothing yet</div>`) + `<div>${agents} agent${agents === 1 ? "" : "s"} <span class="more">···</span></div>`;
+}
+$("#fuelG").onclick = () => { const f = S.fuel; window_(`fuel`, `tokens · cost · limits`, `<div class="fuel">${Object.entries(NAMES).map(([k, [g, n, who]]) => `<div class="eng"><h4>${g} ${n}<span class="st">${f[who].on ? "running" : "not running"}</span></h4><div class="kv"><div>tokens<b>${f[who].tok.toLocaleString()}</b></div><div>cost<b>$${f[who].usd.toFixed(2)}</b></div><div>session<b>${f[who].on ? "live" : "—"}</b></div><div>model<b>${who === "claude" ? "opus" : who === "codex" ? "gpt-5" : "—"}</b></div></div><div class="lim"><span>5-hour</span><div class="bar"><i style="width:${f[who].h5}%"></i></div><span>${f[who].h5}%</span></div><div class="lim"><span>weekly</span><div class="bar"><i style="width:${f[who].wk}%"></i></div><span>${f[who].wk}%</span></div></div>`).join("")}</div>`, 720); };
+$("#tlG").onclick = () => { const color = (w) => w === "you" ? "var(--dim)" : w === "claude" ? "var(--brand)" : w === "codex" ? "#7fb7e6" : "#8fd0c0"; let filter = "all"; const draw = () => { const rows = S.timeline.filter((e) => filter === "all" || e.who === filter); $("#modal .wb").innerHTML = `<div class="tl"><div class="filters">${["all", "you", "claude", "codex", "opencode"].map((w) => `<button class="chip ${filter === w ? "on" : ""}" data-w="${w}">${w}</button>`).join("")}</div>${rows.length ? rows.map((e) => `<div class="lane"><span class="ts">${e.ts}</span><span class="dt" style="background:${color(e.who)}"></span><span><b style="color:var(--fg)">${esc(e.kind)}</b> ${esc(e.label)}</span><span class="who">${e.who}</span></div>`).join("") : `<div class="empty">nothing yet — open a widget, start an agent</div>`}</div>`; $("#modal .wb").querySelectorAll("[data-w]").forEach((c) => { c.onclick = () => { filter = c.dataset.w; draw(); }; }); }; window_("timeline", "every agent's audit trail · read it like a stack trace", "", 860); draw(); };
+function window_(title, sub, html, w) { const m = $("#modal"); m.innerHTML = `<div class="modal"><div class="win" style="width:min(${w}px,94vw);height:min(80vh,680px)"><div class="wh"><b>${esc(title)}</b><span class="sub">${esc(sub)}</span><span class="sp"></span><button class="x">✕</button></div><div class="wb">${html}</div></div></div>`; m.querySelector(".x").onclick = () => { m.innerHTML = ""; }; m.querySelector(".modal").onclick = (e) => { if (e.target.classList.contains("modal")) m.innerHTML = ""; }; }
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") $("#modal").innerHTML = ""; });
+
+// ─────────────────────────────────────────────────────────────────────────────────────────────
+// stage
+function cellHeader(it, inSplit) { return `<div class="hd"><span class="g">◆</span><span class="name" title="double-click to rename">${esc(it.label)}</span>${it.uid ? `<span class="uid">#${it.uid}</span>` : ""}<span class="sp"></span>${inSplit ? `<button class="rm" title="remove from the split">⊟</button>` : ""}${it.obligatory ? "" : `<button class="cl" title="close">✕</button>`}</div>`; }
+function renderStage() {
+  const threads = S.view === "threads"; $("#scroll").hidden = !threads; $("#blocks").hidden = threads;
+  if (threads) {
+    const shown = S.shown.map((id) => S.items.find((i) => i.id === id)).filter(Boolean); const { cols, rows, spans } = layout(shown.length);
+    const grid = $("#grid"); grid.style.gridTemplateColumns = `repeat(${cols}, minmax(0,1fr))`; grid.style.gridTemplateRows = `repeat(${rows}, minmax(0,1fr))`; const sc = $("#scroll"); if (rows > 2) { grid.style.flex = "0 0 auto"; grid.style.height = `${Math.round(sc.clientHeight * rows / 2)}px`; sc.style.overflowY = "auto"; } else { grid.style.flex = "1 1 0"; grid.style.height = ""; sc.style.overflowY = "hidden"; }
+    grid.innerHTML = ""; shown.forEach((it, i) => { const c = el(`<div class="cell" style="grid-column:span ${spans[i][0]};grid-row:span ${spans[i][1]}">${cellHeader(it, shown.length > 1)}</div>`); c.appendChild(body(it)); c.querySelector(".rm")?.addEventListener("click", () => toggleShown(it.id)); c.querySelector(".cl")?.addEventListener("click", () => closeItem(it.id)); c.querySelector(".name").ondblclick = () => { const v = prompt("rename", it.label); if (v) { it.label = v; render(); } }; grid.appendChild(c); });
+  } else {
+    const items = S.items.filter((i) => i.id !== "chat"); const b = $("#blocks"); b.innerHTML = "";
+    if (!items.length) b.innerHTML = `<div class="empty">Blocks view — every widget as a tile, rows of ten<br><span class="hint">add widgets from the sidebar, or switch to Threads</span></div>`;
+    for (let r = 0; r < items.length; r += 10) { const row = el(`<div class="rowb"></div>`); for (const it of items.slice(r, r + 10)) { const t = el(`<div class="tile">${cellHeader(it, false)}</div>`); t.appendChild(body(it)); t.querySelector(".cl")?.addEventListener("click", () => closeItem(it.id)); row.appendChild(t); } b.appendChild(row); }
+  }
+}
+function render() { renderSide(); renderStage(); renderGhosts(); }
+addEventListener("resize", () => renderStage());
+$("#vBlocks").onclick = () => { S.view = "blocks"; $("#vBlocks").classList.add("on"); $("#vThreads").classList.remove("on"); render(); };
+$("#vThreads").onclick = () => { S.view = "threads"; $("#vThreads").classList.add("on"); $("#vBlocks").classList.remove("on"); render(); };
+
+// a warm start: two tools open so the first frame shows the desk, not an empty room
+addItem("terminal", "Terminal", "tools"); addItem("code", "Code", "codebase", { path: "src/cart.ts" }); S.shown = [S.items[1].id, S.items[2].id]; render();
+setTimeout(() => toast("click + under agents to start one — watch the gate, the goal run and the timeline"), 1200);
+</script>

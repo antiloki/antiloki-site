@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="How antiloki works: measure every run, rank the combinations, bind the winner to a role, and let a router give each job to the model that earned it. Nothing is trained; what is produced is a pipeline with its own score, price and speed.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><text y=%2213%22 font-size=%2213%22>⚡</text></svg>">
+<title>How a Merge Is Made — antiloki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Geist:wght@700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="post.css">
+</head><body>
+<nav class="top"><div class="wrap">
+  <a class="mark" href="/" aria-label="antiloki">antiloki<em>.</em></a>
+  <span class="sp"></span>
+  <a class="q" href="/">Home</a>
+  <a class="q" href="/#compare">Compared</a>
+  <a class="q" href="/blog/">Blog</a>
+  <a class="q" href="/#pricing">Pricing</a>
+  <a class="btn sm ember" href="/#download">Download · free 14 days</a>
+</div></nav>
+<main class="pwrap">
+  <nav class="toc" aria-label="Contents"><details id="toc-d" open><summary class="eyebrow">contents</summary><ol>
+      <li><a href="#s-no-weights-change"><i>1</i>No weights change</a></li>
+      <li><a href="#s-the-adapter-what-a-fine-tune-would-have-"><i>2</i>The adapter: what a fine-tune would have had to learn</a></li>
+      <li><a href="#s-the-three-steps"><i>3</i>The three steps</a></li>
+      <li><a href="#s-what-the-board-looked-like"><i>4</i>What the board looked like</a></li>
+      <li><a href="#s-it-keeps-measuring-after-you-install-it"><i>5</i>It keeps measuring after you install it</a></li>
+      <li><a href="#s-what-is-deterministic-and-what-is-not"><i>6</i>What is deterministic, and what is not</a></li>
+    </ol></details></nav>
+  <article class="paper">
+
+  <span class="eyebrow">antiloki · the method</span>
+  <h1>Compiled, <em>not trained.</em></h1>
+  <p class="sub">Measure every run. Rank the combinations. Bind the winner to a role. Let a router give each job to the model that earned it.</p>
+
+  <div class="byline">
+    <span>Written <b>2026-09-24</b></span>
+    <span>The method, end to end</span>
+    <span><a href="/">← antiloki</a></span>
+  </div>
+
+  <div class="callout"><p><b>Updated 2026-10-01.</b> The method on this page stands: compiled, not trained; deterministic where it can be, a model's opinion only where it must. Four details moved. The weights and tolerance are different now — <em>one</em> tolerance (a seat wins if it keeps at least 80 % of the best measured quality), then price, then time, rather than the 0.7 / 0.2 / 0.1 and three-point rule below. QA is obligatory and deterministic-first, not &ldquo;switched on when you want it&rdquo;. The board in section 04, and the Qwen and DeepSeek figures, are the first edition's withdrawn arms: the product is five subscription seats. And an ask of size L or smaller now runs on one seat alone with no planner. Current numbers: <a href="/paper.html">the technical report, fourth edition</a>.</p></div>
+
+  <div class="abstract">
+    <span class="eyebrow">the claim, in one paragraph</span>
+    <p>The same model, checked, is a better model. One Qwen session passes 35 of 37 behavioural checks on an
+      eight-module task and misses the same two every time. The <em>identical</em> model — planning for itself,
+      verifying its own diff — passes all 37, three runs out of three. That is what a merge sells: not a better
+      model, a checked one, at the cheap model's price.</p>
+  </div>
+
+  <h2 id="s-no-weights-change"><span class="n">01</span>No weights change</h2>
+  <p>A merge is not a fine-tune and not a distillation. Nothing is trained, and no weights exist afterwards that did
+    not exist before. What a merge produces is a <b>pipeline</b> — a binding of one model to each job of a task, with
+    its own measured score, price and speed.</p>
+  <p>A task has more jobs in it than "write the code". Something has to decide what to build, something has to write
+    it, something has to check the diff against what was asked, something has to judge whether the result is
+    acceptable, and something has to read the codebase well enough to answer the first question. Those are five
+    different jobs with five different difficulty profiles, and the industry's habit is to give all five to the most
+    expensive model in the house.</p>
+  <p>A merge gives each job to whichever model the benchmark measured best <em>at that job</em> — which, for the two
+    jobs that dominate the token count, is usually not the expensive one.</p>
+
+  <h2 id="s-the-adapter-what-a-fine-tune-would-have-"><span class="n">02</span>The adapter: what a fine-tune would have had to learn</h2>
+  <p>Binding models is half of it. The other half is that a general model knows nothing about your codebase, and a
+    fine-tune's whole value proposition is that it has been made to know something.</p>
+  <p>antiloki supplies that knowledge instead of training it in: the laws your repository lives by, the dependency
+    graph, the per-file reviews and their axes, the blast radius of a change — all recomputed deterministically every
+    commit — plus the skills, the specialist lenses and the tools the role works with. That package is what an agent
+    starts from, and it is why a cheap model writing inside it produces work a cheap model does not otherwise
+    produce.</p>
+  <p class="note">Same models. Better orchestration. Measured results.</p>
+
+  <h2 id="s-the-three-steps"><span class="n">03</span>The three steps</h2>
+  <div class="steps">
+    <div>
+      <i>01 · measure</i>
+      <h3>Every run is scored.</h3>
+      <p>A behavioural audit of the result, a deterministic cost (model × tokens, cache reads at a tenth), and a real
+        timer. One row per job × size × combination. Ours ships with the app; yours is added every time you work.</p>
+    </div>
+    <div>
+      <i>02 · rank</i>
+      <h3>Quality first, then price.</h3>
+      <p><code>0.7 quality + 0.2 cost + 0.1 time</code> — and a candidate more than three points behind the best gets
+        no credit for being cheap. A row earns its place by repeating; one lucky run ranks nothing.</p>
+    </div>
+    <div>
+      <i>03 · hire</i>
+      <h3>You hire a role, not a stage.</h3>
+      <p>Nobody hires a verifier. You hire a Backender, a Frontend designer, a Tester — and it arrives carrying the
+        merge that won <em>its</em> kind of work, plus the skills, specialists and tools that role uses. Three of
+        each: cheaper, faster, best.</p>
+    </div>
+  </div>
+
+  <h2 id="s-what-the-board-looked-like"><span class="n">04</span>What the board looked like</h2>
+  <div class="scrollx"><table class="board2">
+    <thead><tr><th>the role you hire</th><th>its merge, measured on its own work</th><th class="n">score</th><th class="n">time</th><th class="n">cost / run</th></tr></thead>
+    <tbody>
+      <tr><td><b>Backender</b></td><td>Codex gpt-5.6-terra decides · OpenCode DeepSeek v4 Flash produces</td><td class="n">37/37</td><td class="n">305 s</td><td class="n">$0.012</td></tr>
+      <tr><td><b>Frontender</b></td><td>Codex gpt-5.6-terra decides · OpenCode Qwen 3.6 Plus produces</td><td class="n">100%</td><td class="n">620 s</td><td class="n">$0.043</td></tr>
+      <tr><td><b>Reviewer</b></td><td>Codex gpt-5.6-sol checks every claim against the diff</td><td class="n">4/4</td><td class="n">21 s</td><td class="n">$0.001</td></tr>
+      <tr><td><b>a one-file change</b></td><td>no merge — one OpenCode Qwen 3.6 Plus session, five for five</td><td class="n">5/5</td><td class="n">34 s</td><td class="n">$0.011</td></tr>
+    </tbody>
+  </table></div>
+  <p>Two of those rows are the method proving itself rather than the product selling itself. The cheap hands that win
+    on <b>backend</b> came <em>last</em> on the screens — so the Frontender is bound to a different worker, because
+    that is what the numbers said. And on a one-file change the benchmark says <b>don't merge at all</b>: the planner
+    call is pure overhead, and the router obeys it.</p>
+  <p class="note">A ranking that always recommended the product's most elaborate arrangement would not be a ranking.</p>
+
+  <h2 id="s-it-keeps-measuring-after-you-install-it"><span class="n">05</span>It keeps measuring after you install it</h2>
+  <p>The table above is a starting point, not an answer. Every run you do is scored on your machine — which merge,
+    which job, how long, what it cost, whether it passed first time — and filed into the same table, which grows with
+    use. Your runs adjust the shipped scores, by at most a third, and a pairing that has only been watched working never
+    displaces one that was benched: observation moves a score, it does not set one.</p>
+  <p>Nothing leaves the machine to make that happen.</p>
+
+  <h2 id="s-what-is-deterministic-and-what-is-not"><span class="n">06</span>What is deterministic, and what is not</h2>
+  <p>Worth being exact about, because "verified" is the most abused word in this industry.</p>
+  <p><b>Always on, and not a model's opinion:</b> every turn is priced and timed; the fence around an agent is enforced
+    where the work lands, for every seat, so a change outside it is shown, can be undone, and stops the merge or the
+    delivery; on Claude panes a hook that sits outside the model also logs each tool call and refuses a write outside
+    the fence before it happens, and the other seats have no such hook; and the codebase
+    review's numbers are arithmetic over your ASTs and git history — size, complexity, coupling, density, churn,
+    untested — so the same commit scores the same twice.</p>
+  <p><b>On every run:</b> the project's own test, build and lint are available as gates the moment an agent claims it
+    is finished, with a failing gate handing the agent the real log to try again; and QA checks each acceptance claim,
+    deterministically where it can (a real page driven in Chrome, requests sent to a server) and with a judge where it
+    cannot. The judge <em>is</em> a model, and it is labelled as one wherever its verdict appears.</p>
+
+  <p class="postnav"><a href="/blog/">← more from the antiloki blog</a> &nbsp;·&nbsp; <a href="/blog/every-run.html">every run behind the numbers →</a> &nbsp;·&nbsp; <a href="/paper.html">the long version →</a></p>
+  </article>
+</main>
+<footer><div class="wrap">
+  <span>antiloki · agents · X-ray</span>
+  <a href="/blog/">blog</a>
+  <a href="/paper.html">the benchmark</a>
+  <a href="https://github.com/danilosilvadev/antiloki-releases/releases">releases</a>
+  <a href="mailto:support@antiloki.com">support@antiloki.com</a>
+  <span class="r">© 2026 antiloki · updated 2026-10-01</span>
+</div></footer>
+<script>
+/* the contents list follows the section you are reading */
+(function () {
+  var d = document.getElementById("toc-d");
+  if (d && window.matchMedia) { var mq = matchMedia("(max-width: 1000px)"), fit = function () { if (mq.matches) d.removeAttribute("open"); else d.setAttribute("open", ""); }; fit(); (mq.addEventListener ? mq.addEventListener("change", fit) : mq.addListener(fit)); }
+  document.querySelectorAll(".toc a").forEach(function (a) { a.addEventListener("click", function () { if (d && window.matchMedia && matchMedia("(max-width: 1000px)").matches) d.removeAttribute("open"); }); });
+  var links = [].slice.call(document.querySelectorAll(".toc a")), map = {};
+  links.forEach(function (a) { map[a.getAttribute("href").slice(1)] = a; });
+  var heads = links.map(function (a) { return document.getElementById(a.getAttribute("href").slice(1)); }).filter(Boolean);
+  if (!heads.length || !("IntersectionObserver" in window)) return;
+  var cur = null;
+  var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { if (cur) cur.classList.remove("on"); cur = map[e.target.id]; if (cur) cur.classList.add("on"); } }); }, { rootMargin: "-84px 0px -72% 0px", threshold: 0 });
+  heads.forEach(function (h) { io.observe(h); });
+})();
+</script>
+</body></html>

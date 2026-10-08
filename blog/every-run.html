@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Every run behind antiloki's numbers: one planner, one worker, with and without the QA gate, against raw Claude Opus on the same task — the wins, the losses, and the two runs that failed because of antiloki.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><text y=%2213%22 font-size=%2213%22>⚡</text></svg>">
+<title>Every Run, With the Scripts — antiloki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Geist:wght@700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="post.css">
+</head><body>
+<nav class="top"><div class="wrap">
+  <a class="mark" href="/" aria-label="antiloki">antiloki<em>.</em></a>
+  <span class="sp"></span>
+  <a class="q" href="/">Home</a>
+  <a class="q" href="/#compare">Compared</a>
+  <a class="q" href="/blog/">Blog</a>
+  <a class="q" href="/#pricing">Pricing</a>
+  <a class="btn sm ember" href="/#download">Download · free 14 days</a>
+</div></nav>
+<main class="pwrap">
+  <nav class="toc" aria-label="Contents"><details id="toc-d" open><summary class="eyebrow">contents</summary><ol>
+      <li><a href="#s-what-was-measured"><i>1</i>What was measured</a></li>
+      <li><a href="#s-how-a-run-was-scored"><i>2</i>How a run was scored</a></li>
+      <li><a href="#s-l-eight-modules-the-main-result"><i>3</i>L — eight modules, the main result</a></li>
+      <li><a href="#s-s-one-function-where-the-shape-loses"><i>4</i>S — one function, where the shape loses</a></li>
+      <li><a href="#s-what-the-numbers-actually-say"><i>5</i>What the numbers actually say</a></li>
+      <li><a href="#s-the-two-runs-that-failed-and-why-they-we"><i>6</i>The two runs that failed, and why they were ours</a></li>
+      <li><a href="#s-running-it-yourself"><i>7</i>Running it yourself</a></li>
+    </ol></details></nav>
+  <article class="paper">
+
+  <span class="eyebrow">antiloki · the benchmark</span>
+  <h1>Every run, <em>with the scripts.</em></h1>
+  <p class="sub">One planner, one worker, with and without the QA gate, against raw Claude Opus on the same task — including the two runs that failed because of antiloki.</p>
+
+  <div class="byline">
+    <span>Measured <b>2026-09-22, 21:11–21:48 UTC</b></span>
+    <span>One box, quiet</span>
+    <span>Fresh clone per arm</span>
+    <span><a href="/">← antiloki</a></span>
+  </div>
+
+  <div class="callout"><p><b>First edition — kept as history (2026-10-01).</b> Every arm on this page ran on 2026-09-22 with Claude as the brain and a DeepSeek model reached through OpenCode Zen as the hands. The product no longer sells that configuration: it is five subscription seats now (Claude, Codex, Cursor, Gemini, Grok), Zen and the Chinese models are optional and off by default, QA is obligatory and its placeholder-claim fault described below is fixed. The same eight-module task, on the five seats and with the dates and sample sizes, is in <a href="/paper.html">the technical report, fourth edition</a> (§11.4 and §11.7), and the front page's table is built from it.</p></div>
+
+  <div class="abstract">
+    <span class="eyebrow">why this page exists</span>
+    <p>A benchmark you cannot inspect is an advertisement. This is every arm we ran, in the order we ran it, with
+      the losses kept in — the shape loses on small tasks, the QA gate measured nothing the day we took these
+      numbers, and two of the biggest runs failed for reasons that were ours. If a number on the front page looks
+      good, the run behind it is on this page.</p>
+  </div>
+
+  <h2 id="s-what-was-measured"><span class="n">01</span>What was measured</h2>
+  <p>Two tasks against <code>ministore</code>, a small but real Vite + React + TypeScript store.</p>
+  <p><b>S — one function changed in one file.</b> A money formatter with a rounding rule. Small enough that the
+    overhead of planning is visible.</p>
+  <p><b>L — eight independent feature modules</b>, each in its own new file under <code>src/features/</code>, with
+    no changes to any existing file: fuzzy accent-insensitive product search; a stable non-mutating sort;
+    a <code>useWishlist</code> hook persisted to localStorage that survives a corrupt stored value; validated,
+    versioned cart storage; money formatting through <code>Intl.NumberFormat</code> with two discount codes;
+    a <code>QuantityStepper</code> component with bounds, keyboard steps and clamp-on-blur; checkout validation
+    with a Luhn card check and an expiry in the future; and a capped <code>useRecentlyViewed</code>. Strict
+    TypeScript, no <code>any</code>, JSDoc on every export, no new dependencies, and
+    <code>tsc -b &amp;&amp; vite build</code> must pass at the end.</p>
+
+  <h2 id="s-how-a-run-was-scored"><span class="n">02</span>How a run was scored</h2>
+  <p>Three numbers per run, none of them a model's opinion.</p>
+  <p><b>Quality</b> is a behavioural audit: 37 checks that import the finished modules and exercise them —
+    does the search match "blue mug" against "Mug, blue", does the sort leave the input untouched, does
+    <code>applyDiscount</code> refuse to go below zero, does the Luhn check reject a transposed digit. The same
+    script grades every arm, including raw Opus.</p>
+  <p><b>Cost</b> is deterministic: every call the serve made for that arm — planner, worker, verifier, gate —
+    priced at published list rates, cache reads at a tenth. Raw Opus is the CLI's own
+    <code>total_cost_usd</code>. A subscription pays none of this; the dollar figure is the API-equivalent, which
+    is the only yardstick that compares two different arrangements of the same work.</p>
+  <p><b>Time</b> is a wall clock around the whole arm, not the sum of the model calls.</p>
+
+  <h2 id="s-l-eight-modules-the-main-result"><span class="n">03</span>L — eight modules, the main result</h2>
+  <div class="scrollx"><table class="runs">
+    <thead><tr><th>arm</th><th class="n">wall</th><th class="n">cost</th><th class="n">calls</th><th class="n">audit</th><th>note</th></tr></thead>
+    <tbody>
+      <tr class="raw"><td>raw Claude Opus, one session</td><td class="n">303 s</td><td class="n">$1.28</td><td class="n">26 turns</td><td class="n"><b>37/37</b></td><td>the day before, the same goal took it 112 s and $0.61 — same-day is the fair row</td></tr>
+      <tr class="best"><td>Opus plans · DeepSeek Flash writes · QA off</td><td class="n">249 s</td><td class="n"><b>$0.25</b></td><td class="n">3</td><td class="n"><b>37/37</b></td><td>worker 185 s, 24 tools, first pass</td></tr>
+      <tr><td>Sonnet plans · Flash writes · QA off</td><td class="n">266 s</td><td class="n">$0.31</td><td class="n">5</td><td class="n">35/37</td><td>worker rejected for missing JSDoc on exports → 55 s retry → pass</td></tr>
+      <tr><td>Sonnet · Flash · QA on</td><td class="n"><b>179 s</b></td><td class="n">$0.42</td><td class="n">4</td><td class="n">36/37</td><td>first pass · gate 13 s / $0.18</td></tr>
+      <tr><td>Opus · Flash · QA on</td><td class="n">311 s</td><td class="n">$0.54</td><td class="n">6</td><td class="n">36/37</td><td>worker retried once · gate 11 s / $0.16</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">The cheapest arm matches raw Opus on all 37 checks, 54 seconds faster, at a fifth of the price.
+    One run per arm — not a best-of-N. Raw Opus moves between days by more than the gap between our arms, which is
+    why the row above carries the previous day's figure instead of hiding it.</p>
+
+  <h2 id="s-s-one-function-where-the-shape-loses"><span class="n">04</span>S — one function, where the shape loses</h2>
+  <div class="scrollx"><table class="runs">
+    <thead><tr><th>arm</th><th class="n">wall</th><th class="n">cost</th><th class="n">calls</th><th>note</th></tr></thead>
+    <tbody>
+      <tr class="raw"><td>raw Claude Opus, one session</td><td class="n"><b>24 s</b></td><td class="n">$0.18</td><td class="n">5 turns</td><td></td></tr>
+      <tr><td>Sonnet plans · Flash writes · QA off</td><td class="n">44 s</td><td class="n"><b>$0.12</b></td><td class="n">3</td><td></td></tr>
+      <tr><td>Sonnet · Flash · QA on</td><td class="n">212 s</td><td class="n">$0.34</td><td class="n">6</td><td>the verifier caught <code>18.5 → "$18.5"</code> and sent it back</td></tr>
+      <tr><td>Opus plans · Flash · QA off</td><td class="n">414 s</td><td class="n">$0.12</td><td class="n">3</td><td>planner 12 s · <b>worker stalled 393 s</b> — OpenCode tail latency on a one-line edit</td></tr>
+      <tr><td>Opus · Flash · QA on</td><td class="n">48 s</td><td class="n">$0.24</td><td class="n">4</td><td>gate 10 s / $0.12</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">A planner call is pure overhead on a one-line edit. This is the row the product had to obey rather
+    than explain: <b>on a one-file change the benchmark says don't merge, and the router sends the ask straight to
+    one model.</b> A benchmark that only ever agreed with the product would not be worth running.</p>
+
+  <h2 id="s-what-the-numbers-actually-say"><span class="n">05</span>What the numbers actually say</h2>
+  <p><b>The planner's model barely moves quality.</b> Opus planning scored 37 and 36; Sonnet planning scored 35 and
+    36; raw Opus scored 37. The worker was the same cheap model in every antiloki row. What closes the gap is the
+    verifier — and both of its rejections were real: missing JSDoc, and a money format that printed
+    <code>$18.5</code>.</p>
+  <p><b>The bill is the planner.</b> On the best L arm: planner ≈ $0.20, worker ≈ $0.02, verifier ≈ $0.03. Almost
+    all of the saving comes from moving the writing off the frontier model, and almost all of the remaining cost is
+    the thinking you kept there.</p>
+  <p><b>The QA gate measured nothing that day.</b> Every gate run produced one placeholder claim and returned
+    <code>unproven</code> in 10–13 s for $0.12–0.18. The always-branch was discarding the planner's acceptance
+    lines, so the switch bought a bill and no verdict. It is on this page because it happened, and the QA-on rows
+    in the table above are not slower <em>because</em> of QA — that is the worker's retry noise.</p>
+  <p><b>The worker's variance is the runtime, not the model.</b> Same worker, same one-line task: 30 s once, 393 s
+    another time.</p>
+
+  <h2 id="s-the-two-runs-that-failed-and-why-they-we"><span class="n">06</span>The two runs that failed, and why they were ours</h2>
+  <div class="scrollx"><table class="runs">
+    <thead><tr><th>arm (XXL, same day)</th><th class="n">wall</th><th class="n">cost</th><th>result</th></tr></thead>
+    <tbody>
+      <tr class="raw"><td>raw Opus</td><td class="n">795 s</td><td class="n">$5.30</td><td>169 tests, build ✓</td></tr>
+      <tr><td>Opus plans · Sonnet writes, one worker</td><td class="n">921 s</td><td class="n">$2.64</td><td>112 tests, build ✓</td></tr>
+      <tr><td>Sonnet · Haiku, a wave of 8</td><td class="n">failed 327 s</td><td class="n">$1.30</td><td>3 of 8 — Haiku's id generator could not pass the verifier twice</td></tr>
+      <tr><td>Sonnet · Flash, a wave of 8, floor off</td><td class="n">failed 1 884 s</td><td class="n">$0.18</td><td>7 of 8 — the plan was a five-deep chain and nobody installed the test runner</td></tr>
+    </tbody>
+  </table></div>
+  <p>Neither failure was the models'. The first was a plan whose dependency chain the projection did not fold into
+    its wave count; the second was an orchestrator that let a goal ask for tests without installing a test runner.
+    Both are fixed, and both are the reason this section exists: the interesting number in a benchmark is usually
+    the one that went wrong.</p>
+
+  <h2 id="s-running-it-yourself"><span class="n">07</span>Running it yourself</h2>
+  <p>Every arm above is one shell script against a fresh clone, with its own serve on its own port and its own
+    <code>ANTILOKI_HOME</code>, so no arm inherits another's history or its learned rankings. The shape is always
+    the same four steps:</p>
+  <p class="note">1 · clone <code>ministore</code> into a scratch directory · 2 · start a serve with an empty home
+    on a free port · 3 · post the goal with the arm's planner, worker and gate setting · 4 · when it finishes, run
+    <code>audit.mjs</code> over the result and record wall time, dollars and the audit score in one row.</p>
+  <p>The same measurement runs inside the product: every run you do is scored on your machine and filed in a table
+    that grows with use, which the router reads when it picks a merge for the next job. Ours ships as the
+    starting point; your runs adjust its scores, by at most a third, and none of it leaves the machine.</p>
+
+  <p class="postnav"><a href="/blog/">← more from the antiloki blog</a> &nbsp;·&nbsp; <a href="/paper.html">the long version: Compiled, Not Trained →</a></p>
+  </article>
+</main>
+<footer><div class="wrap">
+  <span>antiloki · agents · X-ray</span>
+  <a href="/blog/">blog</a>
+  <a href="/paper.html">the benchmark</a>
+  <a href="https://github.com/danilosilvadev/antiloki-releases/releases">releases</a>
+  <a href="mailto:support@antiloki.com">support@antiloki.com</a>
+  <span class="r">© 2026 antiloki · updated 2026-10-01</span>
+</div></footer>
+<script>
+/* the contents list follows the section you are reading */
+(function () {
+  var d = document.getElementById("toc-d");
+  if (d && window.matchMedia) { var mq = matchMedia("(max-width: 1000px)"), fit = function () { if (mq.matches) d.removeAttribute("open"); else d.setAttribute("open", ""); }; fit(); (mq.addEventListener ? mq.addEventListener("change", fit) : mq.addListener(fit)); }
+  document.querySelectorAll(".toc a").forEach(function (a) { a.addEventListener("click", function () { if (d && window.matchMedia && matchMedia("(max-width: 1000px)").matches) d.removeAttribute("open"); }); });
+  var links = [].slice.call(document.querySelectorAll(".toc a")), map = {};
+  links.forEach(function (a) { map[a.getAttribute("href").slice(1)] = a; });
+  var heads = links.map(function (a) { return document.getElementById(a.getAttribute("href").slice(1)); }).filter(Boolean);
+  if (!heads.length || !("IntersectionObserver" in window)) return;
+  var cur = null;
+  var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { if (cur) cur.classList.remove("on"); cur = map[e.target.id]; if (cur) cur.classList.add("on"); } }); }, { rootMargin: "-84px 0px -72% 0px", threshold: 0 });
+  heads.forEach(function (h) { io.observe(h); });
+})();
+</script>
+</body></html>

@@ -1,0 +1,1173 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>antiloki — each job on the cheapest model that passes: up to 7× cheaper than raw Opus</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23211e1b'/%3E%3Ctext x='10' y='47' font-family='Geist,Helvetica,Arial,sans-serif' font-weight='700' font-size='40' fill='%23efe9e2' letter-spacing='-2'%3Ea%3Ctspan fill='%23c97c5c'%3E.%3C/tspan%3E%3C/text%3E%3C/svg%3E">
+<meta name="description" content="Each job goes to the cheapest model that passes its checks, across the Claude, Codex, Cursor, Gemini and Grok subscriptions you already have: up to 7× cheaper than running Opus on everything (one backend task, 37 hidden checks, measured 2026-10-07).">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Geist:wght@700&family=IBM+Plex+Sans:wght@400;500&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+  :root {
+    --bg: #211e1b; --panel: #2a2521; --rule: #3b3530; --rule2: #4a433c; --ink: #efe9e2; --dim: #a3998f; --muted: #6f665e;
+    --ember: #c97c5c; --ember-soft: rgba(201,124,92,.14); --ok: #7fc48f; --bad: #d9705a;
+    --display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif; --body: "IBM Plex Sans", -apple-system, "Segoe UI", sans-serif; --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  html, body { overflow-x: clip; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--ember); outline-offset: 3px; border-radius: 4px; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 28px; }
+  h1, h2, h3 { font-family: var(--display); margin: 0; text-wrap: balance; letter-spacing: -.025em; line-height: 1.02; }
+  .mono { font-family: var(--mono); } .num { font-variant-numeric: tabular-nums; }
+  .eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--ember); }
+
+  nav.top .wrap { display: flex; align-items: center; height: 60px; gap: 20px; }
+
+  .mark { display: inline-flex; align-items: baseline; font-family: "Geist", -apple-system, system-ui, sans-serif; font-weight: 700; font-size: 20px; letter-spacing: -.035em; text-decoration: none; color: var(--ink); line-height: 1; }
+  .mark em { font-style: normal; color: var(--ember); }
+  nav.top .sp { flex: 1; }
+  nav.top a.q { text-decoration: none; color: var(--dim); font-size: 14px; } nav.top a.q:hover { color: var(--ink); }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 18px; border-radius: 10px; font-family: var(--body); font-weight: 500; font-size: 15px; text-decoration: none; border: 1px solid var(--rule2); color: var(--ink); background: transparent; cursor: pointer; transition: transform .15s ease, border-color .15s ease; }
+  .btn:hover { border-color: var(--dim); transform: translateY(-1px); }
+  .btn.ember { background: var(--ember); border-color: var(--ember); color: #1d1410; } .btn.ember:hover { filter: brightness(1.06); }
+  .btn.sm { padding: 8px 13px; font-size: 13.5px; }
+
+
+  .hero { padding-top: 72px; text-align: center; }
+  .hero h1 { font-size: clamp(34px, 4.6vw, 60px); font-weight: 800; max-width: 26ch; margin: 0 auto; }
+  .hero h1 em { font-style: normal; color: var(--ember); }
+  .hero p { margin: 24px auto 0; max-width: 52ch; font-size: clamp(16px, 1.5vw, 19px); color: var(--dim); }
+  .hero p.why { max-width: 66ch; text-align: left; font-size: clamp(15px, 1.3vw, 17.5px); line-height: 1.55; } .hero p.why b { color: var(--ink); } .hero p.why span { display: block; } .hero p.why span + span { margin-top: 9px; }
+  /* THE FIRST SCREEN IS THE HEADLINE (operator 2026-10-08: "the headline should be the entire screen and only scrolling goes to next section; the animation below starts before I scroll").
+     The fold = the viewport minus the nav (60) and the hero's top padding (72). Nothing of the film is on screen until the reader scrolls, so its IntersectionObserver (threshold .2) cannot start it early. */
+  .hero .fold { min-height: calc(100vh - 132px); min-height: calc(100svh - 132px); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 0 56px; position: relative; }
+  .hero .fold h1 { font-size: clamp(38px, min(7.4vw, 10.5vh), 108px); max-width: 22ch; line-height: .98; }
+  .hero .fold .lede { font-size: clamp(16px, 1.55vw, 21px); line-height: 1.55; max-width: 58ch; margin: 22px auto 0; }
+  .hero .fold .cta { margin-top: 34px; }
+  .scrollcue { position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 6px; text-decoration: none; color: var(--muted); font-family: var(--mono); font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; }
+  .scrollcue i { width: 1px; height: 26px; background: linear-gradient(var(--ember), transparent); animation: cue 1.8s ease-in-out infinite; transform-origin: top; }
+  @keyframes cue { 0% { transform: scaleY(0); opacity: 0; } 40% { opacity: 1; } 100% { transform: scaleY(1); opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .scrollcue i { animation: none; opacity: .7; } }
+  @media (max-width: 640px) { .hero .fold h1 { font-size: clamp(34px, 10.5vw, 52px); } .hero .fold { padding-bottom: 64px; } }
+  .hero .cta { display: flex; justify-content: center; gap: 12px; margin-top: 30px; flex-wrap: wrap; align-items: center; }
+  .hero .fine { display: block; margin-top: 12px; font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
+
+  .hero .proof { margin: 26px auto 0; max-width: 760px; text-align: left; border: 1px solid var(--line, rgba(255,255,255,.12)); border-radius: 12px; padding: 10px 14px 9px; font-size: clamp(12.5px, 1.05vw, 14px); }
+  .hero .proof-h, .hero .proof-r { display: grid; grid-template-columns: 1.25fr 1fr 1fr 1.15fr; gap: 10px; align-items: baseline; padding: 6px 0; }
+  .hero .proof-h { font-family: var(--mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--line, rgba(255,255,255,.12)); }
+  .hero .proof-r + .proof-r { border-top: 1px dashed var(--line, rgba(255,255,255,.1)); }
+  .hero .proof-r span:first-child { color: var(--dim); }
+  .hero .proof-r b { color: var(--ink); font-weight: 700; }
+  .hero .proof-r em { font-style: normal; color: var(--ember); font-weight: 700; }
+  .hero .proof-f, .hero .chart .proof-f { display: block; margin-top: 7px; font-family: var(--mono); font-size: 10.5px; color: var(--muted); line-height: 1.6; }
+  .hero .proof-f b { color: var(--dim); font-weight: 700; }
+  .hero .proof-f a { color: var(--ember); text-decoration: underline; text-underline-offset: 2px; }
+  @media (max-width: 640px) { .hero .proof-h { display: none; } .hero .proof-r { grid-template-columns: 1fr 1fr; } .hero .proof-r span:first-child { grid-column: 1 / -1; } }
+
+  /* THE FILM (2026-10-07): a short animated story drawn on a canvas, with the app's own agents. The numbers are the measured per-run figures. */
+  .hero .film { margin: 30px 0 0 calc(50% - 50vw); width: 100vw; max-width: none; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); background: #15120f; }
+  .film canvas { display: block; width: 100%; aspect-ratio: 1120 / 540; background: #15120f; }
+  @media (max-width: 700px) { .film canvas { aspect-ratio: 960 / 540; } }
+  .hero .film .film-f { margin: 0 auto; padding: 9px 28px 11px; max-width: 1080px; text-align: left; font-family: var(--mono); font-size: 10.5px; line-height: 1.6; color: var(--muted); }
+  /* MODEL EVOLVING = ANTILOKI EVOLVING (2026-10-07): big type, revealed word by word, and a small scene where the models level up one by one, antiloki pulses with each, and they embrace. */
+  .evolve { padding-top: 130px; padding-bottom: 20px; text-align: center; position: relative; }
+  .evolve::before { content: ""; position: absolute; left: 50%; top: 30px; width: min(900px, 100%); height: 520px; transform: translateX(-50%); background: radial-gradient(closest-side, rgba(201,124,92,.16), rgba(201,124,92,0)); pointer-events: none; }
+  .evo-big { position: relative; font-family: var(--display); font-weight: 800; font-size: clamp(38px, 8.2vw, 112px); line-height: .97; letter-spacing: -.04em; color: var(--ink); margin: 0 auto; text-wrap: balance; }
+  .evo-big .ln { display: block; }
+  .evolve .w { display: inline-block; }
+  .evolve.armed .w { opacity: 0; transform: translateY(.55em) rotate(2.5deg); filter: blur(10px); }
+  .evolve.in .w { animation: evoWord 1s cubic-bezier(.2, .8, .2, 1) both; animation-delay: calc(var(--i) * .15s); }
+  .evo-big .em { color: var(--ember); }
+  .evo-big .ev { background: linear-gradient(100deg, var(--ink) 38%, #ffe3c9 50%, var(--ink) 62%) 100% 0 / 260% 100%; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .evo-big .em.ev { background-image: linear-gradient(100deg, var(--ember) 38%, #ffd2b0 50%, var(--ember) 62%); }
+  .evolve.in .ev { animation: evoWord 1s cubic-bezier(.2, .8, .2, 1) both, evoShine 5s ease-in-out 2.2s infinite; animation-delay: calc(var(--i) * .15s), 2.2s; }
+  .evo-big .eq { color: var(--ember); display: inline-block; margin-right: .12em; }
+  .evolve.in .eq { animation: evoWord 1s cubic-bezier(.2, .8, .2, 1) both, evoEq 3.2s ease-in-out 2s infinite; animation-delay: calc(var(--i) * .15s), 2s; }
+  .evo-sub { position: relative; margin: 34px auto 0; max-width: 30ch; font-family: var(--display); font-weight: 600; font-size: clamp(21px, 2.7vw, 36px); line-height: 1.18; letter-spacing: -.015em; color: var(--dim); text-wrap: balance; }
+  .evo-sub .hl { color: var(--ink); position: relative; }
+  .evo-sub .hl::after { content: ""; position: absolute; left: 0; right: 0; bottom: -.12em; height: .09em; border-radius: 3px; background: var(--ember); transform: scaleX(1); transform-origin: left; }
+  .evolve.armed .evo-sub .hl::after { transform: scaleX(0); }
+  .evolve.in .evo-sub .hl::after { animation: evoLine .9s cubic-bezier(.2, .8, .2, 1) 1.5s both; }
+  .evo-scene { position: relative; margin: 60px auto 0; max-width: 860px; }
+  .evo-row { display: flex; justify-content: center; align-items: flex-end; gap: clamp(12px, 4.8vw, 62px); }
+  .evo-f { display: flex; flex-direction: column; align-items: center; gap: 10px; will-change: transform; }
+  .evo-f .bface { width: clamp(50px, 9.6vw, 100px); height: clamp(50px, 9.6vw, 100px); flex: 0 0 auto; }
+  .evo-n { font-family: var(--mono); font-size: clamp(9.5px, 1.1vw, 12px); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  .evo-pill { --g: 0; position: relative; margin: 22px auto 0; width: min(580px, 94%); height: 60px; border-radius: 999px; background: var(--panel); border: 1px solid var(--rule2); display: flex; align-items: center; justify-content: center; font-family: "Geist", -apple-system, system-ui, sans-serif; font-weight: 700; font-size: 26px; letter-spacing: -.035em; color: var(--ink); box-shadow: 0 0 calc(46px * var(--g)) calc(8px * var(--g)) rgba(201, 124, 92, calc(.6 * var(--g))); border-color: color-mix(in srgb, var(--ember) calc(var(--g) * 100%), var(--rule2)); }
+  .evo-pill b { color: var(--ember); font-weight: 700; }
+  .evo-fx { position: absolute; inset: 0; pointer-events: none; }
+  .evo-fx i { position: absolute; left: 0; top: 0; opacity: 0; will-change: transform, opacity; }
+  .evo-spark svg { width: 24px; height: 24px; display: block; filter: drop-shadow(0 0 6px rgba(255, 214, 160, .9)); }
+  .evo-ring { width: 80px; height: 80px; border-radius: 50%; border: 2px solid rgba(255, 214, 160, .8); }
+  .evo-up { font-family: var(--mono); font-weight: 700; font-size: 20px; color: var(--ember); text-shadow: 0 0 10px rgba(201, 124, 92, .8); }
+  .evo-heart svg { width: 24px; height: 22px; display: block; filter: drop-shadow(0 0 6px rgba(236, 79, 143, .7)); }
+  @keyframes evoWord { from { opacity: 0; transform: translateY(.55em) rotate(2.5deg); filter: blur(10px); } to { opacity: 1; transform: none; filter: blur(0); } }
+  @keyframes evoShine { 0% { background-position: 100% 0; } 55%, 100% { background-position: 0% 0; } }
+  @keyframes evoEq { 0%, 100% { transform: scale(1); text-shadow: 0 0 0 rgba(201, 124, 92, 0); } 50% { transform: scale(1.14); text-shadow: 0 0 34px rgba(201, 124, 92, .75); } }
+  @keyframes evoLine { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  @media (prefers-reduced-motion: reduce) { .evolve.armed .w { opacity: 1; transform: none; filter: none; } .evolve.armed .evo-sub .hl::after { transform: scaleX(1); } .evolve.in .w, .evolve.in .ev, .evolve.in .eq { animation: none; } }
+  @media (max-width: 640px) { .evolve { padding-top: 90px; } .evo-pill { height: 52px; font-size: 22px; } .evo-scene { margin-top: 44px; } }
+  .hero .bench { margin: 26px auto 0; max-width: 700px; text-align: left; display: flex; flex-direction: column; gap: 7px; }
+  .hero .bench-h { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: .03em; margin-bottom: 4px; }
+  .hero .bench-h code { color: var(--dim); }
+  .brow { display: grid; grid-template-columns: 1fr auto; column-gap: 14px; row-gap: 2px; padding: 3px 0; align-items: center; }
+  .brow .bname { grid-column: 1 / -1; font-family: var(--mono); font-size: 11.5px; color: var(--dim); }
+  .brow.bwin .bname, .brow.braw .bname { color: var(--ink); }
+
+  .brow .btrack { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .brow .bfill { height: 20px; border-radius: 3px; background: rgba(255,255,255,.16); display: block; flex: 0 1 auto; min-width: 3px; width: var(--w); }
+  .brow.bwin .bfill { background: var(--ember); }
+  .brow.braw .bfill { background: rgba(255,255,255,.28); }
+  .brow .bnum { font-family: var(--mono); font-size: 13.5px; color: var(--dim); font-weight: 700; white-space: nowrap; }
+  .brow.bwin .bnum { color: var(--ember); }
+  .brow.braw .bnum { color: var(--ink); }
+  .brow .bmeta { font-family: var(--mono); font-size: 10.5px; color: var(--muted); white-space: nowrap; min-width: 72px; text-align: right; }
+  /* THE COST ROWS, ANIMATED (2026-10-07): bars grow, numbers count, each team walks in and the winners cheer when their bar lands. Same faces as the film. */
+  .brow { grid-template-columns: 118px minmax(0, 1fr) auto; }
+  .brow .bname { grid-column: 1 / -1; }
+  .bfaces { display: flex; align-items: flex-end; gap: 2px; min-height: 38px; }
+  .bface { width: 32px; height: 32px; flex: 0 0 32px; display: block; overflow: visible; }
+  .brow.braw .bface { width: 38px; height: 38px; flex-basis: 38px; }
+  .bface .bbody { transform-box: view-box; transform-origin: 20px 21px; animation: bFloat var(--fp, 5s) ease-in-out var(--fd, 0s) infinite; }
+  .bface .eyes { transform-box: view-box; transform-origin: 20px 17px; }
+  .bface .eye { transform-box: fill-box; transform-origin: center; animation: bBlink var(--bp, 4.6s) ease-in-out var(--bd, 0s) infinite; }
+  .bface .e-happy, .bface .e-tired, .bface .blush { display: none; }
+  .bface[data-eye="happy"] .e-slit, .bface[data-eye="tired"] .e-slit { display: none; } .bface[data-eye="happy"] .e-happy, .bface[data-eye="tired"] .e-tired, .bface[data-eye="happy"] .blush { display: inline; }
+  .bface .sweat { fill: #9bd3f0; opacity: 0; } .bface[data-eye="tired"] .sweat { animation: bSweat 1.5s ease-in infinite; }
+  .bbadge { font-family: var(--mono); font-size: 10.5px; font-weight: 700; color: #1d1410; background: var(--ember); border-radius: 999px; padding: 2px 9px; white-space: nowrap; opacity: 1; transition: opacity .35s, transform .35s; }
+  .bench.arm .bfill { width: 0; } .bench.arm .bnum, .bench.arm .bmeta { opacity: 0; } .bench.arm .bbadge { opacity: 0; transform: translateY(5px) scale(.9); } .bench.arm .bface { opacity: 0; }
+  .bench.play .bfill { width: var(--w); transition: width 1.35s cubic-bezier(.16, .84, .24, 1) calc(var(--d) + .35s); }
+  .bench.play .bnum, .bench.play .bmeta { opacity: 1; transition: opacity .4s calc(var(--d) + .25s); }
+  .bench.play .bface { animation: bWalk .8s cubic-bezier(.2, .9, .3, 1.2) var(--d) both; }
+  .bench.play .brow:not(.done) .bbadge { opacity: 0; transform: translateY(5px) scale(.9); } .bench.play .brow.done .bbadge { opacity: 1; transform: none; }
+  .brow.done .bface { animation: bCheer .6s ease-out both; } .brow.done .bnum { animation: bPop .45s ease-out; }
+  .bfill { position: relative; overflow: hidden; } .brow.done:not(.braw) .bfill::after { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, transparent 20%, rgba(255,255,255,.35) 50%, transparent 80%); transform: translateX(-100%); animation: bSweep 1.1s ease-out .1s; }
+  .hero .film + .bench { margin-top: 30px; }
+  @keyframes bFloat { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-1.6px) } }
+  @keyframes bBlink { 0%,93%,100% { transform: scaleY(1) } 96.5% { transform: scaleY(.12) } }
+  @keyframes bWalk { 0% { opacity: 0; transform: translateX(-46px) } 55% { opacity: 1; transform: translateX(2px) translateY(-9px) } 75% { transform: translateX(0) translateY(0) scaleY(.9) } 100% { opacity: 1; transform: none } }
+  @keyframes bCheer { 0% { transform: none } 35% { transform: translateY(-13px) scaleY(1.1) } 70% { transform: translateY(0) scaleY(.88) } 100% { transform: none } }
+  @keyframes bPop { 0% { transform: scale(1) } 40% { transform: scale(1.18) } 100% { transform: scale(1) } }
+  @keyframes bSweep { to { transform: translateX(100%) } }
+  @keyframes bSweat { 0% { opacity: 0; transform: translateY(0) } 25% { opacity: .95 } 100% { opacity: 0; transform: translateY(10px) } }
+  @media (prefers-reduced-motion: reduce) { .bface .bbody, .bface .eye { animation: none !important; } .bench.arm .bfill { width: var(--w); } .bench.arm .bnum, .bench.arm .bmeta, .bench.arm .bbadge, .bench.arm .bface { opacity: 1; transform: none; } }
+  @media (max-width: 640px) { .brow { grid-template-columns: 88px minmax(0, 1fr); } .brow .bfaces { grid-row: 2 / span 2; align-self: center; } .brow .btrack { grid-column: 2; } .brow .bmeta { grid-column: 2; text-align: left; min-width: 0; margin-top: 1px; } .bface { width: 24px; height: 24px; flex-basis: 24px; } .brow.braw .bface { width: 30px; height: 30px; flex-basis: 30px; } .bbadge { font-size: 9px; padding: 2px 6px; } }
+  .hero .bench-f { font-family: var(--mono); font-size: 10.5px; color: var(--muted); line-height: 1.65; margin-top: 10px; }
+  .hero .bench-f b { color: var(--dim); font-weight: 700; }
+  .hero .bench-f .bf { display: block; margin-top: 9px; }
+  .btn.soon { opacity: .6; cursor: default; pointer-events: none; }
+  .hero .bench-f a { color: var(--ember); text-decoration: underline; text-underline-offset: 2px; }
+  @media (max-width: 640px) {
+    .hero .bench { padding: 0; }
+    .brow { column-gap: 8px; }
+    .brow .bmeta { min-width: 0; font-size: 9.5px; }
+    .brow .bnum { font-size: 12px; }
+  }
+  .fog { position: fixed; inset: 0; z-index: 55; pointer-events: none; overflow: hidden; background: #0d0b0a; transition: opacity .9s ease .05s; }
+  .fog i { position: absolute; border-radius: 50%; opacity: .9; mix-blend-mode: screen; will-change: transform; }
+  .fog i:nth-child(1) { width: 70vw; height: 70vw; left: -20vw; top: -10vh; background: radial-gradient(circle, rgba(70,52,44,.9), rgba(70,52,44,.35) 35%, transparent 68%); animation: fogA 14s ease-in-out infinite alternate; }
+  .fog i:nth-child(2) { width: 60vw; height: 60vw; right: -15vw; top: 10vh; background: radial-gradient(circle, rgba(52,44,48,.85), rgba(52,44,48,.3) 35%, transparent 68%); animation: fogB 17s ease-in-out infinite alternate; }
+  .fog i:nth-child(3) { width: 80vw; height: 50vw; left: 10vw; bottom: -25vh; background: radial-gradient(circle, rgba(72,50,38,.8), rgba(72,50,38,.3) 35%, transparent 68%); animation: fogC 12s ease-in-out infinite alternate; }
+  .fog i:nth-child(4) { width: 40vw; height: 40vw; left: 30vw; top: 20vh; background: radial-gradient(circle, rgba(201,124,92,.22), rgba(201,124,92,.08) 35%, transparent 68%); animation: fogB 9s ease-in-out infinite alternate-reverse; }
+  .fog::after { content: ""; position: absolute; inset: -50%; opacity: .07; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); animation: grain .6s steps(4) infinite; }
+  @keyframes fogA { from { transform: translate(0, 0) scale(1); } to { transform: translate(14vw, 8vh) scale(1.25); } }
+  @keyframes fogB { from { transform: translate(0, 0) scale(1.1); } to { transform: translate(-12vw, -6vh) scale(.9); } }
+  @keyframes fogC { from { transform: translate(0, 0) scale(1); } to { transform: translate(-8vw, -10vh) scale(1.3); } }
+  @keyframes grain { 0% { transform: translate(0, 0); } 25% { transform: translate(-6%, 4%); } 50% { transform: translate(5%, -7%); } 75% { transform: translate(-3%, -2%); } 100% { transform: translate(4%, 5%); } }
+  html.headline .fog, html.reduced .fog { opacity: 0; }
+  html.gone .fog { display: none; }
+
+  .hero .eyebrow, .hero p, .hero .proof, .hero .cta, .hero .fine { opacity: 0; transform: translateY(10px); transition: opacity .5s ease, transform .5s ease; }
+  .hero h1 .w { display: inline-block; opacity: 0; transform: translateY(.45em); filter: blur(10px); transition: opacity .45s ease, transform .6s cubic-bezier(.2,.8,.2,1), filter .5s ease; }
+  html.headline .hero h1 .w { opacity: 1; transform: none; filter: none; }
+  html.settled .hero .eyebrow, html.settled .hero p, html.settled .hero .proof, html.settled .hero .cta, html.settled .hero .fine { opacity: 1; transform: none; }
+  html.reduced .hero .eyebrow, html.reduced .hero p, html.reduced .hero .proof, html.reduced .hero .cta, html.reduced .hero .fine, html.reduced .hero h1 .w { opacity: 1; transform: none; filter: none; transition: none; }
+
+
+                  box-shadow: 0 70px 120px -50px rgba(0,0,0,.95), 0 0 0 1px rgba(255,255,255,.03) inset; transform-style: preserve-3d; will-change: transform, filter, opacity;
+                  transition: transform 1.3s cubic-bezier(.16,.84,.24,1), filter 1.1s ease, opacity .9s ease; }
+
+                          box-shadow: 0 80px 160px -50px rgba(0,0,0,.95), 0 0 0 1px rgba(255,255,255,.04) inset; transform-origin: top left; cursor: zoom-out; }
+  .screen { position: relative; border: 1px solid var(--rule); border-radius: 14px; overflow: hidden; background: var(--panel); box-shadow: 0 60px 120px -60px rgba(0,0,0,.8); aspect-ratio: 1440 / 860; margin-top: 48px; }
+  .screen video { position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: cover; }
+
+
+  .problem { padding: 110px 0 0; }
+  .problem h2 { font-size: clamp(30px, 3.8vw, 46px); font-weight: 700; max-width: 22ch; }
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: 14px; overflow: hidden; margin-top: 36px; }
+  .stat { background: var(--panel); padding: 20px 20px 22px; display: flex; flex-direction: column; gap: 8px; }
+  .stat b { font-family: var(--mono); font-size: 34px; font-weight: 600; letter-spacing: -.03em; color: var(--ember); line-height: 1; }
+  .stat span { font-size: 14px; color: var(--dim); line-height: 1.45; }
+  .stat a { margin-top: auto; font-family: var(--mono); font-size: 10.5px; color: var(--muted); text-decoration: none; } .stat a:hover { color: var(--ink); text-decoration: underline; }
+
+  .research { margin: 30px 0 0; max-width: 760px; font-size: 13.5px; line-height: 1.7; color: var(--muted); border-left: 2px solid var(--rule); padding-left: 16px; }
+  .research b { color: var(--dim); font-weight: 600; }
+  .research .src { display: block; margin-top: 8px; font-family: var(--mono); font-size: 10.5px; color: var(--rule); }
+  .research .src a { color: var(--muted); text-decoration: none; } .research .src a:hover { color: var(--ember); text-decoration: underline; }
+
+  .method-link { margin: 6px 0 0; max-width: 760px; font-size: 14px; line-height: 1.8; color: var(--muted); }
+  .method-link a { color: var(--ember); text-decoration: none; border-bottom: 1px solid color-mix(in oklab, var(--ember) 40%, transparent); }
+  .method-link a:hover { border-bottom-color: var(--ember); }
+  .pains { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 14px; }
+  .pain { border: 1px solid var(--rule); border-radius: 14px; padding: 22px 22px 24px; background: var(--panel); }
+  .pain .q { font-family: var(--display); font-size: 19px; font-weight: 700; letter-spacing: -.01em; color: var(--ink); line-height: 1.2; }
+  .pain p b { color: var(--ink); font-weight: 500; }
+  .bridge { padding: 110px 0 0; text-align: center; }
+  .bridge h2 { font-size: clamp(28px, 3.4vw, 42px); font-weight: 700; max-width: 26ch; margin: 14px auto 0; }
+  .bridge p { margin: 18px auto 0; color: var(--dim); font-size: 17px; max-width: 58ch; }
+  .pain p { margin: 12px 0 0; color: var(--dim); font-size: 15px; }
+
+
+  .wow { padding: 120px 0 0; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 56px; align-items: center; }
+  .wow.flip { direction: rtl; } .wow.flip > * { direction: ltr; }
+  .wow h2 { font-size: clamp(30px, 3.6vw, 44px); font-weight: 700; margin-top: 12px; }
+  .wow p { margin: 18px 0 0; color: var(--dim); font-size: 17px; max-width: 42ch; }
+  .wow .proof { margin-top: 22px; font-family: var(--mono); font-size: 12.5px; color: var(--ink); display: flex; flex-direction: column; gap: 6px; }
+  .wow .proof span::before { content: "— "; color: var(--ember); }
+  .wow .screen { margin: 0; aspect-ratio: 760 / 800; max-width: 520px; margin-left: auto; margin-right: auto; }
+
+
+  .measure { border: 1px solid var(--rule); border-radius: 14px; background: var(--panel); padding: 24px 26px; }
+  .measure .t { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-bottom: 18px; }
+  .bars { display: grid; gap: 18px; }
+  .bar { display: grid; grid-template-columns: 96px 1fr 118px; gap: 14px; align-items: center; font-family: var(--mono); font-size: 12px; }
+  .bar .who { color: var(--ink); } .bar .who small { display: block; color: var(--muted); font-size: 10px; }
+  .bar .track { height: 14px; background: var(--rule); border-radius: 3px; position: relative; overflow: hidden; }
+  .bar .fill { position: absolute; inset: 0 auto 0 0; background: var(--dim); border-radius: 3px; width: 0; transition: width 1.2s cubic-bezier(.2,.8,.2,1); }
+  .bar.win .fill { background: var(--ember); }
+  .bar .val { color: var(--dim); text-align: right; } .bar .val b { color: var(--ink); font-weight: 600; }
+  .verdicts { margin-top: 18px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .verdict { border: 1px solid var(--rule); border-radius: 8px; padding: 8px 10px; font-family: var(--mono); font-size: 10.5px; color: var(--dim); background: var(--bg); }
+  .verdict b { display: block; color: var(--ok); font-weight: 600; }
+
+
+  .record { border: 1px solid var(--rule); border-radius: 14px; background: var(--bg); padding: 18px 20px; font-family: var(--mono); font-size: 12px; display: grid; gap: 18px; }
+  .record .fuel { text-align: right; color: var(--muted); line-height: 1.7; } .record .fuel b { color: var(--ink); font-weight: 600; } .record .fuel .dot { display: inline-block; width: 6px; height: 6px; border-radius: 6px; background: var(--ember); margin-left: 6px; vertical-align: middle; }
+  .record .tl { display: grid; gap: 4px; } .record .tl div { display: grid; grid-template-columns: 62px 10px 1fr auto; gap: 10px; align-items: center; color: var(--dim); }
+  .record .tl .ts { color: var(--muted); } .record .tl i { width: 8px; height: 8px; border-radius: 8px; background: var(--ember); } .record .tl i.y { background: var(--muted); } .record .tl b { color: var(--ink); font-weight: 600; } .record .tl .no { color: var(--bad); } .record .tl .ok { color: var(--ok); } .record .tl .who { color: var(--muted); font-size: 10.5px; }
+
+
+  .desk { padding: 120px 0 0; }
+  .desk h2 { font-size: clamp(30px, 3.6vw, 44px); font-weight: 700; margin-top: 12px; max-width: 24ch; }
+  .desk > p { margin: 18px 0 0; color: var(--dim); font-size: 17px; max-width: 60ch; }
+  .desk .grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 40px; margin-top: 40px; align-items: start; }
+  .facets { display: grid; gap: 12px; }
+  .facet { border: 1px solid var(--rule); border-radius: 14px; padding: 18px 20px; background: var(--panel); }
+  .facet b { font-family: var(--display); font-size: 18px; font-weight: 700; letter-spacing: -.01em; display: block; }
+  .facet p { margin: 8px 0 0; color: var(--dim); font-size: 14.5px; }
+  .deskmock { border: 1px solid var(--rule); border-radius: 14px; background: var(--bg); overflow: hidden; font-family: var(--mono); font-size: 11px; display: grid; grid-template-columns: 172px 1fr; min-height: 420px; position: relative; }
+  .deskmock .side { border-right: 1px solid var(--rule); padding: 12px 0; color: var(--dim); }
+  .deskmock .cat { font-size: 9px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); padding: 4px 14px; }
+  .deskmock .th { display: flex; align-items: center; gap: 7px; padding: 5px 14px; } .deskmock .th.on { background: var(--panel); border-left: 2px solid var(--ember); color: var(--ink); }
+  .deskmock .th i { width: 7px; height: 7px; border-radius: 7px; background: var(--muted); } .deskmock .th.on i { background: var(--ember); }
+  .deskmock .th small { margin-left: auto; color: var(--muted); }
+  .deskmock .member { padding: 2px 14px 2px 30px; color: var(--dim); font-size: 10.5px; }
+  .deskmock .studio { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 4px 10px 6px; }
+  .deskmock .kind { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 7px 2px 5px; border-radius: 7px; font-size: 8.5px; color: var(--muted); }
+  .deskmock .kind.sel { background: var(--panel); border: 1px solid var(--ember); color: var(--ink); }
+  .deskmock .kind svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+  .deskmock .kind.a svg { color: var(--ember); } .deskmock .kind.t svg { color: var(--ok); } .deskmock .kind.d svg { color: #d8a657; } .deskmock .kind.c svg { color: var(--dim); }
+  .deskmock .stage { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 1px; background: var(--rule); }
+  .deskmock .cell { background: var(--bg); padding: 9px 12px; color: var(--muted); display: flex; flex-direction: column; gap: 6px; min-height: 0; }
+  .deskmock .cell.tall { grid-row: span 2; }
+  .deskmock .cell .hd { display: flex; gap: 7px; align-items: center; color: var(--ink); } .deskmock .cell .hd em { font-style: normal; color: var(--ember); }
+  .deskmock .cell .ln { height: 6px; border-radius: 3px; background: var(--rule); } .deskmock .cell .ln.w { width: 70%; } .deskmock .cell .ln.n { width: 45%; }
+  .deskmock .cell .ok { color: var(--ok); } .deskmock .cell .no { color: var(--bad); }
+  .deskmock .switch { position: absolute; top: 8px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 2px; padding: 2px; border-radius: 9px; background: var(--panel); border: 1px solid var(--rule2); font-size: 10.5px; }
+  .deskmock .switch span { padding: 3px 10px; border-radius: 7px; color: var(--dim); } .deskmock .switch span.on { background: var(--ember-soft); color: var(--ember); }
+  .deskmock .switch .mid { display: flex; gap: 6px; padding: 0 8px; border-left: 1px solid var(--rule2); border-right: 1px solid var(--rule2); margin: 0 2px; }
+  .deskmock .switch .mid svg { width: 14px; height: 14px; stroke: var(--dim); fill: none; stroke-width: 1.75; }
+  .deskmock .switch .mid .ring { width: 14px; height: 14px; border-radius: 14px; border: 2px solid var(--rule2); border-top-color: var(--ember); border-right-color: var(--ember); }
+
+
+  .fit { padding-top: 120px; text-align: center; }
+  .fit h2 { font-size: clamp(28px, 3.4vw, 40px); font-weight: 700; }
+  .fit p { margin: 18px auto 0; color: var(--dim); font-size: 17px; max-width: 58ch; }
+  .fit .row { display: flex; justify-content: center; gap: 28px; flex-wrap: wrap; margin-top: 26px; font-family: var(--mono); font-size: 12.5px; color: var(--ink); }
+  .fit .row span::before { content: "◆ "; color: var(--ember); }
+
+
+  .pricing { padding-top: 120px; text-align: center; }
+  .pricing h2 { font-size: clamp(30px, 3.6vw, 44px); font-weight: 700; }
+  .plans { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin: 34px auto 0; max-width: 760px; text-align: left; }
+  .pricing .own { margin: 14px auto 0; max-width: 28ch; font-family: var(--display); font-weight: 700; font-size: clamp(22px, 2.6vw, 32px); line-height: 1.12; letter-spacing: -.02em; color: var(--ember); text-wrap: balance; }
+  .plan { border: 1px solid var(--rule); border-radius: 14px; padding: 24px; background: var(--panel); display: flex; flex-direction: column; gap: 12px; position: relative; }
+  .plan.lift { border-color: var(--ember); background: linear-gradient(180deg, var(--ember-soft), var(--panel) 60%); }
+  .plan .name { font-family: var(--display); font-weight: 700; font-size: 20px; }
+  .plan .price { font-family: var(--mono); font-size: 40px; font-weight: 600; letter-spacing: -.03em; line-height: 1; }
+  .plan .price small { font-size: 12px; font-weight: 400; color: var(--muted); letter-spacing: 0; margin-left: 6px; }
+  .plan.lift .price { color: var(--ember); }
+  .plan ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; font-size: 14.5px; color: var(--dim); }
+  .plan ul li::before { content: "— "; color: var(--muted); } .plan ul li b { color: var(--ink); font-weight: 500; }
+  .plan .btn { margin-top: auto; justify-content: center; }
+  .plan .best { position: absolute; top: -11px; left: 22px; font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; background: var(--ember); color: #1d1410; padding: 3px 8px; border-radius: 5px; font-weight: 600; }
+  .terms { margin: 16px auto 0; font-family: var(--mono); font-size: 11.5px; color: var(--muted); max-width: 70ch; }
+
+
+  .download { padding-top: 120px; text-align: center; }
+  .download h2 { font-size: clamp(30px, 3.6vw, 44px); font-weight: 700; }
+  .dl { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 34px; }
+  .os { border: 1px solid var(--rule); border-radius: 14px; padding: 20px 22px; background: var(--panel); text-decoration: none; display: flex; flex-direction: column; gap: 4px; text-align: left; transition: border-color .15s ease, transform .15s ease; }
+  .os:hover { border-color: var(--dim); transform: translateY(-2px); } .os.me { border-color: var(--ember); }
+  .os b { font-family: var(--display); font-weight: 700; font-size: 22px; } .os span { font-family: var(--mono); font-size: 11.5px; color: var(--dim); }
+  .os em { font-style: normal; margin-top: 8px; color: var(--ember); font-size: 14px; }
+  .needs { margin-top: 18px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .faq { padding-block: 90px 80px; max-width: 760px; margin: 0 auto; }
+  .faq details { border-top: 1px solid var(--rule); padding: 16px 0; } .faq details:last-child { border-bottom: 1px solid var(--rule); }
+  .faq summary { cursor: pointer; font-weight: 500; font-size: 16px; list-style: none; display: flex; justify-content: space-between; gap: 20px; }
+  .faq summary::-webkit-details-marker { display: none; } .faq summary::after { content: "+"; font-family: var(--mono); color: var(--muted); } .faq details[open] summary::after { content: "–"; }
+  .faq p { margin: 10px 0 0; color: var(--dim); font-size: 15px; }
+
+  footer { border-top: 1px solid var(--rule); padding: 28px 0 40px; font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
+  footer .wrap { display: flex; gap: 22px; flex-wrap: wrap; align-items: center; } footer a { color: var(--dim); text-decoration: none; } footer .r { margin-left: auto; }
+
+  @media (max-width: 900px) {
+    .pains, .plans, .dl, .verdicts { grid-template-columns: 1fr; } .stats { grid-template-columns: 1fr 1fr; }
+    .wow, .wow.flip { grid-template-columns: 1fr; direction: ltr; gap: 28px; padding-top: 80px; }
+    .desk { padding-top: 80px; } .desk .grid { grid-template-columns: 1fr; } .deskmock { grid-template-columns: 1fr; } .deskmock .side { display: none; }
+    .problem, .fit, .pricing, .download, .bridge { padding-top: 80px; }
+    nav.top a.q { display: none; }
+  }
+
+
+  .method { margin-top: 72px; }
+  .method .head { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; margin-bottom: 8px; }
+  .method h2 { font-size: clamp(26px, 3vw, 38px); }
+  .method .lede { color: var(--dim); max-width: 62ch; margin: 10px 0 30px; font-size: 17px; }
+  .method .lede b { color: var(--ink); font-weight: 600; }
+
+  .steps3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: 14px; overflow: hidden; }
+  .steps3 > div { background: var(--panel); padding: 22px 22px 24px; display: flex; flex-direction: column; gap: 8px; }
+  .steps3 i { font-family: var(--mono); font-style: normal; font-size: 11px; letter-spacing: .14em; color: var(--ember); }
+  .steps3 h3 { font-size: 19px; }
+  .steps3 p { margin: 0; color: var(--dim); font-size: 14.5px; line-height: 1.55; }
+  .steps3 code { font-family: var(--mono); font-size: .85em; color: var(--ink); background: rgba(0,0,0,.25); padding: 1px 5px; border-radius: 4px; }
+  @media (max-width: 860px) { .steps3 { grid-template-columns: 1fr; } }
+
+  .premise { margin-top: 68px; }
+  .premise h2 { font-size: clamp(26px, 3vw, 38px); margin: 8px 0 0; }
+  .premise .lede { color: var(--dim); max-width: 66ch; margin: 14px 0 0; font-size: 17px; line-height: 1.6; }
+  .premise .lede + .lede { margin-top: 12px; }
+  .premise .lede b { color: var(--ink); font-weight: 600; }
+  .premise .steps3 { margin-top: 28px; }
+  .premise .stats { margin-top: 22px; }
+
+  /* COMPARED WITH THE TOOLS ALONE (draft 2026-10-07): what antiloki adds on top of tools the reader already pays for; claims checked against the vendors' docs */
+
+  /* FIVE POINTS (2026-10-07): the product and X-ray each in five short points - a title on the left, one or two sentences on the right */
+  .five { list-style: none; margin: 26px 0 0; padding: 0; max-width: 940px; }
+  .five li { display: grid; grid-template-columns: minmax(180px, 280px) 1fr; gap: 6px 28px; padding: 17px 0; border-top: 1px solid var(--rule); }
+  .five li:last-child { border-bottom: 1px solid var(--rule); }
+  .five h3 { font-size: 18px; line-height: 1.25; letter-spacing: -.015em; }
+  .five p { margin: 0; color: var(--dim); font-size: 15.5px; line-height: 1.6; max-width: 62ch; } .five p b { color: var(--ink); font-weight: 600; }
+  @media (max-width: 720px) { .five li { grid-template-columns: 1fr; gap: 4px; } }
+  .compare { margin-top: 68px; }
+  .compare h2 { font-size: clamp(26px, 3vw, 38px); margin: 8px 0 0; }
+  .compare .lede { color: var(--dim); max-width: 66ch; margin: 14px 0 0; font-size: 17px; line-height: 1.6; }
+  .cmp { margin-top: 28px; border: 1px solid var(--rule); border-radius: 14px; background: var(--panel); overflow: hidden; }
+  .cmp-h, .cmp-r { display: grid; grid-template-columns: 1.05fr 1.5fr 1.75fr; }
+  .cmp-h > span { padding: 12px 18px; font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--rule); }
+  .cmp-h > span:last-child { color: var(--ember); }
+  .cmp-r > * { padding: 12px 18px; border-bottom: 1px solid var(--rule); font-size: 14.5px; line-height: 1.55; min-width: 0; }
+  .cmp-r:last-child > * { border-bottom: 0; }
+  .cmp-r b { font-family: var(--display); font-weight: 700; font-size: 15.5px; color: var(--ink); letter-spacing: -.01em; line-height: 1.3; }
+  .cmp-r .alone { color: var(--dim); }
+  .cmp-r .with { color: var(--ink); background: var(--ember-soft); }
+  .compare .fine { color: var(--dim); font-size: 14.5px; max-width: 76ch; margin: 16px 0 0; line-height: 1.6; } .compare .fine b { color: var(--ink); font-weight: 600; } .compare .fine a { color: var(--ember); }
+  .compare .src { display: block; margin-top: 12px; font-family: var(--mono); font-size: 10.5px; color: var(--muted); } .compare .src a { color: var(--dim); }
+  @media (max-width: 760px) {   /* a phone keeps the comparison side by side: the topic on its own line, then "alone" next to "with antiloki" */
+    .cmp-h { grid-template-columns: 1fr 1fr; } .cmp-h > span:first-child { display: none; } .cmp-h > span { padding: 10px 14px; }
+    .cmp-r { grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--rule); } .cmp-r:last-child { border-bottom: 0; }
+    .cmp-r > * { border-bottom: 0; padding: 4px 14px 13px; font-size: 13.5px; line-height: 1.45; }
+    .cmp-r b { grid-column: 1 / -1; padding: 13px 14px 3px; font-size: 14.5px; }
+    .cmp-r .with { border-left: 1px solid var(--rule); }
+  }
+
+  .board { margin-top: 26px; border: 1px solid var(--rule); border-radius: 14px; overflow: hidden; }
+  .board .bh, .board .br { display: grid; grid-template-columns: 1.5fr 1.6fr .7fr .7fr .8fr; gap: 14px; padding: 11px 20px; align-items: baseline; }
+  .board .bh { font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); background: var(--panel); border-bottom: 1px solid var(--rule); }
+  .board .br + .br { border-top: 1px solid var(--rule); }
+  .board .br { font-size: 14.5px; }
+  .board .br b { font-weight: 600; }
+  .board .who { font-family: var(--mono); font-size: 12.5px; color: var(--dim); }
+  .board .n { font-family: var(--mono); font-size: 13px; font-variant-numeric: tabular-nums; }
+  .board .stamp { display: inline-block; min-width: 22px; text-align: center; font-family: var(--mono); font-size: 9.5px; letter-spacing: .06em; color: var(--ember); border: 1px solid var(--ember); border-radius: 999px; padding: 1px 0; margin-right: 8px; }
+  .board .foot { padding: 11px 20px; background: var(--panel); border-top: 1px solid var(--rule); font-family: var(--mono); font-size: 11.5px; color: var(--muted); display: flex; gap: 8px; flex-wrap: wrap; align-items: baseline; }
+  .board .foot a { color: var(--ember); }
+  @media (max-width: 720px) { .board .bh { display: none; } .board .br { grid-template-columns: 1fr 1fr; row-gap: 4px; } .board .br .who { grid-column: 1 / -1; } }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; } html { scroll-behavior: auto; } .bar .fill { transition: none; } }
+</style>
+
+<nav class="top"><div class="wrap">
+  <a class="mark" href="#top" aria-label="antiloki">antiloki<em>.</em></a>
+  <span class="sp"></span>
+  <a class="q" href="#compare">Compared</a>
+  <a class="q" href="/blog/">Blog</a>
+  <a class="q" href="#pricing">Pricing</a>
+  <a class="btn sm ember" href="#download">Download · free 14 days</a>
+</div></nav>
+
+<main id="top">
+  <div class="fog" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    <div class="wrap hero">
+    <div class="fold">
+    <span class="eyebrow">A desktop app for merging the subscriptions you have into one coding agent.<br>Windows today · macOS and Linux builds are older, see <a href="#download" style="color:inherit">Download</a></span>
+    <h1 style="margin-top:14px"><em>Up to 7× cheaper than running Opus on everything.</em></h1>
+    <p class="lede" style="margin-top:10px">antiloki sends each job to the cheapest model that passes its checks, across the Claude, Codex, Cursor, Gemini and Grok subscriptions you already have. <b>No new account and no extra subscription: antiloki drives the AI providers you are already signed in to, all local and private.</b></p>
+    <div class="cta"><a class="btn ember" href="#download">Download — free for 14 days</a></div>
+    <span class="fine" style="margin-top:16px;max-width:62ch">Measured 2026-10-07 on one backend task (eight modules, 37 hidden checks): raw Opus $0.443 a run, Composer 2.5 $0.065 (12 runs) at 36.3 of 37 checks. List-price equivalents. <a href="/paper.html" style="color:inherit">The numbers and the losses →</a></span>
+    <a class="scrollcue" href="#film" aria-label="Scroll to the film"><span>scroll</span><i></i></a>
+    </div>
+    <div class="film" id="film">
+      <canvas id="film-canvas" role="img" aria-label="A short animated film. One agent, raw Claude Opus, carries a whole task alone and finishes it in 108 seconds for $0.443. Then his friends arrive, each moving in its own way, and the cheapest one that passes, Composer, finishes the same task in 72 seconds for $0.065, 6.8 times cheaper, at 36.3 of 37 checks."></canvas>
+      <p class="film-f">Measured per run on the same task and the same 37 hidden checks, 2026-10-07: raw Claude Opus 5.5 $0.443 · 108 s · 37/37 (3 runs); Composer 2.5, the seat antiloki's router picks for this task, $0.065 · 72 s · 36.3/37 (12 runs). List-price equivalents. The pacing of the film is not a stopwatch.</p>
+    </div>
+
+    <div class="bench" aria-label="cost per run on the same task">
+      <div class="brow bwin" data-team="circle|#19a89d" data-mood="happy" style="--d:0.00s">
+        <span class="bname">antiloki · routed to Composer 2.5, the seat the router picks for this task</span>
+        <span class="bfaces" aria-hidden="true"></span>
+        <span class="btrack"><span class="bfill" style="--w:11.8%"></span><span class="bnum" data-v="0.065">$0.065</span><span class="bbadge">6.8× cheaper</span></span>
+        <span class="bmeta">36.3/37 · 72 s · n=12</span>
+      </div>
+      <div class="brow braw" data-team="hex|#1e88f0" data-mood="neutral" style="--d:0.18s">
+        <span class="bname">raw Codex, one session</span>
+        <span class="bfaces" aria-hidden="true"></span>
+        <span class="btrack"><span class="bfill" style="--w:27.1%"></span><span class="bnum" data-v="0.149">$0.149</span></span>
+        <span class="bmeta">36/37 · 147 s · n=3</span>
+      </div>
+      <div class="brow braw" data-team="triangle|#f26b21" data-mood="neutral" style="--d:0.36s">
+        <span class="bname">raw Claude Sonnet, one session</span>
+        <span class="bfaces" aria-hidden="true"></span>
+        <span class="btrack"><span class="bfill" style="--w:30.2%"></span><span class="bnum" data-v="0.166">$0.166</span></span>
+        <span class="bmeta">37/37 · 91 s · n=3</span>
+      </div>
+      <div class="brow" data-team="triangle|#f26b21,circle|#19a89d,triangle|#f26b21" data-mood="neutral" style="--d:0.54s">
+        <span class="bname">antiloki · Sonnet plans, Composer writes, Opus checks (the full pipeline with its QA gate)</span>
+        <span class="bfaces" aria-hidden="true"></span>
+        <span class="btrack"><span class="bfill" style="--w:47.3%"></span><span class="bnum" data-v="0.26">$0.26</span><span class="bbadge">1.7× cheaper</span></span>
+        <span class="bmeta">36.3/37 · 142–235 s · n=3</span>
+      </div>
+      <div class="brow braw" data-team="egg|#e6b31e" data-mood="tired" style="--d:0.72s">
+        <span class="bname">raw Claude Opus 5.5, one session</span>
+        <span class="bfaces" aria-hidden="true"></span>
+        <span class="btrack"><span class="bfill" style="--w:80.5%"></span><span class="bnum" data-v="0.443">$0.443</span></span>
+        <span class="bmeta">37/37 · 108 s · n=3</span>
+      </div>
+    </div>
+
+    <div class="cta"><a class="btn ember" href="#download">Download — free for 14 days</a></div>
+    <span class="fine">one binary · no account · your current subscription is the engine</span>
+  </div>
+
+  <section class="wrap" aria-label="How antiloki works" style="padding-top:8px">
+    <p class="method-link">How a merge is actually made — every run measured, the combinations ranked, the winner
+      bound to a role, and what is deterministic versus what is a model's opinion:
+      <a href="/blog/how-a-merge-is-made.html">Compiled, not trained →</a><br>
+      The numbers on this page, the cells behind them and the losses, measured on the five seats:
+      <a href="/paper.html">the technical report, fourth edition →</a> — and the first edition's arms, with their
+      scripts: <a href="/blog/every-run.html">Every run →</a></p>
+  </section>
+
+  <section class="wrap evolve" id="evolve" aria-label="Models evolve, and antiloki evolves with them">
+    <h2 class="evo-big"><span class="ln"><span class="w ev" style="--i:0">Model</span> <span class="w ev" style="--i:1">evolving</span></span><span class="ln"><span class="w eq" style="--i:2">=</span> <span class="w em ev" style="--i:3">antiloki</span> <span class="w ev" style="--i:4">evolving.</span></span></h2>
+    <p class="evo-sub"><span class="w" style="--i:5">They don’t compete,</span> <span class="w hl" style="--i:6">they embrace each other.</span></p>
+    <div class="evo-scene" id="evo-scene" aria-hidden="true"></div>
+  </section>
+
+  <section class="wrap compare" id="compare" aria-label="Compared with the tools alone">
+    <span class="eyebrow">compared with the tools alone</span>
+    <h2>On top of the tools you already use.</h2>
+    <p class="lede">antiloki runs Claude Code, Cursor, Codex, Gemini and Grok. It does not replace them.</p>
+    <div class="cmp" role="table" aria-label="What antiloki adds to the tools alone">
+      <div class="cmp-h" role="row"><span role="columnheader">what you want</span><span role="columnheader">the tools alone</span><span role="columnheader">with antiloki</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Models</b><span class="alone" role="cell">One tool’s own</span><span class="with" role="cell">All five subscriptions, as one agent</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Who does each job</b><span class="alone" role="cell">Your pick, or the tool’s router</span><span class="with" role="cell">The seat measured best, and it keeps learning</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Boundaries</b><span class="alone" role="cell">Permissions and a sandbox you set up</span><span class="with" role="cell">One fence on every seat, undo in one click</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Testing</b><span class="alone" role="cell">A browser, when you ask</span><span class="with" role="cell">Every run ends in a filmed browser test</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Verdict on the code</b><span class="alone" role="cell">A reviewer’s opinion</span><span class="with" role="cell">A score per file — no model, same twice</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Impact of a change</b><span class="alone" role="cell">You guess</span><span class="with" role="cell">Map, cycles and blast radius before it lands</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Your rules</b><span class="alone" role="cell">Prompt files</span><span class="with" role="cell">The agent checks its own edits against them</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Cost and limits</b><span class="alone" role="cell">Each tool’s own usage</span><span class="with" role="cell">Every turn priced, per seat, limits on screen</span></div>
+    </div>
+    <p class="fine">One more app; the Windows build is current, macOS and Linux are older. Limits, sources and every detail: <a href="/paper.html">the technical report →</a></p>
+  </section>
+
+    <div class="wrap pricing" id="pricing">
+    <h2>Test for free for 14 days, then pay once.</h2>
+    <p class="own">Own forever + 2 years of updates and premium support.</p>
+    <p class="lede" style="color:var(--dim);max-width:60ch;margin:10px auto 26px;font-size:16px;text-align:center;text-wrap:balance">Planned price: $499, once. Checkout is not open yet, so the 14-day trial is the only way in today.</p>
+    <div class="plans">
+      <div class="plan"><div class="name">Test it</div><div class="price num">$0<small>14 days</small></div><ul><li><b>everything</b> — agents and X-ray</li><li>no card, no account</li><li>two weeks is real work on a real repo</li><li>your projects stay when it ends</li></ul><a class="btn ember" href="#download">Download</a></div>
+      <div class="plan"><span class="best">pay once</span><div class="name">Own it</div><div class="price num">$499<small>once, planned</small></div><ul><li><b>own it forever</b> — no yearly subscription</li><li><b>2 years of updates and premium support</b></li><li>the shipped routing table stays current for those 2 years</li><li>activated on a machine, deactivated to move it</li></ul><span class="btn soon" aria-disabled="true">Coming soon</span></div>
+    </div>
+    <p class="terms">Prices are USD and may change before checkout opens. The app works offline for up to 14 days between license checks, once a key is activated; the trial makes no check.</p>
+  </div>
+
+    <div class="wrap download" id="download">
+    <h2>Install. Open a repo. Ask.</h2>
+    <div class="dl">
+      <a class="os" data-os="mac" href="https://github.com/danilosilvadev/antiloki-releases/releases/tag/v0.1.0"><b>macOS</b><span>Apple silicon · .dmg · v0.1.0 (older build)</span><em>Download ↓</em></a>
+      <a class="os" data-os="win" href="https://github.com/danilosilvadev/antiloki-releases/releases/latest"><b>Windows</b><span>.exe · x64 · installer</span><em>Download ↓</em></a>
+      <a class="os" data-os="linux" href="https://github.com/danilosilvadev/antiloki-releases/releases/tag/v0.1.4"><b>Linux</b><span>.deb from v0.1.4 · needs glibc 2.44 or newer (Arch and other recent rolling distributions); wider support is in progress</span><em>Download ↓</em></a>
+    </div>
+    <p class="needs">needs git and at least one of <b>Claude</b> · <b>Codex</b> · <b>Cursor</b> · <b>Gemini</b> · <b>Grok</b> <em>signed in</em>; the browser QA needs Chrome or Chromium — antiloki reads the seat, not the binary, so an unauthenticated CLI is never offered, and the setup wizard shows which seats it found and the command to fix the rest. A <b>merge</b> wants two usable seats: one for the brain and a cheap one for the hands. With one it runs solo, still routed per job. OpenCode, and the Zen and open models behind it, are optional and off by default.</p>
+  </div>
+
+  <div class="wrap faq">
+    <details><summary>What is antiloki, in one sentence?</summary><p>A desktop workspace that <b>merges</b> the model subscriptions you already have — Claude, Codex, Cursor, Gemini, Grok — into one coding agent: the seat measured best for each job of an ask, not one model for all of them. It sends each job to the cheapest seat that passes its checks, with folder-level write enforcement, a test at the end of every run and a full audit timeline: the control layer the agents don't ship with.</p></details>
+    <details><summary>Does it replace Claude Code, Codex, Cursor, Gemini or Grok?</summary><p>No — it runs them, twice over: as the agent in its box, and as the engine behind antiloki's own AI (the chat, the reviews, the ultra review), each through its own vendor CLI. Keep your subscriptions; there is no API key to paste.</p></details>
+    <details><summary>What does the X-ray do that a linter doesn't?</summary><p>It judges every file against your rules and its own measurements (tests, coupling, structure, change) and tells you why a file is not 100. Then the ultra review: a $0 survey of the territory, and your engine reading the worst units to report what it can verify — with the fix. The chat sees all of it, so "why is this file 81?" gets a real answer — and the intel handed to an agent says which files it could not read.</p></details>
+    <details><summary>Do I need two subscriptions?</summary><p>For a <b>merge</b>, two usable seats. A merge never puts two frontier models together; it puts cheap hands under a good brain. Google's free tier is capped at a small daily number of agent requests (about twenty when we checked) — enough to try, not a seat to rely on. antiloki only offers a provider you are actually <b>signed in to</b>: it reads the seat, not the installed binary, so a CLI sitting on your machine unauthenticated is never offered as something it can bind. With one seat it runs solo — still routed per job, still tested, just not merged.</p></details>
+    <details><summary>Isn't this just worktrees and tmux?</summary><p>Worktrees are the easy part. The fence enforced where the work lands, the verifier before merge, the QA test and the cost-per-task record are what you can't script in an afternoon — and what the trial is for.</p></details>
+    <details><summary>Why is the headline measured against Opus?</summary><p>Because Opus is the model a Max subscriber reaches for, and the headline is the measured gap to it. On one eight-module backend task with 37 hidden checks (2026-10-07), raw Opus 5.5 cost $0.443 a run and Composer 2.5 — the seat antiloki's router picks for that task — $0.065: 6.8×, at 36.3 of 37 checks (12 runs) against 37 (3 runs). Against a cheaper raw seat the gap is smaller: raw Sonnet $0.166 and raw Codex $0.149. <b>"Up to" means this task and this day:</b> Opus itself got 2.6× cheaper between September and October, and we re-measure when models change. The full pipeline (Sonnet plans, Composer writes, Opus checks) cost about $0.26 — 1.7× under raw Opus, not under raw Sonnet or Codex. At this size the saving comes from choosing the cheap seat, not from merging; the report lists every arm, including the ones that lost.</p></details>
+    <details><summary>Does it make my weekly limit last longer?</summary><p>We have not measured your limit. An earlier figure on this page (+112 %) compared one Sonnet-planned merge with raw Sonnet; it does not reproduce with current models and has been removed. What we measure is dollars at list price, which stand in for an allowance the vendors do not publish. Sending each job to the cheapest seat that passes should leave more of the dear seats' limits unspent, but how much depends on your mix of work.</p></details>
+    <details><summary>More calls must mean a bigger bill.</summary><p>Sometimes they do, and the app shows it: the bill is on screen for every turn. A task that fits one cheap seat is run on that seat with one call and no planning; the router splits an ask only where splitting measured better, and a failed run reports what it spent and claims no saving. On the eight-module task the fully split pipeline cost more than raw Opus (about $0.78 against $0.44), which is why the router does not use it there.</p></details>
+    <details><summary>Can my company install it?</summary><p>One binary, local, no account, no telemetry. The network calls are: your CLIs' own calls; a license check once a day, once you have activated a key (the trial makes none); an update check against a static file on GitHub Releases; the window's fonts, fetched from Google Fonts (fonts.googleapis.com and fonts.gstatic.com) when it opens; api.openai.com or openrouter.ai only if you set up the optional OpenCode route with your own key; and GitHub only if you add a token or open a pull request. Send that to security.</p></details>
+  </div>
+</main>
+
+<footer><div class="wrap">
+  <span>antiloki · agents · X-ray</span>
+  <a href="/blog/">blog</a>
+  <a href="/paper.html">the benchmark</a>
+  <a href="https://github.com/danilosilvadev/antiloki-releases/releases">releases</a>
+  <a href="mailto:support@antiloki.com">support@antiloki.com</a>
+  <span class="r">© 2026 antiloki · updated 2026-10-01</span>
+</div></footer>
+
+<script>
+  const root = document.documentElement, h1 = document.querySelector(".hero h1");
+  const wrapWords = (el) => { for (const node of Array.from(el.childNodes)) { if (node.nodeType === 3) { const frag = document.createDocumentFragment(); node.textContent.split(/(\s+)/).forEach((t) => { if (!t) return; if (/^\s+$/.test(t)) frag.appendChild(document.createTextNode(t)); else { const w = document.createElement("span"); w.className = "w"; w.textContent = t; frag.appendChild(w); } }); node.replaceWith(frag); } else if (node.nodeType === 1) wrapWords(node); } };
+  wrapWords(h1);
+  h1.querySelectorAll(".w").forEach((w, i) => { w.style.transitionDelay = `${i * 40}ms`; });
+  const timers = []; const at = (ms, fn) => timers.push(setTimeout(fn, ms));
+  const settle = () => { timers.forEach(clearTimeout); root.classList.add("formed", "headline", "settled"); setTimeout(() => root.classList.add("gone"), 900); };
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) { root.classList.add("reduced", "gone"); }
+  else {
+    at(150, () => root.classList.add("formed"));
+    at(500, () => root.classList.add("headline"));
+    at(1100, () => root.classList.add("settled"));
+    at(1900, () => root.classList.add("gone"));
+    const cut = () => { settle(); for (const ev of ["wheel", "touchstart", "keydown", "pointerdown"]) window.removeEventListener(ev, cut); };
+    for (const ev of ["wheel", "touchstart", "keydown", "pointerdown"]) window.addEventListener(ev, cut, { passive: true });
+  }
+  const ua = navigator.userAgent, os = /Mac/.test(ua) ? "mac" : /Win/.test(ua) ? "win" : /Linux/.test(ua) ? "linux" : null;
+  if (os) document.querySelector(`.os[data-os="${os}"]`)?.classList.add("me");
+  const RELEASES = "danilosilvadev/antiloki-releases";
+  const PICK = { mac: [/\.dmg$/], win: [/-setup\.exe$/, /\.msi$/], linux: [/\.AppImage$/, /\.deb$/] };
+  const LIST = `https://github.com/${RELEASES}/releases`;
+  const fallback = () => { for (const key of ["mac", "linux"]) { const a = document.querySelector(`.os[data-os="${key}"]`); if (a) a.href = LIST; } };
+  fetch(`https://api.github.com/repos/${RELEASES}/releases?per_page=10`, { headers: { accept: "application/vnd.github+json" } }).then((r) => (r.ok ? r.json() : null)).then((rels) => {
+    if (!Array.isArray(rels)) { fallback(); return; }
+    const newest = rels.find((x) => !x.draft && !x.prerelease) || rels.find((x) => !x.draft);
+    for (const [key, pats] of Object.entries(PICK)) {
+      const a = document.querySelector(`.os[data-os="${key}"]`); if (!a) continue;
+      for (const rel of rels) {
+        if (rel.draft || !Array.isArray(rel.assets)) continue;
+        const asset = pats.map((re) => rel.assets.find((x) => re.test(x.name))).find(Boolean);
+        if (!asset) continue;
+        a.href = asset.browser_download_url; a.querySelector("em").textContent = `Download ${rel.tag_name} ↓`; a.title = `${asset.name} · ${(asset.size / 1048576).toFixed(0)} MB`;
+        const note = a.querySelector("span");
+        if (note && key !== "win") { note.textContent = note.textContent.replace(/v\d+\.\d+\.\d+/, rel.tag_name); if (rel === newest) note.textContent = note.textContent.replace(" (older build)", ""); }
+        break;
+      }
+    }
+  }).catch(() => { fallback(); });
+</script>
+<script>
+/* THE FILM (2026-10-07): "Carry". One agent carries a whole task alone; friends arrive; together they finish it in a fraction of the time; reunion.
+   The characters are the app's own faces (flat shapes, white slit eyes). The numbers are the measured per-run figures of 2026-10-07 (raw Claude Opus 5.5 $0.443 / 108 s; Composer 2.5 $0.065 / 72 s; 6.8x);
+   the pacing is cinematic, not a stopwatch. The picture is a pure function of time: render(t).
+   ART DIRECTION: the light tells the story - cool dusk while he is alone, the sun rising as his friends arrive, golden hour at the reunion. Layered parallax, atmosphere, soft contact shadows, lit rims, a slow camera. */
+(function () {
+  var canvas = document.getElementById("film-canvas"); if (!canvas || !canvas.getContext) return;
+  var ctx = canvas.getContext("2d");
+  var W = 960, H = 540, GY = 432, BAR = 30, TOTAL = 25.2, END_T = 22.4, VW = 1120, OX = 80;   // W = the scene; VW = what the screen shows; OX = the scene's offset in it
+  var PATHS = { circle: "M20 3a17 17 0 1 1 0 34a17 17 0 1 1 0-34z", egg: "M20 3c8 0 15 9 15 19s-6 15-15 15S5 32 5 22 12 3 20 3z", hex: "M17 3.7l14 8.1a3 3 0 0 1 1.5 2.6v11.2a3 3 0 0 1-1.5 2.6l-14 8.1a3 3 0 0 1-3 0L6 28.2a3 3 0 0 1-1.5-2.6V14.4A3 3 0 0 1 6 11.8l8-4.1a3 3 0 0 1 3 0z", drop: "M20 3c7 9 14 15 14 22a14 14 0 0 1-28 0c0-7 7-13 14-22z", arch: "M20 4c8 0 14 6 14 14v16a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3V18C6 10 12 4 20 4z", triangle: "M18.3 5.4a2 2 0 0 1 3.4 0l13.6 23.4a2 2 0 0 1-1.7 3H6.4a2 2 0 0 1-1.7-3z" };
+  var P2D = {}; try { for (var k in PATHS) P2D[k] = new Path2D(PATHS[k]); } catch (e) { return; }
+  var PAL = ["#7c5cf0", "#ec4f8f", "#f26b21", "#5b6f88", "#19a89d", "#1e88f0", "#e6b31e", "#3fae4a", "#c0392b", "#20b2d8", "#b15fd0"];
+  var INK = "#efe9e2", DIM = "#a3998f", MUTED = "#6f665e", EMBER = "#c97c5c", OK = "#7fc48f";
+  var MONO = '"JetBrains Mono", ui-monospace, Menlo, monospace', DISP = '"Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif', LOGO = '"Geist", -apple-system, system-ui, sans-serif';
+  // who is in the film: shape, colour, size, blink period
+  var OPUS = { id: "opus", name: "Claude Opus", shape: "egg", color: "#e6b31e", size: 100, tilt: 5, bp: 4.1 };
+  var SON = { id: "son", name: "Claude Sonnet", shape: "triangle", color: "#f26b21", size: 74, tilt: -7, bp: 3.7 };
+  var COMP = { id: "comp", name: "Composer 2.5", shape: "circle", color: "#19a89d", size: 74, tilt: -5, bp: 4.6 };
+  var CDX = { id: "cdx", name: "Codex", shape: "hex", color: "#1e88f0", size: 68, tilt: 6, bp: 5.2 };
+  var GEM = { id: "gem", name: "Gemini", shape: "drop", color: "#7c5cf0", size: 68, tilt: -4, bp: 3.4 };
+  var GRK = { id: "grk", name: "Grok 4.6", shape: "arch", color: "#5b6f88", size: 70, tilt: 5, bp: 4.9 };
+
+  // ---- small maths and colour
+  function clamp(x, a, b) { return Math.min(b === undefined ? 1 : b, Math.max(a === undefined ? 0 : a, x)); }
+  function seg(t, a, b) { return clamp((t - a) / (b - a)); }
+  function sm(x) { return x * x * (3 - 2 * x); }
+  function eo(x) { return 1 - Math.pow(1 - x, 3); }
+  function eob(x) { var c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); }
+  function lerp(a, b, u) { return a + (b - a) * u; }
+  function rnd(i, k) { var v = Math.sin(i * 12.9898 + k * 78.233) * 43758.5453; return v - Math.floor(v); }
+  function hex3(h) { h = h.replace("#", ""); return [parseInt(h.substr(0, 2), 16), parseInt(h.substr(2, 2), 16), parseInt(h.substr(4, 2), 16)]; }
+  function rgba(h, a) { var c = hex3(h); return "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + (a === undefined ? 1 : a) + ")"; }
+  function mixc(a, b, u, al) { var A = hex3(a), B = hex3(b); return "rgba(" + Math.round(lerp(A[0], B[0], u)) + "," + Math.round(lerp(A[1], B[1], u)) + "," + Math.round(lerp(A[2], B[2], u)) + "," + (al === undefined ? 1 : al) + ")"; }
+  function shade(h, a) { var c = hex3(h).map(function (v) { return Math.round(clamp(a > 0 ? v + (255 - v) * a : v * (1 + a), 0, 255)); }); return "rgb(" + c[0] + "," + c[1] + "," + c[2] + ")"; }
+  /** a hop: phase p in 0..1 -> height 0..h (a parabola), and the squash felt at both ends of it */
+  function hop(time, period, h, phase) {
+    var p = (((time / period) + (phase || 0)) % 1 + 1) % 1;
+    var up = h * 4 * p * (1 - p), edge = Math.min(p, 1 - p), sq = clamp(1 - edge / 0.12) * 0.22, st = (up / (h || 1)) * 0.1;
+    return { up: up, sx: 1 + sq * 0.9 - st * 0.6, sy: 1 - sq + st };
+  }
+  /** a single hop started at t0 lasting d seconds */
+  function once(t, t0, d, h) { var u = (t - t0) / d; if (u < 0 || u > 1) return 0; return h * 4 * u * (1 - u); }
+  /** the moments a periodic hop touches the ground within the last `win` seconds */
+  function lands(t, period, phase, win) { var out = [], kmax = Math.floor(t / period + (phase || 0)); for (var k = kmax; k > kmax - 12; k--) { var tk = (k - (phase || 0)) * period; if (tk <= t - win) break; if (tk <= t) out.push(tk); } return out; }
+
+  // ---- the light: 0 = cool dusk (he is alone) -> 1 = golden hour (friends, reunion). FLASH = the burst of joy at the reunion.
+  var T = { alone0: 0.9, alone1: 9.0, put: 9.3, stamp: 10.4, mourn: 10.9, friends0: 11.4, plan0: 14.3, work0: 14.9, work1: 18.1, party: 18.2, bubbles: 19.3, card: 21.0, fade: 24.5 };
+  var M = 0, FLASH = 0, S = 0;
+  function setLight(t) { M = sm(seg(t, 10.8, 15.8)); var a = t - T.party; FLASH = a >= 0 ? Math.exp(-a * 2.0) : 0; S = scroll(t); }
+
+  // ---- lights and glows (additive, so they read as light)
+  function glow(x, y, r, col, a) { if (a <= 0.003) return; ctx.save(); ctx.globalCompositeOperation = "lighter"; var g = ctx.createRadialGradient(x, y, 0, x, y, r); g.addColorStop(0, rgba(col, a)); g.addColorStop(1, rgba(col, 0)); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fill(); ctx.restore(); }
+  function rr(x, y, w, h, r) { ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(x, y, w, h, r); else ctx.rect(x, y, w, h); }
+  function glass(x, y, w, h, r, a, border) { rr(x, y, w, h, r); ctx.fillStyle = "rgba(15,12,11," + a + ")"; ctx.fill(); ctx.strokeStyle = border || "rgba(255,255,255,.09)"; ctx.lineWidth = 1; ctx.stroke(); }
+  function star(x, y, r, a, rot, col) { if (a <= 0.01) return; glow(x, y, r * 2.1, col || "#ffffff", a * 0.45); ctx.save(); ctx.globalCompositeOperation = "lighter"; ctx.globalAlpha = a; ctx.translate(x, y); ctx.rotate(rot || 0); ctx.fillStyle = col || "#ffffff"; ctx.beginPath(); for (var i = 0; i < 8; i++) { var rad = i % 2 ? r * 0.2 : r, ang = i * Math.PI / 4; ctx.lineTo(Math.cos(ang) * rad, Math.sin(ang) * rad); } ctx.closePath(); ctx.fill(); ctx.restore(); }
+  function heart(x, y, s, a) { glow(x, y - 3 * s, 14 * s, "#ec4f8f", a * 0.35); ctx.save(); ctx.globalAlpha = a; ctx.translate(x, y); ctx.scale(s, s); var g = ctx.createLinearGradient(0, -12, 0, 4); g.addColorStop(0, "#ff7fb0"); g.addColorStop(1, "#d93a7c"); ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(0, 4); ctx.bezierCurveTo(-10, -4, -6, -12, 0, -6); ctx.bezierCurveTo(6, -12, 10, -4, 0, 4); ctx.fill(); ctx.restore(); }
+  function puff(x, y, age, life, size) { if (age < 0 || age > life) return; var u = age / life, r = size * (0.7 + 1.5 * u), a = 0.34 * (1 - u) * (1 - u); var g = ctx.createRadialGradient(x, y - r * 0.5 * u, 0, x, y - r * 0.5 * u, r); g.addColorStop(0, "rgba(232,205,178," + a + ")"); g.addColorStop(1, "rgba(232,205,178,0)"); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y - r * 0.5 * u, r, 0, 7); ctx.fill(); }
+
+  // ---- a character, anchored at its feet. o: { sx, sy, rot, eye: slit|wide|tired|happy, look, alpha, up, blush }
+  function drawFace(c, x, y, o, t) {
+    o = o || {}; var s = (o.scale || 1) * c.size / 40, sx = (o.sx || 1) * s, sy = (o.sy || 1) * s, up = o.up || 0, al = o.alpha === undefined ? 1 : o.alpha;
+    // soft contact shadow, stretched away from the sun at golden hour
+    var rad = c.size * (0.58 + 0.2 * M) * (1 - Math.min(0.3, up / 220)), sh = al * (0.5 - Math.min(0.3, up / 260));
+    ctx.save(); ctx.translate(x - c.size * 0.14 * M, y + 3); ctx.scale(1, 0.2); var sg = ctx.createRadialGradient(0, 0, 0, 0, 0, rad); sg.addColorStop(0, "rgba(8,5,8," + sh + ")"); sg.addColorStop(1, "rgba(8,5,8,0)"); ctx.fillStyle = sg; ctx.beginPath(); ctx.arc(0, 0, rad, 0, 7); ctx.fill(); ctx.restore();
+    ctx.save(); ctx.globalAlpha = al;
+    ctx.translate(x, y - up); ctx.rotate((c.tilt * Math.PI / 180) + (o.rot || 0)); ctx.scale(sx, sy); ctx.translate(-20, -37);
+    ctx.fillStyle = c.color; ctx.fill(P2D[c.shape]);
+    // volume without losing the flat look: a faint light from the top-left, a faint shade at the bottom, and a warm rim on the sun's side
+    ctx.save(); ctx.clip(P2D[c.shape]);
+    var vg = ctx.createLinearGradient(6, 3, 34, 38); vg.addColorStop(0, "rgba(255,255,255,.17)"); vg.addColorStop(0.45, "rgba(255,255,255,0)"); vg.addColorStop(1, "rgba(14,6,16,.24)"); ctx.fillStyle = vg; ctx.fillRect(-2, -2, 44, 44);
+    var rim = ctx.createLinearGradient(8, 0, 38, 0); rim.addColorStop(0, "rgba(255,190,130,0)"); rim.addColorStop(1, "rgba(255,198,142," + (0.1 + 0.55 * M + 0.2 * FLASH) + ")"); ctx.strokeStyle = rim; ctx.lineWidth = 3.4; ctx.stroke(P2D[c.shape]);
+    ctx.restore();
+    var dy = c.shape === "triangle" ? 5 : c.shape === "drop" ? 4 : 0, ex = [16.6 + (o.look || 0) * 1.4, 23.4 + (o.look || 0) * 1.4], ey = 17 + dy, mode = o.eye || "slit";
+    var blink = ((t / c.bp) % 1) > 0.965 ? 0.12 : 1;
+    ctx.fillStyle = "#fff"; ctx.strokeStyle = "#fff"; ctx.lineCap = "round";
+    for (var i = 0; i < 2; i++) {
+      if (mode === "happy") { ctx.lineWidth = 1.8; ctx.beginPath(); ctx.arc(ex[i], ey + 1.5, 2.3, Math.PI * 1.08, Math.PI * 1.92); ctx.stroke(); }
+      else {
+        var w = mode === "tired" ? 3.4 : 2.1, h = (mode === "wide" ? 7.4 : mode === "tired" ? 1.5 : 5.2) * blink;
+        ctx.beginPath(); ctx.roundRect ? ctx.roundRect(ex[i] - w / 2, ey - h / 2 + (mode === "tired" ? 1.4 : 0), w, h, Math.min(w, h) / 2) : ctx.rect(ex[i] - w / 2, ey - h / 2, w, h); ctx.fill();
+      }
+    }
+    if (o.blush) { ctx.fillStyle = "rgba(255,170,190,.42)"; for (var j = 0; j < 2; j++) { ctx.beginPath(); ctx.ellipse(ex[j] + (j ? 2.2 : -2.2), ey + 6.2, 2.4, 1.4, 0, 0, 7); ctx.fill(); } }
+    ctx.restore();
+  }
+  function drawBlock(x, y, color, o) {   // a module: a small rounded block with a lit top, centred on x, resting on y
+    o = o || {}; ctx.save(); if (o.alpha !== undefined) ctx.globalAlpha = o.alpha; ctx.translate(x, y); if (o.rot) ctx.rotate(o.rot); ctx.scale(o.sx || 1, o.sy || 1);
+    var g = ctx.createLinearGradient(0, -22, 0, 0); g.addColorStop(0, shade(color, 0.2)); g.addColorStop(1, shade(color, -0.24)); ctx.fillStyle = g; rr(-21, -22, 42, 22, 5); ctx.fill();
+    ctx.strokeStyle = "rgba(0,0,0,.3)"; ctx.lineWidth = 1; ctx.stroke();
+    ctx.fillStyle = "rgba(255,255,255,.34)"; rr(-18, -20.5, 36, 3, 1.5); ctx.fill();
+    ctx.fillStyle = "rgba(255,255,255,.2)"; rr(-14, -14, 15, 2.4, 1.2); ctx.fill();
+    if (o.check) { var k = eob(clamp(o.check)); ctx.shadowColor = "rgba(0,0,0,.35)"; ctx.shadowBlur = 3; ctx.strokeStyle = "#fff"; ctx.lineWidth = 3.4; ctx.lineCap = "round"; ctx.lineJoin = "round"; ctx.beginPath(); ctx.moveTo(-9 * k, -10 * k); ctx.lineTo(-3 * k, -4 * k); ctx.lineTo(9 * k, -17 * k); ctx.stroke(); }
+    ctx.restore();
+    if (o.glow) glow(x, y - 11, 44, color, o.glow);
+  }
+  function text(str, x, y, font, color, align, alpha) { ctx.save(); ctx.font = font; ctx.fillStyle = color; ctx.textAlign = align || "left"; ctx.textBaseline = "alphabetic"; if (alpha !== undefined) ctx.globalAlpha = alpha; ctx.fillText(str, x, y); ctx.restore(); }
+
+  // ---- the world: sky and sun, clouds, three ridges of hills, trees, the ground. All of it lit by M.
+  var SEND = 700;                                  // how far the world scrolls while he carries the task
+  function scroll(t) { return SEND * sm(seg(t, 0.9, 9.0)); }
+  function ridgeY(x, par, base, amp, off) { var u = x + S * par + off; return GY - base - amp * Math.sin(u / 120) - amp * 0.5 * Math.sin(u / 47 + 1.3) - amp * 0.25 * Math.sin(u / 23 + 0.4); }
+  function drawSky(t) {
+    var m = M, g = ctx.createLinearGradient(0, 0, 0, GY);
+    g.addColorStop(0, mixc("#0b0912", "#2a1e3c", m)); g.addColorStop(0.5, mixc("#18121f", "#6f3d4e", m)); g.addColorStop(1, mixc("#3a2530", "#f3a976", m));
+    ctx.fillStyle = g; ctx.fillRect(-12, -12, VW + 24, H + 24);
+    // stars fade as the sun comes up
+    var sa = 1 - 0.92 * m;
+    if (sa > 0.02) for (var i = 0; i < 70; i++) { var span = VW + 140, sx = (((rnd(i, 1) * span) - S * 0.03 * (1 + rnd(i, 4))) % span + span) % span - 70, sy = 24 + rnd(i, 2) * 230, tw = 0.35 + 0.65 * Math.abs(Math.sin(t * (0.6 + rnd(i, 3)) + i)), r = 0.7 + rnd(i, 5) * 1.3; ctx.fillStyle = "rgba(240,232,255," + (0.5 * tw * sa).toFixed(3) + ")"; ctx.beginPath(); ctx.arc(sx, sy, r, 0, 7); ctx.fill(); if (r > 1.7) glow(sx, sy, 7, "#cfc4ff", 0.18 * tw * sa); }
+    // the sun: below the hills at dusk, rising behind the far ridge as his friends arrive
+    var sx2 = OX + 735, sy2 = lerp(GY + 80, GY - 104, eo(m));
+    glow(sx2, sy2, 600, "#ff9a62", 0.1 + 0.34 * m + 0.14 * FLASH);
+    glow(sx2, sy2, 220, "#ffc88a", 0.08 + 0.36 * m + 0.2 * FLASH);
+    ctx.save(); ctx.globalCompositeOperation = "lighter";
+    for (var r2 = 0; r2 < 7; r2++) { var ang = -Math.PI / 2 + (r2 - 3) * 0.24 + Math.sin(t * 0.25 + r2) * 0.035, len = 760, wid = 0.075; var rg = ctx.createLinearGradient(sx2, sy2, sx2 + Math.cos(ang) * len, sy2 + Math.sin(ang) * len); rg.addColorStop(0, "rgba(255,206,150," + (0.06 * m + 0.05 * FLASH) + ")"); rg.addColorStop(1, "rgba(255,206,150,0)"); ctx.fillStyle = rg; ctx.beginPath(); ctx.moveTo(sx2, sy2); ctx.lineTo(sx2 + Math.cos(ang - wid) * len, sy2 + Math.sin(ang - wid) * len); ctx.lineTo(sx2 + Math.cos(ang + wid) * len, sy2 + Math.sin(ang + wid) * len); ctx.closePath(); ctx.fill(); }
+    ctx.restore();
+    if (m > 0.02) { var dg = ctx.createRadialGradient(sx2, sy2, 0, sx2, sy2, 62); dg.addColorStop(0, "rgba(255,244,222," + m + ")"); dg.addColorStop(0.55, "rgba(255,218,168," + 0.9 * m + ")"); dg.addColorStop(1, "rgba(255,190,130,0)"); ctx.fillStyle = dg; ctx.beginPath(); ctx.arc(sx2, sy2, 62, 0, 7); ctx.fill(); }
+    // clouds: soft, drifting, lit from below by the horizon
+    for (var c = 0; c < 8; c++) {
+      var per = VW + 560, bx = rnd(c, 11) * per, cy = 60 + rnd(c, 12) * 170, cw = 170 + rnd(c, 13) * 230, par = 0.07 + 0.07 * rnd(c, 14), cx0 = (((bx - t * (3 + 5 * rnd(c, 15)) - S * par) % per) + per) % per - 280;
+      for (var j = 0; j < 5; j++) {
+        var px = cx0 + (j - 2) * cw * 0.26, py = cy + Math.sin(j * 1.7 + c) * 7, rx = cw * (0.3 + 0.05 * Math.sin(j + c)), ry = rx * 0.3;
+        ctx.save(); ctx.translate(px, py); ctx.scale(1, ry / rx); var cg = ctx.createRadialGradient(0, rx * 0.25, 0, 0, 0, rx); cg.addColorStop(0, mixc("#4a3a58", "#ffc79a", m, 0.2 + 0.1 * rnd(c, 16))); cg.addColorStop(0.6, mixc("#2c2238", "#d98a8a", m, 0.12)); cg.addColorStop(1, mixc("#2c2238", "#d98a8a", m, 0)); ctx.fillStyle = cg; ctx.beginPath(); ctx.arc(0, 0, rx, 0, 7); ctx.fill(); ctx.restore();
+      }
+    }
+  }
+  function ridge(par, base, amp, off, cTop, cBot, rimA, treeN, treeCol, treeSz) {
+    ctx.beginPath(); ctx.moveTo(-12, GY + 2); var x; for (x = -12; x <= VW + 12; x += 8) ctx.lineTo(x, ridgeY(x, par, base, amp, off)); ctx.lineTo(VW + 12, GY + 2); ctx.closePath();
+    var g = ctx.createLinearGradient(0, GY - base - amp * 1.8, 0, GY); g.addColorStop(0, cTop); g.addColorStop(1, cBot); ctx.fillStyle = g; ctx.fill();
+    if (rimA > 0.01) { ctx.beginPath(); for (x = -12; x <= VW + 12; x += 8) { var yy = ridgeY(x, par, base, amp, off); if (x === -12) ctx.moveTo(x, yy); else ctx.lineTo(x, yy); } ctx.strokeStyle = "rgba(255,196,140," + rimA + ")"; ctx.lineWidth = 1.6; ctx.stroke(); }
+    var per = VW + 240;
+    for (var k = 0; k < treeN; k++) {   // little pines along the ridge
+      var tx = ((((k * per / treeN) + rnd(k, 21) * 40 - S * par) % per) + per) % per - 120, ty = ridgeY(tx, par, base, amp, off) + 2, th = treeSz * (0.7 + rnd(k, 22) * 0.7);
+      ctx.fillStyle = treeCol; ctx.beginPath(); ctx.moveTo(tx, ty - th); ctx.lineTo(tx + th * 0.28, ty - th * 0.45); ctx.lineTo(tx + th * 0.14, ty - th * 0.45); ctx.lineTo(tx + th * 0.34, ty); ctx.lineTo(tx - th * 0.34, ty); ctx.lineTo(tx - th * 0.14, ty - th * 0.45); ctx.lineTo(tx - th * 0.28, ty - th * 0.45); ctx.closePath(); ctx.fill();
+    }
+  }
+  function haze(a, top) { var g = ctx.createLinearGradient(0, GY - top, 0, GY); g.addColorStop(0, mixc("#3a2530", "#f3a976", M, 0)); g.addColorStop(1, mixc("#3a2530", "#f3a976", M, a)); ctx.fillStyle = g; ctx.fillRect(-12, GY - top, VW + 24, top + 2); }
+  function drawGround(t) {
+    var g = ctx.createLinearGradient(0, GY, 0, H); g.addColorStop(0, mixc("#3a2e29", "#6c4c3a", M)); g.addColorStop(0.35, mixc("#2a201d", "#4a3328", M)); g.addColorStop(1, mixc("#161110", "#251a15", M));
+    ctx.fillStyle = g; ctx.fillRect(-12, GY, VW + 24, H - GY + 12);
+    ctx.fillStyle = "rgba(255,206,160," + (0.1 + 0.28 * M) + ")"; ctx.fillRect(-12, GY, VW + 24, 1.6);
+    // a worn path: two soft ruts, pebbles, and tufts, all moving with the world
+    for (var r = 0; r < 2; r++) { var rg = ctx.createLinearGradient(0, GY + 30 + r * 16, 0, GY + 36 + r * 16); rg.addColorStop(0, "rgba(0,0,0,0)"); rg.addColorStop(0.5, "rgba(0,0,0,.2)"); rg.addColorStop(1, "rgba(0,0,0,0)"); ctx.fillStyle = rg; ctx.fillRect(-12, GY + 28 + r * 16, VW + 24, 10); }
+    var per = 2000;
+    for (var i = 0; i < 48; i++) { var px = (((rnd(i, 31) * per) - S) % per + per) % per - 120, py = GY + 12 + rnd(i, 32) * 62, rx = 2.5 + rnd(i, 33) * 7; ctx.fillStyle = "rgba(0,0,0,.2)"; ctx.beginPath(); ctx.ellipse(px, py + 1, rx, rx * 0.34, 0, 0, 7); ctx.fill(); ctx.fillStyle = "rgba(255,214,176," + (0.05 + 0.1 * M) + ")"; ctx.beginPath(); ctx.ellipse(px - 0.5, py - 0.6, rx * 0.8, rx * 0.22, 0, 0, 7); ctx.fill(); }
+  }
+  function drawWorld(t) {
+    drawSky(t);
+    ridge(0.14, 118, 30, 0, mixc("#2d2433", "#85505a", M), mixc("#241c2a", "#5c3744", M), 0.1 * M, 0, "", 0); haze(0.5, 150);
+    ridge(0.3, 78, 26, 400, mixc("#261d27", "#63404a", M), mixc("#1f1822", "#4a2d36", M), 0.18 * M, 11, mixc("#1b141c", "#3a232c", M), 34); haze(0.3, 110);
+    ridge(0.55, 40, 20, 900, mixc("#1d1619", "#3d2a2c", M), mixc("#181214", "#2f2022", M), 0.22 * M, 15, mixc("#120d0f", "#271a1b", M), 46);
+    drawGround(t);
+  }
+  // the finish table: where the work ends up (it rides in from the right while the world scrolls)
+  var TAB_X = 818;
+  function tableX(t) { return TAB_X + (SEND - scroll(t)); }
+  function slot(col, row, x0) { return { x: x0 + (col ? 28 : -28), y: GY - 30 - row * 23 }; }
+  function slab(x0, t) {
+    ctx.save(); ctx.translate(x0, GY); var sg = ctx.createRadialGradient(0, 3, 0, 0, 3, 100); sg.addColorStop(0, "rgba(6,4,6,.5)"); sg.addColorStop(1, "rgba(6,4,6,0)"); ctx.save(); ctx.scale(1, 0.18); ctx.fillStyle = sg; ctx.beginPath(); ctx.arc(0, 0, 100, 0, 7); ctx.fill(); ctx.restore();
+    var g = ctx.createLinearGradient(0, -30, 0, 0); g.addColorStop(0, mixc("#66544a", "#a07a5e", M)); g.addColorStop(0.12, mixc("#4a3b33", "#7d5c47", M)); g.addColorStop(1, mixc("#2a201c", "#3e2c24", M)); ctx.fillStyle = g; rr(-82, -30, 164, 30, 6); ctx.fill();
+    ctx.fillStyle = "rgba(255,214,170," + (0.16 + 0.3 * M) + ")"; rr(-80, -30, 160, 2.6, 1.3); ctx.fill();
+    ctx.strokeStyle = "rgba(0,0,0,.22)"; ctx.lineWidth = 1; for (var s2 = -3; s2 <= 3; s2++) { ctx.beginPath(); ctx.moveTo(s2 * 26 + 6, -26); ctx.lineTo(s2 * 26 + 6, -2); ctx.stroke(); }
+    ctx.restore();
+  }
+  function drawTable(t) {
+    var x0 = tableX(t); slab(x0, t);
+    // the lantern at its left corner: a little warm light that works at dusk and fades into the sunrise
+    var fl = 0.82 + 0.1 * Math.sin(t * 17) + 0.08 * Math.sin(t * 29 + 1);
+    ctx.fillStyle = "#1a1412"; ctx.fillRect(x0 - 78, GY - 96, 3, 66); ctx.fillStyle = "#2a201c"; rr(x0 - 85, GY - 108, 17, 17, 4); ctx.fill();
+    ctx.fillStyle = mixc("#ffb86a", "#ffe2b0", 0.5 * M); rr(x0 - 82, GY - 105, 11, 11, 3); ctx.fill();
+    glow(x0 - 76, GY - 98, 130, "#ffb066", (0.36 - 0.18 * M) * fl); glow(x0 - 76, GY - 98, 34, "#ffd9a0", 0.5 * fl * (1 - 0.4 * M));
+    // the flag, waving
+    ctx.fillStyle = "#6f665e"; ctx.fillRect(x0 + 92, GY - 150, 3, 150);
+    ctx.beginPath(); var fx; for (fx = 0; fx <= 46; fx += 5) ctx.lineTo(x0 + 95 + fx, GY - 150 + Math.sin(t * 3.2 + fx * 0.16) * (1.5 + fx * 0.07)); for (fx = 46; fx >= 0; fx -= 5) ctx.lineTo(x0 + 95 + fx, GY - 124 + Math.sin(t * 3.2 + fx * 0.16 + 0.5) * (1.5 + fx * 0.07)); ctx.closePath();
+    var fg = ctx.createLinearGradient(x0 + 95, 0, x0 + 141, 0); fg.addColorStop(0, "#c97c5c"); fg.addColorStop(1, "#e89a76"); ctx.fillStyle = fg; ctx.fill();
+  }
+  var STACK_X = 124;
+  function drawStackBase(t) { slab(STACK_X, t); }
+
+  // ---- the tower Opus carries, and the blocks' journeys
+  var GRAY = "#8a7f74", TOWER_N = 8;
+  function opusState(t) {
+    var s = { x: 0, up: 0, sx: 1, sy: 1, rot: 0, eye: "slit", look: 1, scale: 1, blush: false };
+    if (t < T.alone1 + 0.2) {   // enters, then trudges (the world moves, he stays put)
+      s.x = lerp(-OX - 140, 300, eo(seg(t, 0.3, 1.7)));
+      var h = hop(t, 0.95, 5, 0); s.up = h.up; s.sx = h.sx; s.sy = h.sy; s.rot = 0.045 * Math.sin(t * 6.6); s.eye = "tired";
+    } else if (t < T.put) { s.x = lerp(300, 725, sm(seg(t, T.alone1, T.put))); var h2 = hop(t, 0.7, 6, 0); s.up = h2.up; s.sx = h2.sx; s.sy = h2.sy; s.eye = "tired"; }
+    else if (t < T.friends0 + 0.5) { s.x = 725; s.sy = 0.93 + 0.02 * Math.sin(t * 2); s.sx = 1.05; s.eye = "tired"; s.look = -0.4; }   // he sits, spent
+    else if (t < T.work1) { s.x = 725; var b = Math.sin(t * 2.2); s.sy = 0.97 + 0.02 * b; s.eye = t < 12.6 ? "wide" : "happy"; s.look = -0.9; s.blush = t > 12.6; s.up = t > T.work0 ? once(t, T.work0 + 2.4, 0.5, 14) + once(t, T.work0 + 3.2, 0.5, 18) : 0; }
+    else {   // the reunion: he is the middle of it
+      s.x = 725; var hh = hop(t, 0.62, 30, 0.1); s.up = hh.up * sm(clamp((t - T.party - 0.3) / 0.5)); s.sx = hh.sx; s.sy = hh.sy; s.eye = "happy"; s.blush = true; s.look = 0;
+    }
+    return s;
+  }
+  function drawTower(ox, oy, t) {   // the eight modules on his head, wobbling
+    var baseY = oy - OPUS.size * 0.93;
+    for (var i = 0; i < TOWER_N; i++) {
+      var left = t >= T.put + (TOWER_N - 1 - i) * 0.11;   // top block leaves first
+      if (left) continue;
+      var sway = Math.sin(t * 3.1 + i * 0.5) * (1.2 + i * 0.9), y = baseY - i * 22;
+      drawBlock(ox + sway, y, GRAY, { rot: Math.sin(t * 2.4 + i) * 0.03 * (i + 1) * 0.5 });
+    }
+  }
+  function slotOf(i) { return { col: i % 2, row: Math.floor(i / 2) }; }
+  function drawAloneBlocks(t, opX, opY) {   // after he arrives, the blocks hop down onto the table
+    for (var i = 0; i < TOWER_N; i++) {
+      var t0 = T.put + (TOWER_N - 1 - i) * 0.11, u = seg(t, t0, t0 + 0.45); if (u <= 0) continue;
+      var sl = slotOf(i), dst = slot(sl.col, sl.row, tableX(t)), srcX = opX, srcY = opY - OPUS.size * 0.93 - i * 22;
+      var x = lerp(srcX, dst.x, eo(u)), y = lerp(srcY, dst.y, u * u) - 70 * 4 * u * (1 - u);
+      if (t > 13.55) { var gone = seg(t, 13.45, 13.85); if (gone >= 1) continue; drawBlock(dst.x, dst.y, GRAY, { check: 1, alpha: 1 - gone, sx: 1 - gone * 0.4, sy: 1 - gone * 0.4 }); continue; }
+      drawBlock(x, y, GRAY, { check: u >= 1 ? (t - t0 - 0.45) / 0.25 : 0 });
+      if (u >= 1) puff(dst.x, dst.y + 2, t - t0 - 0.45, 0.5, 9);
+    }
+  }
+  // take two: the task is a stack on the left; each block flies over the writer, wakes up, and lands on the table, judged
+  var FL0 = 14.5, FSTEP = 0.36, FDUR = 0.86;
+  function blockFlight(k, t) {
+    var sl = slotOf(k), src = slot(sl.col, 3 - Math.floor(k / 2), STACK_X), dst = slot(sl.col, Math.floor(k / 2), tableX(t)), t0 = FL0 + k * FSTEP, u = seg(t, t0, t0 + FDUR);
+    return { src: src, dst: dst, t0: t0, u: u };
+  }
+  function flightPos(f, u) { return { x: lerp(f.src.x, f.dst.x, sm(u)), y: lerp(f.src.y, f.dst.y, u) - 170 * 4 * u * (1 - u) }; }
+  function drawTwoBlocks(t) {
+    if (t < 13.9 || t > 22.6) return;
+    var pop = eob(seg(t, 13.9, 14.3));
+    for (var k = 0; k < TOWER_N; k++) {
+      var f = blockFlight(k, t), x, y, col, o = {}, awake = PAL[(k * 2 + 1) % PAL.length];
+      if (f.u <= 0) { x = f.src.x; y = f.src.y; col = GRAY; o.sx = pop; o.sy = pop; }
+      else if (f.u < 1) {
+        for (var j = 4; j >= 1; j--) { var uj = f.u - j * 0.035; if (uj <= 0) continue; var pj = flightPos(f, uj); drawBlock(pj.x, pj.y, uj < 0.5 ? GRAY : awake, { alpha: 0.2 * (1 - j / 5), rot: (uj - 0.5) * 0.9 }); }   // a motion trail
+        var p = flightPos(f, f.u); x = p.x; y = p.y; col = f.u < 0.5 ? GRAY : awake; o.rot = (f.u - 0.5) * 0.9; o.sx = 1 + 0.12 * Math.sin(f.u * 6.28); if (f.u >= 0.5) o.glow = 0.5 * (1 - (f.u - 0.5) * 1.4);
+      } else { x = f.dst.x; y = f.dst.y; col = awake; var since = t - (f.t0 + FDUR); o.check = since / 0.22; o.sy = 1 - 0.16 * clamp(1 - since / 0.18); o.sx = 1 + 0.12 * clamp(1 - since / 0.18); }
+      drawBlock(x, y, col, o);
+      var w = t - (f.t0 + FDUR * 0.5), pm = flightPos(f, 0.5);   // where it wakes up over the writer: a burst of light and a ring
+      if (w > 0 && w < 0.6) { var wu = w / 0.6; glow(pm.x, pm.y - 8, 70 * (0.5 + wu), awake, 0.6 * (1 - wu)); ctx.save(); ctx.globalCompositeOperation = "lighter"; ctx.strokeStyle = rgba(awake, 0.7 * (1 - wu)); ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(pm.x, pm.y - 8, 10 + 56 * eo(wu), 0, 7); ctx.stroke(); ctx.restore(); star(pm.x, pm.y - 8, 16 * (1 - wu) + 5, 1 - wu, w * 4, "#fff4e0"); }
+      var l = t - (f.t0 + FDUR);   // and where it lands: dust and a ring
+      if (l > 0 && l < 0.7) { puff(f.dst.x - 14, f.dst.y + 1, l, 0.6, 7); puff(f.dst.x + 14, f.dst.y + 1, l, 0.6, 7); ctx.save(); ctx.globalCompositeOperation = "lighter"; ctx.strokeStyle = rgba(awake, 0.5 * (1 - l / 0.7)); ctx.lineWidth = 1.6; ctx.beginPath(); ctx.ellipse(f.dst.x, f.dst.y - 2, 12 + 44 * eo(l / 0.7), (12 + 44 * eo(l / 0.7)) * 0.35, 0, 0, 7); ctx.stroke(); ctx.restore(); }
+    }
+  }
+  // ---- the friends
+  var ARR = { comp: [T.friends0, T.friends0 + 1.7, 470], son: [T.friends0 + 0.5, T.friends0 + 2.1, 215], gem: [T.friends0 + 1.0, T.friends0 + 2.6, 300], cdx: [T.friends0 + 1.4, T.friends0 + 3.0, 385], grk: [T.friends0 + 1.8, T.friends0 + 3.5, 555] };
+  function friend(c, t) {
+    var s = { x: 0, up: 0, sx: 1, sy: 1, rot: 0, eye: "slit", look: 0, scale: 1, row: 0, vis: true, blush: false };
+    var inA = ARR[c.id];
+    var back = c === GEM || c === CDX || c === GRK; s.row = back ? -22 : 0; s.scale = back ? 0.9 : 1;
+    var u = seg(t, inA[0], inA[1]), x = lerp(-OX - 140, inA[2], eo(u)), moving = u > 0 && u < 1;
+    if (t < inA[0]) { s.vis = false; return s; }
+    s.x = x; s.look = moving ? 1 : 0;
+    if (moving) {   // each walks in its own way
+      if (c === COMP) { var h = hop(t, 0.42, 38, 0); s.up = h.up; s.sx = h.sx; s.sy = h.sy; s.rot = 0.1 * Math.sin(t * 14); }
+      else if (c === SON) { var h2 = hop(t, 0.55, 24, 0); s.up = h2.up; s.sx = h2.sx; s.sy = h2.sy; s.rot = 0.18 * Math.sin(t * 11.4); }
+      else if (c === GEM) { var h3 = hop(t, 0.5, 46, 0.2); s.up = h3.up; s.sx = h3.sx * 1.04; s.sy = h3.sy; }
+      else if (c === CDX) { s.rot = (x + OX + 140) / (c.size * 0.45); s.up = 2 + 2 * Math.sin(t * 20); }
+      else { s.up = 7 + 4 * Math.sin(t * 5); s.rot = 0.05 * Math.sin(t * 3); s.sy = 1.03; }
+    }
+    s.eye = t < inA[1] + 0.3 ? "wide" : "happy"; s.blush = t > inA[1];
+    if (t >= inA[1]) {
+      var arrived = t - inA[1];
+      if (t < T.work0) { var bb = hop(t, 0.9, 7, c.bp * 0.1); s.up = bb.up; s.sx = bb.sx; s.sy = bb.sy; if (arrived < 0.7) { s.up += once(t, inA[1], 0.45, 20); } }   // they wave hello with a hop
+    }
+    // roles in take two
+    if (t >= T.work0 - 0.6 && t < T.work1) {
+      if (c === SON) {   // plans at the stack, then dashes to the table and judges
+        var dash = seg(t, T.work0 - 0.3, T.work0 + 0.35); s.x = lerp(215, 630, sm(dash)); if (dash > 0 && dash < 1) { s.up = once(t, T.work0 - 0.3, 0.65, 26); s.look = 1; }
+        else { var bt = hop(t, 0.72, 10, 0); s.up = bt.up; s.sx = bt.sx; s.sy = bt.sy; for (var k = 0; k < TOWER_N; k++) { var fl = blockFlight(k, t); s.up += once(t, fl.t0 + FDUR, 0.3, 14); } }
+        s.eye = "wide";
+      } else if (c === COMP) {   // the writer jumps as each block passes over
+        s.x = 470; s.eye = "wide"; s.up = 0; for (var kk = 0; kk < TOWER_N; kk++) { var f2 = blockFlight(kk, t); s.up += once(t, f2.t0 + FDUR * 0.28, 0.36, 40); }
+        var base = hop(t, 0.36, 6, 0); s.up += base.up * 0.5; s.rot = 0.12 * Math.sin(t * 9);
+      } else { var cheer = hop(t, 0.72, 20, c === GEM ? 0 : c === CDX ? 0.33 : 0.66); s.up = cheer.up; s.sx = cheer.sx; s.sy = cheer.sy; s.eye = "happy"; s.rot = 0.1 * Math.sin(t * 8 + c.bp); }
+    }
+    if (t >= T.work1) {   // the reunion: they gather round him and jump together
+      var from = c === SON ? 630 : c === COMP ? 470 : c === GEM ? 300 : c === CDX ? 385 : 555, dest = from + (c === SON ? 6 : c === GRK ? 8 : c === COMP ? -6 : c === CDX ? -8 : -10);
+      var m = sm(seg(t, T.party, T.party + 1.1)); s.x = lerp(from, dest, m); s.row = lerp(s.row, back ? -6 : 0, m); s.scale = lerp(s.scale, back ? 0.96 : 1, m);
+      var pj = hop(t, 0.62, 28, (c.bp % 1) * 0.2); s.up = pj.up * sm(clamp((t - T.party - 0.15) / 0.4)); s.sx = pj.sx; s.sy = pj.sy; s.eye = "happy"; s.blush = true; s.rot = 0.14 * Math.sin(t * 9 + c.bp); s.look = 0;
+    }
+    return s;
+  }
+  // dust where feet touch the ground: his heavy steps, the friends' arrival hops, the reunion jumps
+  function drawDust(t, st) {
+    // his steps (the world slides past, so the dust is left behind)
+    if (t > 1.7 && t < T.alone1 + 0.4) lands(t, 0.95, 0, 0.7).forEach(function (tk) { if (tk > 1.7) { puff(st.opus.x - 22 - (t - tk) * 58, GY + 2, t - tk, 0.7, 10); puff(st.opus.x - 8 - (t - tk) * 40, GY + 3, t - tk, 0.55, 7); } });
+    var arrHops = { comp: [0.42, 0], son: [0.55, 0], gem: [0.5, 0.2] };
+    [COMP, SON, GEM].forEach(function (c) { var a = ARR[c.id], hp = arrHops[c.id]; if (t > a[0] && t < a[1] + 0.8) lands(t, hp[0], hp[1], 0.5).forEach(function (tk) { if (tk > a[0] && tk < a[1]) { var u = seg(tk, a[0], a[1]), px = lerp(-OX - 140, a[2], eo(u)); puff(px, GY + (c === GEM ? -22 : 0) + 2, t - tk, 0.5, 8); } }); });
+    if (t > ARR.cdx[0] && t < ARR.cdx[1]) { var cs = st.cdx; for (var j = 0; j < 5; j++) puff(cs.x - 26 - j * 14, GY - 20, (j * 0.06), 0.4, 6 + j); }   // the hexagon rolls: a trail
+    if (t > T.party + 0.35 && t < T.party + 5) [OPUS, SON, COMP, CDX, GEM, GRK].forEach(function (c) { var s = st[c.id]; if (!s || s.vis === false) return; var ph = c === OPUS ? 0.1 : (c.bp % 1) * 0.2; lands(t, 0.62, ph, 0.5).forEach(function (tk) { if (tk > T.party + 0.4) puff(s.x, GY + (s.row || 0) + 2, t - tk, 0.5, 9); }); });
+  }
+  // ---- name plates: who is the model behind each face
+  var STAG = { opus: 0, son: 1, comp: 1, cdx: 0, gem: 1, grk: 0 };
+  function roleOf(c, t, s) {
+    if (c === OPUS) return t < T.mourn ? "does it all alone" : "";
+    if (t >= T.work0 - 0.6 && t < T.work1) { if (c === COMP) return "writes"; if (c === SON) return s.x > 420 ? "judges" : "plans"; }
+    return "";
+  }
+  function drawPlate(c, s, t, hideAfter) {
+    var arrive = c === OPUS ? 1.5 : ARR[c.id][1];
+    var a = seg(t, arrive - 0.2, arrive + 0.35); if (hideAfter) a *= 1 - seg(t, T.bubbles - 0.1, T.bubbles + 0.25); if (a <= 0.01) return;
+    var role = roleOf(c, t, s), stag = c === COMP && t >= T.bubbles ? 0 : c === SON ? (s.x > 420 ? 1 : 0) : STAG[c.id], top = GY + (s.row || 0) - c.size * (s.scale || 1) * 1.02 - (s.up || 0) * 0.7 - 16 - (stag ? (role ? 46 : 36) : 0), px = s.x;
+    if (c === OPUS && t < T.mourn) { top = GY - 48; px = s.x - 112; }   // while he carries the tower the plate walks beside him
+    ctx.save(); ctx.globalAlpha = a; ctx.font = "700 15px " + DISP; var w = Math.max(ctx.measureText(c.name).width, role ? (ctx.font = "500 11px " + MONO, ctx.measureText(role).width) : 0) + 36, h = role ? 40 : 27;
+    ctx.shadowColor = "rgba(0,0,0,.5)"; ctx.shadowBlur = 10; ctx.shadowOffsetY = 3; glass(px - w / 2, top - h, w, h, 13, 0.62, rgba(c.color, 0.35)); ctx.shadowColor = "transparent";
+    ctx.fillStyle = c.color; ctx.beginPath(); ctx.arc(px - w / 2 + 14, top - h + 13.5, 4.2, 0, 7); ctx.fill();
+    ctx.textAlign = "left"; ctx.fillStyle = INK; ctx.font = "700 15px " + DISP; ctx.fillText(c.name, px - w / 2 + 24, top - h + 18.5);
+    if (role) { ctx.fillStyle = DIM; ctx.font = "500 11px " + MONO; ctx.fillText(role, px - w / 2 + 24, top - h + 33); }
+    ctx.restore();
+  }
+  // ---- effects of joy
+  function confetti(t) {
+    var t0 = T.party; if (t < t0 || t > t0 + 5.2) return;
+    var K = 1.15;
+    for (var i = 0; i < 170; i++) {
+      var src = i % 3, ts = t0 + 0.05 + rnd(i, 1) * (src === 2 ? 1.1 : 0.35), age = t - ts; if (age < 0 || age > 4.6) continue;
+      var x0, y0, vx, vy;
+      if (src === 0) { var a = -(58 + rnd(i, 2) * 26) * Math.PI / 180, v = 560 + rnd(i, 3) * 360; x0 = 40; y0 = GY - 8; vx = Math.cos(a) * v; vy = Math.sin(a) * v; }
+      else if (src === 1) { var a2 = -(122 - rnd(i, 2) * 26) * Math.PI / 180, v2 = 560 + rnd(i, 3) * 360; x0 = 920; y0 = GY - 8; vx = Math.cos(a2) * v2; vy = Math.sin(a2) * v2; }
+      else { x0 = 140 + rnd(i, 2) * 680; y0 = -20; vx = (rnd(i, 3) - 0.5) * 70; vy = 30 + rnd(i, 4) * 80; }
+      var x = x0 + vx * (1 - Math.exp(-K * age)) / K + Math.sin(age * 4.2 + i) * 9 * Math.min(1, age), y = y0 + vy * (1 - Math.exp(-K * age)) / K + 0.5 * 210 * age * age + age * 38;
+      if (y > H - BAR + 12 || x < -80 || x > W + 80) continue;
+      var col = PAL[i % PAL.length], fa = clamp((4.6 - age) / 1.1), flip = Math.cos(age * (5 + rnd(i, 6) * 8) + i), shape = i % 4;
+      ctx.save(); ctx.translate(x, y); ctx.rotate(rnd(i, 5) * 6.28 + age * (1.5 + rnd(i, 7) * 3)); ctx.globalAlpha = fa;
+      if (shape === 0 || shape === 3) { ctx.fillStyle = shade(col, flip > 0 ? 0.1 : -0.15); ctx.fillRect(-5, -3 * Math.abs(flip) - 0.3, 10, 6 * Math.abs(flip) + 0.6); }
+      else if (shape === 1) { ctx.fillStyle = col; ctx.beginPath(); ctx.arc(0, 0, 3.2, 0, 7); ctx.fill(); }
+      else { ctx.strokeStyle = col; ctx.lineWidth = 2.4; ctx.lineCap = "round"; ctx.beginPath(); ctx.moveTo(-8, 0); ctx.quadraticCurveTo(-3, -6 * flip, 0, 0); ctx.quadraticCurveTo(3, 6 * flip, 8, 0); ctx.stroke(); }
+      ctx.restore();
+      if (Math.abs(flip) > 0.985 && fa > 0.3) star(x, y, 5, 0.9 * fa, 0, "#fff6e6");   // the glint when a piece catches the sun
+    }
+  }
+  function fireworks(t) {
+    // soft spherical bursts: sparks leave at different speeds in every direction, droop under gravity, and twinkle out
+    var bursts = [[330, 150, 18.5], [600, 118, 19.0], [470, 176, 19.5], [740, 150, 19.95]];
+    bursts.forEach(function (b, bi) {
+      var age = t - b[2]; if (age < 0 || age > 2.0) return;
+      if (age < 0.22) glow(b[0], b[1], 170, "#fff2d8", 0.75 * (1 - age / 0.22));
+      glow(b[0], b[1] + 20 * age, 120 * clamp(age * 3), PAL[(bi * 3) % PAL.length], 0.16 * clamp(1 - age / 1.6));
+      ctx.save(); ctx.globalCompositeOperation = "lighter"; ctx.lineCap = "round";
+      for (var k = 0; k < 54; k++) {
+        var ang = rnd(k + bi * 77, 1) * 6.2832, sp = 55 + Math.sqrt(rnd(k + bi * 77, 2)) * 120, col = PAL[(k + bi * 3) % PAL.length], life = 1.2 + rnd(k + bi * 77, 3) * 0.7, a = Math.pow(clamp(1 - age / life), 1.4);
+        if (a <= 0.01) continue;
+        function pos(ag) { var r = sp * (1 - Math.exp(-ag * 2.5)) / 1.0; return [b[0] + Math.cos(ang) * r, b[1] + Math.sin(ang) * r + 70 * ag * ag]; }
+        var p = pos(age), q = pos(Math.max(0, age - 0.12)), tw = 0.6 + 0.4 * Math.sin(age * 40 + k);
+        var lg = ctx.createLinearGradient(q[0], q[1], p[0], p[1]); lg.addColorStop(0, rgba(col, 0)); lg.addColorStop(1, rgba(col, 0.85 * a)); ctx.strokeStyle = lg; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(q[0], q[1]); ctx.lineTo(p[0], p[1]); ctx.stroke();
+        ctx.fillStyle = rgba("#fff6e6", a * tw); ctx.beginPath(); ctx.arc(p[0], p[1], 1.5 + 1.2 * a, 0, 7); ctx.fill();
+        if (k % 6 === 0) glow(p[0], p[1], 14, col, 0.35 * a * tw);
+      }
+      ctx.restore();
+    });
+    var ring = t - 18.05; if (ring > 0 && ring < 0.9) { var tx = tableX(t); ctx.save(); ctx.globalCompositeOperation = "lighter"; ctx.strokeStyle = "rgba(255,196,140," + 0.5 * (1 - ring / 0.9) + ")"; ctx.lineWidth = 3; ctx.beginPath(); ctx.ellipse(tx, GY - 10, 30 + 520 * eo(ring / 0.9), (30 + 520 * eo(ring / 0.9)) * 0.22, 0, 0, 7); ctx.stroke(); ctx.restore(); }   // the shockwave when the last module lands
+  }
+  function hearts(t, ox, oy) { for (var i = 0; i < 9; i++) { var ts = T.party + 0.9 + i * 0.5, age = t - ts; if (age < 0 || age > 1.7) continue; heart(ox + Math.sin(age * 5 + i) * 14 + (i % 3 - 1) * 16, oy - OPUS.size - 6 - age * 62, 1.2 + (i % 3) * 0.2, 1 - age / 1.7); } }
+  function sweat(t, ox, oy) { if (t > T.put || t < T.alone0) return; for (var i = 0; i < 6; i++) { var per = 1.1, age = ((t + i * 0.37) % per); var x = ox + OPUS.size * (0.34 + 0.06 * (i % 2)), y = oy - OPUS.size * 0.8 + age * 40; ctx.save(); ctx.globalAlpha = 0.9 * (1 - age / per); var g = ctx.createLinearGradient(x, y - 5, x, y + 5); g.addColorStop(0, "#c8ecff"); g.addColorStop(1, "#7fb8e0"); ctx.fillStyle = g; ctx.beginPath(); ctx.ellipse(x, y, 3.2, 5, 0, 0, 7); ctx.fill(); ctx.restore(); } }
+  function motes(t) {   // dust and fireflies catching the light
+    var per = VW + 200;
+    for (var i = 0; i < 52; i++) {
+      var par = 0.3 + 0.9 * rnd(i, 41), bx = rnd(i, 42) * per, by = GY - 230 + rnd(i, 43) * 270, x = (((bx - S * par + Math.sin(t * 0.4 + i) * 26) % per) + per) % per - 100, y = by + Math.cos(t * 0.5 + i * 1.7) * 14 - ((t * (4 + 8 * rnd(i, 44))) % 60),
+        tw = 0.35 + 0.65 * Math.abs(Math.sin(t * (0.8 + rnd(i, 45)) + i)), r = 1.2 + rnd(i, 46) * 2.4;
+      glow(x, y, r * 4, "#ffd9a0", (0.2 + 0.28 * M) * tw * (0.4 + 0.6 * rnd(i, 47)));
+    }
+  }
+
+  // ---- text layers
+  function subtitle(str, t, a, b) {
+    var al = Math.min(seg(t, a, a + 0.35), 1 - seg(t, b - 0.35, b)); if (al <= 0) return;
+    ctx.save(); ctx.globalAlpha = al; ctx.font = "600 27px " + DISP; ctx.textAlign = "center"; ctx.shadowColor = "rgba(0,0,0,.85)"; ctx.shadowBlur = 12; ctx.shadowOffsetY = 2; ctx.fillStyle = "#f6f1ea"; ctx.fillText(str, VW / 2, H - BAR - 22); ctx.restore();
+  }
+  function fmt$(v) { return "$" + v.toFixed(3); }
+  function hudPanel(x, label, sub, val, secs, prog, col, align, a) {
+    ctx.save(); ctx.globalAlpha = a; var pw = 290, ph = 142, px = align === "right" ? x - pw : x;
+    glass(px, 56, pw, ph, 16, 0.42, "rgba(255,255,255,.08)");
+    var tx = align === "right" ? px + pw - 22 : px + 22, al = align === "right" ? "right" : "left";
+    text(label, tx, 82, "600 14px " + MONO, col === EMBER ? EMBER : MUTED, al); text(sub, tx, 104, "500 16px " + MONO, DIM, al);
+    text(val, tx, 148, "700 40px " + MONO, col === EMBER ? EMBER : INK, al); text(secs, tx, 172, "500 18px " + MONO, DIM, al);
+    ctx.fillStyle = "rgba(255,255,255,.08)"; rr(px + 22, 184, pw - 44, 3, 1.5); ctx.fill(); ctx.fillStyle = col === EMBER ? EMBER : "#bdb3a8"; rr(px + 22, 184, (pw - 44) * prog, 3, 1.5); ctx.fill();
+    ctx.restore();
+  }
+  function hud(t) {
+    var p1 = seg(t, T.alone0, T.alone1), a1 = Math.min(seg(t, 0.5, 1.0), 1 - seg(t, 20.6, 21.0)) * (t > T.friends0 ? 0.8 : 1);
+    if (a1 > 0) hudPanel(36, "ALONE", "raw Claude Opus", fmt$(0.443 * p1), Math.round(108 * p1) + " s" + (t > T.stamp ? "  ·  37/37 ✓" : ""), p1, MUTED, "left", a1);
+    var u2 = seg(t, FL0, FL0 + 7 * FSTEP + FDUR), a2 = Math.min(seg(t, 13.9, 14.4), 1 - seg(t, 20.6, 21.0));
+    if (a2 > 0) hudPanel(VW - 36, "ANTILOKI", "routes to Composer", fmt$(0.065 * u2), Math.round(72 * u2) + " s" + (u2 >= 1 ? "  ·  36.3/37 ✓" : ""), u2, EMBER, "right", a2);
+  }
+  function bubbles(t, st) {
+    var items = [[COMP, "6.8×", "$0.065"], [CDX, "3.0×", "$0.149"], [SON, "2.7×", "$0.166"]];
+    function bubble(c, bx, by, k, lines) {
+      ctx.save(); ctx.translate(bx, by); ctx.scale(k, k);
+      ctx.shadowColor = "rgba(0,0,0,.55)"; ctx.shadowBlur = 14; ctx.shadowOffsetY = 4; glass(-47, -52, 94, 80, 16, 0.7, rgba(c.color, 0.5)); ctx.shadowColor = "transparent";
+      ctx.beginPath(); ctx.moveTo(-8, 28); ctx.lineTo(0, 38); ctx.lineTo(8, 28); ctx.fillStyle = "rgba(15,12,11,.7)"; ctx.fill();
+      ctx.fillStyle = c.color; rr(-47, -52, 94, 3, 2); ctx.fill();
+      ctx.textAlign = "center"; ctx.fillStyle = INK; ctx.font = "700 13px " + DISP; ctx.fillText(c.name, 0, -33); ctx.fillStyle = c.color === "#5b6f88" ? "#9bb1cd" : c.color; ctx.font = "700 25px " + MONO; ctx.fillText(lines[0], 0, -6); ctx.fillStyle = DIM; ctx.font = "500 14px " + MONO; ctx.fillText(lines[1], 0, 16); ctx.restore();
+    }
+    for (var i = 0; i < items.length; i++) {
+      var c = items[i][0], s = st[c.id], k = eob(seg(t, T.bubbles + i * 0.22, T.bubbles + i * 0.22 + 0.4)); if (k <= 0.01) continue;
+      var bx = s.x + (c === SON ? 2 : c === GRK ? -6 : c === COMP ? 16 : 0), by = GY + s.row - c.size * (s.scale || 1) - 34 - s.up * 0.6 - ((c === CDX || c === GRK) ? 48 : c === COMP ? 50 : 0);
+      bubble(c, bx, by, k, [items[i][1], items[i][2]]);
+    }
+    var ko = eob(seg(t, T.bubbles - 0.2, T.bubbles + 0.2)); if (ko > 0.01) { var so = st.opus; bubble(OPUS, so.x + 14, GY - OPUS.size - 36 - so.up * 0.6 - 24, ko, ["$0.443", "alone"]); }
+  }
+  function endCard(t) {
+    var a = seg(t, T.card, T.card + 0.6) * (1 - seg(t, T.fade - 0.4, T.fade)); if (a <= 0) return;
+    ctx.save(); ctx.globalAlpha = a * 0.9; var g = ctx.createLinearGradient(0, BAR, 0, 270); g.addColorStop(0, "rgba(10,8,7,.85)"); g.addColorStop(1, "rgba(10,8,7,0)"); ctx.fillStyle = g; ctx.fillRect(0, BAR, VW, 240); ctx.restore();
+    glow(VW / 2, 112, 340, "#c97c5c", 0.2 * a);
+    ctx.save(); ctx.globalAlpha = a; ctx.textAlign = "center"; ctx.shadowColor = "rgba(0,0,0,.6)"; ctx.shadowBlur = 16;
+    ctx.font = "800 52px " + DISP; var tw = ctx.measureText("6.8× cheaper.").width, sx = VW / 2 - tw / 2 + ((t * 260) % (tw + 300)) - 150, sg = ctx.createLinearGradient(sx - 90, 0, sx + 90, 0);   // a slow shimmer runs through the number
+    sg.addColorStop(0, "#c97c5c"); sg.addColorStop(0.5, "#ffd2b0"); sg.addColorStop(1, "#c97c5c"); var fg = ctx.createLinearGradient(VW / 2 - tw / 2, 0, VW / 2 + tw / 2, 0); fg.addColorStop(0, "#c97c5c"); fg.addColorStop(1, "#c97c5c");
+    ctx.fillStyle = fg; ctx.fillText("6.8× cheaper.", VW / 2, 114); ctx.shadowColor = "transparent"; ctx.fillStyle = sg; ctx.globalCompositeOperation = "source-atop"; ctx.fillText("6.8× cheaper.", VW / 2, 114); ctx.globalCompositeOperation = "source-over";
+    ctx.shadowColor = "rgba(0,0,0,.6)"; ctx.shadowBlur = 12; ctx.font = "600 30px " + DISP; ctx.fillStyle = INK; ctx.fillText("72 s, not 108 s.  36.3 of 37 checks, not 37.", VW / 2, 160);
+    ctx.shadowColor = "transparent"; ctx.font = "500 16px " + MONO; ctx.fillStyle = DIM; ctx.fillText("each job on the cheapest model that passes", VW / 2, 192);
+    ctx.restore();
+    var la = seg(t, T.card + 0.5, T.card + 1.2) * (1 - seg(t, T.fade - 0.4, T.fade)); if (la > 0) { ctx.save(); ctx.globalAlpha = la; ctx.textAlign = "center"; ctx.font = "700 26px " + LOGO; var lw = ctx.measureText("antiloki").width; ctx.fillStyle = INK; ctx.fillText("antiloki", VW / 2 - 4, H - BAR - 24); ctx.fillStyle = EMBER; ctx.textAlign = "left"; ctx.fillText(".", VW / 2 - 4 + lw / 2, H - BAR - 24); ctx.restore(); }
+  }
+  // ---- the finish: grade, vignette, lens bokeh, grain, the black bars
+  var GR = null, GRP = null, QUAL = 1, LITE = false;   // adaptive quality: a slow device renders smaller and skips the costliest finishing touches
+  function grain() { if (GR) return; try { GR = document.createElement("canvas"); GR.width = GR.height = 128; var g = GR.getContext("2d"), d = g.createImageData(128, 128); for (var i = 0; i < d.data.length; i += 4) { var v = Math.random() * 255; d.data[i] = d.data[i + 1] = d.data[i + 2] = v; d.data[i + 3] = 255; } g.putImageData(d, 0, 0); GRP = ctx.createPattern(GR, "repeat"); } catch (e) { GR = null; } }
+  function finish(t) {
+    // colour grade: cool shadows up top, warm light at the bottom as the day arrives
+    if (!LITE) { var gg = ctx.createLinearGradient(0, 0, 0, H); gg.addColorStop(0, "rgba(40,50,110," + (0.1 * (1 - M)) + ")"); gg.addColorStop(1, "rgba(150,70,20," + (0.05 + 0.1 * M) + ")"); ctx.save(); ctx.globalCompositeOperation = "soft-light"; ctx.fillStyle = gg; ctx.fillRect(0, 0, VW, H); ctx.restore(); }
+    // out-of-focus lights in the corners, like a lens
+    if (!LITE) { ctx.save(); ctx.globalCompositeOperation = "lighter"; [[60, 470, 46, 0.06], [140, 505, 28, 0.05], [VW - 70, 480, 50, 0.07], [VW - 170, 510, 26, 0.05], [VW - 40, 120, 34, 0.04]].forEach(function (b, i) { var tw = 0.7 + 0.3 * Math.sin(t * 0.7 + i); var g = ctx.createRadialGradient(b[0], b[1], 0, b[0], b[1], b[2]); g.addColorStop(0, "rgba(255,196,140," + b[3] * (0.6 + 0.8 * M) * tw + ")"); g.addColorStop(0.85, "rgba(255,196,140," + b[3] * (0.6 + 0.8 * M) * tw * 0.7 + ")"); g.addColorStop(1, "rgba(255,196,140,0)"); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(b[0], b[1], b[2], 0, 7); ctx.fill(); }); ctx.restore(); }
+    var vg = ctx.createRadialGradient(VW / 2, H * 0.55, H * 0.35, VW / 2, H * 0.55, VW * 0.62); vg.addColorStop(0, "rgba(0,0,0,0)"); vg.addColorStop(1, "rgba(0,0,0," + (0.55 - 0.12 * M) + ")"); ctx.fillStyle = vg; ctx.fillRect(0, 0, VW, H);
+    if (!LITE) grain(); if (GRP && !LITE) { var fr = Math.floor(t * 24); ctx.save(); ctx.translate((fr * 37) % 128, (fr * 91) % 128); ctx.globalAlpha = 0.05; ctx.fillStyle = GRP; ctx.fillRect(-128, -128, VW + 256, H + 256); ctx.restore(); }
+  }
+  function letterbox(t) { ctx.fillStyle = "#000"; ctx.fillRect(0, 0, VW, BAR); ctx.fillRect(0, H - BAR, VW, BAR); var f = 1 - seg(t, 0, 0.7), o = seg(t, T.fade, TOTAL - 0.1); if (f > 0 || o > 0) { ctx.save(); ctx.globalAlpha = Math.max(f, o); ctx.fillStyle = "#000"; ctx.fillRect(0, 0, VW, H); ctx.restore(); } }
+  function cam(t) { return { z: 1 + 0.05 * sm(seg(t, 0.5, 10.5)) - 0.05 * sm(seg(t, 10.6, 12.8)) + 0.035 * sm(seg(t, 14.0, 19.5)), x: Math.sin(t * 0.45) * 1.6, y: Math.cos(t * 0.37) * 0.9 }; }
+
+  // ---- one frame, as a pure function of time
+  function render(t) {
+    ctx.clearRect(0, 0, VW, H);
+    setLight(t);
+    var cm = cam(t), cx = VW / 2, cy = GY - 40;
+    ctx.save(); ctx.translate(cx + cm.x, cy + cm.y); ctx.scale(cm.z, cm.z); ctx.translate(-cx, -cy);
+    drawWorld(t);
+    ctx.save(); ctx.translate(OX, 0);
+    drawTable(t);
+    if (t > 13.8) drawStackBase(t);
+    fireworks(t);
+    var os = opusState(t), st = { opus: os };
+    [SON, COMP, CDX, GEM, GRK].forEach(function (c) { st[c.id] = friend(c, t); });
+    drawDust(t, st);
+    // the back row first, then the front, so nobody is hidden by a friend who is behind them
+    var all = [{ c: OPUS, s: os, row: 0 }, { c: SON, s: st.son }, { c: COMP, s: st.comp }, { c: CDX, s: st.cdx }, { c: GEM, s: st.gem }, { c: GRK, s: st.grk }].filter(function (e) { return e.s.vis !== false; });
+    all.sort(function (a, b) { return (a.s.row || 0) - (b.s.row || 0); });
+    all.forEach(function (e) {
+      var y = GY + (e.s.row || 0);
+      drawFace(e.c, e.s.x, y, e.s, t);
+      if (e.c === OPUS) { sweat(t, e.s.x, y - e.s.up); if (t < T.put + 1.1) drawTower(e.s.x, y - e.s.up, t); if (t < 13.9) drawAloneBlocks(t, T.put > t ? e.s.x : 725, y - e.s.up); }
+    });
+    drawTwoBlocks(t);
+    all.forEach(function (e) { drawPlate(e.c, e.s, t, e.c !== COMP); });
+    if (t > T.stamp && t < 13.4) { var k = eob(seg(t, T.stamp, T.stamp + 0.35)) * (1 - seg(t, 13.1, 13.4)), x0 = tableX(t); ctx.save(); ctx.translate(x0, GY - 172); ctx.scale(k, k); ctx.rotate(-0.08); ctx.shadowColor = "rgba(0,0,0,.5)"; ctx.shadowBlur = 12; glass(-72, -28, 144, 48, 12, 0.78, "rgba(127,196,143,.45)"); ctx.shadowColor = "transparent"; ctx.fillStyle = OK; ctx.textAlign = "center"; ctx.font = "700 27px " + MONO; ctx.fillText("37/37 ✓", 0, 6); ctx.restore(); glow(x0, GY - 172, 90, "#7fc48f", 0.14 * k); }
+    if (t > 13.4 && t < 14.0) { var w = seg(t, 13.45, 13.85); if (w > 0) { var x1 = tableX(t), a3 = 1 - w; for (var q = 0; q < 6; q++) star(x1 - 60 + q * 24, GY - 70 - 20 * Math.sin(q * 2 + w * 6), 12 * a3 + 3, a3, w * 5 + q, "#ffe9c8"); } }
+    confetti(t); if (t > T.party) hearts(t, os.x, GY - os.up);
+    if (t > T.bubbles) bubbles(t, st);
+    ctx.restore();
+    motes(t);
+    ctx.restore();
+    // the foreground: tall grass swaying at the very edge of the frame, drawn over everything for depth
+    ctx.save(); ctx.translate(cm.x * 1.6, 0); var per = VW + 200;
+    for (var gi = 0; gi < 64; gi++) { var gx = (((gi * per / 64 + rnd(gi, 51) * 14 - S * 1.5) % per) + per) % per - 100, gh = 12 + rnd(gi, 52) * 26, sw = Math.sin(t * 1.7 + gi * 0.9) * 3.5; ctx.fillStyle = mixc("#0c0809", "#1a0f0c", M); ctx.beginPath(); ctx.moveTo(gx - 3.5, H - BAR + 2); ctx.quadraticCurveTo(gx + sw * 0.3, H - BAR - gh * 0.6, gx + sw, H - BAR - gh); ctx.quadraticCurveTo(gx + 1 + sw * 0.4, H - BAR - gh * 0.55, gx + 3.5, H - BAR + 2); ctx.fill(); }
+    ctx.restore();
+    // a soft scrim so the captions always read
+    var sc = ctx.createLinearGradient(0, H - BAR - 120, 0, H - BAR); sc.addColorStop(0, "rgba(0,0,0,0)"); sc.addColorStop(1, "rgba(0,0,0,.45)"); ctx.fillStyle = sc; ctx.fillRect(0, H - BAR - 120, VW, 120);
+    finish(t);
+    hud(t);
+    // captions, like a film's
+    subtitle("One agent. One task. Eight modules.", t, 1.0, 4.6); subtitle("He carries it all by himself.", t, 5.2, 8.8); subtitle("What if he didn’t have to?", t, 11.0, 13.9);
+    subtitle("Plan. Write. Judge. Together.", t, 14.3, 18.0); subtitle("The same checks, at a fraction of the cost.", t, 18.4, 20.8);
+    endCard(t); letterbox(t);
+  }
+
+  // ---- the player
+  var wrap = document.getElementById("film"), t0 = null, running = false, visible = true, raf = 0, paused = false, cw = 0;
+  function fit() { var r = canvas.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio || 1, 2), w = Math.max(1, Math.min(1800, Math.round(r.width * dpr * QUAL))); VW = r.width < 700 ? 960 : 1120; OX = (VW - W) / 2; if (w !== cw || canvas.height !== Math.round(w * H / VW)) { cw = w; canvas.width = w; canvas.height = Math.round(w * H / VW); } ctx.setTransform(canvas.width / VW, 0, 0, canvas.width / VW, 0, 0); }
+  var cur = 0;
+  function draw(t) { cur = t; fit(); render(t); }
+  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var lastNow = 0, slow = 0, fast = 0;
+  function frame(now) {
+    if (!running) return; if (t0 === null) t0 = now - cur * 1000; var t = ((now - t0) / 1000) % TOTAL; draw(t);
+    if (lastNow) { var dt = now - lastNow; if (dt > 38 && dt < 400) slow++; else if (dt < 25) fast++; if (slow >= 24) { slow = 0; if (QUAL > 0.55) { QUAL = Math.max(0.55, QUAL - 0.2); LITE = QUAL < 0.9; } } if (slow > 0 && fast > 40) { slow = 0; fast = 0; } }
+    lastNow = now; raf = requestAnimationFrame(frame);
+  }
+  function start() { if (running || !visible || document.hidden || paused || reduce) return; running = true; t0 = null; lastNow = 0; raf = requestAnimationFrame(frame); }
+  function stop() { running = false; cancelAnimationFrame(raf); }
+  function boot() { draw(reduce ? END_T : 0.4); if (reduce) return; if ("IntersectionObserver" in window) new IntersectionObserver(function (e) { visible = e[0].isIntersecting; if (visible) start(); else stop(); }, { threshold: 0.2 }).observe(wrap || canvas); else start(); document.addEventListener("visibilitychange", function () { if (document.hidden) stop(); else start(); }); }
+  if (window.ResizeObserver) new ResizeObserver(function () { draw(cur); }).observe(canvas);
+  window.__antilokiFilm = { seek: function (t) { paused = true; stop(); draw(t); }, total: TOTAL };
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(boot, boot); else boot();
+})();
+</script>
+<script>
+/* THE COST ROWS: the app's faces beside each bar. When the rows scroll into view the bars grow, the numbers count up, each team walks in, and the four merges cheer when their bar lands (raw Opus stays tired, with a sweat drop). Replays on re-entry. */
+(function () {
+  var bench = document.querySelector(".bench"); if (!bench) return;
+  var P = { circle: "M20 3a17 17 0 1 1 0 34a17 17 0 1 1 0-34z", egg: "M20 3c8 0 15 9 15 19s-6 15-15 15S5 32 5 22 12 3 20 3z", hex: "M17 3.7l14 8.1a3 3 0 0 1 1.5 2.6v11.2a3 3 0 0 1-1.5 2.6l-14 8.1a3 3 0 0 1-3 0L6 28.2a3 3 0 0 1-1.5-2.6V14.4A3 3 0 0 1 6 11.8l8-4.1a3 3 0 0 1 3 0z", drop: "M20 3c7 9 14 15 14 22a14 14 0 0 1-28 0c0-7 7-13 14-22z", arch: "M20 4c8 0 14 6 14 14v16a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3V18C6 10 12 4 20 4z", triangle: "M18.3 5.4a2 2 0 0 1 3.4 0l13.6 23.4a2 2 0 0 1-1.7 3H6.4a2 2 0 0 1-1.7-3z" };
+  var TILT = [-7, 5, -4, 6, -5, 4];
+  function face(shape, color, i, eye) {
+    var dy = shape === "triangle" ? 5 : shape === "drop" ? 4 : 0;
+    return '<svg class="bface" viewBox="0 0 40 40" data-eye="' + eye + '" style="--fp:' + (4.6 + (i % 4) * 0.7) + 's;--fd:' + (i % 5) * 0.5 + 's;--bp:' + (3.8 + (i % 5) * 0.6) + 's;--bd:' + (i % 7) * 0.4 + 's"><g style="transform:rotate(' + TILT[i % 6] + 'deg);transform-origin:20px 21px"><g class="bbody"><path d="' + P[shape] + '" fill="' + color + '"/><g class="eyes">' +
+      '<g class="e-slit"><rect class="eye" x="15.55" y="' + (14.4 + dy) + '" width="2.1" height="5.2" rx="1.05" fill="#fff"/><rect class="eye" x="22.35" y="' + (14.4 + dy) + '" width="2.1" height="5.2" rx="1.05" fill="#fff"/></g>' +
+      '<g class="e-happy" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"><path d="M14.4 ' + (18.4 + dy) + 'q2.2-3.2 4.4 0"/><path d="M21.2 ' + (18.4 + dy) + 'q2.2-3.2 4.4 0"/></g>' +
+      '<g class="e-tired" fill="#fff"><rect x="14.9" y="' + (17.6 + dy) + '" width="3.4" height="1.5" rx=".75"/><rect x="21.7" y="' + (17.6 + dy) + '" width="3.4" height="1.5" rx=".75"/></g>' +
+      '<g class="blush" fill="rgba(255,170,190,.45)"><ellipse cx="14.4" cy="' + (23.2 + dy) + '" rx="2.4" ry="1.4"/><ellipse cx="25.6" cy="' + (23.2 + dy) + '" rx="2.4" ry="1.4"/></g></g></g></g><ellipse class="sweat" cx="31" cy="12" rx="2" ry="3"/></svg>';
+  }
+  var rows = [].map.call(bench.querySelectorAll(".brow"), function (el, i) {
+    var team = (el.getAttribute("data-team") || "").split(","), mood = el.getAttribute("data-mood") || "neutral", holder = el.querySelector(".bfaces"), eye = mood === "tired" ? "tired" : "slit";
+    if (holder) holder.innerHTML = team.map(function (t, k) { var p = t.split("|"); return face(p[0], p[1], i * 3 + k, eye); }).join("");
+    var num = el.querySelector(".bnum"), v = parseFloat(num.getAttribute("data-v")) || 0, d = parseFloat(getComputedStyle(el).getPropertyValue("--d")) || 0;
+    return { el: el, num: num, v: v, d: d, mood: mood, faces: [].slice.call(el.querySelectorAll(".bface")) };
+  });
+  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduce) { rows.forEach(function (r) { if (r.mood === "happy") r.faces.forEach(function (f) { f.setAttribute("data-eye", "happy"); }); r.el.classList.add("done"); }); return; }
+  var timers = [], raf = 0, state = "idle";
+  function clear() { timers.forEach(clearTimeout); timers = []; cancelAnimationFrame(raf); }
+  function reset() {
+    clear(); state = "idle"; bench.classList.remove("play"); bench.classList.add("arm");
+    rows.forEach(function (r) { r.el.classList.remove("done"); r.num.textContent = "$" + r.v.toFixed(3); r.faces.forEach(function (f) { f.setAttribute("data-eye", r.mood === "tired" ? "tired" : "slit"); }); });
+  }
+  function play() {
+    if (state === "playing") return; reset(); state = "playing";
+    void bench.offsetWidth; bench.classList.remove("arm"); bench.classList.add("play");
+    var t0 = performance.now();
+    function tick(now) {   // the numbers count up with their bars (the bar's own transition runs d + .35 s .. d + 1.7 s)
+      var all = true;
+      rows.forEach(function (r) { var p = Math.min(1, Math.max(0, ((now - t0) / 1000 - r.d - 0.35) / 1.35)), e = 1 - Math.pow(1 - p, 3); r.num.textContent = "$" + (r.v * e).toFixed(3); if (p < 1) all = false; });
+      if (!all) raf = requestAnimationFrame(tick);
+    }
+    raf = requestAnimationFrame(tick);
+    rows.forEach(function (r) { timers.push(setTimeout(function () { r.el.classList.add("done"); if (r.mood === "happy") r.faces.forEach(function (f) { f.setAttribute("data-eye", "happy"); }); }, (r.d + 1.75) * 1000)); });
+  }
+  reset();
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(function (e) { var en = e[0]; if (en.isIntersecting && en.intersectionRatio >= 0.45) play(); else if (!en.isIntersecting) reset(); }, { threshold: [0, 0.45] }).observe(bench);
+  } else { bench.classList.remove("arm"); bench.classList.add("play"); rows.forEach(function (r) { r.el.classList.add("done"); }); }
+})();
+</script>
+<script>
+/* THE EMBRACE: models evolve, antiloki evolves with them, and they huddle. One 10 s cycle driven by a single clock. The words reveal once, the scene loops while it is on screen. */
+(function () {
+  var sec = document.getElementById("evolve"), scene = document.getElementById("evo-scene"); if (!sec || !scene) return;
+  var P = { circle: "M20 3a17 17 0 1 1 0 34a17 17 0 1 1 0-34z", egg: "M20 3c8 0 15 9 15 19s-6 15-15 15S5 32 5 22 12 3 20 3z", hex: "M17 3.7l14 8.1a3 3 0 0 1 1.5 2.6v11.2a3 3 0 0 1-1.5 2.6l-14 8.1a3 3 0 0 1-3 0L6 28.2a3 3 0 0 1-1.5-2.6V14.4A3 3 0 0 1 6 11.8l8-4.1a3 3 0 0 1 3 0z", drop: "M20 3c7 9 14 15 14 22a14 14 0 0 1-28 0c0-7 7-13 14-22z", arch: "M20 4c8 0 14 6 14 14v16a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3V18C6 10 12 4 20 4z" };
+  var CAST = [{ n: "Claude", shape: "egg", color: "#e6b31e", tilt: 5 }, { n: "Codex", shape: "hex", color: "#1e88f0", tilt: 6 }, { n: "Cursor", shape: "circle", color: "#19a89d", tilt: -5 }, { n: "Gemini", shape: "drop", color: "#7c5cf0", tilt: -4 }, { n: "Grok", shape: "arch", color: "#5b6f88", tilt: 5 }];
+  function face(c, i) {
+    var dy = c.shape === "drop" ? 4 : 0;
+    return '<svg class="bface" viewBox="0 0 40 40" data-eye="slit" style="--fp:' + (4.6 + (i % 4) * 0.7) + 's;--fd:' + i * 0.4 + 's;--bp:' + (3.8 + i * 0.6) + 's;--bd:' + i * 0.5 + 's"><g style="transform:rotate(' + c.tilt + 'deg);transform-origin:20px 21px"><g class="bbody"><path d="' + P[c.shape] + '" fill="' + c.color + '"/><g class="eyes">' +
+      '<g class="e-slit"><rect class="eye" x="15.55" y="' + (14.4 + dy) + '" width="2.1" height="5.2" rx="1.05" fill="#fff"/><rect class="eye" x="22.35" y="' + (14.4 + dy) + '" width="2.1" height="5.2" rx="1.05" fill="#fff"/></g>' +
+      '<g class="e-happy" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"><path d="M14.4 ' + (18.4 + dy) + 'q2.2-3.2 4.4 0"/><path d="M21.2 ' + (18.4 + dy) + 'q2.2-3.2 4.4 0"/></g>' +
+      '<g class="blush" fill="rgba(255,170,190,.45)"><ellipse cx="14.4" cy="' + (23.2 + dy) + '" rx="2.4" ry="1.4"/><ellipse cx="25.6" cy="' + (23.2 + dy) + '" rx="2.4" ry="1.4"/></g></g></g></g></svg>';
+  }
+  scene.innerHTML = '<div class="evo-row">' + CAST.map(function (c, i) { return '<div class="evo-f" data-k="' + (i - 2) + '">' + face(c, i) + '<span class="evo-n">' + c.n + '</span></div>'; }).join("") + '</div><div class="evo-pill" id="evo-pill"><span>antiloki</span><b>.</b></div><div class="evo-fx" id="evo-fx"></div>';
+  var row = scene.querySelector(".evo-row"), pill = document.getElementById("evo-pill"), fx = document.getElementById("evo-fx");
+  var fs = [].slice.call(scene.querySelectorAll(".evo-f")), svgs = fs.map(function (f) { return f.querySelector(".bface"); });
+  var sparks = fs.map(function () { var e = document.createElement("i"); e.className = "evo-spark"; e.innerHTML = '<svg viewBox="-10 -10 20 20"><path d="M0-9L2 -2L9 0L2 2L0 9L-2 2L-9 0L-2 -2Z" fill="#fff4e0"/></svg>'; fx.appendChild(e); return e; });
+  var rings = fs.map(function () { var e = document.createElement("i"); e.className = "evo-ring"; fx.appendChild(e); return e; });
+  var ups = fs.map(function () { var e = document.createElement("i"); e.className = "evo-up"; e.textContent = "↑"; fx.appendChild(e); return e; });
+  var hearts = []; for (var h = 0; h < 10; h++) { var he = document.createElement("i"); he.className = "evo-heart"; he.innerHTML = '<svg viewBox="-12 -12 24 22"><path d="M0 8C-12 0-8-11 0-5C8-11 12 0 0 8Z" fill="#ec4f8f"/></svg>'; fx.appendChild(he); hearts.push(he); }
+  function clamp(x) { return Math.max(0, Math.min(1, x)); }
+  function seg(t, a, b) { return clamp((t - a) / (b - a)); }
+  function sm(x) { return x * x * (3 - 2 * x); }
+  function eo(x) { return 1 - Math.pow(1 - x, 3); }
+  function eob(x) { var c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); }
+  var CYCLE = 10, PULSE0 = 1.2, PULSE_STEP = 0.9, HUG0 = 6.2, HUG1 = 9.1;
+  function frame(t) {   // t in [0, CYCLE)
+    var rw = row.getBoundingClientRect(), sc = scene.getBoundingClientRect(), pull = Math.max(10, Math.min(44, rw.width * 0.045)), glow = 0;
+    var hug = sm(seg(t, HUG0, HUG0 + 1.2)) * (1 - sm(seg(t, HUG1, HUG1 + 0.7)));
+    fs.forEach(function (f, i) {
+      var k = i - 2, t0 = PULSE0 + i * PULSE_STEP, u = seg(t, t0, t0 + 0.85), sc2 = 1, up = 0;
+      if (u > 0 && u < 1) { sc2 = 1 + 0.2 * Math.sin(u * Math.PI) * (u < 0.5 ? eo(u * 2) : 1); up = 14 * Math.sin(u * Math.PI); glow = Math.max(glow, Math.sin(clamp((t - t0 - 0.2) / 0.7) * Math.PI)); }
+      var hop = hug > 0.95 ? Math.abs(Math.sin((t - HUG0 - 1.2) * 5)) * 7 * hug : 0;   // they bounce a little in the huddle
+      f.style.transform = "translate(" + (-k * pull * hug).toFixed(1) + "px," + (-(up + hop)).toFixed(1) + "px) scale(" + sc2.toFixed(3) + ")"; svgs[i].style.transform = "rotate(" + (-k * 4.5 * hug).toFixed(2) + "deg)";
+      var happy = hug > 0.5, eye = happy ? "happy" : "slit"; if (svgs[i].getAttribute("data-eye") !== eye) svgs[i].setAttribute("data-eye", eye);
+      // the level-up: a spark, a ring and an arrow over the face
+      var fr = f.getBoundingClientRect(), cx = fr.left - sc.left + fr.width / 2, top = svgs[i].getBoundingClientRect().top - sc.top;
+      var su = seg(t, t0, t0 + 0.8), s = sparks[i]; s.style.opacity = su > 0 && su < 1 ? Math.sin(su * Math.PI) : 0; s.style.transform = "translate(" + (cx + 26 - 12) + "px," + (top - 6 - su * 14) + "px) scale(" + (0.4 + 1.0 * eob(su)) + ") rotate(" + (su * 140) + "deg)";
+      var r = rings[i], ru = seg(t, t0 + 0.1, t0 + 0.9); r.style.opacity = ru > 0 && ru < 1 ? 0.7 * (1 - ru) : 0; r.style.transform = "translate(" + (cx - 40) + "px," + (top + svgs[i].getBoundingClientRect().height / 2 - 40) + "px) scale(" + (0.5 + 1.1 * eo(ru)) + ")";
+      var a = ups[i], au = seg(t, t0 + 0.3, t0 + 1.4); a.style.opacity = au > 0 && au < 1 ? Math.sin(au * Math.PI) : 0; var pr = pill.getBoundingClientRect(); a.style.transform = "translate(" + (pr.left - sc.left + pr.width * (0.2 + 0.15 * i) - 6) + "px," + (pr.top - sc.top - 4 - au * 26) + "px)";
+    });
+    var embrace = hug > 0.2 ? hug : 0; pill.style.setProperty("--g", Math.max(glow * 0.9, embrace * 0.65).toFixed(3)); pill.style.transform = "scale(" + (1 + 0.015 * glow + 0.02 * Math.sin((t - HUG0) * 5) * embrace).toFixed(4) + ")";
+    hearts.forEach(function (he, j) {
+      var ts = HUG0 + 1.0 + j * 0.28, age = t - ts, op = 0, x = 0, y = 0;
+      if (age > 0 && age < 1.5) { op = Math.sin(age / 1.5 * Math.PI) * 0.95; x = rw.width / 2 + (Math.sin(age * 4 + j) * 26) + ((j % 5) - 2) * 30; y = rw.top - sc.top + 6 - age * 54; }
+      he.style.opacity = op; he.style.transform = "translate(" + (x - 12) + "px," + (y - 12) + "px) scale(" + (0.7 + 0.5 * ((j % 3) / 2)) + ")";
+    });
+  }
+  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  sec.classList.add("armed");
+  function reveal() { sec.classList.add("in"); }
+  var running = false, raf = 0, t0 = null, shown = false;
+  function loop(now) { if (!running) return; if (t0 === null) t0 = now; frame(((now - t0) / 1000) % CYCLE); raf = requestAnimationFrame(loop); }
+  function start() { if (running || reduce) return; running = true; t0 = null; raf = requestAnimationFrame(loop); }
+  function stop() { running = false; cancelAnimationFrame(raf); }
+  if (reduce) { reveal(); frame(HUG0 + 2); }
+  else if ("IntersectionObserver" in window) new IntersectionObserver(function (e) { var v = e[0].isIntersecting; if (v) { if (!shown) { shown = true; reveal(); } start(); } else stop(); }, { threshold: 0.25 }).observe(sec);
+  else { reveal(); start(); }
+  frame(0);
+  window.__antilokiEvo = { seek: function (t) { stop(); reveal(); frame(t); } };
+})();
+</script>
