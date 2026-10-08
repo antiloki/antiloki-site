@@ -1,8 +1,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>antiloki — build +112% more on your weekly limit, 10× cheaper, with the same code quality</title>
+<title>antiloki — each job on the cheapest model that passes: up to 7× cheaper than raw Opus</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23211e1b'/%3E%3Ctext x='10' y='47' font-family='Geist,Helvetica,Arial,sans-serif' font-weight='700' font-size='40' fill='%23efe9e2' letter-spacing='-2'%3Ea%3Ctspan fill='%23c97c5c'%3E.%3C/tspan%3E%3C/text%3E%3C/svg%3E">
-<meta name="description" content="Build +112% more on your weekly limit, 10× cheaper, with the same code quality. Claude Grok, Gemini Codex — antiloki merges your existing model subscriptions into specialized coding agents: a router gives each job — planning, writing, verifying, judging — to the model measured best for it. No new account and no extra subscription: antiloki drives the AI providers you are already signed in to, all local and private.">
+<meta name="description" content="Each job goes to the cheapest model that passes its checks, across the Claude, Codex, Cursor, Gemini and Grok subscriptions you already have: up to 7× cheaper than running Opus on everything (one backend task, 37 hidden checks, measured 2026-10-07).">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Geist:wght@700&family=IBM+Plex+Sans:wght@400;500&family=JetBrains+Mono:wght@400;600&display=swap">
 <style>
@@ -414,52 +414,47 @@
     <div class="wrap hero">
     <div class="fold">
     <span class="eyebrow">A desktop app for merging the subscriptions you have into one coding agent.<br>Windows today · macOS and Linux builds are older, see <a href="#download" style="color:inherit">Download</a></span>
-    <h1 style="margin-top:14px"><em>Build +112% more on your weekly limit, 10× cheaper, with the same code quality.</em></h1>
-    <p class="lede" style="margin-top:10px">Claude Grok, Gemini Codex — antiloki merges your existing model subscriptions into specialized coding agents. <b>No new account and no extra subscription: antiloki drives the AI providers you are already signed in to, all local and private.</b></p>
+    <h1 style="margin-top:14px"><em>Up to 7× cheaper than running Opus on everything.</em></h1>
+    <p class="lede" style="margin-top:10px">antiloki sends each job to the cheapest model that passes its checks, across the Claude, Codex, Cursor, Gemini and Grok subscriptions you already have. <b>No new account and no extra subscription: antiloki drives the AI providers you are already signed in to, all local and private.</b></p>
     <div class="cta"><a class="btn ember" href="#download">Download — free for 14 days</a></div>
+    <span class="fine" style="margin-top:16px;max-width:62ch">Measured 2026-10-07 on one backend task (eight modules, 37 hidden checks): raw Opus $0.443 a run, Composer 2.5 $0.065 (12 runs) at 36.3 of 37 checks. List-price equivalents. <a href="/paper.html" style="color:inherit">The numbers and the losses →</a></span>
     <a class="scrollcue" href="#film" aria-label="Scroll to the film"><span>scroll</span><i></i></a>
     </div>
     <div class="film" id="film">
-      <canvas id="film-canvas" role="img" aria-label="A short animated film. One agent, raw Claude Opus, carries a whole task alone and finishes it in 278 seconds for $1.151. Then his friends arrive, each moving in its own way, and together they finish the same task in 106 seconds for $0.155, 7.4 times cheaper, with 36.8 of 37 checks met. They celebrate together. With Codex planning instead the saving is 7.0 times, with Gemini 6.3 times, with Grok 3.9 times; Composer writes in every case."></canvas>
-      <p class="film-f">Measured per run on the same task and the same 37 checks: raw Claude Opus $1.151 · 278 s; Sonnet plans and judges, Composer writes $0.1554 · 106 s. The pacing of the film is not a stopwatch.</p>
+      <canvas id="film-canvas" role="img" aria-label="A short animated film. One agent, raw Claude Opus, carries a whole task alone and finishes it in 108 seconds for $0.443. Then his friends arrive, each moving in its own way, and the cheapest one that passes, Composer, finishes the same task in 72 seconds for $0.065, 6.8 times cheaper, at 36.3 of 37 checks."></canvas>
+      <p class="film-f">Measured per run on the same task and the same 37 hidden checks, 2026-10-07: raw Claude Opus 5.5 $0.443 · 108 s · 37/37 (3 runs); Composer 2.5, the seat antiloki's router picks for this task, $0.065 · 72 s · 36.3/37 (12 runs). List-price equivalents. The pacing of the film is not a stopwatch.</p>
     </div>
 
     <div class="bench" aria-label="cost per run on the same task">
-      <div class="brow bwin" data-team="triangle|#f26b21,circle|#19a89d,triangle|#f26b21" data-mood="happy" style="--d:0.00s">
-        <span class="bname">antiloki · Sonnet plans, Composer writes, Sonnet judges</span>
+      <div class="brow bwin" data-team="circle|#19a89d" data-mood="happy" style="--d:0.00s">
+        <span class="bname">antiloki · routed to Composer 2.5, the seat the router picks for this task</span>
         <span class="bfaces" aria-hidden="true"></span>
-        <span class="btrack"><span class="bfill" style="--w:11.1%"></span><span class="bnum" data-v="0.155">$0.155</span><span class="bbadge">7.4× cheaper</span></span>
-        <span class="bmeta">36.8/37 · 106 s · n=5</span>
+        <span class="btrack"><span class="bfill" style="--w:11.8%"></span><span class="bnum" data-v="0.065">$0.065</span><span class="bbadge">6.8× cheaper</span></span>
+        <span class="bmeta">36.3/37 · 72 s · n=12</span>
       </div>
-      <div class="brow" data-team="hex|#1e88f0,circle|#19a89d,hex|#1e88f0" data-mood="happy" style="--d:0.18s">
-        <span class="bname">antiloki · Codex plans, Composer writes, Codex judges</span>
+      <div class="brow braw" data-team="hex|#1e88f0" data-mood="neutral" style="--d:0.18s">
+        <span class="bname">raw Codex, one session</span>
         <span class="bfaces" aria-hidden="true"></span>
-        <span class="btrack"><span class="bfill" style="--w:11.8%"></span><span class="bnum" data-v="0.165">$0.165</span><span class="bbadge">7.0× cheaper</span></span>
-        <span class="bmeta">36.7/37 · 137 s · n=3</span>
+        <span class="btrack"><span class="bfill" style="--w:27.1%"></span><span class="bnum" data-v="0.149">$0.149</span></span>
+        <span class="bmeta">36/37 · 147 s · n=3</span>
       </div>
-      <div class="brow" data-team="drop|#7c5cf0,circle|#19a89d,drop|#7c5cf0" data-mood="happy" style="--d:0.36s">
-        <span class="bname">antiloki · Gemini plans, Composer writes, Gemini judges</span>
+      <div class="brow braw" data-team="triangle|#f26b21" data-mood="neutral" style="--d:0.36s">
+        <span class="bname">raw Claude Sonnet, one session</span>
         <span class="bfaces" aria-hidden="true"></span>
-        <span class="btrack"><span class="bfill" style="--w:13.1%"></span><span class="bnum" data-v="0.184">$0.184</span><span class="bbadge">6.3× cheaper</span></span>
-        <span class="bmeta">36.3/37 · 134 s · n=5</span>
+        <span class="btrack"><span class="bfill" style="--w:30.2%"></span><span class="bnum" data-v="0.166">$0.166</span></span>
+        <span class="bmeta">37/37 · 91 s · n=3</span>
       </div>
-      <div class="brow" data-team="arch|#5b6f88,circle|#19a89d,arch|#5b6f88" data-mood="happy" style="--d:0.54s">
-        <span class="bname">antiloki · Grok-4.6-high plans, Composer writes, Grok judges</span>
+      <div class="brow" data-team="triangle|#f26b21,circle|#19a89d,triangle|#f26b21" data-mood="neutral" style="--d:0.54s">
+        <span class="bname">antiloki · Sonnet plans, Composer writes, Opus checks (the full pipeline with its QA gate)</span>
         <span class="bfaces" aria-hidden="true"></span>
-        <span class="btrack"><span class="bfill" style="--w:20.8%"></span><span class="bnum" data-v="0.292">$0.292</span><span class="bbadge">3.9× cheaper</span></span>
-        <span class="bmeta">36.3/37 · 199 s · n=3</span>
+        <span class="btrack"><span class="bfill" style="--w:47.3%"></span><span class="bnum" data-v="0.26">$0.26</span><span class="bbadge">1.7× cheaper</span></span>
+        <span class="bmeta">36.3/37 · 142–235 s · n=3</span>
       </div>
-      <div class="brow braw" data-team="triangle|#f26b21" data-mood="neutral" style="--d:0.72s">
-        <span class="bname">raw Claude Sonnet, one session (the secondary reference, 2026-09-23)</span>
+      <div class="brow braw" data-team="egg|#e6b31e" data-mood="tired" style="--d:0.72s">
+        <span class="bname">raw Claude Opus 5.5, one session</span>
         <span class="bfaces" aria-hidden="true"></span>
-        <span class="btrack"><span class="bfill" style="--w:23.5%"></span><span class="bnum" data-v="0.330">$0.330</span></span>
-        <span class="bmeta">36/37 · 121 s · n=1</span>
-      </div>
-      <div class="brow braw" data-team="egg|#e6b31e" data-mood="tired" style="--d:0.90s">
-        <span class="bname">raw Claude Opus, one session (the headline reference, 2026-09-22/23)</span>
-        <span class="bfaces" aria-hidden="true"></span>
-        <span class="btrack"><span class="bfill" style="--w:82.0%"></span><span class="bnum" data-v="1.151">$1.151</span></span>
-        <span class="bmeta">37/37 · 278 s · n=2</span>
+        <span class="btrack"><span class="bfill" style="--w:80.5%"></span><span class="bnum" data-v="0.443">$0.443</span></span>
+        <span class="bmeta">37/37 · 108 s · n=3</span>
       </div>
     </div>
 
@@ -522,14 +517,14 @@
   </div>
 
   <div class="wrap faq">
-    <details><summary>What is antiloki, in one sentence?</summary><p>A desktop workspace that <b>merges</b> the model subscriptions you already have — Claude, Codex, Cursor, Gemini, Grok — into one coding agent: the seat measured best for each job of an ask, not one model for all of them. It makes your weekly limit last longer and each ask cost less, with folder-level write enforcement, a test at the end of every run and a full audit timeline: the control layer the agents don't ship with.</p></details>
+    <details><summary>What is antiloki, in one sentence?</summary><p>A desktop workspace that <b>merges</b> the model subscriptions you already have — Claude, Codex, Cursor, Gemini, Grok — into one coding agent: the seat measured best for each job of an ask, not one model for all of them. It sends each job to the cheapest seat that passes its checks, with folder-level write enforcement, a test at the end of every run and a full audit timeline: the control layer the agents don't ship with.</p></details>
     <details><summary>Does it replace Claude Code, Codex, Cursor, Gemini or Grok?</summary><p>No — it runs them, twice over: as the agent in its box, and as the engine behind antiloki's own AI (the chat, the reviews, the ultra review), each through its own vendor CLI. Keep your subscriptions; there is no API key to paste.</p></details>
     <details><summary>What does the X-ray do that a linter doesn't?</summary><p>It judges every file against your rules and its own measurements (tests, coupling, structure, change) and tells you why a file is not 100. Then the ultra review: a $0 survey of the territory, and your engine reading the worst units to report what it can verify — with the fix. The chat sees all of it, so "why is this file 81?" gets a real answer — and the intel handed to an agent says which files it could not read.</p></details>
     <details><summary>Do I need two subscriptions?</summary><p>For a <b>merge</b>, two usable seats. A merge never puts two frontier models together; it puts cheap hands under a good brain. Google's free tier is capped at a small daily number of agent requests (about twenty when we checked) — enough to try, not a seat to rely on. antiloki only offers a provider you are actually <b>signed in to</b>: it reads the seat, not the installed binary, so a CLI sitting on your machine unauthenticated is never offered as something it can bind. With one seat it runs solo — still routed per job, still tested, just not merged.</p></details>
     <details><summary>Isn't this just worktrees and tmux?</summary><p>Worktrees are the easy part. The fence enforced where the work lands, the verifier before merge, the QA test and the cost-per-task record are what you can't script in an afternoon — and what the trial is for.</p></details>
-    <details><summary>Why is the headline measured against Opus, not a cheaper Claude?</summary><p>Because Opus is the Claude model a Max subscriber reaches for, and the headline is our best measured result against it on one task: 11.3×, rounded down to 10×. Against raw Sonnet the same pipeline is 3.2× and a Sonnet-planned run 2.1×; against the cost Opus recorded on another day (the 2026-09-22 ladder run, $0.61) it is about 6×. The honest range is 6× to 11×, and the table under the headline shows the merges with their n, and the report has every arm.</p></details>
-    <details><summary>Is +112&nbsp;% a measured share of my weekly limit?</summary><p>No. It is a paired task result: on the eight-module task, the run where Claude plans and judges while Composer writes cost $0.1554 against $0.3297 for raw Sonnet, 2.12×. That is dollars at list price standing in for an allowance the vendors do not publish, so how much further your own limit goes depends on your mix of work.</p></details>
-    <details><summary>More calls must mean a bigger bill.</summary><p>More <em>calls</em>, less <em>money</em>: the expensive model is asked only for the part that needs it, and the cheap one does the rest. That is the whole trade, and it is why the bill is on screen for every turn — including the runs where the router declined to split because splitting was not worth it, and the small asks it runs on one seat with no planning call. A failed run reports what it spent and claims no saving.</p></details>
+    <details><summary>Why is the headline measured against Opus?</summary><p>Because Opus is the model a Max subscriber reaches for, and the headline is the measured gap to it. On one eight-module backend task with 37 hidden checks (2026-10-07), raw Opus 5.5 cost $0.443 a run and Composer 2.5 — the seat antiloki's router picks for that task — $0.065: 6.8×, at 36.3 of 37 checks (12 runs) against 37 (3 runs). Against a cheaper raw seat the gap is smaller: raw Sonnet $0.166 and raw Codex $0.149. <b>"Up to" means this task and this day:</b> Opus itself got 2.6× cheaper between September and October, and we re-measure when models change. The full pipeline (Sonnet plans, Composer writes, Opus checks) cost about $0.26 — 1.7× under raw Opus, not under raw Sonnet or Codex. At this size the saving comes from choosing the cheap seat, not from merging; the report lists every arm, including the ones that lost.</p></details>
+    <details><summary>Does it make my weekly limit last longer?</summary><p>We have not measured your limit. An earlier figure on this page (+112 %) compared one Sonnet-planned merge with raw Sonnet; it does not reproduce with current models and has been removed. What we measure is dollars at list price, which stand in for an allowance the vendors do not publish. Sending each job to the cheapest seat that passes should leave more of the dear seats' limits unspent, but how much depends on your mix of work.</p></details>
+    <details><summary>More calls must mean a bigger bill.</summary><p>Sometimes they do, and the app shows it: the bill is on screen for every turn. A task that fits one cheap seat is run on that seat with one call and no planning; the router splits an ask only where splitting measured better, and a failed run reports what it spent and claims no saving. On the eight-module task the fully split pipeline cost more than raw Opus (about $0.78 against $0.44), which is why the router does not use it there.</p></details>
     <details><summary>Can my company install it?</summary><p>One binary, local, no account, no telemetry. The network calls are: your CLIs' own calls; a license check once a day, once you have activated a key (the trial makes none); an update check against a static file on GitHub Releases; the window's fonts, fetched from Google Fonts (fonts.googleapis.com and fonts.gstatic.com) when it opens; api.openai.com or openrouter.ai only if you set up the optional OpenCode route with your own key; and GitHub only if you add a token or open a pull request. Send that to security.</p></details>
   </div>
 </main>
@@ -584,7 +579,7 @@
 </script>
 <script>
 /* THE FILM (2026-10-07): "Carry". One agent carries a whole task alone; friends arrive; together they finish it in a fraction of the time; reunion.
-   The characters are the app's own faces (flat shapes, white slit eyes). The numbers are the measured per-run figures (raw Claude Opus $1.151 / 278 s; Sonnet plans + judges, Composer writes: $0.1554 / 106 s);
+   The characters are the app's own faces (flat shapes, white slit eyes). The numbers are the measured per-run figures of 2026-10-07 (raw Claude Opus 5.5 $0.443 / 108 s; Composer 2.5 $0.065 / 72 s; 6.8x);
    the pacing is cinematic, not a stopwatch. The picture is a pure function of time: render(t).
    ART DIRECTION: the light tells the story - cool dusk while he is alone, the sun rising as his friends arrive, golden hour at the reunion. Layered parallax, atmosphere, soft contact shadows, lit rims, a slow camera. */
 (function () {
@@ -956,12 +951,12 @@
   }
   function hud(t) {
     var p1 = seg(t, T.alone0, T.alone1), a1 = Math.min(seg(t, 0.5, 1.0), 1 - seg(t, 20.6, 21.0)) * (t > T.friends0 ? 0.8 : 1);
-    if (a1 > 0) hudPanel(36, "ALONE", "raw Claude Opus", fmt$(1.151 * p1), Math.round(278 * p1) + " s" + (t > T.stamp ? "  ·  37/37 ✓" : ""), p1, MUTED, "left", a1);
+    if (a1 > 0) hudPanel(36, "ALONE", "raw Claude Opus", fmt$(0.443 * p1), Math.round(108 * p1) + " s" + (t > T.stamp ? "  ·  37/37 ✓" : ""), p1, MUTED, "left", a1);
     var u2 = seg(t, FL0, FL0 + 7 * FSTEP + FDUR), a2 = Math.min(seg(t, 13.9, 14.4), 1 - seg(t, 20.6, 21.0));
-    if (a2 > 0) hudPanel(VW - 36, "TOGETHER", "Sonnet + Composer", fmt$(0.1554 * u2), Math.round(106 * u2) + " s" + (u2 >= 1 ? "  ·  36.8/37 ✓" : ""), u2, EMBER, "right", a2);
+    if (a2 > 0) hudPanel(VW - 36, "ANTILOKI", "routes to Composer", fmt$(0.065 * u2), Math.round(72 * u2) + " s" + (u2 >= 1 ? "  ·  36.3/37 ✓" : ""), u2, EMBER, "right", a2);
   }
   function bubbles(t, st) {
-    var items = [[SON, "7.4×", "$0.155"], [CDX, "7.0×", "$0.165"], [GEM, "6.3×", "$0.184"], [GRK, "3.9×", "$0.292"]];
+    var items = [[COMP, "6.8×", "$0.065"], [CDX, "3.0×", "$0.149"], [SON, "2.7×", "$0.166"]];
     function bubble(c, bx, by, k, lines) {
       ctx.save(); ctx.translate(bx, by); ctx.scale(k, k);
       ctx.shadowColor = "rgba(0,0,0,.55)"; ctx.shadowBlur = 14; ctx.shadowOffsetY = 4; glass(-47, -52, 94, 80, 16, 0.7, rgba(c.color, 0.5)); ctx.shadowColor = "transparent";
@@ -971,21 +966,21 @@
     }
     for (var i = 0; i < items.length; i++) {
       var c = items[i][0], s = st[c.id], k = eob(seg(t, T.bubbles + i * 0.22, T.bubbles + i * 0.22 + 0.4)); if (k <= 0.01) continue;
-      var bx = s.x + (c === SON ? 2 : c === GRK ? -6 : 0), by = GY + s.row - c.size * (s.scale || 1) - 34 - s.up * 0.6 - ((c === CDX || c === GRK) ? 48 : 0);
+      var bx = s.x + (c === SON ? 2 : c === GRK ? -6 : c === COMP ? 16 : 0), by = GY + s.row - c.size * (s.scale || 1) - 34 - s.up * 0.6 - ((c === CDX || c === GRK) ? 48 : c === COMP ? 50 : 0);
       bubble(c, bx, by, k, [items[i][1], items[i][2]]);
     }
-    var ko = eob(seg(t, T.bubbles - 0.2, T.bubbles + 0.2)); if (ko > 0.01) { var so = st.opus; bubble(OPUS, so.x + 14, GY - OPUS.size - 36 - so.up * 0.6 - 24, ko, ["$1.151", "alone"]); }
+    var ko = eob(seg(t, T.bubbles - 0.2, T.bubbles + 0.2)); if (ko > 0.01) { var so = st.opus; bubble(OPUS, so.x + 14, GY - OPUS.size - 36 - so.up * 0.6 - 24, ko, ["$0.443", "alone"]); }
   }
   function endCard(t) {
     var a = seg(t, T.card, T.card + 0.6) * (1 - seg(t, T.fade - 0.4, T.fade)); if (a <= 0) return;
     ctx.save(); ctx.globalAlpha = a * 0.9; var g = ctx.createLinearGradient(0, BAR, 0, 270); g.addColorStop(0, "rgba(10,8,7,.85)"); g.addColorStop(1, "rgba(10,8,7,0)"); ctx.fillStyle = g; ctx.fillRect(0, BAR, VW, 240); ctx.restore();
     glow(VW / 2, 112, 340, "#c97c5c", 0.2 * a);
     ctx.save(); ctx.globalAlpha = a; ctx.textAlign = "center"; ctx.shadowColor = "rgba(0,0,0,.6)"; ctx.shadowBlur = 16;
-    ctx.font = "800 52px " + DISP; var tw = ctx.measureText("7.4× cheaper.").width, sx = VW / 2 - tw / 2 + ((t * 260) % (tw + 300)) - 150, sg = ctx.createLinearGradient(sx - 90, 0, sx + 90, 0);   // a slow shimmer runs through the number
+    ctx.font = "800 52px " + DISP; var tw = ctx.measureText("6.8× cheaper.").width, sx = VW / 2 - tw / 2 + ((t * 260) % (tw + 300)) - 150, sg = ctx.createLinearGradient(sx - 90, 0, sx + 90, 0);   // a slow shimmer runs through the number
     sg.addColorStop(0, "#c97c5c"); sg.addColorStop(0.5, "#ffd2b0"); sg.addColorStop(1, "#c97c5c"); var fg = ctx.createLinearGradient(VW / 2 - tw / 2, 0, VW / 2 + tw / 2, 0); fg.addColorStop(0, "#c97c5c"); fg.addColorStop(1, "#c97c5c");
-    ctx.fillStyle = fg; ctx.fillText("7.4× cheaper.", VW / 2, 114); ctx.shadowColor = "transparent"; ctx.fillStyle = sg; ctx.globalCompositeOperation = "source-atop"; ctx.fillText("7.4× cheaper.", VW / 2, 114); ctx.globalCompositeOperation = "source-over";
-    ctx.shadowColor = "rgba(0,0,0,.6)"; ctx.shadowBlur = 12; ctx.font = "600 30px " + DISP; ctx.fillStyle = INK; ctx.fillText("106 s, not 278 s.  Same task, same 37 checks.", VW / 2, 160);
-    ctx.shadowColor = "transparent"; ctx.font = "500 16px " + MONO; ctx.fillStyle = DIM; ctx.fillText("every subscription you have, as one agent", VW / 2, 192);
+    ctx.fillStyle = fg; ctx.fillText("6.8× cheaper.", VW / 2, 114); ctx.shadowColor = "transparent"; ctx.fillStyle = sg; ctx.globalCompositeOperation = "source-atop"; ctx.fillText("6.8× cheaper.", VW / 2, 114); ctx.globalCompositeOperation = "source-over";
+    ctx.shadowColor = "rgba(0,0,0,.6)"; ctx.shadowBlur = 12; ctx.font = "600 30px " + DISP; ctx.fillStyle = INK; ctx.fillText("72 s, not 108 s.  36.3 of 37 checks, not 37.", VW / 2, 160);
+    ctx.shadowColor = "transparent"; ctx.font = "500 16px " + MONO; ctx.fillStyle = DIM; ctx.fillText("each job on the cheapest model that passes", VW / 2, 192);
     ctx.restore();
     var la = seg(t, T.card + 0.5, T.card + 1.2) * (1 - seg(t, T.fade - 0.4, T.fade)); if (la > 0) { ctx.save(); ctx.globalAlpha = la; ctx.textAlign = "center"; ctx.font = "700 26px " + LOGO; var lw = ctx.measureText("antiloki").width; ctx.fillStyle = INK; ctx.fillText("antiloki", VW / 2 - 4, H - BAR - 24); ctx.fillStyle = EMBER; ctx.textAlign = "left"; ctx.fillText(".", VW / 2 - 4 + lw / 2, H - BAR - 24); ctx.restore(); }
   }
