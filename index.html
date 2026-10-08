@@ -422,7 +422,7 @@
     </div>
     <div class="film" id="film">
       <canvas id="film-canvas" role="img" aria-label="A short animated film. One agent, raw Claude Opus, carries a whole task alone and finishes it in 108 seconds for $0.443. Then his friends arrive, each moving in its own way, and the cheapest one that passes, Composer, finishes the same task in 72 seconds for $0.065, 6.8 times cheaper, at 36.3 of 37 checks."></canvas>
-      <p class="film-f">Measured per run on the same task and the same 37 hidden checks, 2026-10-07: raw Claude Opus 5.5 $0.443 · 108 s · 37/37 (3 runs); Composer 2.5, the seat antiloki's router picks for this task, $0.065 · 72 s · 36.3/37 (12 runs). List-price equivalents. The pacing of the film is not a stopwatch.</p>
+      <p class="film-f">Measured per run on the same task and the same 37 hidden checks, 2026-10-07: raw Claude Opus 5.5 $0.443 · 108 s · 37/37 (3 runs); Composer 2.5, the seat antiloki's router picks for this task, $0.065 · 72 s · 36.3/37 (12 runs). Every bubble is a raw, one-session run on that task, against raw Opus: Gemini is cheap but slow (13 min, 3 runs), Grok costs about what Opus does (12 runs). List-price equivalents. The pacing of the film is not a stopwatch.</p>
     </div>
 
     <div class="bench" aria-label="cost per run on the same task">
@@ -956,9 +956,10 @@
     if (a2 > 0) hudPanel(VW - 36, "ANTILOKI", "routes to Composer", fmt$(0.065 * u2), Math.round(72 * u2) + " s" + (u2 >= 1 ? "  ·  36.3/37 ✓" : ""), u2, EMBER, "right", a2);
   }
   function bubbles(t, st) {
-    var items = [[COMP, "6.8×", "$0.065"], [CDX, "3.0×", "$0.149"], [SON, "2.7×", "$0.166"]];
+    // EVERY friend carries its measured number (raw, one session, the eight-module task, 2026-10-07/08), left to right so they pop in as a wave
+    var items = [[GEM, "5.6×", "$0.079"], [CDX, "3.0×", "$0.149"], [COMP, "6.8×", "$0.065"], [GRK, "0.9×", "$0.483"], [SON, "2.7×", "$0.166"]];
     function bubble(c, bx, by, k, lines) {
-      ctx.save(); ctx.translate(bx, by); ctx.scale(k, k);
+      ctx.save(); ctx.translate(bx, by); ctx.scale(k * 0.88, k * 0.88);   // a little smaller so six bubbles fit side by side
       ctx.shadowColor = "rgba(0,0,0,.55)"; ctx.shadowBlur = 14; ctx.shadowOffsetY = 4; glass(-47, -52, 94, 80, 16, 0.7, rgba(c.color, 0.5)); ctx.shadowColor = "transparent";
       ctx.beginPath(); ctx.moveTo(-8, 28); ctx.lineTo(0, 38); ctx.lineTo(8, 28); ctx.fillStyle = "rgba(15,12,11,.7)"; ctx.fill();
       ctx.fillStyle = c.color; rr(-47, -52, 94, 3, 2); ctx.fill();
@@ -966,7 +967,8 @@
     }
     for (var i = 0; i < items.length; i++) {
       var c = items[i][0], s = st[c.id], k = eob(seg(t, T.bubbles + i * 0.22, T.bubbles + i * 0.22 + 0.4)); if (k <= 0.01) continue;
-      var bx = s.x + (c === SON ? 2 : c === GRK ? -6 : c === COMP ? 16 : 0), by = GY + s.row - c.size * (s.scale || 1) - 34 - s.up * 0.6 - ((c === CDX || c === GRK) ? 48 : c === COMP ? 50 : 0);
+      var raise = (c === COMP || c === SON) ? 58 : 0,   // two rows: the neighbours of a close pair (Grok-Sonnet, Codex-Composer) never share a height, and Composer clears its own name tag
+          bx = s.x + (c === GRK ? 12 : 0), by = GY + s.row - c.size * (s.scale || 1) - 34 - s.up * 0.6 - raise;
       bubble(c, bx, by, k, [items[i][1], items[i][2]]);
     }
     var ko = eob(seg(t, T.bubbles - 0.2, T.bubbles + 0.2)); if (ko > 0.01) { var so = st.opus; bubble(OPUS, so.x + 14, GY - OPUS.size - 36 - so.up * 0.6 - 24, ko, ["$0.443", "alone"]); }
