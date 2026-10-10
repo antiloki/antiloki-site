@@ -117,7 +117,8 @@
         var ext = x.name.split(".").pop().toLowerCase();
         files.appendChild(el("a", { href: x.browser_download_url, text: (LABEL[ext] || x.name) + " (" + mb(x.size) + ")", title: x.name }));
       });
-      var card = el("div", { class: "ver" }, [el("h3", { text: r.tag_name }), el("span", { class: "when", text: (r.published_at || "").slice(0, 10) + (r.prerelease ? " · pre-release" : "") }), files]);
+      var code = (r.name || "").split(" — ")[1];   // a release titled "antiloki v0.5.0 — Tyr" carries its version name
+      var card = el("div", { class: "ver" }, [el("h3", { text: r.tag_name + (code ? " · " + code : "") }), el("span", { class: "when", text: (r.published_at || "").slice(0, 10) + (r.prerelease ? " · pre-release" : "") }), files]);
       if ((r.body || "").trim()) { var d = el("details", {}, [el("summary", { text: "What changed" })]); var inner = notes(r.body); d.appendChild(inner); card.appendChild(d); }
       host.appendChild(card);
     });
