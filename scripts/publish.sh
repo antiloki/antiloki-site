@@ -11,7 +11,7 @@
 set -euo pipefail
 
 PAGES=(index.html paper.html demo.html privacy.html)
-FORBIDDEN_RE='marketing-kit|marketing/|/home/danj|ghp_|(^|[^A-Za-z0-9_])sk-[A-Za-z0-9_-]{10,}|\[LEGAL NAME|CITY / TAX ID'
+FORBIDDEN_RE='marketing-kit|marketing/|/home/danj|ghp_|(^|[^A-Za-z0-9_])sk-[A-Za-z0-9_-]{10,}|\[LEGAL NAME|CITY / TAX ID|YOUR FULL LEGAL NAME'
 
 repo_root() { cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd; }
 
