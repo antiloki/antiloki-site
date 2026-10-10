@@ -310,7 +310,7 @@
   .download h2 { font-size: clamp(30px, 3.6vw, 44px); font-weight: 700; }
   .dl { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 34px; }
   .os { border: 1px solid var(--rule); border-radius: 14px; padding: 20px 22px; background: var(--panel); text-decoration: none; display: flex; flex-direction: column; gap: 4px; text-align: left; transition: border-color .15s ease, transform .15s ease; }
-  .os:hover { border-color: var(--dim); transform: translateY(-2px); } .os.me { border-color: var(--ember); }
+  .os:hover { border-color: var(--dim); transform: translateY(-2px); } .os.soon, .os.soon:hover { border-style: dashed; border-color: var(--rule); transform: none; cursor: default; opacity: .75; } .os.soon em { color: var(--dim); } .os.me { border-color: var(--ember); }
   .os b { font-family: var(--display); font-weight: 700; font-size: 22px; } .os span { font-family: var(--mono); font-size: 11.5px; color: var(--dim); }
   .os em { font-style: normal; margin-top: 8px; color: var(--ember); font-size: 14px; }
   .needs { margin-top: 18px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
@@ -413,7 +413,7 @@
   <div class="fog" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
     <div class="wrap hero">
     <div class="fold">
-    <span class="eyebrow">A desktop app for merging the subscriptions you have into one coding agent.<br>Windows today · macOS and Linux builds are older, see <a href="#download" style="color:inherit">Download</a></span>
+    <span class="eyebrow">A desktop app for merging the subscriptions you have into one coding agent.<br>Windows today · the Linux build is older · macOS soon, see <a href="#download" style="color:inherit">Download</a></span>
     <h1 style="margin-top:14px"><em>Build +590% more on your weekly limit, 6.9× cheaper, with the same code quality.</em></h1>
     <p class="lede" style="margin-top:10px">Claude Grok, Gemini Codex — antiloki merges your existing model subscriptions into specialized coding agents. <b>No new account and no extra subscription: antiloki drives the AI providers you are already signed in to, all local and private.</b></p>
     <div class="cta"><a class="btn ember" href="#download">Download — free for 14 days</a></div>
@@ -497,7 +497,7 @@
       <div class="cmp-r" role="row"><b role="rowheader">Design</b><span class="alone" role="cell">Looks right, you hope</span><span class="with" role="cell">Contrast, spacing, type and clipping measured on the real page</span></div>
       <div class="cmp-r" role="row"><b role="rowheader">Receipts</b><span class="alone" role="cell">You wonder what it did and cost</span><span class="with" role="cell">Every run keeps what it did, who judged it, what it cost and what it saved</span></div>
     </div>
-    <p class="fine">One more app; the Windows build is current, macOS and Linux are older. Limits, sources and every detail: <a href="/paper.html">the technical report →</a></p>
+    <p class="fine">One more app; the Windows build is current, the Linux build is older, and macOS is coming soon. Limits, sources and every detail: <a href="/paper.html">the technical report →</a></p>
   </section>
 
     <div class="wrap pricing" id="pricing">
@@ -514,7 +514,7 @@
     <div class="wrap download" id="download">
     <h2>Install. Open a repo. Ask.</h2>
     <div class="dl">
-      <a class="os" data-os="mac" href="https://github.com/danilosilvadev/antiloki-releases/releases/tag/v0.1.0"><b>macOS</b><span>Apple silicon · .dmg · v0.1.0 (older build)</span><em>Download ↓</em></a>
+      <div class="os soon" data-os="mac" aria-disabled="true"><b>macOS</b><span>Apple silicon · coming soon</span><em>Soon</em></div>
       <a class="os" data-os="win" href="https://github.com/danilosilvadev/antiloki-releases/releases/latest"><b>Windows</b><span>.exe · x64 · installer</span><em>Download ↓</em></a>
       <a class="os" data-os="linux" href="https://github.com/danilosilvadev/antiloki-releases/releases/tag/v0.1.4"><b>Linux</b><span>.deb from v0.1.4 · needs glibc 2.44 or newer (Arch and other recent rolling distributions); wider support is in progress</span><em>Download ↓</em></a>
     </div>
@@ -562,11 +562,11 @@
     for (const ev of ["wheel", "touchstart", "keydown", "pointerdown"]) window.addEventListener(ev, cut, { passive: true });
   }
   const ua = navigator.userAgent, os = /Mac/.test(ua) ? "mac" : /Win/.test(ua) ? "win" : /Linux/.test(ua) ? "linux" : null;
-  if (os) document.querySelector(`.os[data-os="${os}"]`)?.classList.add("me");
+  if (os && os !== "mac") document.querySelector(`.os[data-os="${os}"]`)?.classList.add("me");
   const RELEASES = "danilosilvadev/antiloki-releases";
-  const PICK = { mac: [/\.dmg$/], win: [/-setup\.exe$/, /\.msi$/], linux: [/\.AppImage$/, /\.deb$/] };
+  const PICK = { win: [/-setup\.exe$/, /\.msi$/], linux: [/\.AppImage$/, /\.deb$/] };
   const LIST = `https://github.com/${RELEASES}/releases`;
-  const fallback = () => { for (const key of ["mac", "linux"]) { const a = document.querySelector(`.os[data-os="${key}"]`); if (a) a.href = LIST; } };
+  const fallback = () => { for (const key of ["linux"]) { const a = document.querySelector(`.os[data-os="${key}"]`); if (a) a.href = LIST; } };
   fetch(`https://api.github.com/repos/${RELEASES}/releases?per_page=10`, { headers: { accept: "application/vnd.github+json" } }).then((r) => (r.ok ? r.json() : null)).then((rels) => {
     if (!Array.isArray(rels)) { fallback(); return; }
     const newest = rels.find((x) => !x.draft && !x.prerelease) || rels.find((x) => !x.draft);
