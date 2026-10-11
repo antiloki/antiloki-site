@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Sagas: a list per project where you and your agents keep the work. Goals, tasks and subtasks, who did each step and with which model, and what it cost, taken from the real runs.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><text y=%2213%22 font-size=%2213%22>⚡</text></svg>">
+<title>Sagas — antiloki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Geist:wght@700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="post.css">
+</head><body>
+<nav class="top"><div class="wrap">
+  <a class="mark" href="/" aria-label="antiloki">antiloki<em>.</em></a>
+  <span class="sp"></span>
+  <a class="q" href="/">Home</a>
+  <a class="q" href="/#compare">Compared</a>
+  <a class="q" href="/blog/">Blog</a>
+  <a class="q" href="/#pricing">Pricing</a>
+  <a class="btn sm ember" href="/#download">Download · free 14 days</a>
+</div></nav>
+<main class="pwrap">
+  <nav class="toc" aria-label="Contents"><details id="toc-d" open><summary class="eyebrow">contents</summary><ol>
+      <li><a href="#s-the-problem"><i>1</i>The problem: a to-do list inside one chat</a></li>
+      <li><a href="#s-what-a-saga-is"><i>2</i>What a saga is</a></li>
+      <li><a href="#s-who-did-what"><i>3</i>Who did what, and with which model</a></li>
+      <li><a href="#s-the-numbers"><i>4</i>The numbers come from the run</a></li>
+      <li><a href="#s-the-agents-read-it"><i>5</i>The agents read it too</a></li>
+      <li><a href="#s-a-record"><i>6</i>A record, not a scratchpad</a></li>
+      <li><a href="#s-what-it-is-not"><i>7</i>What it is not</a></li>
+    </ol></details></nav>
+  <article class="paper">
+
+  <span class="eyebrow">antiloki · the third screen</span>
+  <h1>Sagas: where the work <em>is kept.</em></h1>
+  <p class="sub">A list per project of goals, tasks and subtasks, with who did each step, which model it ran on, and what it cost.</p>
+
+  <div class="byline">
+    <span>Written <b>2026-10-11</b></span>
+    <span>Cowork · X-ray · Sagas</span>
+    <span><a href="/">← antiloki</a></span>
+  </div>
+
+  <div class="abstract">
+    <span class="eyebrow">in one paragraph</span>
+    <p>A saga is a goal and the tasks that get it done. You write one, or an agent&rsquo;s plan becomes one by itself. Each task has an assignee, a status you can move on, and an activity trail that names who did each step. The time, cost and tokens on a task are the ones the run recorded, and a finished saga stays as part of the record. It lives in a file inside your project, and the agents can read it before they start.</p>
+  </div>
+
+  <h2 id="s-the-problem"><span class="n">1</span>The problem: a to-do list inside one chat</h2>
+  <p>Coding tools keep a plan, but the plan lives in the session that wrote it. Close the chat and the list goes with it. Run the same goal on another tool and you start again. Nothing says which model did which step, or what that step cost. With one agent that is a minor annoyance. With several agents on several subscriptions it is the thing you actually need to see.</p>
+
+  <h2 id="s-what-a-saga-is"><span class="n">2</span>What a saga is</h2>
+  <p>A <b>saga</b> is a titled goal. It holds <b>tasks</b>, and a task can hold <b>subtasks</b> (one level deep, so the list stays readable). A task is assigned to you, to Heimdall, or to an agent, and moves through todo, in progress and done. A saga&rsquo;s own status is not typed in: it follows its tasks, and a failed run makes it failed.</p>
+  <p>The plan an agent writes for an ask becomes a saga on its own, with its steps as tasks, and they move as the run does. Anything you add by hand to such a saga is left alone. The screen follows the layout of an issues page: the list, a saga with its tasks, a task with its subtasks and a side panel of properties, with &ldquo;New saga&rdquo; and &ldquo;New task&rdquo;.</p>
+
+  <h2 id="s-who-did-what"><span class="n">3</span>Who did what, and with which model</h2>
+  <p>Every line of the activity trail names its actor: you, Heimdall, or an agent. A task shows the agent&rsquo;s face and the icon of the exact model that did it; one that failed carries a small red mark. On the list, each saga shows the faces of the agents behind it and the models they ran on, so a glance tells you whether this goal was done by Cursor&rsquo;s Composer, by Gemini, or by both.</p>
+
+  <h2 id="s-the-numbers"><span class="n">4</span>The numbers come from the run</h2>
+  <p>Time, cost and tokens on a task are what the run recorded for it; a saga adds up its tasks. We pointed it at the history of our own benchmark project: its 100 runs appeared as 100 sagas with 252 tasks (213 of them done) and about $4.20 of recorded cost, 67 sagas done, 19 failed and 14 canceled &mdash; each saga&rsquo;s status being its run&rsquo;s verdict, so a run that failed its QA reads as failed even when every task in it finished. Nothing was typed in.</p>
+
+  <h2 id="s-the-agents-read-it"><span class="n">5</span>The agents read it too</h2>
+  <p>antiloki gives its agents four tools for the list: read it, start a saga, add a task, update a task. An agent that reads it before it starts does not redo a task already marked done, and what it adds is attributed to it in the trail. Sub-agents, the workers inside a delegated run, can read the list but never write to it; the agent that delegated to them records what they found. That is the same rule that stops sub-agents from delegating further.</p>
+
+  <h2 id="s-a-record"><span class="n">6</span>A record, not a scratchpad</h2>
+  <p>A finished saga cannot be canceled or deleted. The buttons are not there and the server refuses the request, so the history is the history. A canceled saga can be reopened, and adding a task to a finished one reopens it. Only a saga that is still open can be canceled or deleted.</p>
+
+  <h2 id="s-what-it-is-not"><span class="n">7</span>What it is not</h2>
+  <p>It is not for a team of people: there are no mentions, notifications or permissions, because the team is you and your agents. It is not a board. It is one file per project (<code>.antiloki/work.sqlite</code> inside the project, on your machine), so each project has its own list. Importing issues from other trackers is not built.</p>
+
+  </article>
+</main>
+<footer><div class="wrap">
+  <span>antiloki · agents · X-ray</span>
+  <a href="/blog/">blog</a>
+  <a href="/paper.html">the benchmark</a>
+  <a href="/releases.html">releases</a>
+  <a href="/privacy.html">privacy</a>
+  <a href="/terms.html">terms</a>
+  <a href="mailto:support@antiloki.com">support@antiloki.com</a>
+  <span class="r">© 2026 antiloki · updated 2026-10-11</span>
+</div></footer>
+<script>
+/* the contents list follows the section you are reading */
+(function () {
+  var d = document.getElementById("toc-d");
+  if (d && window.matchMedia) { var mq = matchMedia("(max-width: 1000px)"), fit = function () { if (mq.matches) d.removeAttribute("open"); else d.setAttribute("open", ""); }; fit(); (mq.addEventListener ? mq.addEventListener("change", fit) : mq.addListener(fit)); }
+  document.querySelectorAll(".toc a").forEach(function (a) { a.addEventListener("click", function () { if (d && window.matchMedia && matchMedia("(max-width: 1000px)").matches) d.removeAttribute("open"); }); });
+  var links = [].slice.call(document.querySelectorAll(".toc a")), map = {};
+  links.forEach(function (a) { map[a.getAttribute("href").slice(1)] = a; });
+  var heads = links.map(function (a) { return document.getElementById(a.getAttribute("href").slice(1)); }).filter(Boolean);
+  if (!heads.length || !("IntersectionObserver" in window)) return;
+  var cur = null;
+  var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { if (cur) cur.classList.remove("on"); cur = map[e.target.id]; if (cur) cur.classList.add("on"); } }); }, { rootMargin: "-84px 0px -72% 0px", threshold: 0 });
+  heads.forEach(function (h) { io.observe(h); });
+})();
+</script>
+</body></html>

@@ -32,6 +32,7 @@
       <li><a href="#s10"><i>10</i>What follows</a></li>
       <li><a href="#s11"><i>11</i>Third edition</a></li>
       <li><a href="#s12"><i>12</i>From the landing page</a></li>
+      <li><a href="#s13"><i>13</i>Sagas</a></li>
       <li><a href="#sA"><i>A</i>Reproducing a row</a></li>
       <li><a href="#sR"><i>R</i>References</a></li>
     </ol></details></nav>
@@ -448,6 +449,10 @@ weight   = 0.5 + (raw − 0.5) · n / (n + 1)                  (n = 1 → halfwa
       <tr><td>A verdict on the code itself</td><td>Review tools such as Cursor's Bugbot read a pull request and give an opinion.</td><td>X-ray scores every file from your ASTs and git history; no model gives the number.</td></tr>
       <tr><td>Following your rules</td><td>Rules live in prompt files and settings.</td><td>The agent can check its own edits against your project's laws before it finishes (§12.6, a pilot).</td></tr>
       <tr><td>What it costs, and where you stand</td><td>Each tool shows its own usage.</td><td>Every turn priced and timed, per seat, with each seat's window or call count (§12.4).</td></tr>
+      <tr><td>Where the work is kept</td><td>Each tool keeps a plan or to-do list inside its own session; it ends with the session.</td><td>Sagas (§13): a per-project list of goals, tasks and subtasks for you and your agents. A plan becomes a saga by itself; agents can read the list before they start.</td></tr>
+      <tr><td>Who did which step</td><td>Read back through the conversation.</td><td>Each task shows the agent and the exact model that did or failed it, with an activity trail that names the actor on every line.</td></tr>
+      <tr><td>What a task cost</td><td>Each tool shows its own usage, not per task.</td><td>Time, cost and tokens on every task, as the run recorded them, rolled up to the saga.</td></tr>
+      <tr><td>The record</td><td>Whatever the chat kept.</td><td>A finished saga cannot be canceled or deleted; the server refuses it.</td></tr>
     </tbody>
   </table></div>
   <p><b>What you give up:</b> one more app. The Windows build is current; the macOS and Linux builds are older. A merge needs two signed-in seats, the browser QA needs Chrome, and paid plans are not open yet. <b>When the tool alone is the better choice:</b> a quick edit in one file, or one subscription and nothing to compare (§12.3: on a small ask there is no saving against Haiku).</p>
@@ -455,6 +460,26 @@ weight   = 0.5 + (raw − 0.5) · n / (n + 1)                  (n = 1 → halfwa
   <h3 id="s12-8">12.8 The setting: adoption without control</h3>
   <p>This was the landing page's opening argument, moved here with its sources. The figures are as the cited pages report them; we did not re-run those surveys, and two of the three links are secondary summaries.</p>
   <p>Adoption is finished and control never arrived: 90&nbsp;% of professional developers use coding agents weekly and 68&nbsp;% daily, but only 29&nbsp;% trust what comes out — down from 40&nbsp;%, with 3&nbsp;% who highly trust it [14, 15]. And the failure mode is not theoretical: an agent quoted the rule that forbade it and deleted a production database and its backups, and the deletion call took nine seconds — 93&nbsp;% of organisations have had an AI-caused incident, 19&nbsp;% have governance for the next one [16]. Rules in a prompt are not enforcement.</p>
+
+  <h2 id="s13"><span class="n">13</span>Sagas: where the work is kept (11 October 2026)</h2>
+  <p>This section describes a feature, not a benchmark, so it has no results to defend; what it states is what the code does, and the one measurement in it (§13.3) is a count taken from our own record. Sagas is the third screen, beside Cowork and X-ray.</p>
+
+  <h3 id="s13-1">13.1 The model</h3>
+  <p>One sqlite file per project, <code>&lt;project&gt;/.antiloki/work.sqlite</code>, opened per request in WAL mode and never through the cockpit database's writer connection. Three tables. <b>sagas</b>: a title, an objective, an origin (you, Heimdall or an agent), a stored status and the key of the run it came from. <b>tasks</b>: belonging to a saga, optionally to a parent task (subtasks go one level deep: the server refuses a subtask of a subtask), with a status of todo, doing, done, failed or canceled, an assignee, who made it, and the time, cost, tokens, engine and model of the run that did it. <b>events</b>: the activity trail, every line carrying its actor.</p>
+  <p>A saga&rsquo;s status is derived, not typed: it follows its tasks, except that <i>canceled</i> is the user&rsquo;s word and <i>failed</i> is a run&rsquo;s verdict (a run can fail at QA with every task done), and a run answered inline with no plan reads as done.</p>
+
+  <h3 id="s13-2">13.2 How a plan becomes a saga</h3>
+  <p>There is no hook in the goal runner. Each read of the list upserts one saga per goal run that belongs to the project, and one task per run task, copying the run&rsquo;s status, times, cost and seat (from the task&rsquo;s own trace). Titles are written when a row is created, so a rename survives; status, time and cost are always the run&rsquo;s. A run&rsquo;s fingerprint (its status, task states and event count) is stored, and an unchanged run is skipped whole, so reading a hundred finished runs on every poll costs a comparison each.</p>
+  <p>Goal runs are kept in one file for every project, so a run is attributed by its folder: inside the project, the box of one of its panes, a sibling clone named after the project (<code>ministore-merge-…</code> next to <code>ministore-2</code>), or a checkout of the same repository (the same first commit). A task a person adds to a plan&rsquo;s saga is never touched by the sync.</p>
+
+  <h3 id="s13-3">13.3 One count, from our own record</h3>
+  <p>Pointed at the project behind the benchmark in §7, the 100 runs in the history appeared as 100 sagas holding 252 tasks, 213 of them done, with about $4.20 of recorded cost: 67 sagas done, 19 failed, 14 canceled, which is the runs&rsquo; own verdicts (66 done and one answered inline; 19; 14). Nothing was entered by hand. The count says the mapping is faithful to the record; it says nothing about whether the list is useful, which we have not measured.</p>
+
+  <h3 id="s13-4">13.4 Agents, attribution and the record</h3>
+  <p>The agent sidecar&rsquo;s tool server carries four tools: read the sagas, start one, add a task, update a task. A write from an agent carries its pane and the trail names the agent (its recipe name, else its engine). Sub-agents of a delegated run may read the list and may not write to it, the same rule that stops them delegating. A saga that is finished (done, failed or canceled) can be neither canceled nor deleted, and a canceled one can only be reopened; the server enforces it and the screen hides the buttons. Adding a task to a finished saga makes it open again.</p>
+
+  <h3 id="s13-5">13.5 What it does not do</h3>
+  <p>No mentions, notifications or permissions: the team is one person and their agents. No board view. No import from other trackers. The file is on the machine, so it is not shared between machines. Whether keeping this list changes outcomes (fewer repeated tasks, for instance) is a hypothesis; it is not tested here.</p>
 
   <h2 id="sA"><span class="n">A</span>Reproducing a row</h2>
   <pre>bench/merges/run.sh L claude-deepseek false     # one arm: pair · size · QA — clones ministore, drives /cockpit/goals/plan,
@@ -494,7 +519,7 @@ GET  /api/v1/settings/audit                       # every call: model · ms · t
   <a href="/privacy.html">privacy</a>
   <a href="/terms.html">terms</a>
   <a href="mailto:support@antiloki.com">support@antiloki.com</a>
-  <span class="r">© 2026 antiloki · updated 2026-10-01</span>
+  <span class="r">© 2026 antiloki · updated 2026-10-11</span>
 </div></footer>
 <script>
 /* the contents list follows the section you are reading */
