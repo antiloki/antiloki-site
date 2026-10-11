@@ -1,5 +1,5 @@
 /* THE NEWSLETTER FORM (operator 2026-10-11: "Get notified when checkout & macOS open"). One script draws it everywhere, so the markup and the copy live in one place:
- *   <div data-newsletter="hero"></div>      the form, tagged "hero" (Buttondown's tag shows which spot brought a signup)
+ *   <div data-newsletter="NAME"></div>      the form, tagged NAME (Buttondown's tag shows which spot brought a signup). There is none under the headline: operator 2026-10-11, "at the end, not at the headline".
  *   <div data-newsletter="download"></div>  hidden until a download starts (a click on an installer link), then it appears
  *   the footer of every page that loads this script gets one tagged "footer", automatically
  * It posts to Buttondown (free plan). Without JavaScript the form still works: the browser posts it and Buttondown answers on its own page. With JavaScript the page stays put and says "Check your inbox to confirm."
