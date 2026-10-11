@@ -5,12 +5,12 @@
 #   scripts/publish.sh             print that same summary, run the safety checks, then force-push an orphan commit
 #                                  (the live site is whatever origin/main holds; it has no history of its own)
 #
-# What is published: index.html, paper.html, blog/, demo.html (if present), CNAME, and only the img/ files that a
+# What is published: index.html, paper.html, blog/, demo.html (if present), newsletter.js, CNAME, and only the img/ files that a
 # copied page actually references. Never: marketing-kit.html, marketing/, scripts/, shoot-prints.mjs,
 # NOTES-INTERNAL.md, _config.yml or anything else in the repository. HTML comments are stripped in the temp copy only.
 set -euo pipefail
 
-PAGES=(index.html paper.html demo.html privacy.html terms.html releases.html)
+PAGES=(index.html paper.html demo.html privacy.html terms.html releases.html newsletter.js)   # newsletter.js: the signup form every page loads (2026-10-11)
 FORBIDDEN_RE='marketing-kit|marketing/|/home/danj|ghp_|(^|[^A-Za-z0-9_])sk-[A-Za-z0-9_-]{10,}|\[LEGAL NAME|CITY / TAX ID|YOUR FULL LEGAL NAME|Your Real Name Here'
 
 repo_root() { cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd; }
