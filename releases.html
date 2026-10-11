@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Download antiloki for Windows and Linux (macOS soon): the latest installer, how to install it, and every version with its release notes. Free for 14 days.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><text y=%2213%22 font-size=%2213%22>⚡</text></svg>">
+<title>Download antiloki — every version</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Geist:wght@700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="blog/post.css">
+</head><body>
+<nav class="top"><div class="wrap">
+  <a class="mark" href="/" aria-label="antiloki">antiloki<em>.</em></a>
+  <span class="sp"></span>
+  <a class="q" href="/">Home</a>
+  <a class="q" href="/#compare">Compared</a>
+  <a class="q" href="/blog/">Blog</a>
+  <a class="q" href="/#pricing">Pricing</a>
+  <a class="btn sm ember" href="/#download">Download · free 14 days</a>
+</div></nav>
+<main class="pwrap">
+  <nav class="toc" aria-label="Contents"><details id="toc-d" open><summary class="eyebrow">contents</summary><ol>
+      <li><a href="#latest"><i>1</i>Latest</a></li>
+      <li><a href="#install"><i>2</i>Install</a></li>
+      <li><a href="#versions"><i>3</i>All versions</a></li>
+    </ol></details></nav>
+  <article class="paper">
+
+  <span class="eyebrow">antiloki · download</span>
+  <h1>Download <em>antiloki.</em></h1>
+  <p class="sub">Free for 14 days, no account and no card. It needs git and at least one AI command-line tool you are already signed in to (Codex, Gemini, Cursor or Grok).</p>
+
+  <h2 id="latest">1. Latest</h2>
+  <div class="dl" id="dl-latest">
+    <div class="os soon" data-os="mac"><b>macOS</b><span>Apple silicon · coming soon</span><em>Soon</em></div>
+    <a class="os" data-os="win" href="#versions"><b>Windows</b><span>.exe · x64 · installer</span><em>Loading…</em></a>
+    <a class="os" data-os="linux" href="#versions"><b>Linux</b><span>.deb · needs glibc 2.44 or newer (Arch and other recent rolling distributions); wider support is in progress</span><em>Loading…</em></a>
+  </div>
+
+  <h2 id="install">2. Install</h2>
+  <ul>
+    <li><b>Windows:</b> run the .exe. The installer is not code-signed yet, so Windows may show a SmartScreen warning: choose <i>More info</i>, then <i>Run anyway</i>.</li>
+    <li><b>Linux:</b> <code>sudo apt install ./antiloki_&lt;version&gt;_amd64.deb</code> (or install the .deb with your distribution's tool), then start <i>antiloki</i> from your launcher.</li>
+    <li><b>First start:</b> the app opens a window and its setup guide checks which AI tools you have. The 14-day trial starts on the first run and makes no network check.</li>
+    <li><b>Licence:</b> one payment, a licence key by email, entered once in the app. See the <a href="/terms.html">terms</a> and the <a href="/privacy.html">privacy policy</a>.</li>
+  </ul>
+
+  <h2 id="versions">3. All versions</h2>
+  <div id="versions-list"><p class="note">Loading the versions…</p></div>
+  <noscript><p>This list needs JavaScript. The files are also listed at <a href="https://github.com/danilosilvadev/antiloki-releases/releases">github.com/danilosilvadev/antiloki-releases</a>.</p></noscript>
+
+  </article>
+</main>
+<style>
+  .dl { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 18px 0 8px; }
+  .os { border: 1px solid var(--rule); border-radius: 14px; padding: 20px 22px; background: var(--panel); text-decoration: none; display: flex; flex-direction: column; gap: 4px; text-align: left; color: var(--ink); }
+  .os:hover { border-color: var(--dim); }
+  .os b { font-family: var(--display); font-weight: 700; font-size: 22px; } .os span { font-family: var(--mono); font-size: 11.5px; color: var(--dim); }
+  .os em { font-style: normal; margin-top: 8px; color: var(--ember); font-size: 14px; }
+  .os.soon, .os.soon:hover { border-style: dashed; border-color: var(--rule); cursor: default; opacity: .75; } .os.soon em { color: var(--dim); }
+  .ver { border: 1px solid var(--rule); border-radius: 14px; padding: 16px 20px; margin: 0 0 14px; background: var(--panel); }
+  .ver h3 { margin: 0 0 4px; font-size: 20px; } .ver .when { font-family: var(--mono); font-size: 11.5px; color: var(--dim); margin-bottom: 10px; display: block; }
+  .ver .files { display: flex; flex-wrap: wrap; gap: 8px 14px; margin: 6px 0 10px; font-size: 14px; } .ver .files a { color: var(--ember); }
+  .ver details { margin-top: 6px; } .ver summary { cursor: pointer; color: var(--dim); font-size: 14px; }
+  .ver details > div { margin-top: 10px; font-size: 14.5px; line-height: 1.55; } .ver details p { margin: 0 0 10px; } .ver details ul { margin: 0 0 10px; padding-left: 20px; }
+  .ver code, .note code { font-family: var(--mono); font-size: .9em; }
+</style>
+<script>
+(function () {
+  var REPO = "danilosilvadev/antiloki-releases";
+  var PICK = { win: [/-setup\.exe$/, /\.msi$/], linux: [/\.deb$/, /\.AppImage$/] };
+  var LABEL = { exe: "Windows installer", msi: "Windows MSI", deb: "Linux .deb", appimage: "Linux AppImage", dmg: "macOS .dmg" };
+  function el(tag, props, kids) { var n = document.createElement(tag); for (var k in (props || {})) { if (k === "text") n.textContent = props[k]; else n.setAttribute(k, props[k]); } (kids || []).forEach(function (c) { n.appendChild(c); }); return n; }
+  function mb(b) { return Math.round(b / 1048576) + " MB"; }
+  function inline(text, into) {   // **bold** and `code`, built as DOM nodes (nothing from the release notes is ever parsed as HTML)
+    text.split(/(\*\*[^*]+\*\*|`[^`]+`)/).forEach(function (p) {
+      if (!p) return;
+      if (/^\*\*[^*]+\*\*$/.test(p)) into.appendChild(el("b", { text: p.slice(2, -2) }));
+      else if (/^`[^`]+`$/.test(p)) into.appendChild(el("code", { text: p.slice(1, -1) }));
+      else into.appendChild(document.createTextNode(p));
+    });
+  }
+  function notes(body) {
+    var box = el("div"), list = null, para = [];
+    function flush() { if (para.length) { var p = el("p"); inline(para.join(" "), p); box.appendChild(p); para = []; } }
+    (body || "").replace(/\r/g, "").split("\n").forEach(function (line) {
+      if (/^\s*[-*] /.test(line)) { flush(); if (!list) { list = el("ul"); box.appendChild(list); } var li = el("li"); inline(line.replace(/^\s*[-*] /, ""), li); list.appendChild(li); }
+      else if (/^\s+\S/.test(line) && list && list.lastChild) { inline(" " + line.trim(), list.lastChild); }
+      else if (!line.trim()) { flush(); list = null; }
+      else { list = null; para.push(line.trim()); }
+    });
+    flush(); return box;
+  }
+  function failed() {
+    document.getElementById("versions-list").replaceChildren(el("p", { class: "note" }, [document.createTextNode("The list could not be loaded just now. The files are also at "), el("a", { href: "https://github.com/" + REPO + "/releases", text: "github.com/" + REPO }), document.createTextNode(".")]));
+    document.querySelectorAll("#dl-latest a.os em").forEach(function (e) { e.textContent = "See all versions ↓"; });
+  }
+  fetch("https://api.github.com/repos/" + REPO + "/releases?per_page=30", { headers: { accept: "application/vnd.github+json" } }).then(function (r) { return r.ok ? r.json() : null; }).then(function (rels) {
+    if (!Array.isArray(rels)) { failed(); return; }
+    rels = rels.filter(function (r) { return !r.draft && Array.isArray(r.assets); });
+    Object.keys(PICK).forEach(function (key) {
+      var a = document.querySelector('#dl-latest .os[data-os="' + key + '"]'); if (!a) return;
+      for (var i = 0; i < rels.length; i++) {
+        var asset = null; PICK[key].some(function (re) { asset = rels[i].assets.filter(function (x) { return re.test(x.name); })[0]; return asset; });
+        if (!asset) continue;
+        a.href = asset.browser_download_url; a.title = asset.name + " · " + mb(asset.size);
+        a.querySelector("em").textContent = "Download " + rels[i].tag_name + " ↓";
+        if (key === "linux") a.querySelector("span").textContent = a.querySelector("span").textContent.replace(/^\.deb/, asset.name.split(".").pop() === "deb" ? ".deb · " + rels[i].tag_name : "." + asset.name.split(".").pop() + " · " + rels[i].tag_name);
+        return;
+      }
+      a.querySelector("em").textContent = "No installer yet";
+    });
+    var host = document.getElementById("versions-list"); host.replaceChildren();
+    rels.forEach(function (r) {
+      var files = el("div", { class: "files" });
+      r.assets.filter(function (x) { return !/\.(sig|json)$/.test(x.name); }).forEach(function (x) {
+        var ext = x.name.split(".").pop().toLowerCase();
+        files.appendChild(el("a", { href: x.browser_download_url, text: (LABEL[ext] || x.name) + " (" + mb(x.size) + ")", title: x.name }));
+      });
+      var code = (r.name || "").split(" — ")[1];   // a release titled "antiloki v0.5.0 — Tyr" carries its version name
+      var card = el("div", { class: "ver" }, [el("h3", { text: r.tag_name + (code ? " · " + code : "") }), el("span", { class: "when", text: (r.published_at || "").slice(0, 10) + (r.prerelease ? " · pre-release" : "") }), files]);
+      if ((r.body || "").trim()) { var d = el("details", {}, [el("summary", { text: "What changed" })]); var inner = notes(r.body); d.appendChild(inner); card.appendChild(d); }
+      host.appendChild(card);
+    });
+    if (!rels.length) host.appendChild(el("p", { class: "note", text: "No versions have been published yet." }));
+  }).catch(failed);
+})();
+</script>
+<footer><div class="wrap">
+  <span>antiloki · agents · X-ray</span>
+  <a href="/releases.html">releases</a>
+  <a href="/privacy.html">privacy</a>
+  <a href="/terms.html">terms</a>
+  <a href="/blog/">blog</a>
+  <a href="mailto:support@antiloki.com">support@antiloki.com</a>
+  <span class="r">© 2026 antiloki</span>
+</div></footer>
+</body></html>

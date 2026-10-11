@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="antiloki's privacy policy: the app runs on your computer, has no account and no telemetry; what the website, the licence check and the payment provider handle.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><text y=%2213%22 font-size=%2213%22>⚡</text></svg>">
+<title>Privacy Policy — antiloki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Geist:wght@700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="blog/post.css">
+</head><body>
+<nav class="top"><div class="wrap">
+  <a class="mark" href="/" aria-label="antiloki">antiloki<em>.</em></a>
+  <span class="sp"></span>
+  <a class="q" href="/">Home</a>
+  <a class="q" href="/#compare">Compared</a>
+  <a class="q" href="/blog/">Blog</a>
+  <a class="q" href="/#pricing">Pricing</a>
+  <a class="btn sm ember" href="/#download">Download · free 14 days</a>
+</div></nav>
+<main class="pwrap">
+  <nav class="toc" aria-label="Contents"><details id="toc-d" open><summary class="eyebrow">contents</summary><ol>
+      <li><a href="#s1"><i>1</i>Who we are</a></li>
+      <li><a href="#s2"><i>2</i>The short version</a></li>
+      <li><a href="#s3"><i>3</i>The app</a></li>
+      <li><a href="#s4"><i>4</i>Licence and payment</a></li>
+      <li><a href="#s5"><i>5</i>This website</a></li>
+      <li><a href="#s6"><i>6</i>Support email</a></li>
+      <li><a href="#s7"><i>7</i>Your rights</a></li>
+      <li><a href="#s8"><i>8</i>Changes and contact</a></li>
+    </ol></details></nav>
+  <article class="paper">
+
+  <span class="eyebrow">antiloki · legal</span>
+  <h1>Privacy <em>policy.</em></h1>
+  <p class="sub">antiloki runs on your computer. We have no account system and no telemetry. This page says exactly which data leaves your machine, to whom, and why.</p>
+  <div class="byline"><span>Last updated <b>2026-10-10</b></span></div>
+
+  <h2 id="s1">1. Who we are</h2>
+  <p>antiloki is operated by <b>Danilo Jose Paiva Domingos da Silva</b>, Brazil. In this policy "we" means that operator. You can reach us at <a href="mailto:support@antiloki.com">support@antiloki.com</a>. Because we are based in Brazil, we handle personal data under the Brazilian General Data Protection Law (LGPD), and we apply the same rules to every customer, wherever they live.</p>
+
+  <h2 id="s2">2. The short version</h2>
+  <ul>
+    <li>The app runs locally. Your code, your prompts and your project files stay on your machine; we never receive them.</li>
+    <li>There is no antiloki account and no telemetry, analytics or crash reporting inside the app.</li>
+    <li>We never receive your card or payment details. A payment provider acting as seller of record takes the payment and sends you the licence key; we receive only the order information we need to support you (your email, what you bought, the date).</li>
+    <li>Once you have activated a key, the app checks it once a day with the payment provider's licence service.</li>
+  </ul>
+
+  <h2 id="s3">3. The app</h2>
+  <p><b>Your code and prompts.</b> antiloki starts the AI command-line tools you already have installed and logged in (for example Codex, Gemini, Cursor or Grok) and passes your task to them. What those tools send to their own providers is governed by your agreement with that provider and its privacy policy, not by us. We do not see it, copy it or store it on any server.</p>
+  <p><b>What stays on your machine.</b> The app keeps its working data (project index, run history, settings and a local record of your licence) in your own user folder. Removing the app and that folder removes it.</p>
+  <p><b>Network calls the app makes.</b> We list them so your security team can check them:</p>
+  <ul>
+    <li><b>Licence check</b> (only after you activate a key; the 14-day trial makes none), covered in section 4.</li>
+    <li><b>Update check</b> against a static file on GitHub Releases. GitHub sees the usual request data (your IP address and the app version), under <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub's privacy statement</a>.</li>
+    <li><b>Fonts</b> for the app window, fetched from Google Fonts when the window opens, under <a href="https://policies.google.com/privacy">Google's privacy policy</a>.</li>
+    <li><b>Your own AI tools'</b> calls, as above.</li>
+    <li><b>Optional routes you set up yourself</b>, such as an OpenRouter or OpenAI key for the OpenCode route, or a GitHub token, go only to those providers.</li>
+  </ul>
+
+  <h2 id="s4">4. Licence and payment</h2>
+  <p><b>Payment.</b> Purchases are processed by our payment provider, which acts as the merchant of record: it collects your payment details, calculates and pays the sales taxes, issues the receipt and handles refunds and chargebacks. Your card or payment details go to the provider and never to us. The provider uses your data under its own privacy policy, which it shows at checkout.</p>
+  <p><b>What we receive</b> from the provider: your email address, name or company name as entered at checkout, country, what you bought, the amount, the date and the licence key. We use it to send and support your licence, to answer you, and to keep the accounting and tax records the law requires.</p>
+  <p><b>The licence check.</b> When you activate a key, and then about once a day, the app sends the provider's licence service your licence key and a label of the form "antiloki · operating system · first 8 characters of a hash" that identifies the machine. The hash is made from machine identifiers and is not reversible; the label carries no host name, user name or file path. The service replies whether the key is valid. If you are offline, the app keeps working for 14 days between successful checks. The key and its check result are also kept in a signed record on your machine. Deactivating a key from the app releases it on that service.</p>
+  <p><b>Retention.</b> We keep order and licence records for as long as the key is valid and for the period tax and accounting rules require afterwards.</p>
+
+  <h2 id="s5">5. This website</h2>
+  <p>antiloki.com is hosted on GitHub Pages, which logs visits such as IP addresses under its own policy. The pages load fonts from Google Fonts and, to show the download links, ask the GitHub API for the list of releases; both see your IP address and browser details. We do not run analytics, advertising or tracking scripts, and we set no cookies.</p>
+
+  <h2 id="s6">6. Support email</h2>
+  <p>If you write to <a href="mailto:support@antiloki.com">support@antiloki.com</a>, we keep your message and our reply to help you and to keep a record of the conversation. We do not use your address for marketing, and we do not sell or share it, except with the service that delivers our email.</p>
+
+  <h2 id="s7">7. Your rights</h2>
+  <p>Under the LGPD (and similar laws such as the GDPR) you can ask us to confirm whether we hold data about you, to give you a copy, to correct it, to delete it when we no longer need it, or to object to how we use it. Write to <a href="mailto:support@antiloki.com">support@antiloki.com</a>; we will answer within 15 days. Some records, such as invoices, we must keep by law. You can also complain to the Brazilian data protection authority (ANPD) or the authority in your country.</p>
+  <p>We do not transfer your data on purpose to any recipient other than those named here: the payment provider, our email service, GitHub and Google as described above.</p>
+
+  <h2 id="s8">8. Changes and contact</h2>
+  <p>If we change this policy we update the date at the top, and for a material change we will say so on the home page. Questions: <a href="mailto:support@antiloki.com">support@antiloki.com</a>.</p>
+
+  </article>
+</main>
+<footer><div class="wrap">
+  <span>antiloki · agents · X-ray</span>
+  <a href="/releases.html">releases</a>
+  <a href="/privacy.html">privacy</a>
+  <a href="/terms.html">terms</a>
+  <a href="/blog/">blog</a>
+  <a href="mailto:support@antiloki.com">support@antiloki.com</a>
+  <span class="r">© 2026 antiloki</span>
+</div></footer>
+</body></html>
