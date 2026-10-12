@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="The antiloki documentation: install, setup, the agent, how a job is routed and checked, X-ray, Sagas, the Studio, Settings, your AI seats, the licence, your data and troubleshooting.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><text y=%2213%22 font-size=%2213%22>⚡</text></svg>">
+<title>antiloki documentation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Geist:wght@700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="blog/post.css">
+</head><body>
+<nav class="top"><div class="wrap">
+  <a class="mark" href="/" aria-label="antiloki">antiloki<em>.</em></a>
+  <span class="sp"></span>
+  <a class="q" href="/">Home</a>
+  <a class="q" href="/#compare">Compared</a>
+  <a class="q" href="/docs.html" aria-current="page">Docs</a>
+  <a class="q" href="/blog/">Blog</a>
+  <a class="q" href="/#pricing">Pricing</a>
+  <a class="btn sm ember" href="/#download">Download · free 14 days</a>
+</div></nav>
+<main class="pwrap">
+  <nav class="toc" aria-label="Contents"><details id="toc-d" open><summary class="eyebrow">contents</summary><ol>
+      <li><a href="#start"><i>1</i>Start here</a></li>
+      <li><a href="#install"><i>2</i>Install</a></li>
+      <li><a href="#setup"><i>3</i>First run and setup</a></li>
+      <li><a href="#screens"><i>4</i>The three screens</a></li>
+      <li><a href="#agent"><i>5</i>Working with the agent</a></li>
+      <li><a href="#heimdall"><i>6</i>How a job is run</a></li>
+      <li><a href="#xray"><i>7</i>X-ray</a></li>
+      <li><a href="#sagas"><i>8</i>Sagas</a></li>
+      <li><a href="#studio"><i>9</i>The Studio</a></li>
+      <li><a href="#settings"><i>10</i>Settings</a></li>
+      <li><a href="#seats"><i>11</i>Your AI seats</a></li>
+      <li><a href="#licence"><i>12</i>Trial and licence</a></li>
+      <li><a href="#data"><i>13</i>Your data and privacy</a></li>
+      <li><a href="#updates"><i>14</i>Updates</a></li>
+      <li><a href="#trouble"><i>15</i>Troubleshooting</a></li>
+      <li><a href="#support"><i>16</i>Support</a></li>
+    </ol></details></nav>
+  <article class="paper">
+
+  <span class="eyebrow">antiloki · documentation</span>
+  <h1>antiloki <em>docs.</em></h1>
+  <p class="sub">Everything the desktop app does, in the order you meet it: install, set up, work, and what to do when something does not behave. Written for the current version.</p>
+
+  <h2 id="start">1. Start here</h2>
+  <p><b>antiloki</b> is a desktop app that turns the AI subscriptions you already pay for (Claude, Codex, Cursor, Gemini, Grok) into one coding agent. You ask for a change in plain words; antiloki decides which of your subscriptions should do each part of it, lets them work in safe copies of your project, checks the result, and shows you what it did and what it cost.</p>
+  <p>It does not replace those tools and it has no model of its own. It runs each one through its own command-line program, signed in the way you already are, so there is no API key to paste and no extra account.</p>
+  <div class="flow">
+    <div><h4>1 · Ask</h4><p>Say what you want in the chat. The router reads the ask first and decides whether it is one small job or a plan of several.</p></div>
+    <div><h4>2 · Work</h4><p>The jobs run in isolated copies of your project (git worktrees), on the subscription that measured best for that kind of job.</p></div>
+    <div><h4>3 · Check</h4><p>Each task is verified, the related tests run, and the result carries a confidence reading with its reasons. You decide what lands.</p></div>
+  </div>
+  <p><b>What you need:</b> Windows or Linux, <b>git</b>, and at least one of Claude Code, Codex, Cursor, Gemini or Grok signed in on that machine. To merge two subscriptions into one agent you need two usable ones; with one, antiloki runs solo, still routed per job. The optional browser test (QA) needs Chrome or Chromium.</p>
+
+  <h2 id="install">2. Install</h2>
+  <ul>
+    <li><b>Windows:</b> download the installer from the <a href="/releases.html">releases page</a> and run it. The installer is not code-signed yet, so Windows SmartScreen may warn you: choose <i>More info</i>, then <i>Run anyway</i>.</li>
+    <li><b>Linux:</b> download the <code>.deb</code> and install it, for example <code>sudo apt install ./antiloki_&lt;version&gt;_amd64.deb</code>, then start <i>antiloki</i> from your launcher. The current package needs <b>glibc 2.44 or newer</b> (Arch and other recent rolling distributions); wider support is in progress.</li>
+    <li><b>macOS:</b> coming soon.</li>
+  </ul>
+  <p>It is one program with no account. The 14-day trial starts on the first run and makes no network check. Downloads ask for your email once; see <a href="#data">your data and privacy</a>.</p>
+
+  <h2 id="setup">3. First run and setup</h2>
+  <p>The first start opens a short setup. The first three steps cannot be skipped, because everything after them depends on them; the optional steps after that can.</p>
+  <ol>
+    <li><b>Theme.</b> Pick a colour theme. You can change it later in Settings.</li>
+    <li><b>Your AIs.</b> It asks which subscriptions you have, each named for what it is (Claude Pro or Max, ChatGPT Plus or Pro for Codex, Cursor Pro, a Google account for the free Gemini tier). The tools already on your machine are ticked. For anything missing it shows the exact install line for your system (PowerShell on Windows, a terminal command on Linux) with a copy button. You run it yourself; antiloki never sees a password.</li>
+    <li><b>Sign in.</b> A tool that is installed but not signed in has a <b>Sign in</b> button. It opens a terminal window running that tool's own sign-in, which opens the vendor's page in your browser. antiloki never sees your credentials. Install or sign in elsewhere and come back: it rechecks every few seconds, and there is a "check again" button.</li>
+    <li><b>Check.</b> Each ready AI gets one tiny real call, so a broken sign-in shows up now and not on your first task. antiloki also reads how much of this week each subscription has used.</li>
+    <li><b>Main provider.</b> You choose which AI runs the chat and Heimdall, the router. It is chosen for you when only one is ready.</li>
+  </ol>
+  <p>antiloki offers a provider only when the <i>seat</i> is real: a command-line program that sits on your machine unauthenticated is never offered. Then you open a project folder (any git repository) and the app is ready.</p>
+  <div class="callout"><b>Short tours.</b> The first time you reach a section of the app, a three-step card points at the things worth knowing. Each one shows once. "Welcome tour" in the search menu brings them all back.</div>
+
+  <h2 id="screens">4. The three screens</h2>
+  <p>The switcher at the top has three screens, and every project has its own state in each.</p>
+  <dl class="defs">
+    <dt>Cowork</dt><dd>Where you talk to the agent and watch it work. The sidebar lists the agent's <i>episodes</i>; the Studio holds the tools you can place beside it.</dd>
+    <dt>X-ray</dt><dd>Code analysis: a health and risk verdict, every file scored, the architecture, the history, and a real code editor.</dd>
+    <dt>Sagas</dt><dd>The work, kept per project: goals, tasks and subtasks, who did each one, and what it cost.</dd>
+  </dl>
+  <p>At the top right a floating pill holds three instruments: your <b>agents</b> (one card each, wherever you are in the app), the <b>money saved</b>, and each AI's <b>limits</b> (the 5-hour and weekly windows where the vendor publishes them). The logo menu opens the search (jump to anything, run an action), your account, Settings, these docs, the rebuild button and the project switcher.</p>
+
+  <h2 id="agent">5. Working with the agent</h2>
+  <h3>The chat</h3>
+  <p>The chat is a conversation that reads everything about the project: the code map, the earlier work, the goal runs. Before each answer a retriever picks what the ask needs and shows it under the reply as chips. <b>Pin</b> a chip to make it ride along in this session, drop it to keep it out. The conversation itself never changes your files; changes are made by the agent's runs, in a safe copy, and checked (see <a href="#heimdall">how a job is run</a>).</p>
+  <h3>The composer</h3>
+  <ul>
+    <li><code>@</code> references a card, a document, a code file or a live source.</li>
+    <li><code>#</code> references a Studio tool.</li>
+    <li><code>/model</code> switches the model of the current tier; <code>/tier</code> sets the router's tier.</li>
+    <li>The context button opens the context wizard: packs, scope, and the AIs' own memory files (read-only).</li>
+  </ul>
+  <h3>Episodes and forks</h3>
+  <p>One agent works the whole project, and its sidebar is its <b>episodes</b>: each is a closed unit of work with the consolidation it came to. Close an episode to end a unit and start the next. Need a second line of work? <b>Fork</b> the agent: a new tab with its own worktree and its own episodes, closed when the work is done.</p>
+  <h3>Scope and safety</h3>
+  <p>An agent's <b>scope</b> is the set of files it may write, and it starts as the whole project; untick folders to narrow it. The scope is enforced by the tool: a write outside it is refused before the file changes, not discouraged in a prompt. Work happens in a worktree, not in your checkout, and one fence applies on every seat.</p>
+  <h3>Commit and push</h3>
+  <p>Under the chat input, <b>Commit &amp; push</b> shows what would be committed, writes the message for you from what you asked and the files changed (or lets you edit it), and commits, or commits and pushes. antiloki's own files are never included.</p>
+  <h3>Pull requests</h3>
+  <p>Each agent box is one proposal: its branch against its base, the diff, mergeability, an AI summary and the blast radius. The queue is ranked by readiness. Merging does not touch your working tree. A goal run in write mode can open a pull request with the goal as the title and the joined report as the body.</p>
+
+  <h2 id="heimdall">6. How a job is run</h2>
+  <p><b>Heimdall</b> is the router that reads every ask before any model does.</p>
+  <ol>
+    <li><b>Grade.</b> A small ask goes straight to one worker at the cheapest tier that can do it, with no planning round. A bigger ask is split into tasks that each own different files, laid out in waves. You can force this per run (never / always).</li>
+    <li><b>Screen.</b> Before planning, it asks what it cannot assume (one round of questions; defaults apply if you stay silent) and lists what it assumed on its own, so a wrong guess is one click to correct.</li>
+    <li><b>Choose the seat.</b> Each job goes to the subscription and model that benchmarked best for that kind of work. antiloki ships with 373 measured combinations (1,186 runs) as its starting table; your own runs add to it and never replace it. Seats whose window is exhausted are skipped, and the next best takes over until it resets.</li>
+    <li><b>Work and verify.</b> Workers edit in isolated worktrees. Each task is judged against its own acceptance by a second call at a higher tier; a strict reject sends it back once.</li>
+    <li><b>Join and gate.</b> When the last wave settles, one joined report lands in the chat, one change list rather than several branches. A write run ends at a QA gate that runs the related tests.</li>
+    <li><b>Confidence.</b> Every finished run shows <b>high, medium or low</b> with its reasons: whether the compiler or the project's tests passed, whether the verifier accepted the claims, how many attempts it took, whether a design rule failed. A button runs an independent <b>QA</b> on it when you want one: your ask tested in a real browser, filmed (or against the API for backend work). QA reports back without changing anything, and it costs nothing unless you press it.</li>
+  </ol>
+  <h3>Caution</h3>
+  <p>If the router grades a route low, or a task touches credentials, billing, a database migration or a deploy file (or the ask says production, password, billing and the like), it uses a stronger model for that task. A tier you pinned yourself is never changed.</p>
+  <h3>Approval</h3>
+  <p><b>Ask me first</b> holds the plan for your approval. Blocking questions park it for one answer round. The cost ledger prices every run against sending everything to the strongest model, and the difference is the saved money in the top-right pill; a failed run reports what it spent and claims no saving.</p>
+  <h3>The rail</h3>
+  <p>On an agent, the rail has three views of Heimdall: <b>⚡ Route</b> (each ask's verdict, tier, model, how sure it was, and what the same turn would have cost raw), <b>? Screen</b> (its questions and assumptions) and <b>⋔ Plan</b> (the current plan by wave, and earlier ones).</p>
+
+  <h2 id="xray">7. X-ray</h2>
+  <p>X-ray is the code analysis, and its right-hand sidebar has one icon per section.</p>
+  <dl class="defs">
+    <dt>Overview</dt><dd>The verdict: health and risk with their trend, the codebase as a map (each file a box; area is its mass, colour its health, five lenses), hotspots, and activity.</dd>
+    <dt>Code</dt><dd>The file tree, each file with its score and review, and a real editor (below).</dd>
+    <dt>Quality</dt><dd>The rules the code breaks and what the tests never reach.</dd>
+    <dt>Architecture</dt><dd>The system diagram and the import graph, with the blast radius of a change.</dd>
+    <dt>History</dt><dd>The review over time, the git graph, who wrote what.</dd>
+  </dl>
+  <p>A file's score is computed from your rules and measurements (tests, coupling, structure, change) with no model involved, so it is the same twice, and it tells you why a file is not 100. Everything measured here is also what agents receive as context. The <b>ultra review</b> tab is marked "soon".</p>
+  <h3>The code editor</h3>
+  <p>Open a file in Code and edit it: line numbers, syntax colours, search and replace, folding and undo. <b>Ctrl/Cmd+S</b> saves straight into your project. If the file changed on disk while you were editing (an agent, git), nothing is overwritten without asking, and what you typed is kept when you click to another file. After you save, the rebuild button says how many files were edited and that the analysis of them is out of date until the next rebuild.</p>
+
+  <h2 id="sagas">8. Sagas</h2>
+  <p>A <b>saga</b> is a titled goal. It holds <b>tasks</b>, and a task holds subtasks. Every ask you give the agent shows up here as a saga planned by Heimdall, and you can write your own: <b>New saga</b> takes a title, then add tasks and assign them to yourself, to Heimdall or to an agent. Agents read the list before they start, so work is not done twice.</p>
+  <ul>
+    <li>Click a task's circle to move it on (todo, in progress, done); click its title to open it.</li>
+    <li>The <b>activity trail</b> says who did each step: you, Heimdall, or an agent with the exact model that ran. A task that failed shows its agent with a red ring.</li>
+    <li>Time, cost and tokens come from the real runs and roll up from the tasks to the saga.</li>
+    <li>A finished saga stays as a record: it can no longer be canceled or deleted.</li>
+  </ul>
+
+  <h2 id="studio">9. The Studio</h2>
+  <p>The Studio is the list of tools you can place beside an agent. Each has a live preview on your real data and an intro that says what it does and what it costs; "free" means it calls no AI. <b>Open</b> starts a fresh split with that tool alone; <b>add</b> drops it beside what you are looking at.</p>
+  <dl class="defs">
+    <dt>Issues</dt><dd>One tracker, Linear style: a list grouped by status, or a board. Statuses are Backlog, Todo, In Progress, Done and Canceled; each issue has a priority and a unique number (ISS-1, ISS-2…).</dd>
+    <dt>Notes</dt><dd>One page that saves itself. Markdown is drawn as you type, the way Obsidian does it: <code>#</code> makes a title at once, plus <code>**bold**</code>, <code>- </code> bullets, <code>- [ ]</code> checkboxes you can click, quotes and code blocks. The raw markdown comes back on the line you are editing.</dd>
+    <dt>Brainstorm</dt><dd>A simple chat for shaping an idea: pick what you want (what, where, how bold, what it must respect) as chips, say it in a line, and the plan lands on the shape pane. The planner's depth is chosen by the size of the ask.</dd>
+    <dt>Design canvas, Frames, Design system</dt><dd>Your running app captured as frames, the palette, type scale and spacing extracted from the code, and where a screen drifts from them. Edit a frame and turn the change into a prompt or an agent scoped to the files that own those tokens.</dd>
+    <dt>Git graph, Review, Gate, Run preview, Shell</dt><dd>The base branch with one lane per agent worktree; every worktree's diff in one place; the build and test gate; the project's dev server; a real terminal in the project or any worktree.</dd>
+    <dt>Fuel, Session timeline, Error radar</dt><dd>Live spend and limits per seat; the audit trail of every read, write, refusal and verdict; and the failure feed, grouped by pattern.</dd>
+  </dl>
+  <p>Issues, notes and the Brainstorm conversation are stored in your project's database (<code>.antiloki/db/state.sqlite</code>), not in the browser. Todos and cards from earlier versions are moved into Issues the first time you open it.</p>
+
+  <h2 id="settings">10. Settings</h2>
+  <dl class="defs">
+    <dt>General</dt><dd>Your account and licence key, your AI engines (the subscriptions in use, and which model each tier maps to), optional own-key routes (off by default), the colour theme, the design check on QA, the code-analysis rebuild budget, and a reset for the project databases.</dd>
+    <dt>Benchmarks</dt><dd>Every measured combination the router uses. Each row says whether it is antiloki's default, measured on your machine, or both, and what it was measured on.</dd>
+    <dt>Earlier agents · Other CLIs</dt><dd>Other coding command-line tools, opened in a pane. They are never routed or priced.</dd>
+    <dt>Audit</dt><dd>The record of what the safety rules refused and every bypass that was granted.</dd>
+    <dt>Environments · Prompts · Statistics · Failures · Code checks</dt><dd>Where agents run their commands, the prompts in use, usage numbers, recorded failures, and which type checkers and linters the analysis may use.</dd>
+  </dl>
+  <p>Your licence key is entered under <i>Account &amp; profile</i> (also in the logo menu), which is the first block of General.</p>
+
+  <h2 id="seats">11. Your AI seats</h2>
+  <div class="tbl"><table>
+    <caption>The five seats antiloki can drive</caption>
+    <thead><tr><th>Seat</th><th>Reached through</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td><b>Claude Code</b></td><td class="mono">claude</td><td>Claude Pro or Max. Its 5-hour and weekly windows are shown in the pill.</td></tr>
+      <tr><td><b>Codex</b></td><td class="mono">codex</td><td>ChatGPT Plus or Pro. Needs Node.js to install. Its windows are read from its own session files.</td></tr>
+      <tr><td><b>Cursor</b></td><td class="mono">agent · cursor-agent</td><td>Cursor Pro. Its plan is monthly; antiloki reads the real meters from Cursor itself. Composer is the seat the router often picks for cost.</td></tr>
+      <tr><td><b>Gemini</b></td><td class="mono">agy (Antigravity)</td><td>A Google account. The free tier is capped at a small number of agent requests a day: enough to try, not a seat to rely on. Google publishes no meter, so antiloki shows what it has counted.</td></tr>
+      <tr><td><b>Grok</b></td><td class="mono">grok</td><td>An xAI subscription.</td></tr>
+    </tbody>
+  </table></div>
+  <p>OpenCode, and the open models behind it, are optional and off by default. If a seat runs out of quota mid-session, the work is routed to the next best seat until it resets; if only one seat is available, antiloki runs solo.</p>
+
+  <h2 id="licence">12. Trial and licence</h2>
+  <ul>
+    <li><b>Trial:</b> 14 days from the first run, everything included, no card and no account. Your projects stay when it ends.</li>
+    <li><b>Licence:</b> one payment (planned: USD 499) for a lifetime licence with two years of updates and premium support. A build released inside your window keeps working for good. See the <a href="/#pricing">pricing section</a> for the current state of checkout.</li>
+    <li><b>Activation:</b> enter your key once in <i>Account &amp; profile</i> (the first block of General in Settings). The app then works offline for up to 14 days between licence checks. To move to another computer, deactivate on the old one first.</li>
+    <li>If a trial has ended, the app shows the licence screen on every page, with the field for your key and the button to buy.</li>
+  </ul>
+  <p>The <a href="/terms.html">terms</a> have the legal wording.</p>
+
+  <h2 id="data">13. Your data and privacy</h2>
+  <p>antiloki is local-first: one program, no account, no telemetry. Your code and conversations stay on your machine, and there is no antiloki server in the path.</p>
+  <dl class="defs">
+    <dt>Project data</dt><dd><code>.antiloki/</code> inside each project, with its database at <code>.antiloki/db/state.sqlite</code> (chats, issues, notes, sagas, the code map).</dd>
+    <dt>App data</dt><dd><code>.antiloki</code> in your home folder (on Windows, <code>C:\Users\&lt;you&gt;\.antiloki</code>): agent worktrees, benchmarks, limits, settings. The licence record lives in the operating system's app-data folder for antiloki.</dd>
+  </dl>
+  <p>The network calls it makes, all of them:</p>
+  <ul>
+    <li>your command-line AI tools' own calls to their vendors;</li>
+    <li>a licence check once a day, once you have activated a key (the trial makes none);</li>
+    <li>an update check against a static file on GitHub Releases;</li>
+    <li>the window's fonts, from Google Fonts, when it opens;</li>
+    <li><code>api.openai.com</code> or <code>openrouter.ai</code> only if you set up the optional OpenCode route with your own key;</li>
+    <li>GitHub only if you add a token or open a pull request.</li>
+  </ul>
+  <p>Downloading an installer from this website asks for your email once; it signs you up for release news and offers (about one email every two weeks), and you can unsubscribe at any time. See the <a href="/privacy.html">privacy policy</a>.</p>
+
+  <h2 id="updates">14. Updates</h2>
+  <p>The app checks for a new version against a signed file on GitHub Releases and offers to install it; updates are verified with a signature before they run. Every version, with its release notes, is on the <a href="/releases.html">releases page</a>. The router's benchmark table is part of each release, so it stays current for the two years of updates a licence includes.</p>
+
+  <h2 id="trouble">15. Troubleshooting</h2>
+  <dl class="defs">
+    <dt>An AI is not offered</dt><dd>antiloki offers a seat only when it is signed in, not merely installed. Use the <b>Sign in</b> button in setup, or sign in with that tool in a terminal, then press "check again".</dd>
+    <dt>Windows SmartScreen warning</dt><dd>The installer is not code-signed yet. Choose <i>More info</i>, then <i>Run anyway</i>.</dd>
+    <dt>Linux: the package will not install or start</dt><dd>The current <code>.deb</code> needs glibc 2.44 or newer. Older distributions are not supported yet.</dd>
+    <dt>"License required" on every screen</dt><dd>Your trial has ended. Enter your key in the licence screen, or use the buy button.</dd>
+    <dt>The preview says "This content is blocked"</dt><dd>That was fixed in 0.5.4.1. Update to the latest version.</dd>
+    <dt>Cursor fails in the chat on Windows</dt><dd>Also fixed in 0.5.4.1. Update to the latest version.</dd>
+    <dt>The money chip is blank</dt><dd>It appears after the first check or the first routed task. Before that, nothing has been measured.</dd>
+    <dt>A conversation seems to be the wrong project's</dt><dd>Fixed in 0.5.4: each project has its own chats. Update to the latest version.</dd>
+    <dt>The code analysis is out of date after I edited files</dt><dd>That is expected: press rebuild. The button says how many files you edited.</dd>
+    <dt>Start from scratch</dt><dd>On Windows, tick "delete the application data" in the uninstaller. It removes the database, licence record and settings, so the first-run setup comes back.</dd>
+  </dl>
+
+  <h2 id="support">16. Support</h2>
+  <p>Write to <a href="mailto:support@antiloki.com">support@antiloki.com</a> with the version (it is in the installer's file name, and every version is listed on the <a href="/releases.html">releases page</a>), your system, and what you did. For how routing decisions are measured and the numbers behind them, see <a href="/paper.html">the technical report</a>, <a href="/blog/how-a-merge-is-made.html">how a merge is made</a> and <a href="/blog/sagas.html">sagas</a>.</p>
+
+  </article>
+</main>
+<script>
+/* the contents list follows the section you are reading */
+(function () {
+  var d = document.getElementById("toc-d");
+  if (d && window.matchMedia) { var mq = matchMedia("(max-width: 1000px)"), fit = function () { if (mq.matches) d.removeAttribute("open"); else d.setAttribute("open", ""); }; fit(); (mq.addEventListener ? mq.addEventListener("change", fit) : mq.addListener(fit)); }
+  document.querySelectorAll(".toc a").forEach(function (a) { a.addEventListener("click", function () { if (d && window.matchMedia && matchMedia("(max-width: 1000px)").matches) d.removeAttribute("open"); }); });
+  var links = [].slice.call(document.querySelectorAll(".toc a")), map = {};
+  links.forEach(function (a) { map[a.getAttribute("href").slice(1)] = a; });
+  var heads = links.map(function (a) { return document.getElementById(a.getAttribute("href").slice(1)); }).filter(Boolean);
+  if (!heads.length || !("IntersectionObserver" in window)) return;
+  var cur = null;
+  var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { if (cur) cur.classList.remove("on"); cur = map[e.target.id]; if (cur) cur.classList.add("on"); } }); }, { rootMargin: "-84px 0px -72% 0px", threshold: 0 });
+  heads.forEach(function (h) { io.observe(h); });
+})();
+</script>
+<footer><div class="wrap">
+  <span>antiloki · agents · X-ray</span>
+  <a href="/docs.html">docs</a>
+  <a href="/releases.html">releases</a>
+  <a href="/privacy.html">privacy</a>
+  <a href="/terms.html">terms</a>
+  <a href="/blog/">blog</a>
+  <a href="mailto:support@antiloki.com">support@antiloki.com</a>
+  <span class="r">© 2026 antiloki</span>
+</div></footer>
+<script src="/newsletter.js" defer></script>
+</body></html>

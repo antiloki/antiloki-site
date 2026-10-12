@@ -10,7 +10,7 @@
 # NOTES-INTERNAL.md, _config.yml or anything else in the repository. HTML comments are stripped in the temp copy only.
 set -euo pipefail
 
-PAGES=(index.html paper.html demo.html privacy.html terms.html releases.html newsletter.js)   # newsletter.js: the signup form every page loads (2026-10-11)
+PAGES=(index.html paper.html demo.html privacy.html terms.html releases.html docs.html newsletter.js)   # newsletter.js: the signup form every page loads (2026-10-11)
 FORBIDDEN_RE='marketing-kit|marketing/|/home/danj|ghp_|(^|[^A-Za-z0-9_])sk-[A-Za-z0-9_-]{10,}|\[LEGAL NAME|CITY / TAX ID|YOUR FULL LEGAL NAME|Your Real Name Here'
 
 repo_root() { cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd; }
