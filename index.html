@@ -92,6 +92,15 @@
   /* MODEL EVOLVING = ANTILOKI EVOLVING (2026-10-07): big type, revealed word by word, and a small scene where the models level up one by one, antiloki pulses with each, and they embrace. */
   .evolve { padding-top: 130px; padding-bottom: 20px; text-align: center; position: relative; }
   .evolve::before { content: ""; position: absolute; left: 50%; top: 30px; width: min(900px, 100%); height: 520px; transform: translateX(-50%); background: radial-gradient(closest-side, rgba(201,124,92,.16), rgba(201,124,92,0)); pointer-events: none; }
+  /* NARCISSUS (2026-10-13): engraved Caravaggio behind the evolving section, the same treatment as the hero. Highlights are warm off-white at 16%, the ink is left empty so #211e1b shows through, and there is no second colour. The plate is absolute, so the type does not move, and it is not requested until the section is near. */
+  .evolve .plate { position: absolute; left: 0; top: 0; width: 100%; height: 72%; margin: 0; pointer-events: none;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 12%, #000 62%, transparent 100%), radial-gradient(ellipse 86% 80% at 50% 46%, #000 42%, transparent 78%);
+    mask-image: linear-gradient(to bottom, transparent 0%, #000 12%, #000 62%, transparent 100%), radial-gradient(ellipse 86% 80% at 50% 46%, #000 42%, transparent 78%);
+    -webkit-mask-composite: source-in; mask-composite: intersect; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-size: 100% 100%; mask-size: 100% 100%; }
+  .evolve .plate img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: center 42%; opacity: 0; transition: opacity .8s ease; }
+  .evolve .plate img.is-on { opacity: 1; }
+  .evolve .evo-wash { position: absolute; left: 50%; top: 10%; width: min(920px, 96%); height: 46%; transform: translateX(-50%); pointer-events: none;
+    background: radial-gradient(ellipse at 50% 42%, rgba(33,30,27,.7) 0%, rgba(33,30,27,.38) 52%, rgba(33,30,27,0) 78%); }
   .evo-big { position: relative; font-family: var(--display); font-weight: 800; font-size: clamp(38px, 8.2vw, 112px); line-height: .97; letter-spacing: -.04em; color: var(--ink); margin: 0 auto; text-wrap: balance; }
   .evo-big .ln { display: block; }
   .evolve .w { display: inline-block; }
@@ -497,6 +506,15 @@
   </section>
 
   <section class="wrap evolve" id="evolve" aria-label="Models evolve, and antiloki evolves with them">
+    <!-- Caravaggio, Narcissus, c. 1597–99. Public-domain scan: Wikimedia Commons, File:Narcissus-Caravaggio (1594-96).jpg -->
+    <picture class="plate" aria-hidden="true">
+      <source media="(max-width: 640px)" type="image/avif" data-srcset="assets/evolve-narcissus-mobile.avif">
+      <source media="(max-width: 640px)" type="image/webp" data-srcset="assets/evolve-narcissus-mobile.webp">
+      <source type="image/avif" data-srcset="assets/evolve-narcissus.avif">
+      <source type="image/webp" data-srcset="assets/evolve-narcissus.webp">
+      <img alt="" width="1400" height="1695" decoding="async" fetchpriority="low" data-desktop="assets/evolve-narcissus.png" data-mobile="assets/evolve-narcissus-mobile.png">
+    </picture>
+    <div class="evo-wash" aria-hidden="true"></div>
     <h2 class="evo-big"><span class="ln"><span class="w ev" style="--i:0">Model</span> <span class="w ev" style="--i:1">evolving</span></span><span class="ln"><span class="w eq" style="--i:2">=</span> <span class="w em ev" style="--i:3">antiloki</span> <span class="w ev" style="--i:4">evolving.</span></span></h2>
     <p class="evo-sub"><span class="w" style="--i:5">They don’t compete,</span> <span class="w hl" style="--i:6">they embrace each other.</span></p>
     <div class="evo-scene" id="evo-scene" aria-hidden="true"></div>
@@ -586,6 +604,28 @@
     const startPlate = () => requestAnimationFrame(() => requestAnimationFrame(armPlate));
     if (document.readyState === "complete") startPlate();
     else window.addEventListener("load", startPlate, { once: true });
+  }
+  const evoPlate = document.querySelector(".evolve .plate");
+  if (evoPlate) {
+    const armEvo = () => {
+      evoPlate.querySelectorAll("source[data-srcset]").forEach((s) => { if (!s.srcset) s.srcset = s.dataset.srcset; });
+      const img = evoPlate.querySelector("img");
+      if (img.getAttribute("src")) return;
+      img.addEventListener("load", () => img.classList.add("is-on"), { once: true });
+      img.src = matchMedia("(max-width: 640px)").matches ? img.dataset.mobile : img.dataset.desktop;
+      if (img.complete && img.naturalWidth) img.classList.add("is-on");
+    };
+    const watchEvo = () => {
+      const sec = document.getElementById("evolve");
+      if (!sec || !("IntersectionObserver" in window)) { requestAnimationFrame(() => requestAnimationFrame(armEvo)); return; }
+      new IntersectionObserver((entries, obs) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        obs.disconnect();
+        requestAnimationFrame(() => requestAnimationFrame(armEvo));
+      }, { rootMargin: "240px" }).observe(sec);
+    };
+    if (document.readyState === "complete") watchEvo();
+    else window.addEventListener("load", watchEvo, { once: true });
   }
   const root = document.documentElement, h1 = document.querySelector(".hero h1");
   const wrapWords = (el) => { for (const node of Array.from(el.childNodes)) { if (node.nodeType === 3) { const frag = document.createDocumentFragment(); node.textContent.split(/(\s+)/).forEach((t) => { if (!t) return; if (/^\s+$/.test(t)) frag.appendChild(document.createTextNode(t)); else { const w = document.createElement("span"); w.className = "w"; w.textContent = t; frag.appendChild(w); } }); node.replaceWith(frag); } else if (node.nodeType === 1) wrapWords(node); } };
