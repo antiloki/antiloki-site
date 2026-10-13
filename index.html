@@ -51,6 +51,24 @@
   @keyframes cue { 0% { transform: scaleY(0); opacity: 0; } 40% { opacity: 1; } 100% { transform: scaleY(1); opacity: 0; } }
   @media (prefers-reduced-motion: reduce) { .scrollcue i { animation: none; opacity: .7; } }
   @media (max-width: 640px) { .hero .fold h1 { font-size: clamp(34px, 10.5vw, 52px); } .hero .fold { padding-bottom: 64px; } }
+  /* JUDITH (2026-10-13): engraved Caravaggio behind the fold. Highlights are warm off-white at 16%, the ink is left empty so #211e1b shows through, and only the blood hatching is #b3121b. The plate is absolute, so the type does not move, and it stays invisible until the intro has settled. */
+  .hero .fold .plate { position: absolute; inset: 0; z-index: 0; margin: 0; pointer-events: none;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, transparent 12%, #000 22%, #000 88%, transparent 100%), radial-gradient(ellipse 90% 84% at 50% 56%, #000 58%, transparent 80%);
+    mask-image: linear-gradient(to bottom, transparent 0%, transparent 12%, #000 22%, #000 88%, transparent 100%), radial-gradient(ellipse 90% 84% at 50% 56%, #000 58%, transparent 80%);
+    -webkit-mask-composite: source-in; mask-composite: intersect; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-size: 100% 100%; mask-size: 100% 100%; }
+  .hero .fold .plate img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: center 58%; opacity: 0; transition: opacity .8s ease; }
+  html.settled .hero .fold .plate img.is-on, html.reduced .hero .fold .plate img.is-on { opacity: 1; }
+  .hero .fold::before { content: ""; position: absolute; z-index: 1; left: 50%; top: 58%; width: min(820px, 90%); height: 62%; transform: translate(-50%, -38%); pointer-events: none;
+    background: radial-gradient(ellipse at 50% 58%, rgba(33,30,27,.64) 0%, rgba(33,30,27,.36) 54%, rgba(33,30,27,0) 78%); }
+  .hero .fold .eyebrow, .hero .fold h1, .hero .fold .lede, .hero .fold .cta { position: relative; z-index: 2; }
+  .hero .fold .scrollcue { z-index: 2; }
+  @media (max-width: 640px) {
+    .hero .fold .plate { left: 50%; right: auto; width: 100vw; transform: translateX(-50%);
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, transparent 16%, #000 28%, #000 90%, transparent 100%), radial-gradient(ellipse 92% 72% at 50% 52%, #000 52%, transparent 78%);
+      mask-image: linear-gradient(to bottom, transparent 0%, transparent 16%, #000 28%, #000 90%, transparent 100%), radial-gradient(ellipse 92% 72% at 50% 52%, #000 52%, transparent 78%); }
+    .hero .fold .plate img { object-position: center 48%; }
+    .hero .fold::before { width: min(360px, 94%); height: 58%; top: 56%; }
+  }
   .hero .cta { display: flex; justify-content: center; gap: 12px; margin-top: 30px; flex-wrap: wrap; align-items: center; }
   .hero .fine { display: block; margin-top: 12px; font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
 
@@ -413,6 +431,14 @@
   <div class="fog" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
     <div class="wrap hero">
     <div class="fold">
+    <!-- Caravaggio, Judith Beheading Holofernes, c. 1598–99. Public-domain scan: Wikimedia Commons, File:Judith Beheading Holofernes-Caravaggio (c.1598-9).jpg -->
+    <picture class="plate" aria-hidden="true">
+      <source media="(max-width: 640px)" type="image/avif" data-srcset="assets/hero-judith-mobile.avif">
+      <source media="(max-width: 640px)" type="image/webp" data-srcset="assets/hero-judith-mobile.webp">
+      <source type="image/avif" data-srcset="assets/hero-judith.avif">
+      <source type="image/webp" data-srcset="assets/hero-judith.webp">
+      <img alt="" width="2400" height="1780" decoding="async" fetchpriority="low" data-desktop="assets/hero-judith.png" data-mobile="assets/hero-judith-mobile.png">
+    </picture>
     <span class="eyebrow">A desktop app for merging the subscriptions you have into one coding agent.<br>Windows today · the Linux build is older · macOS soon, see <a href="#download" style="color:inherit">Download</a></span>
     <h1 style="margin-top:14px"><em>Build +590% more on your weekly limit, 6.9× cheaper, with the same code quality.</em></h1>
     <p class="lede" style="margin-top:10px">Claude Grok, Gemini Codex — antiloki merges your existing model subscriptions into specialized coding agents. <b>No new account and no extra subscription: antiloki drives the AI providers you are already signed in to, all local and private.</b></p>
@@ -547,6 +573,20 @@
 </div></footer>
 
 <script>
+  const plate = document.querySelector(".hero .plate");
+  if (plate) {
+    const armPlate = () => {
+      plate.querySelectorAll("source[data-srcset]").forEach((s) => { if (!s.srcset) s.srcset = s.dataset.srcset; });
+      const img = plate.querySelector("img");
+      if (img.getAttribute("src")) return;
+      img.addEventListener("load", () => img.classList.add("is-on"), { once: true });
+      img.src = matchMedia("(max-width: 640px)").matches ? img.dataset.mobile : img.dataset.desktop;
+      if (img.complete && img.naturalWidth) img.classList.add("is-on");
+    };
+    const startPlate = () => requestAnimationFrame(() => requestAnimationFrame(armPlate));
+    if (document.readyState === "complete") startPlate();
+    else window.addEventListener("load", startPlate, { once: true });
+  }
   const root = document.documentElement, h1 = document.querySelector(".hero h1");
   const wrapWords = (el) => { for (const node of Array.from(el.childNodes)) { if (node.nodeType === 3) { const frag = document.createDocumentFragment(); node.textContent.split(/(\s+)/).forEach((t) => { if (!t) return; if (/^\s+$/.test(t)) frag.appendChild(document.createTextNode(t)); else { const w = document.createElement("span"); w.className = "w"; w.textContent = t; frag.appendChild(w); } }); node.replaceWith(frag); } else if (node.nodeType === 1) wrapWords(node); } };
   wrapWords(h1);
