@@ -520,29 +520,21 @@
     <div class="evo-scene" id="evo-scene" aria-hidden="true"></div>
   </section>
 
-  <section class="wrap compare" id="compare" aria-label="Compared with the tools alone">
-    <span class="eyebrow">compared with the tools alone</span>
-    <h2>On top of the tools you already use.</h2>
-    <p class="lede">antiloki runs Claude Code, Cursor, Codex, Gemini and Grok. It does not replace them.</p>
-    <div class="cmp" role="table" aria-label="What antiloki adds to the tools alone">
-      <div class="cmp-h" role="row"><span role="columnheader">what you want</span><span role="columnheader">the tools alone</span><span role="columnheader">with antiloki</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Models</b><span class="alone" role="cell">One tool’s own</span><span class="with" role="cell">All five subscriptions, as one agent</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Who does each job</b><span class="alone" role="cell">Your pick, or the tool’s router</span><span class="with" role="cell">The seat measured best, and it keeps learning</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Boundaries</b><span class="alone" role="cell">Permissions and a sandbox you set up</span><span class="with" role="cell">One fence on every seat, undo in one click</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Testing</b><span class="alone" role="cell">A browser, when you ask</span><span class="with" role="cell">One QA button on any run: your ask tested in a real browser, filmed (or against the API for backend work)</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Trust in the result</b><span class="alone" role="cell">The agent says it is done</span><span class="with" role="cell">A confidence reading with its reasons on every result, and one click to run an independent QA</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Verdict on the code</b><span class="alone" role="cell">A reviewer’s opinion</span><span class="with" role="cell">A score per file — no model, same twice</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Impact of a change</b><span class="alone" role="cell">You guess</span><span class="with" role="cell">Map, cycles and blast radius before it lands</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Your rules</b><span class="alone" role="cell">Prompt files</span><span class="with" role="cell">The agent checks its own edits against them</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Cost and limits</b><span class="alone" role="cell">Each tool’s own usage</span><span class="with" role="cell">Every turn priced, per seat, limits on screen</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">When a seat runs out</b><span class="alone" role="cell">The work stops at the wall</span><span class="with" role="cell">Routed around the seat that is out; the next best takes over until it resets</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Big asks</b><span class="alone" role="cell">One long session that loses the thread</span><span class="with" role="cell">Split into tasks that each own their files, verified one by one, then joined</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Project knowledge</b><span class="alone" role="cell">The agent reads your repo cold, every time</span><span class="with" role="cell">A map it can query: who imports a file, who references a symbol, which tests reach it</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Parallel work</b><span class="alone" role="cell">Terminals side by side, you keep track</span><span class="with" role="cell">Agents in boxes of their own, a branch each, merged when you say</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Design</b><span class="alone" role="cell">Looks right, you hope</span><span class="with" role="cell">Contrast, spacing, type and clipping measured on the real page</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Receipts</b><span class="alone" role="cell">You wonder what it did and cost</span><span class="with" role="cell">Every run keeps what it did, who judged it, what it cost and what it saved</span></div>
+  <section class="wrap compare" id="compare" aria-label="Cursor alone, and Cursor with antiloki">
+    <span class="eyebrow">compared with cursor alone</span>
+    <h2>Cursor is one of the seats antiloki drives.</h2>
+    <p class="lede">You keep editing in Cursor. antiloki does not replace it. When you have more than one seat, it routes the work across them.</p>
+    <div class="cmp" role="table" aria-label="Cursor alone compared with Cursor and antiloki">
+      <div class="cmp-h" role="row"><span role="columnheader">what you want</span><span role="columnheader">cursor alone</span><span role="columnheader">cursor + antiloki</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Where you edit</b><span class="alone" role="cell">Cursor</span><span class="with" role="cell">Cursor, unchanged</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Multi-vendor</b><span class="alone" role="cell">Cursor’s runtime only</span><span class="with" role="cell">One router across Claude Code, Codex, Cursor CLI and OpenCode</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Model pairing</b><span class="alone" role="cell">A manual picker, or Auto, per request</span><span class="with" role="cell">Planner × worker × QA, chosen from measured runs</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Write scope</b><span class="alone" role="cell">Prompts and approvals</span><span class="with" role="cell">A hook refuses out-of-scope edits</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Isolation</b><span class="alone" role="cell">A shared checkout, by default</span><span class="with" role="cell">A git worktree and a branch per agent</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Verification</b><span class="alone" role="cell">Judged by the model</span><span class="with" role="cell">Your repo’s lint, test and build. A skipped gate is not a pass</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Receipts</b><span class="alone" role="cell">Monthly usage, by model</span><span class="with" role="cell">Per task: the agent, the model, the time and the cost</span></div>
     </div>
-    <p class="fine">One more app; the Windows build is current, the Linux build is older, and macOS is coming soon. Limits, sources and every detail: <a href="/paper.html">the technical report →</a></p>
+    <p class="fine">One IDE and one subscription? Cursor alone is enough. Juggling seats? Add antiloki.</p>
   </section>
 
     <div class="wrap pricing" id="pricing">
