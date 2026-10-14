@@ -60,6 +60,10 @@
   html.settled .hero .fold .plate img.is-on, html.reduced .hero .fold .plate img.is-on { opacity: 1; }
   .hero .fold::before { content: ""; position: absolute; z-index: 1; left: 50%; top: 58%; width: min(820px, 90%); height: 62%; transform: translate(-50%, -38%); pointer-events: none;
     background: radial-gradient(ellipse at 50% 58%, rgba(33,30,27,.64) 0%, rgba(33,30,27,.36) 54%, rgba(33,30,27,0) 78%); }
+  /* EDGE FADE (2026-10-13): the plate image is sized to its own aspect (same rendered size and position as contain + object-position), so an oval mask on the image fades every side to transparent; no rectangular edge at any viewport. */
+  .hero .fold .plate { -webkit-mask-image: none; mask-image: none; }
+  .hero .fold .plate img { position: absolute; left: 50%; top: 58%; width: auto; height: auto; max-width: 100%; max-height: 100%; transform: translate(-50%, -58%); -webkit-mask-image: radial-gradient(ellipse closest-side at 50% 50%, #000 45%, rgba(0,0,0,.75) 68%, rgba(0,0,0,.25) 88%, transparent 100%); mask-image: radial-gradient(ellipse closest-side at 50% 50%, #000 45%, rgba(0,0,0,.75) 68%, rgba(0,0,0,.25) 88%, transparent 100%); -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-size: 100% 100%; mask-size: 100% 100%; }
+  @media (max-width: 640px) { .hero .fold .plate { -webkit-mask-image: none; mask-image: none; } .hero .fold .plate img { top: 48%; transform: translate(-50%, -48%); } }
   .hero .fold .eyebrow, .hero .fold h1, .hero .fold .lede, .hero .fold .cta { position: relative; z-index: 2; }
   .hero .fold .scrollcue { z-index: 2; }
   @media (max-width: 640px) {
@@ -441,6 +445,11 @@
   .board .foot a { color: var(--ember); }
   @media (max-width: 720px) { .board .bh { display: none; } .board .br { grid-template-columns: 1fr 1fr; row-gap: 4px; } .board .br .who { grid-column: 1 / -1; } }
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; } html { scroll-behavior: auto; } .bar .fill { transition: none; } }
+
+  /* EDGE FADE (2026-10-13): the plate image is sized to its own aspect (same rendered size and position as contain + object-position), so an oval mask on the image fades every side to transparent; no rectangular edge at any viewport. */
+  .hero .fold .plate { -webkit-mask-image: none; mask-image: none; }
+  .hero .fold .plate img { position: absolute; left: 50%; top: 58%; width: auto; height: auto; max-width: 100%; max-height: 100%; transform: translate(-50%, -58%); -webkit-mask-image: radial-gradient(ellipse closest-side at 50% 50%, #000 45%, rgba(0,0,0,.75) 68%, rgba(0,0,0,.25) 88%, transparent 100%); mask-image: radial-gradient(ellipse closest-side at 50% 50%, #000 45%, rgba(0,0,0,.75) 68%, rgba(0,0,0,.25) 88%, transparent 100%); -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-size: 100% 100%; mask-size: 100% 100%; }
+  @media (max-width: 640px) { .hero .fold .plate { -webkit-mask-image: none; mask-image: none; } .hero .fold .plate img { top: 48%; transform: translate(-50%, -48%); } }
 </style>
 
 <nav class="top"><div class="wrap">
