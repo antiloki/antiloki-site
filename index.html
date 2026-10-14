@@ -416,6 +416,17 @@
     .cmp-r .mark { margin: 2px 10px 14px; padding: 8px 12px 10px; border-radius: 8px; }
     .cmp-r .mark i { color: var(--ember); }
   }
+  @media (max-width: 640px) {   /* phones: each feature is its own card, label left, value right, antiloki highlighted */
+    .cmp { border: 0; background: none; border-radius: 0; overflow: visible; display: grid; gap: 12px; }
+    .cmp-r, .cmp-r:last-child { border: 1px solid var(--rule); border-radius: 12px; background: var(--panel); overflow: hidden; }
+    .cmp-r b { padding: 13px 14px 10px; font-size: 15px; border-bottom: 1px solid var(--rule); }
+    .cmp-r .seat { display: grid; grid-template-columns: 84px 1fr; gap: 10px; align-items: baseline; padding: 10px 14px; font-size: 13.5px; line-height: 1.45; border-top: 1px solid var(--rule); overflow-wrap: anywhere; }
+    .cmp-r b + .seat { border-top: 0; }
+    .cmp-r .seat i { margin: 0; font-size: 9.5px; letter-spacing: .08em; }
+    .cmp-r .mark { margin: 0; border-radius: 0; padding: 11px 14px 12px; box-shadow: inset 3px 0 0 var(--ember); }
+    .cmp-r .mark i { font-weight: 700; }
+    .cmp-r .mark em { grid-column: 2; margin-top: 4px; }
+  }
 
   .board { margin-top: 26px; border: 1px solid var(--rule); border-radius: 14px; overflow: hidden; }
   .board .bh, .board .br { display: grid; grid-template-columns: 1.5fr 1.6fr .7fr .7fr .8fr; gap: 14px; padding: 11px 20px; align-items: baseline; }
@@ -461,7 +472,6 @@
     </div>
     <div class="film" id="film">
       <canvas id="film-canvas" role="img" aria-label="A short animated film. One agent, raw Claude Opus, carries a whole task alone and finishes it in 108 seconds for $0.443. Then his friends arrive, each moving in its own way, and the cheapest one that passes, Composer, finishes the same task in 72 seconds for $0.065, 6.8 times cheaper, at 36.3 of 37 checks."></canvas>
-      <p class="film-f">Measured per run on the same task and the same 37 hidden checks, 2026-10-07: raw Claude Opus 5.5 $0.443 · 108 s · 37/37 (3 runs); Composer 2.5, the seat antiloki's router picks for this task, $0.065 · 72 s · 36.3/37 (12 runs). Every bubble is a raw, one-session run on that task, against raw Opus: Gemini is cheap but slow (13 min, 3 runs), Grok costs about what Opus does (12 runs). List-price equivalents. The pacing of the film is not a stopwatch.</p>
     </div>
 
     <div class="bench" aria-label="cost per run on the same task">
