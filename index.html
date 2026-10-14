@@ -394,22 +394,27 @@
   .compare h2 { font-size: clamp(26px, 3vw, 38px); margin: 8px 0 0; }
   .compare .lede { color: var(--dim); max-width: 66ch; margin: 14px 0 0; font-size: 17px; line-height: 1.6; }
   .cmp { margin-top: 28px; border: 1px solid var(--rule); border-radius: 14px; background: var(--panel); overflow: hidden; }
-  .cmp-h, .cmp-r { display: grid; grid-template-columns: 1.05fr 1.5fr 1.75fr; }
-  .cmp-h > span { padding: 12px 18px; font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--rule); }
+  .cmp-h, .cmp-r { display: grid; grid-template-columns: .86fr 1.12fr 1.22fr 1.4fr; }
+  .cmp-h > span { padding: 12px 16px; font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--rule); }
   .cmp-h > span:last-child { color: var(--ember); }
-  .cmp-r > * { padding: 12px 18px; border-bottom: 1px solid var(--rule); font-size: 14.5px; line-height: 1.55; min-width: 0; }
+  .cmp-r > * { padding: 12px 16px; border-bottom: 1px solid var(--rule); font-size: 14.5px; line-height: 1.55; min-width: 0; }
   .cmp-r:last-child > * { border-bottom: 0; }
   .cmp-r b { font-family: var(--display); font-weight: 700; font-size: 15.5px; color: var(--ink); letter-spacing: -.01em; line-height: 1.3; }
-  .cmp-r .alone { color: var(--dim); }
-  .cmp-r .with { color: var(--ink); background: var(--ember-soft); }
+  .cmp-r .seat { color: var(--dim); }
+  .cmp-r .seat i { display: none; }
+  .cmp-r .mark { color: var(--ink); background: var(--ember-soft); box-shadow: inset 2px 0 0 var(--ember); }
+  .cmp-r .mark em { display: block; margin-top: 7px; font-family: var(--mono); font-style: normal; font-size: 11px; line-height: 1.45; letter-spacing: .01em; color: var(--ember); }
   .compare .fine { color: var(--dim); font-size: 14.5px; max-width: 76ch; margin: 16px 0 0; line-height: 1.6; } .compare .fine b { color: var(--ink); font-weight: 600; } .compare .fine a { color: var(--ember); }
   .compare .src { display: block; margin-top: 12px; font-family: var(--mono); font-size: 10.5px; color: var(--muted); } .compare .src a { color: var(--dim); }
-  @media (max-width: 760px) {   /* a phone keeps the comparison side by side: the topic on its own line, then "alone" next to "with antiloki" */
-    .cmp-h { grid-template-columns: 1fr 1fr; } .cmp-h > span:first-child { display: none; } .cmp-h > span { padding: 10px 14px; }
-    .cmp-r { grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--rule); } .cmp-r:last-child { border-bottom: 0; }
-    .cmp-r > * { border-bottom: 0; padding: 4px 14px 13px; font-size: 13.5px; line-height: 1.45; }
-    .cmp-r b { grid-column: 1 / -1; padding: 13px 14px 3px; font-size: 14.5px; }
-    .cmp-r .with { border-left: 1px solid var(--rule); }
+  @media (max-width: 760px) {   /* three prose columns will not fit a phone, so each row stacks: topic, then Cursor, Claude Code, antiloki */
+    .cmp-h { display: none; }
+    .cmp-r { display: block; border-bottom: 1px solid var(--rule); }
+    .cmp-r:last-child { border-bottom: 0; }
+    .cmp-r > * { border-bottom: 0; padding: 2px 14px 12px; font-size: 14px; line-height: 1.45; }
+    .cmp-r b { display: block; padding: 16px 14px 6px; font-size: 15px; }
+    .cmp-r .seat i { display: block; margin-bottom: 2px; font-family: var(--mono); font-style: normal; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+    .cmp-r .mark { margin: 2px 10px 14px; padding: 8px 12px 10px; border-radius: 8px; }
+    .cmp-r .mark i { color: var(--ember); }
   }
 
   .board { margin-top: 26px; border: 1px solid var(--rule); border-radius: 14px; overflow: hidden; }
@@ -520,29 +525,21 @@
     <div class="evo-scene" id="evo-scene" aria-hidden="true"></div>
   </section>
 
-  <section class="wrap compare" id="compare" aria-label="Compared with the tools alone">
-    <span class="eyebrow">compared with the tools alone</span>
-    <h2>On top of the tools you already use.</h2>
-    <p class="lede">antiloki runs Claude Code, Cursor, Codex, Gemini and Grok. It does not replace them.</p>
-    <div class="cmp" role="table" aria-label="What antiloki adds to the tools alone">
-      <div class="cmp-h" role="row"><span role="columnheader">what you want</span><span role="columnheader">the tools alone</span><span role="columnheader">with antiloki</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Models</b><span class="alone" role="cell">One tool’s own</span><span class="with" role="cell">All five subscriptions, as one agent</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Who does each job</b><span class="alone" role="cell">Your pick, or the tool’s router</span><span class="with" role="cell">The seat measured best, and it keeps learning</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Boundaries</b><span class="alone" role="cell">Permissions and a sandbox you set up</span><span class="with" role="cell">One fence on every seat, undo in one click</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Testing</b><span class="alone" role="cell">A browser, when you ask</span><span class="with" role="cell">One QA button on any run: your ask tested in a real browser, filmed (or against the API for backend work)</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Trust in the result</b><span class="alone" role="cell">The agent says it is done</span><span class="with" role="cell">A confidence reading with its reasons on every result, and one click to run an independent QA</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Verdict on the code</b><span class="alone" role="cell">A reviewer’s opinion</span><span class="with" role="cell">A score per file — no model, same twice</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Impact of a change</b><span class="alone" role="cell">You guess</span><span class="with" role="cell">Map, cycles and blast radius before it lands</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Your rules</b><span class="alone" role="cell">Prompt files</span><span class="with" role="cell">The agent checks its own edits against them</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Cost and limits</b><span class="alone" role="cell">Each tool’s own usage</span><span class="with" role="cell">Every turn priced, per seat, limits on screen</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">When a seat runs out</b><span class="alone" role="cell">The work stops at the wall</span><span class="with" role="cell">Routed around the seat that is out; the next best takes over until it resets</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Big asks</b><span class="alone" role="cell">One long session that loses the thread</span><span class="with" role="cell">Split into tasks that each own their files, verified one by one, then joined</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Project knowledge</b><span class="alone" role="cell">The agent reads your repo cold, every time</span><span class="with" role="cell">A map it can query: who imports a file, who references a symbol, which tests reach it</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Parallel work</b><span class="alone" role="cell">Terminals side by side, you keep track</span><span class="with" role="cell">Agents in boxes of their own, a branch each, merged when you say</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Design</b><span class="alone" role="cell">Looks right, you hope</span><span class="with" role="cell">Contrast, spacing, type and clipping measured on the real page</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Receipts</b><span class="alone" role="cell">You wonder what it did and cost</span><span class="with" role="cell">Every run keeps what it did, who judged it, what it cost and what it saved</span></div>
+  <section class="wrap compare" id="compare" aria-label="Cursor, Claude Code, and antiloki">
+    <span class="eyebrow">cursor, claude code, antiloki</span>
+    <h2>The seats, and the layer that drives them.</h2>
+    <p class="lede">Cursor is the editor. Claude Code is a terminal agent on Anthropic models, with hooks, subagents and permission modes of its own. antiloki does not replace either. It drives them, and the other seats you already signed in to.</p>
+    <div class="cmp" role="table" aria-label="Cursor, Claude Code and antiloki">
+      <div class="cmp-h" role="row"><span role="columnheader">what you want</span><span role="columnheader">Cursor</span><span role="columnheader">Claude Code</span><span role="columnheader">antiloki</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Where you edit</b><span class="seat" role="cell"><i>Cursor</i>The IDE.</span><span class="seat" role="cell"><i>Claude Code</i>The terminal.</span><span class="seat" role="cell"><i>antiloki</i>Whichever you already use. It does not take the editor.</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Multi-vendor</b><span class="seat" role="cell"><i>Cursor</i>The models Cursor offers, inside Cursor.</span><span class="seat" role="cell"><i>Claude Code</i>Anthropic models only.</span><span class="seat mark" role="cell"><i>antiloki</i>One router across Claude Code, Codex, Cursor CLI and OpenCode.<em>Cross-vendor. The same ask can change seats.</em></span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Model pairing</b><span class="seat" role="cell"><i>Cursor</i>You pick, or Auto, per request.</span><span class="seat" role="cell"><i>Claude Code</i>A Claude model, and subagents when you split the work.</span><span class="seat mark" role="cell"><i>antiloki</i>Planner × worker × QA, chosen from measured runs.<em>The pairing comes from the runs, not from the picker.</em></span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Write scope</b><span class="seat" role="cell"><i>Cursor</i>Rules, prompts and approvals.</span><span class="seat" role="cell"><i>Claude Code</i>Permission modes, and PreToolUse hooks if you add them.</span><span class="seat mark" role="cell"><i>antiloki</i>Out-of-scope edits are refused, per agent.<em>On by default, on every vendor, not only where a hook was written.</em></span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Isolation</b><span class="seat" role="cell"><i>Cursor</i>The checkout you have open, unless you split it.</span><span class="seat" role="cell"><i>Claude Code</i>A worktree when you ask for one, including a background agent.</span><span class="seat mark" role="cell"><i>antiloki</i>A git worktree and a branch per agent.<em>Isolated from the start, on every seat. You merge when you say.</em></span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Verification</b><span class="seat" role="cell"><i>Cursor</i>The model, or a check you ask it to run.</span><span class="seat" role="cell"><i>Claude Code</i>The model, or a command you ask it to run. A hook can require one.</span><span class="seat mark" role="cell"><i>antiloki</i>Your lint, test and build. A skipped gate is not a pass.<em>The repo’s gates, not the model’s say-so.</em></span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Receipts</b><span class="seat" role="cell"><i>Cursor</i>Usage, by model.</span><span class="seat" role="cell"><i>Claude Code</i>Tokens and cost for that session.</span><span class="seat mark" role="cell"><i>antiloki</i>Per task: the agent, the model, the time and the cost.<em>One record for the task, whichever seat did the work.</em></span></div>
     </div>
-    <p class="fine">One more app; the Windows build is current, the Linux build is older, and macOS is coming soon. Limits, sources and every detail: <a href="/paper.html">the technical report →</a></p>
+    <p class="fine">One editor, or one terminal agent? Cursor or Claude Code is enough. Juggling seats? Add antiloki.</p>
   </section>
 
     <div class="wrap pricing" id="pricing">
