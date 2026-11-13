@@ -49,6 +49,41 @@
   footer { max-width: 1160px; margin: 0 auto; padding: 24px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
   footer a { color: var(--dim); margin-right: 16px; }
   @media (max-width: 860px) { .wrap { grid-template-columns: 1fr; gap: 0; } .toc { display: none; } }
+
+  /* PRINTS AND WIDGETS */
+  .fig { margin: 22px 0; }
+  .fig img { display: block; width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--line); }
+  .fig figcaption { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-top: 8px; }
+  .w { background: var(--glass); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; margin: 20px 0; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+  .w h5 { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; font-weight: 600; }
+  .w .note { margin: 0 0 12px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { font: inherit; font-family: var(--mono); font-size: 12px; color: var(--dim); background: none; border: 1px solid var(--line); border-radius: 999px; padding: 4px 11px; cursor: pointer; }
+  .chip:hover { color: var(--ink); }
+  .chip.on { color: var(--ink); border-color: var(--accent); background: rgba(255,255,255,.06); }
+  .wout { margin-top: 12px; font-size: 15px; color: var(--dim); min-height: 1.4em; }
+  .wout b { color: var(--ink); }
+  .wout .code { font-family: var(--mono); font-size: 12.5px; color: var(--ink); background: rgba(255,255,255,.07); padding: 1px 6px; border-radius: 5px; margin-right: 4px; }
+  .checks { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 6px 16px; font-size: 14.5px; color: var(--dim); }
+  .checks label { display: flex; gap: 8px; align-items: center; cursor: pointer; }
+  .checks input { accent-color: var(--accent); }
+  .rng { display: block; font-size: 14.5px; color: var(--dim); margin: 6px 0; }
+  .rng b { color: var(--ink); font-family: var(--mono); font-weight: 600; }
+  .rng input { display: block; width: 100%; accent-color: var(--accent); margin-top: 6px; }
+  .bud-steps { display: grid; gap: 4px; margin: 12px 0 6px; font-family: var(--mono); font-size: 12.5px; }
+  .bud-steps div { display: flex; justify-content: space-between; color: var(--dim); padding: 4px 0; border-bottom: 1px solid var(--line); }
+  .bud-steps div.hit { color: var(--bad); }
+  .bud-steps div.done { color: var(--ink); }
+  .bar { height: 8px; background: rgba(255,255,255,.08); border-radius: 4px; overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .25s; }
+  .lmap { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 58px; gap: 6px; margin-top: 12px; }
+  .lmap > div { border-radius: 8px; padding: 6px 8px; font-family: var(--mono); font-size: 11px; color: var(--ink); display: flex; flex-direction: column; justify-content: space-between; border: 1px solid transparent; transition: background .25s, border-color .25s; }
+  .lmap > div b { font-weight: 600; }
+  #w-mcp input[type=search] { width: 100%; box-sizing: border-box; font: inherit; font-family: var(--mono); font-size: 14px; color: var(--ink); background: rgba(10,12,15,.55); border: 1px solid var(--line); border-radius: 8px; padding: 9px 12px; outline: none; }
+  #w-mcp input[type=search]:focus { border-color: var(--accent); }
+  .mlist { list-style: none; padding: 0; margin: 10px 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 4px 14px; font-family: var(--mono); font-size: 12.5px; }
+  .mlist li { color: var(--dim); padding: 3px 0; }
+  .mlist li.hide { display: none; }
 </style>
 </head>
 <body>
@@ -118,6 +153,7 @@
 
     <h2 id="cowork">2. The Cowork screen</h2>
     <p>Cowork is where you work. The left side holds the chat with the Leader. The main area holds the panes, and each agent in a pane runs in a real terminal, not a simulation.</p>
+    <figure class="fig"><img src="assets/docs/graph.png" alt="The Cowork window: the Leader chat on the left, a team graph running on the right" loading="lazy"><figcaption>The Cowork window: the Leader chat, and a team graph running on the right. Example data, rendered from the site's own design. Not a capture of a live project.</figcaption></figure>
 
     <h3 id="panes">Panes and the Studio</h3>
     <p>Panes sit side by side in the main area. You can fold a pane to a thin strip to keep it without losing its place. A pane can hold a terminal, a frame, a diff, a preview, or one of the Studio tools.</p>
@@ -149,6 +185,17 @@
     <p>A team is a graph of nodes and edges, edited on the board. Each run of the team is recorded in a saga, and each pass of a loop is its own episode in that saga.</p>
 
     <h3 id="nodes">The nodes</h3>
+    <div class="w" id="w-nodes" data-widget="nodes">
+      <h5>Explore the nodes</h5>
+      <p class="note">Pick a node to see what it does and what you set on it.</p>
+      <div class="chips">
+        <button class="chip on" data-i="0">Leader</button><button class="chip" data-i="1">Agent</button><button class="chip" data-i="2">Tool</button>
+        <button class="chip" data-i="3">Fork</button><button class="chip" data-i="4">Join</button><button class="chip" data-i="5">If and switch</button>
+        <button class="chip" data-i="6">Loop</button><button class="chip" data-i="7">For each</button><button class="chip" data-i="8">Retry</button>
+        <button class="chip" data-i="9">Human gate</button><button class="chip" data-i="10">Cost cap</button><button class="chip" data-i="11">Artifact</button><button class="chip" data-i="12">Deliver</button>
+      </div>
+      <div class="wout" aria-live="polite"></div>
+    </div>
     <table>
       <tr><th>Node</th><th>What it does</th><th>What you set</th></tr>
       <tr><td><b>Leader</b></td><td>Your terminal agent. It designs the team with you and watches the budget.</td><td>Exactly one per graph.</td></tr>
@@ -167,6 +214,22 @@
     </table>
 
     <h3 id="validator">What the validator refuses</h3>
+    <div class="w" id="w-validator" data-widget="validator">
+      <h5>Try the validator</h5>
+      <p class="note">Tick what your graph has, and see what the validator would refuse. This is a simplified model of its rules; the app checks more.</p>
+      <div class="checks">
+        <label><input type="checkbox" id="v-leader" checked> it has a Leader</label>
+        <label><input type="checkbox" id="v-two"> it has two Leaders</label>
+        <label><input type="checkbox" id="v-deliver" checked> it has a Deliver</label>
+        <label><input type="checkbox" id="v-reach" checked> every node is reachable from the start</label>
+        <label><input type="checkbox" id="v-switch"> it has a switch</label>
+        <label><input type="checkbox" id="v-sdef" checked> the switch has a default port</label>
+        <label><input type="checkbox" id="v-loop"> it has a loop</label>
+        <label><input type="checkbox" id="v-lmax" checked> the loop has a max count</label>
+        <label><input type="checkbox" id="v-lcap" checked> the loop has a cost cap</label>
+      </div>
+      <div class="wout" aria-live="polite"></div>
+    </div>
     <p>The validator checks the graph before anything runs. It refuses a graph that has any of these problems, and it names the problem so you can fix it on the board:</p>
     <table>
       <tr><th>Code</th><th>What it means</th></tr>
@@ -200,10 +263,25 @@
     </ul>
     <p>Writes are fenced by folder. An agent can write only inside the folders its node is allowed to touch. A commit to your branch, a publish, or a message sent outside the project waits at a human gate for your yes or no.</p>
 
-    <h2 id="mcp">5. MCP</h2>
+        <div class="w" id="w-budget" data-widget="budget">
+      <h5>Watch a run hit its budget</h5>
+      <p class="note">Costs are illustrative. The rule is the point: the run stops when the next step would pass the budget.</p>
+      <label class="rng">Run budget <b id="b-val">$1.00</b> <input type="range" id="b-budget" min="0.1" max="2" step="0.05" value="1"></label>
+      <label class="rng">Copywriter passes in the loop <b id="b-pass-val">3</b> <input type="range" id="b-pass" min="1" max="3" step="1" value="3"></label>
+      <div class="bud-steps" id="b-steps"></div>
+      <div class="bar"><i id="b-bar"></i></div>
+      <div class="wout" id="b-out" aria-live="polite"></div>
+    </div>
+<h2 id="mcp">5. MCP</h2>
     <p>Antiloki is also an MCP server. Any MCP client can drive it: open threads and panes, read and add sagas, rebuild the X-ray, and design and run teams. Your agents use the same tools, so what an agent does in a pane is visible to you in the app.</p>
 
     <h3 id="mcp-tools">The tools</h3>
+    <div class="w" id="w-mcp" data-widget="mcp">
+      <h5>Find a tool</h5>
+      <input type="search" id="m-q" placeholder="type part of a name, e.g. team or xray" aria-label="filter MCP tools">
+      <p class="note" id="m-count"></p>
+      <ul class="mlist" id="m-list"></ul>
+    </div>
     <p>The names below are the tools the server registers today. Ask the client to list them to see the full set.</p>
     <table>
       <tr><th>Family</th><th>Tools</th></tr>
@@ -234,6 +312,7 @@
 
     <h2 id="xray">7. The X-ray</h2>
     <p>The X-ray is a health view of the repo, built from the code itself. The panels are below.</p>
+    <figure class="fig"><img src="assets/docs/xray.png" alt="The X-ray panels: verdict row, health over time, hotspots and the codebase map" loading="lazy"><figcaption>The X-ray: verdict row, health over time, hotspots and the codebase map. Example data, rendered from the site's own design. Not a capture of a live project.</figcaption></figure>
 
     <h3 id="xray-verdict">The verdict row</h3>
     <table>
@@ -257,6 +336,13 @@
     </ul>
 
     <h3 id="xray-lenses">The lenses</h3>
+    <div class="w" id="w-lens" data-widget="lens">
+      <h5>Switch the lens</h5>
+      <p class="note">Example values. Pick a lens to recolour the same boxes.</p>
+      <div class="chips" id="l-chips"></div>
+      <div class="lmap" id="l-map"></div>
+      <div class="wout" id="l-out" aria-live="polite"></div>
+    </div>
     <p>A lens recolours the same map so that you can read a different question from it:</p>
     <table>
       <tr><th>Lens</th><th>Question it answers</th><th>Red means</th></tr>
@@ -275,6 +361,7 @@
 
     <h2 id="sagas">8. Sagas</h2>
     <p>A saga is a goal and the episodes that get it done. Sagas are listed per project, as a list or a board. Each row shows the progress, the cost, and when it last changed.</p>
+    <figure class="fig"><img src="assets/docs/sagas.png" alt="The Sagas list, grouped by status" loading="lazy"><figcaption>Sagas, grouped by status. Example data, rendered from the site's own design. Not a capture of a live project.</figcaption></figure>
     <table>
       <tr><th>Status</th><th>Meaning</th></tr>
       <tr><td><span class="dot" style="background:var(--muted)"></span><b>todo</b></td><td>Not started.</td></tr>
@@ -323,5 +410,148 @@
   <a href="/terms.html">terms</a>
   <a href="mailto:support@antiloki.com">support@antiloki.com</a>
 </footer>
+<script>
+(function () {
+  // NODES
+  var NODES = [
+    ["Leader", "Your terminal agent. It designs the team with you and watches the budget.", "Nothing to set beyond its seat. Exactly one per graph."],
+    ["Agent", "A planner, worker, QA, debugger, audit, or your own agent with its own brief.", "Its brief, its skills, its tools, and the seat it runs on (engine:model)."],
+    ["Tool", "Web search, page reading, or one of this app's own tools.", "An allow-list: the node may use only the tools it names."],
+    ["Fork", "Starts branches that run side by side.", "The branches it starts."],
+    ["Join", "Waits for its branches.", "All of them, or a quorum."],
+    ["If and switch", "Route the run on what a node said.", "A condition. A switch needs a default port, so nothing falls through."],
+    ["Loop", "Repeats its body until a condition holds. Each pass is its own episode.", "A max count and a cost cap. Both are required."],
+    ["For each", "One branch per item, in parallel up to a limit.", "The list it walks over, and the limit."],
+    ["Retry", "Sends a failed node round again.", "How many times, then the exhausted port."],
+    ["Human gate", "Waits for your yes or no.", "A timeout, and the port taken when it runs out."],
+    ["Cost cap", "The most a node, or a whole loop, may spend.", "A number in USD."],
+    ["Artifact", "A document the run makes, such as a report or a draft.", "A name and a format. Written to .antiloki/artifacts/."],
+    ["Deliver", "The end of the graph. The finished pack reaches you.", "Nothing. Every graph ends in one."]
+  ];
+  var nw = document.getElementById("w-nodes");
+  if (nw) {
+    var out = nw.querySelector(".wout");
+    var show = function (i) {
+      nw.querySelectorAll(".chip").forEach(function (c, k) { c.classList.toggle("on", k === i); });
+      out.innerHTML = "<b>" + NODES[i][0] + ".</b> " + NODES[i][1] + "<br><span class=\"note\">You set: " + NODES[i][2] + "</span>";
+    };
+    nw.querySelectorAll(".chip").forEach(function (c) { c.addEventListener("click", function () { show(+c.dataset.i); }); });
+    show(0);
+  }
+
+  // VALIDATOR (a simplified model of the rules)
+  var vw = document.getElementById("w-validator");
+  if (vw) {
+    var g = function (id) { return document.getElementById(id).checked; };
+    var vout = vw.querySelector(".wout");
+    var MSG = {
+      no_leader: "the graph has no Leader",
+      many_leaders: "the graph has more than one Leader",
+      no_delivery: "nothing ends the run, so there is no Deliver",
+      unreachable: "a node cannot be reached from the start",
+      switch_no_default: "a switch has no default port",
+      loop_unbounded: "a loop has no max count",
+      loop_no_cap: "a loop has no cost cap"
+    };
+    var check = function () {
+      var codes = [];
+      if (!g("v-leader") && !g("v-two")) codes.push("no_leader");
+      if (g("v-two")) codes.push("many_leaders");
+      if (!g("v-deliver")) codes.push("no_delivery");
+      if (!g("v-reach")) codes.push("unreachable");
+      if (g("v-switch") && !g("v-sdef")) codes.push("switch_no_default");
+      if (g("v-loop") && !g("v-lmax")) codes.push("loop_unbounded");
+      if (g("v-loop") && !g("v-lcap")) codes.push("loop_no_cap");
+      if (!codes.length) { vout.innerHTML = "<b>The validator passes this graph.</b> It can start and it will end."; return; }
+      vout.innerHTML = "<b>Refused.</b><br>" + codes.map(function (c) { return "<span class=\"code\">" + c + "</span>" + MSG[c]; }).join("<br>");
+    };
+    vw.querySelectorAll("input").forEach(function (i) { i.addEventListener("change", check); });
+    check();
+  }
+
+  // BUDGET
+  var bw = document.getElementById("w-budget");
+  if (bw) {
+    var budget = document.getElementById("b-budget"), pass = document.getElementById("b-pass");
+    var steps = document.getElementById("b-steps"), bar = document.getElementById("b-bar"), bout = document.getElementById("b-out");
+    var run = function () {
+      var B = +budget.value, P = +pass.value;
+      document.getElementById("b-val").textContent = "$" + B.toFixed(2);
+      document.getElementById("b-pass-val").textContent = P;
+      var plan = [["Planner", 0.02, 1], ["Designer", 0.03, 1], ["Copywriter, pass", 0.02, P], ["QA", 0.04, 1]];
+      var spent = 0, rows = [], stopped = null, line = [];
+      plan.forEach(function (st) {
+        for (var k = 1; k <= st[2]; k++) {
+          var name = st[2] > 1 ? st[0] + " " + k : st[0];
+          if (stopped) { rows.push(["<span>" + name + "</span><span>not started</span>", ""]); continue; }
+          if (spent + st[1] > B + 1e-9) { stopped = name; rows.push(["<span>" + name + "</span><span>stopped: the budget is spent</span>", "hit"]); continue; }
+          spent += st[1];
+          rows.push(["<span>" + name + "</span><span>$" + spent.toFixed(2) + " spent</span>", "done"]);
+        }
+      });
+      steps.innerHTML = rows.map(function (r) { return "<div class=\"" + r[1] + "\">" + r[0] + "</div>"; }).join("");
+      bar.style.width = Math.min(100, (spent / B) * 100) + "%";
+      bout.innerHTML = stopped ? "<b>The run stopped</b> before " + stopped + ". It spent $" + spent.toFixed(2) + " of $" + B.toFixed(2) + ", and the saga keeps that record."
+                               : "<b>The run finished</b> within budget: $" + spent.toFixed(2) + " of $" + B.toFixed(2) + ".";
+    };
+    budget.addEventListener("input", run); pass.addEventListener("input", run);
+    run();
+  }
+
+  // LENS
+  var lw = document.getElementById("w-lens");
+  if (lw) {
+    var LENSES = [
+      ["health", "Dense branching, code that is untested under load, and churn."],
+      ["cascade", "Many files depend on it, through their imports, directly or not."],
+      ["ownership", "Recent commits come from a single author. That is a knowledge risk."],
+      ["debt", "TODO, HACK and unused markers. Ten or more is full red."],
+      ["heat", "How often the file changed in the last 500 commits."],
+      ["runtime", "Grey means no runtime signal. Otherwise, how little of the file your tests execute."]
+    ];
+    var FILES = [
+      ["graph/run.ts", [72, 40, 20, 60, 80, 55]], ["graph/board.tsx", [35, 25, 10, 30, 45, 20]],
+      ["ui/panes.tsx", [68, 55, 70, 75, 60, 85]], ["store/sync.ts", [30, 62, 15, 10, 25, 40]],
+      ["store/db.ts", [12, 70, 40, 5, 10, 25]], ["api/routes.ts", [18, 33, 22, 5, 30, 15]],
+      ["auth.ts", [25, 15, 80, 0, 18, 10]], ["render.ts", [6, 10, 12, 0, 8, 5]],
+      ["router.ts", [22, 48, 30, 15, 35, 60]], ["cli/main.ts", [40, 20, 18, 50, 28, 45]],
+      ["legacy/mail.js", [88, 8, 65, 92, 60, 95]], ["util/time.ts", [5, 4, 5, 0, 5, 0]]
+    ];
+    var chips = document.getElementById("l-chips"), map = document.getElementById("l-map"), lout = document.getElementById("l-out");
+    var cur = 0;
+    var draw = function () {
+      chips.querySelectorAll(".chip").forEach(function (c, k) { c.classList.toggle("on", k === cur); });
+      map.innerHTML = FILES.map(function (f) {
+        var v = f[1][cur], col = v >= 70 ? "var(--bad)" : (v >= 40 ? "var(--warn)" : "var(--ok)");
+        return "<div style=\"background:color-mix(in srgb," + col + " 24%,transparent);border-color:color-mix(in srgb," + col + " 55%,transparent)\"><span>" + f[0] + "</span><b style=\"color:" + col + "\">" + v + "</b></div>";
+      }).join("");
+      lout.innerHTML = "<b>" + LENSES[cur][0] + ".</b> Red means: " + LENSES[cur][1];
+    };
+    LENSES.forEach(function (l, k) {
+      var b = document.createElement("button"); b.className = "chip"; b.textContent = l[0];
+      b.addEventListener("click", function () { cur = k; draw(); });
+      chips.appendChild(b);
+    });
+    draw();
+  }
+
+  // MCP TOOL FINDER
+  var mw = document.getElementById("w-mcp");
+  if (mw) {
+    var TOOLS = ["antiloki_threads","antiloki_spaces","antiloki_worktrees","antiloki_panes","antiloki_pane_open","antiloki_pane_read","antiloki_pane_send","antiloki_pane_view","antiloki_pane_act","antiloki_pane_arrange","antiloki_pane_close","antiloki_teams","antiloki_team_design","antiloki_team_status","antiloki_team_simulate","antiloki_sagas","antiloki_saga_add","antiloki_episode_add","antiloki_episode_update","antiloki_xray","antiloki_xray_rebuild","antiloki_xray_open","antiloki_delegate","antiloki_qa","antiloki_rules","antiloki_query","antiloki_look","antiloki_frame_create","antiloki_screen","antiloki_themes"];
+    var list = document.getElementById("m-list"), q = document.getElementById("m-q"), cnt = document.getElementById("m-count");
+    list.innerHTML = TOOLS.map(function (t) { return "<li>" + t + "</li>"; }).join("");
+    var filter = function () {
+      var v = q.value.trim().toLowerCase(), shown = 0;
+      list.querySelectorAll("li").forEach(function (li) {
+        var m = !v || li.textContent.indexOf(v) !== -1;
+        li.classList.toggle("hide", !m); if (m) shown++;
+      });
+      cnt.textContent = shown + " of " + TOOLS.length + " tools";
+    };
+    q.addEventListener("input", filter); filter();
+  }
+})();
+</script>
 </body>
 </html>
