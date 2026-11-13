@@ -1,8 +1,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>antiloki — build +590% more on your weekly limit, 6.9× cheaper, with the same code quality</title>
+<title>antiloki — the vibe graphing IDE: draw the team as a graph, run the loop. Free</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23211e1b'/%3E%3Ctext x='10' y='47' font-family='Geist,Helvetica,Arial,sans-serif' font-weight='700' font-size='40' fill='%23efe9e2' letter-spacing='-2'%3Ea%3Ctspan fill='%23c97c5c'%3E.%3C/tspan%3E%3C/text%3E%3C/svg%3E">
-<meta name="description" content="Build +590% more on your weekly limit, 6.9× cheaper, with the same code quality. Claude Grok, Gemini Codex — antiloki merges your existing model subscriptions into specialized coding agents: a router gives each job — planning, writing, verifying, judging — to the model measured best for it. No new account and no extra subscription: antiloki drives the AI providers you are already signed in to, all local and private.">
+<meta name="description" content="antiloki is a free vibe graphing IDE: an agentic graph engineering loop. Your Leader drafts a team as a graph of agents, tools, checks and gates; you edit the board, set the budget and run it on the AI subscriptions you already have. Every node records what it did and what it cost.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Geist:wght@700&family=IBM+Plex+Sans:wght@400;500&family=JetBrains+Mono:wght@400;600&display=swap">
 <style>
@@ -41,10 +41,9 @@
   .hero p { margin: 24px auto 0; max-width: 52ch; font-size: clamp(16px, 1.5vw, 19px); color: var(--dim); }
   .hero p.why { max-width: 66ch; text-align: left; font-size: clamp(15px, 1.3vw, 17.5px); line-height: 1.55; } .hero p.why b { color: var(--ink); } .hero p.why span { display: block; } .hero p.why span + span { margin-top: 9px; }
   /* THE FIRST SCREEN IS THE HEADLINE (operator 2026-10-08: "the headline should be the entire screen and only scrolling goes to next section; the animation below starts before I scroll").
-     The fold = the viewport minus the nav (60) and the hero's top padding (72). Nothing of the film is on screen until the reader scrolls, so its IntersectionObserver (threshold .2) cannot start it early. */
+     The fold = the viewport minus the nav (60) and the hero's top padding (72). */
   .hero .fold { min-height: calc(100vh - 132px); min-height: calc(100svh - 132px); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 0 56px; position: relative; }
   .hero .fold h1 { font-size: clamp(38px, min(7.4vw, 10.5vh), 108px); max-width: 22ch; line-height: .98; }
-  .hero .fold .lede { font-size: clamp(16px, 1.55vw, 21px); line-height: 1.55; max-width: 58ch; margin: 22px auto 0; }
   .hero .fold .cta { margin-top: 34px; }
   .scrollcue { position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 6px; text-decoration: none; color: var(--muted); font-family: var(--mono); font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; }
   .scrollcue i { width: 1px; height: 26px; background: linear-gradient(var(--ember), transparent); animation: cue 1.8s ease-in-out infinite; transform-origin: top; }
@@ -88,114 +87,6 @@
   .hero .proof-f a { color: var(--ember); text-decoration: underline; text-underline-offset: 2px; }
   @media (max-width: 640px) { .hero .proof-h { display: none; } .hero .proof-r { grid-template-columns: 1fr 1fr; } .hero .proof-r span:first-child { grid-column: 1 / -1; } }
 
-  /* THE FILM (2026-10-07): a short animated story drawn on a canvas, with the app's own agents. The numbers are the measured per-run figures. */
-  .hero .film { margin: 30px 0 0 calc(50% - 50vw); width: 100vw; max-width: none; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); background: #15120f; }
-  .film canvas { display: block; width: 100%; aspect-ratio: 1120 / 540; background: #15120f; }
-  @media (max-width: 700px) { .film canvas { aspect-ratio: 960 / 540; } }
-  .hero .film .film-f { margin: 0 auto; padding: 9px 28px 11px; max-width: 1080px; text-align: left; font-family: var(--mono); font-size: 10.5px; line-height: 1.6; color: var(--muted); }
-  /* MODEL EVOLVING = ANTILOKI EVOLVING (2026-10-07): big type, revealed word by word, and a small scene where the models level up one by one, antiloki pulses with each, and they embrace. */
-  .evolve { padding-top: 130px; padding-bottom: 20px; text-align: center; position: relative; }
-  .evolve::before { content: ""; position: absolute; left: 50%; top: 30px; width: min(900px, 100%); height: 520px; transform: translateX(-50%); background: radial-gradient(closest-side, rgba(201,124,92,.16), rgba(201,124,92,0)); pointer-events: none; }
-  /* NARCISSUS (2026-10-13): engraved Caravaggio behind the evolving section, the same treatment as the hero. Highlights are warm off-white at 16%, the ink is left empty so #211e1b shows through, and there is no second colour. The plate is absolute, so the type does not move, and it is not requested until the section is near. */
-  .evolve .plate { position: absolute; left: 0; top: 0; width: 100%; height: 72%; margin: 0; pointer-events: none;
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 12%, #000 62%, transparent 100%), radial-gradient(ellipse 86% 80% at 50% 46%, #000 42%, transparent 78%);
-    mask-image: linear-gradient(to bottom, transparent 0%, #000 12%, #000 62%, transparent 100%), radial-gradient(ellipse 86% 80% at 50% 46%, #000 42%, transparent 78%);
-    -webkit-mask-composite: source-in; mask-composite: intersect; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-size: 100% 100%; mask-size: 100% 100%; }
-  .evolve .plate img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: center 42%; opacity: 0; transition: opacity .8s ease; }
-  .evolve .plate img.is-on { opacity: 1; }
-  .evolve .evo-wash { position: absolute; left: 50%; top: 10%; width: min(920px, 96%); height: 46%; transform: translateX(-50%); pointer-events: none;
-    background: radial-gradient(ellipse at 50% 42%, rgba(33,30,27,.7) 0%, rgba(33,30,27,.38) 52%, rgba(33,30,27,0) 78%); }
-  .evo-big { position: relative; font-family: var(--display); font-weight: 800; font-size: clamp(38px, 8.2vw, 112px); line-height: .97; letter-spacing: -.04em; color: var(--ink); margin: 0 auto; text-wrap: balance; }
-  .evo-big .ln { display: block; }
-  .evolve .w { display: inline-block; }
-  .evolve.armed .w { opacity: 0; transform: translateY(.55em) rotate(2.5deg); filter: blur(10px); }
-  .evolve.in .w { animation: evoWord 1s cubic-bezier(.2, .8, .2, 1) both; animation-delay: calc(var(--i) * .15s); }
-  .evo-big .em { color: var(--ember); }
-  .evo-big .ev { background: linear-gradient(100deg, var(--ink) 38%, #ffe3c9 50%, var(--ink) 62%) 100% 0 / 260% 100%; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
-  .evo-big .em.ev { background-image: linear-gradient(100deg, var(--ember) 38%, #ffd2b0 50%, var(--ember) 62%); }
-  .evolve.in .ev { animation: evoWord 1s cubic-bezier(.2, .8, .2, 1) both, evoShine 5s ease-in-out 2.2s infinite; animation-delay: calc(var(--i) * .15s), 2.2s; }
-  .evo-big .eq { color: var(--ember); display: inline-block; margin-right: .12em; }
-  .evolve.in .eq { animation: evoWord 1s cubic-bezier(.2, .8, .2, 1) both, evoEq 3.2s ease-in-out 2s infinite; animation-delay: calc(var(--i) * .15s), 2s; }
-  .evo-sub { position: relative; margin: 34px auto 0; max-width: 30ch; font-family: var(--display); font-weight: 600; font-size: clamp(21px, 2.7vw, 36px); line-height: 1.18; letter-spacing: -.015em; color: var(--dim); text-wrap: balance; }
-  .evo-sub .hl { color: var(--ink); position: relative; }
-  .evo-sub .hl::after { content: ""; position: absolute; left: 0; right: 0; bottom: -.12em; height: .09em; border-radius: 3px; background: var(--ember); transform: scaleX(1); transform-origin: left; }
-  .evolve.armed .evo-sub .hl::after { transform: scaleX(0); }
-  .evolve.in .evo-sub .hl::after { animation: evoLine .9s cubic-bezier(.2, .8, .2, 1) 1.5s both; }
-  .evo-scene { position: relative; margin: 60px auto 0; max-width: 860px; }
-  .evo-row { display: flex; justify-content: center; align-items: flex-end; gap: clamp(12px, 4.8vw, 62px); }
-  .evo-f { display: flex; flex-direction: column; align-items: center; gap: 10px; will-change: transform; }
-  .evo-f .bface { width: clamp(50px, 9.6vw, 100px); height: clamp(50px, 9.6vw, 100px); flex: 0 0 auto; }
-  .evo-n { font-family: var(--mono); font-size: clamp(9.5px, 1.1vw, 12px); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
-  .evo-pill { --g: 0; position: relative; margin: 22px auto 0; width: min(580px, 94%); height: 60px; border-radius: 999px; background: var(--panel); border: 1px solid var(--rule2); display: flex; align-items: center; justify-content: center; font-family: "Geist", -apple-system, system-ui, sans-serif; font-weight: 700; font-size: 26px; letter-spacing: -.035em; color: var(--ink); box-shadow: 0 0 calc(46px * var(--g)) calc(8px * var(--g)) rgba(201, 124, 92, calc(.6 * var(--g))); border-color: color-mix(in srgb, var(--ember) calc(var(--g) * 100%), var(--rule2)); }
-  .evo-pill b { color: var(--ember); font-weight: 700; }
-  .evo-fx { position: absolute; inset: 0; pointer-events: none; }
-  .evo-fx i { position: absolute; left: 0; top: 0; opacity: 0; will-change: transform, opacity; }
-  .evo-spark svg { width: 24px; height: 24px; display: block; filter: drop-shadow(0 0 6px rgba(255, 214, 160, .9)); }
-  .evo-ring { width: 80px; height: 80px; border-radius: 50%; border: 2px solid rgba(255, 214, 160, .8); }
-  .evo-up { font-family: var(--mono); font-weight: 700; font-size: 20px; color: var(--ember); text-shadow: 0 0 10px rgba(201, 124, 92, .8); }
-  .evo-heart svg { width: 24px; height: 22px; display: block; filter: drop-shadow(0 0 6px rgba(236, 79, 143, .7)); }
-  @keyframes evoWord { from { opacity: 0; transform: translateY(.55em) rotate(2.5deg); filter: blur(10px); } to { opacity: 1; transform: none; filter: blur(0); } }
-  @keyframes evoShine { 0% { background-position: 100% 0; } 55%, 100% { background-position: 0% 0; } }
-  @keyframes evoEq { 0%, 100% { transform: scale(1); text-shadow: 0 0 0 rgba(201, 124, 92, 0); } 50% { transform: scale(1.14); text-shadow: 0 0 34px rgba(201, 124, 92, .75); } }
-  @keyframes evoLine { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-  @media (prefers-reduced-motion: reduce) { .evolve.armed .w { opacity: 1; transform: none; filter: none; } .evolve.armed .evo-sub .hl::after { transform: scaleX(1); } .evolve.in .w, .evolve.in .ev, .evolve.in .eq { animation: none; } }
-  @media (max-width: 640px) { .evolve { padding-top: 90px; } .evo-pill { height: 52px; font-size: 22px; } .evo-scene { margin-top: 44px; } }
-  .hero .bench { margin: 26px auto 0; max-width: 700px; text-align: left; display: flex; flex-direction: column; gap: 7px; }
-  .hero .bench-h { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: .03em; margin-bottom: 4px; }
-  .hero .bench-h code { color: var(--dim); }
-  .brow { display: grid; grid-template-columns: 1fr auto; column-gap: 14px; row-gap: 2px; padding: 3px 0; align-items: center; }
-  .brow .bname { grid-column: 1 / -1; font-family: var(--mono); font-size: 11.5px; color: var(--dim); }
-  .brow.bwin .bname, .brow.braw .bname { color: var(--ink); }
-
-  .brow .btrack { display: flex; align-items: center; gap: 10px; min-width: 0; }
-  .brow .bfill { height: 20px; border-radius: 3px; background: rgba(255,255,255,.16); display: block; flex: 0 1 auto; min-width: 3px; width: var(--w); }
-  .brow.bwin .bfill { background: var(--ember); }
-  .brow.braw .bfill { background: rgba(255,255,255,.28); }
-  .brow .bnum { font-family: var(--mono); font-size: 13.5px; color: var(--dim); font-weight: 700; white-space: nowrap; }
-  .brow.bwin .bnum { color: var(--ember); }
-  .brow.braw .bnum { color: var(--ink); }
-  .brow .bmeta { font-family: var(--mono); font-size: 10.5px; color: var(--muted); white-space: nowrap; min-width: 72px; text-align: right; }
-  /* THE COST ROWS, ANIMATED (2026-10-07): bars grow, numbers count, each team walks in and the winners cheer when their bar lands. Same faces as the film. */
-  .brow { grid-template-columns: 118px minmax(0, 1fr) auto; }
-  .brow .bname { grid-column: 1 / -1; }
-  .bfaces { display: flex; align-items: flex-end; gap: 2px; min-height: 38px; }
-  .bface { width: 32px; height: 32px; flex: 0 0 32px; display: block; overflow: visible; }
-  .brow.braw .bface { width: 38px; height: 38px; flex-basis: 38px; }
-  .bface .bbody { transform-box: view-box; transform-origin: 20px 21px; animation: bFloat var(--fp, 5s) ease-in-out var(--fd, 0s) infinite; }
-  .bface .eyes { transform-box: view-box; transform-origin: 20px 17px; }
-  .bface .eye { transform-box: fill-box; transform-origin: center; animation: bBlink var(--bp, 4.6s) ease-in-out var(--bd, 0s) infinite; }
-  .bface .e-happy, .bface .e-tired, .bface .blush { display: none; }
-  .bface[data-eye="happy"] .e-slit, .bface[data-eye="tired"] .e-slit { display: none; } .bface[data-eye="happy"] .e-happy, .bface[data-eye="tired"] .e-tired, .bface[data-eye="happy"] .blush { display: inline; }
-  .bface .sweat { fill: #9bd3f0; opacity: 0; } .bface[data-eye="tired"] .sweat { animation: bSweat 1.5s ease-in infinite; }
-  .bbadge { font-family: var(--mono); font-size: 10.5px; font-weight: 700; color: #1d1410; background: var(--ember); border-radius: 999px; padding: 2px 9px; white-space: nowrap; opacity: 1; transition: opacity .35s, transform .35s; }
-  .bench.arm .bfill { width: 0; } .bench.arm .bnum, .bench.arm .bmeta { opacity: 0; } .bench.arm .bbadge { opacity: 0; transform: translateY(5px) scale(.9); } .bench.arm .bface { opacity: 0; }
-  .bench.play .bfill { width: var(--w); transition: width 1.35s cubic-bezier(.16, .84, .24, 1) calc(var(--d) + .35s); }
-  .bench.play .bnum, .bench.play .bmeta { opacity: 1; transition: opacity .4s calc(var(--d) + .25s); }
-  .bench.play .bface { animation: bWalk .8s cubic-bezier(.2, .9, .3, 1.2) var(--d) both; }
-  .bench.play .brow:not(.done) .bbadge { opacity: 0; transform: translateY(5px) scale(.9); } .bench.play .brow.done .bbadge { opacity: 1; transform: none; }
-  .brow.done .bface { animation: bCheer .6s ease-out both; } .brow.done .bnum { animation: bPop .45s ease-out; }
-  .bfill { position: relative; overflow: hidden; } .brow.done:not(.braw) .bfill::after { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, transparent 20%, rgba(255,255,255,.35) 50%, transparent 80%); transform: translateX(-100%); animation: bSweep 1.1s ease-out .1s; }
-  .hero .film + .bench { margin-top: 30px; }
-  @keyframes bFloat { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-1.6px) } }
-  @keyframes bBlink { 0%,93%,100% { transform: scaleY(1) } 96.5% { transform: scaleY(.12) } }
-  @keyframes bWalk { 0% { opacity: 0; transform: translateX(-46px) } 55% { opacity: 1; transform: translateX(2px) translateY(-9px) } 75% { transform: translateX(0) translateY(0) scaleY(.9) } 100% { opacity: 1; transform: none } }
-  @keyframes bCheer { 0% { transform: none } 35% { transform: translateY(-13px) scaleY(1.1) } 70% { transform: translateY(0) scaleY(.88) } 100% { transform: none } }
-  @keyframes bPop { 0% { transform: scale(1) } 40% { transform: scale(1.18) } 100% { transform: scale(1) } }
-  @keyframes bSweep { to { transform: translateX(100%) } }
-  @keyframes bSweat { 0% { opacity: 0; transform: translateY(0) } 25% { opacity: .95 } 100% { opacity: 0; transform: translateY(10px) } }
-  @media (prefers-reduced-motion: reduce) { .bface .bbody, .bface .eye { animation: none !important; } .bench.arm .bfill { width: var(--w); } .bench.arm .bnum, .bench.arm .bmeta, .bench.arm .bbadge, .bench.arm .bface { opacity: 1; transform: none; } }
-  @media (max-width: 640px) { .brow { grid-template-columns: 88px minmax(0, 1fr); } .brow .bfaces { grid-row: 2 / span 2; align-self: center; } .brow .btrack { grid-column: 2; } .brow .bmeta { grid-column: 2; text-align: left; min-width: 0; margin-top: 1px; } .bface { width: 24px; height: 24px; flex-basis: 24px; } .brow.braw .bface { width: 30px; height: 30px; flex-basis: 30px; } .bbadge { font-size: 9px; padding: 2px 6px; } }
-  .hero .bench-f { font-family: var(--mono); font-size: 10.5px; color: var(--muted); line-height: 1.65; margin-top: 10px; }
-  .hero .bench-f b { color: var(--dim); font-weight: 700; }
-  .hero .bench-f .bf { display: block; margin-top: 9px; }
-  .btn.soon { opacity: .6; cursor: default; pointer-events: none; }
-  .hero .bench-f a { color: var(--ember); text-decoration: underline; text-underline-offset: 2px; }
-  @media (max-width: 640px) {
-    .hero .bench { padding: 0; }
-    .brow { column-gap: 8px; }
-    .brow .bmeta { min-width: 0; font-size: 9.5px; }
-    .brow .bnum { font-size: 12px; }
-  }
   .fog { position: fixed; inset: 0; z-index: 55; pointer-events: none; overflow: hidden; background: #0d0b0a; transition: opacity .9s ease .05s; }
   .fog i { position: absolute; border-radius: 50%; opacity: .9; mix-blend-mode: screen; will-change: transform; }
   .fog i:nth-child(1) { width: 70vw; height: 70vw; left: -20vw; top: -10vh; background: radial-gradient(circle, rgba(70,52,44,.9), rgba(70,52,44,.35) 35%, transparent 68%); animation: fogA 14s ease-in-out infinite alternate; }
@@ -221,8 +112,6 @@
                   transition: transform 1.3s cubic-bezier(.16,.84,.24,1), filter 1.1s ease, opacity .9s ease; }
 
                           box-shadow: 0 80px 160px -50px rgba(0,0,0,.95), 0 0 0 1px rgba(255,255,255,.04) inset; transform-origin: top left; cursor: zoom-out; }
-  .screen { position: relative; border: 1px solid var(--rule); border-radius: 14px; overflow: hidden; background: var(--panel); box-shadow: 0 60px 120px -60px rgba(0,0,0,.8); aspect-ratio: 1440 / 860; margin-top: 48px; }
-  .screen video { position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: cover; }
 
 
   .problem { padding: 110px 0 0; }
@@ -257,7 +146,6 @@
   .wow p { margin: 18px 0 0; color: var(--dim); font-size: 17px; max-width: 42ch; }
   .wow .proof { margin-top: 22px; font-family: var(--mono); font-size: 12.5px; color: var(--ink); display: flex; flex-direction: column; gap: 6px; }
   .wow .proof span::before { content: "— "; color: var(--ember); }
-  .wow .screen { margin: 0; aspect-ratio: 760 / 800; max-width: 520px; margin-left: auto; margin-right: auto; }
 
 
   .measure { border: 1px solid var(--rule); border-radius: 14px; background: var(--panel); padding: 24px 26px; }
@@ -300,7 +188,6 @@
   .deskmock .kind.sel { background: var(--panel); border: 1px solid var(--ember); color: var(--ink); }
   .deskmock .kind svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
   .deskmock .kind.a svg { color: var(--ember); } .deskmock .kind.t svg { color: var(--ok); } .deskmock .kind.d svg { color: #d8a657; } .deskmock .kind.c svg { color: var(--dim); }
-  .deskmock .stage { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 1px; background: var(--rule); }
   .deskmock .cell { background: var(--bg); padding: 9px 12px; color: var(--muted); display: flex; flex-direction: column; gap: 6px; min-height: 0; }
   .deskmock .cell.tall { grid-row: span 2; }
   .deskmock .cell .hd { display: flex; gap: 7px; align-items: center; color: var(--ink); } .deskmock .cell .hd em { font-style: normal; color: var(--ember); }
@@ -366,8 +253,6 @@
   .method { margin-top: 72px; }
   .method .head { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; margin-bottom: 8px; }
   .method h2 { font-size: clamp(26px, 3vw, 38px); }
-  .method .lede { color: var(--dim); max-width: 62ch; margin: 10px 0 30px; font-size: 17px; }
-  .method .lede b { color: var(--ink); font-weight: 600; }
 
   .steps3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: 14px; overflow: hidden; }
   .steps3 > div { background: var(--panel); padding: 22px 22px 24px; display: flex; flex-direction: column; gap: 8px; }
@@ -379,9 +264,6 @@
 
   .premise { margin-top: 68px; }
   .premise h2 { font-size: clamp(26px, 3vw, 38px); margin: 8px 0 0; }
-  .premise .lede { color: var(--dim); max-width: 66ch; margin: 14px 0 0; font-size: 17px; line-height: 1.6; }
-  .premise .lede + .lede { margin-top: 12px; }
-  .premise .lede b { color: var(--ink); font-weight: 600; }
   .premise .steps3 { margin-top: 28px; }
   .premise .stats { margin-top: 22px; }
 
@@ -396,7 +278,6 @@
   @media (max-width: 720px) { .five li { grid-template-columns: 1fr; gap: 4px; } }
   .compare { margin-top: 68px; }
   .compare h2 { font-size: clamp(26px, 3vw, 38px); margin: 8px 0 0; }
-  .compare .lede { color: var(--dim); max-width: 66ch; margin: 14px 0 0; font-size: 17px; line-height: 1.6; }
   .cmp { margin-top: 28px; border: 1px solid var(--rule); border-radius: 14px; background: var(--panel); overflow: hidden; }
   .cmp-h, .cmp-r { display: grid; grid-template-columns: .86fr 1.12fr 1.22fr 1.4fr; }
   .cmp-h > span { padding: 12px 16px; font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--rule); }
@@ -444,21 +325,221 @@
   .board .foot { padding: 11px 20px; background: var(--panel); border-top: 1px solid var(--rule); font-family: var(--mono); font-size: 11.5px; color: var(--muted); display: flex; gap: 8px; flex-wrap: wrap; align-items: baseline; }
   .board .foot a { color: var(--ember); }
   @media (max-width: 720px) { .board .bh { display: none; } .board .br { grid-template-columns: 1fr 1fr; row-gap: 4px; } .board .br .who { grid-column: 1 / -1; } }
+  .hero h1.giant { font-size: clamp(56px, 15vw, 210px); line-height: .88; letter-spacing: -.045em; text-transform: uppercase; max-width: none; }
+  .hero .hero-sub { font-size: 15px; line-height: 1.55; max-width: 58ch; }
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; } html { scroll-behavior: auto; } .bar .fill { transition: none; } }
+
+  /* THE COWORK LOOK (2026-11-12): the app's own default tokens (the ember theme in src/styles.css). Near-black, one warm accent,
+     monospace labels, 1px lines, panels that are only slightly lighter than the page, and tinted monogram tiles like the spaces. */
+  :root {
+    --cw-bg: oklch(0.15 0.006 55); --cw-panel: oklch(0.18 0.007 55); --cw-line: oklch(0.26 0.006 55);
+    --cw-fg: oklch(0.93 0.006 60); --cw-dim: oklch(0.66 0.012 58); --cw-muted: oklch(0.63 0.01 58);
+    --cw-ok: oklch(0.74 0.13 150); --cw-warn: oklch(0.8 0.14 80); --cw-bad: oklch(0.64 0.19 25); --cw-brand: oklch(0.64 0.11 38);
+    --glass: rgba(16, 13, 15, .5);
+    --glass-edge: rgba(255, 255, 255, .12);
+  }
+  html { background: var(--cw-bg); }
+  body { background: transparent; }
+  .fog { display: none; }
+  nav.top { background: color-mix(in srgb, var(--cw-bg) 62%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--glass-edge); }
+  .cmp, .plan, .os { background: var(--glass); border-color: var(--glass-edge); border-radius: 10px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+  .cmp-h > span, .cmp-r > * { border-bottom-color: var(--glass-edge); }
+  .cmp-r .with { background: color-mix(in srgb, var(--cw-brand) 12%, transparent); }
+  .faq details { background: var(--glass); border: 1px solid var(--glass-edge); border-radius: 10px; padding: 14px 18px; margin-top: 10px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+  .faq details:last-child { border-bottom: 1px solid var(--glass-edge); }
+
+
+
+
+  /* THE FILM: a sticky stage; scrolling moves the camera, the team draws itself, the loop runs and the page ships */
+
+
+  .graphs { padding-top: 120px; }
+  .graphs h2 { font-size: clamp(30px, 3.6vw, 44px); font-weight: 700; max-width: 22ch; }
+  .graphs .lede { max-width: 62ch; }
+  /* the wallpaper, from the Cowork screen: a maroon glow up top, blue-black below */
+  body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; background:
+    radial-gradient(70vmax 48vmax at 46% 4%, rgba(92, 30, 40, .85), transparent 62%),
+    radial-gradient(60vmax 40vmax at 62% 26%, rgba(60, 20, 28, .55), transparent 65%),
+    radial-gradient(70vmax 60vmax at 80% 100%, rgba(18, 36, 46, .9), transparent 62%),
+    linear-gradient(180deg, #120c0e 0%, #0e1218 60%, #0a0e12 100%); }
+
+  /* THE COWORK WINDOW: a stage with the Leader chat on the left, the circuit on the right, both as glass panes over the wallpaper */
+  .reel { position: relative; height: 420vh; margin-top: 36px; }
+  .reel.static { height: auto; }
+  .stage { position: sticky; top: 0; height: 100vh; height: 100svh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 0 16px; box-sizing: border-box; }
+  .reel.static .stage { position: relative; height: auto; padding: 0; }
+  .tabs { display: inline-flex; gap: 2px; padding: 3px; border-radius: 999px; background: rgba(18, 14, 16, .5); border: 1px solid rgba(255, 255, 255, .12); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); font-family: var(--body); font-size: 13px; }
+  .tabs span { padding: 5px 14px; border-radius: 999px; color: var(--cw-dim); }
+  .tabs .on { background: rgba(255, 255, 255, .12); color: var(--cw-fg); }
+  .win { width: min(1240px, 96vw); height: min(580px, calc(100svh - 190px)); display: grid; grid-template-columns: 1fr 1.6fr; gap: 10px; }
+  .pane { position: relative; display: flex; flex-direction: column; min-height: 0; border-radius: 12px; background: rgba(16, 13, 15, .5); border: 1px solid rgba(255, 255, 255, .12); backdrop-filter: blur(18px) saturate(1.08); -webkit-backdrop-filter: blur(18px) saturate(1.08); overflow: hidden; }
+  .ph { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid rgba(255, 255, 255, .1); font-family: var(--mono); font-size: 12px; color: var(--cw-dim); white-space: nowrap; overflow: hidden; }
+  .ph b { color: var(--cw-fg); font-weight: 600; }
+  .ph .sp { flex: 1; }
+  .ph .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--cw-ok); flex: 0 0 auto; }
+  .ph .dot.run, #pdot.run { background: var(--cw-brand); animation: gpulse 1.6s infinite; }
+  @keyframes gpulse { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--cw-brand) 55%, transparent); } 70% { box-shadow: 0 0 0 7px transparent; } 100% { box-shadow: 0 0 0 0 transparent; } }
+  .pill { padding: 2px 8px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, .14); font-size: 11px; }
+  .tabsm em { font-style: normal; padding: 2px 8px; border-radius: 6px; }
+  .tabsm em.on { background: rgba(255, 255, 255, .1); color: var(--cw-fg); }
+  .log { flex: 1; min-height: 0; overflow: hidden; padding: 14px 16px; display: flex; flex-direction: column; justify-content: flex-start; gap: 12px; font-family: var(--mono); font-size: clamp(11.5px, 1.1vw, 13px); line-height: 1.6; color: var(--cw-fg); }
+  .msg { margin: 0; opacity: 0; transform: translateY(6px); transition: opacity .5s ease, transform .5s ease; }
+  .msg.in { opacity: 1; transform: none; }
+  .msg .who { display: block; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--cw-dim); margin-bottom: 2px; }
+  .msg.lead .who { color: var(--cw-brand); }
+  .input { display: flex; gap: 8px; align-items: center; min-height: 42px; padding: 10px 14px; border-top: 1px solid rgba(255, 255, 255, .1); font-family: var(--mono); font-size: 13px; color: var(--cw-fg); }
+  .input .pr { color: var(--cw-brand); }
+  .caret { display: inline-block; width: 7px; height: 1em; background: var(--cw-fg); vertical-align: -2px; animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .board { position: relative; flex: 1; min-height: 0; overflow: hidden; }
+  .hud { width: min(1240px, 96vw); display: flex; gap: 16px; align-items: center; font-family: var(--mono); font-size: 11px; color: var(--cw-dim); white-space: nowrap; }
+  .hud .prog { flex: 1; height: 2px; background: rgba(255, 255, 255, .12); border-radius: 2px; overflow: hidden; }
+  .hud .prog i { display: block; height: 100%; width: 0; background: var(--cw-brand); }
+  .hud b { color: var(--cw-fg); font-weight: 600; }
+
+  @keyframes march { to { stroke-dashoffset: -.07; } }
+
+  .kinds { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 10px; margin-top: 56px; }
+  .kinds > div { display: flex; gap: 12px; align-items: flex-start; border-radius: 10px; padding: 13px 14px; text-align: left; background: var(--glass); border: 1px solid color-mix(in srgb, var(--c) 30%, transparent); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+  .kinds .mono { flex: 0 0 30px; height: 30px; display: grid; place-items: center; border-radius: 8px; font-style: normal; font-family: var(--mono); font-size: 13px; font-weight: 600; color: color-mix(in srgb, var(--c) 55%, #fff); background: color-mix(in srgb, var(--c) 16%, transparent); border: 1px solid color-mix(in srgb, var(--c) 45%, transparent); }
+  .kinds p { margin: 0; }
+  .kinds b { display: block; font-family: var(--body); font-size: 15px; color: var(--cw-fg); margin-bottom: 3px; }
+  .kinds span { font-size: 13.5px; color: var(--cw-dim); line-height: 1.45; }
+  @media (max-width: 820px) { .reel { height: 360vh; } .win { grid-template-columns: 1fr; } .pane.chat { display: none; } }
+
+  /* THE TABS AND THE OTHER SCREENS */
+  .tabs button { font: inherit; color: var(--cw-dim); background: none; border: 0; padding: 5px 14px; border-radius: 999px; cursor: pointer; transition: color .2s, background .2s; }
+  .tabs button:hover { color: var(--cw-fg); }
+  .tabs button[aria-pressed="true"] { background: rgba(255, 255, 255, .12); color: var(--cw-fg); }
+  .tabs button:focus-visible { outline: 2px solid var(--ember); outline-offset: 2px; }
+  .view { display: none; width: min(1240px, 96vw); height: min(580px, calc(100svh - 190px)); }
+  .stage[data-view="xray"] .v-cowork, .stage[data-view="sagas"] .v-cowork { display: none; }
+  .stage[data-view="xray"] .v-xray, .stage[data-view="sagas"] .v-sagas { display: flex; }
+
+  /* THE PALETTE: no brown. The accent is a cool ice-teal, the headline is white, the buttons are glass */
+  :root {
+    --cw-bg: oklch(0.15 0.005 260); --cw-brand: oklch(0.8 0.09 195);
+    --bg: #0d0f13; --panel: #14171c; --rule: rgba(255, 255, 255, .12); --rule2: rgba(255, 255, 255, .22);
+    --ink: #f2f4f7; --dim: #aab1bb; --muted: #7f8691;
+    --ember: oklch(0.8 0.09 195); --ember-soft: color-mix(in srgb, var(--ember) 14%, transparent);
+    --glass: rgba(255, 255, 255, .05); --glass-edge: rgba(255, 255, 255, .16);
+  }
+  .hero h1 em { color: var(--ink); }
+  .cta .btn.ember, nav.top .btn.ember, .plan .btn.ember, .dl .os { background: color-mix(in srgb, var(--ember) 20%, transparent); border-color: color-mix(in srgb, var(--ember) 55%, transparent); color: var(--ink); backdrop-filter: blur(16px) saturate(150%); -webkit-backdrop-filter: blur(16px) saturate(150%); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .14); }
+  .btn.ember:hover { background: color-mix(in srgb, var(--ember) 32%, transparent); filter: none; }
+
+  /* THE GLASS: translucent panes with a blur, a light edge and a top highlight, so the wallpaper reads through */
+  .cmp, .plan, .os, .faq details, .kinds > div, .tabs, .nav.top, nav.top {
+    background: var(--glass); border-color: var(--glass-edge);
+    backdrop-filter: blur(22px) saturate(150%); -webkit-backdrop-filter: blur(22px) saturate(150%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .12);
+  }
+  .pane, .xf { background: rgba(255, 255, 255, .04); border-color: rgba(255, 255, 255, .16); backdrop-filter: blur(22px) saturate(150%); -webkit-backdrop-filter: blur(22px) saturate(150%); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .12); }
+  body::before { background:
+    radial-gradient(70vmax 48vmax at 46% 4%, rgba(92, 30, 40, .85), transparent 62%),
+    radial-gradient(60vmax 40vmax at 62% 26%, rgba(60, 20, 28, .55), transparent 65%),
+    radial-gradient(70vmax 60vmax at 80% 100%, rgba(18, 36, 46, .9), transparent 62%),
+    radial-gradient(50vmax 40vmax at 14% 72%, rgba(40, 64, 88, .45), transparent 65%),
+    linear-gradient(180deg, #120c0e 0%, #0e1218 60%, #0a0e12 100%); }
+
+  /* THE X-RAY AND SAGAS SCREENS: the app's own design - its ember graphite tokens and its system font */
+  .v-xray, .v-sagas {
+    --c-bg: oklch(0.15 0.006 55); --c-panel: oklch(0.18 0.007 55); --c-border: oklch(0.26 0.006 55);
+    --c-fg: oklch(0.93 0.006 60); --c-dim: oklch(0.66 0.012 58); --c-muted: oklch(0.63 0.01 58);
+    --c-ok: oklch(0.74 0.13 150); --c-warn: oklch(0.8 0.14 80); --c-bad: oklch(0.64 0.19 25); --c-brand: oklch(0.64 0.11 38); --c-hover: oklch(0.19 0.007 55);
+    background: color-mix(in srgb, var(--c-bg) 90%, transparent); color: var(--c-fg); font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 14px;
+    box-shadow: none; padding: 26px 30px; overflow: auto; flex-direction: column; gap: 0;
+  }
+  .app-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+  .app-head h1 { margin: 0; font-size: 22px; font-weight: 600; letter-spacing: -.01em; }
+  .app-head h1 span { color: var(--c-muted); font-weight: 400; font-size: 15px; margin-left: 6px; }
+  .app-tools { display: flex; gap: 8px; align-items: center; }
+  .seg { display: flex; }
+  .seg button, .primary { font: inherit; font-size: 13px; background: transparent; border: 1px solid var(--c-border); color: var(--c-fg); border-radius: 7px; padding: 4px 11px; cursor: pointer; }
+  .seg button:first-child { border-radius: 7px 0 0 7px; } .seg button:last-child { border-radius: 0 7px 7px 0; margin-left: -1px; }
+  .seg button.on { background: var(--c-hover); }
+  .primary { background: var(--c-brand); border-color: var(--c-brand); color: #fff; }
+
+  .grp { margin-bottom: 22px; }
+  .ghead { display: flex; align-items: center; gap: 8px; padding: 6px 4px; color: var(--c-dim); font-size: 13px; border-bottom: 1px solid var(--c-border); }
+  .ghead span { color: var(--c-muted); }
+  .row { display: flex; align-items: center; gap: 12px; padding: 9px 4px; border-bottom: 1px solid var(--c-border); cursor: pointer; transition: background .15s; }
+  .row:hover { background: var(--c-hover); }
+  .row .ic { display: inline-flex; flex: 0 0 auto; }
+  .row .rt { flex: 1; min-width: 0; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .row .rp { font-size: 12px; color: var(--c-dim); min-width: 46px; text-align: right; }
+  .row .rc { font-size: 12px; color: var(--c-muted); min-width: 46px; text-align: right; }
+  .row .ra { font-size: 12px; color: var(--c-muted); min-width: 40px; text-align: right; }
+
+  .xcols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .xcard { border: 1px solid var(--c-border); border-radius: 10px; background: var(--c-panel); padding: 16px 18px; }
+  .xcard.wide { grid-column: 1 / -1; }
+  .xlabel { font-family: ui-monospace, "JetBrains Mono", Menlo, monospace; font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--c-dim); margin-bottom: 12px; }
+  .gl { display: grid; grid-template-columns: 62px 1fr 42px; align-items: center; gap: 10px; font-family: ui-monospace, "JetBrains Mono", Menlo, monospace; font-size: 12px; margin-bottom: 8px; }
+  .gl .gn { color: var(--c-fg); } .gl .gv { color: var(--c-dim); text-align: right; }
+  .gb { height: 8px; border-radius: 4px; background: var(--c-hover); overflow: hidden; }
+  .gb i { display: block; height: 100%; border-radius: 4px; box-shadow: 0 0 10px currentColor; }
+  .xnote { font-family: ui-monospace, "JetBrains Mono", Menlo, monospace; font-size: 10px; color: var(--c-muted); margin-top: 10px; }
+  .dr { display: flex; justify-content: space-between; gap: 12px; padding: 7px 0; border-bottom: 1px solid var(--c-border); font-family: ui-monospace, "JetBrains Mono", Menlo, monospace; font-size: 12px; }
+  .dr code { color: var(--c-fg); } .dr span { color: var(--c-warn); }
+  .sr { display: grid; grid-template-columns: minmax(180px, 1.4fr) 1fr 34px; gap: 12px; align-items: center; padding: 6px 0; font-family: ui-monospace, "JetBrains Mono", Menlo, monospace; font-size: 12px; }
+  .sr code { color: var(--c-fg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sr .sbar { height: 4px; border-radius: 2px; background: var(--c-hover); overflow: hidden; }
+  .sr .sbar i { display: block; height: 100%; }
+  .sr b { text-align: right; font-weight: 600; }
+  @media (max-width: 820px) { .xcols { grid-template-columns: 1fr; } }
+  .board svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  #world text { font-family: var(--body); fill: var(--cw-fg); font-size: 14.5px; font-weight: 600; }
+  #world .kind { font-family: var(--mono); font-size: 9.5px; letter-spacing: .12em; font-weight: 400; fill: var(--cw-dim); }
+  #world .mdl { font-family: var(--mono); font-size: 9.5px; fill: var(--cw-dim); }
+  #world .sub { font-family: var(--mono); font-size: 10px; font-weight: 400; fill: var(--cw-dim); }
+  #world .lbl { font-family: var(--mono); font-size: 10px; font-weight: 400; fill: var(--cw-brand); }
+  #world .nd { fill: rgba(22, 19, 21, .66); stroke: rgba(255, 255, 255, .16); stroke-width: 1; }
+  #world .nd.dash { stroke-dasharray: 4 4; }
+  #world .pins { stroke: rgba(255, 255, 255, .3); stroke-width: 3; stroke-dasharray: 1.5 3; fill: none; }
+  #world .sd { fill: var(--cw-muted); }
+  #world .stq, #world .str, #world .std { font-family: var(--mono); font-size: 9.5px; font-weight: 400; fill: var(--cw-dim); }
+  #world .str, #world .std { display: none; }
+  #world .step.run .stq, #world .step.done .stq { display: none; }
+  #world .step.run .str { display: inline; fill: var(--cw-brand); }
+  #world .step.done .std { display: inline; fill: var(--cw-ok); }
+  #world .step.done .str { display: none; }
+  #world .step.run .sd { fill: var(--cw-brand); animation: gpulse 1.2s infinite; }
+  #world .step.done .sd { fill: var(--cw-ok); }
+  #world .cost { font-family: var(--mono); font-size: 9.5px; font-weight: 600; fill: var(--cw-ok); }
+  #world .acc { fill: none; }
+  #world .edge { fill: none; stroke: rgba(255, 255, 255, .24); stroke-width: 1.3; stroke-dasharray: 1; stroke-dashoffset: 0; }
+  #world .loop { fill: none; stroke: var(--cw-brand); stroke-width: 1.4; stroke-dasharray: .04 .03; animation: march 1s linear infinite; }
+  #world .step.run .nd { stroke: var(--c); stroke-width: 1.4; }
+  #world .tick { display: none; }
+  #world .pkg { display: none; }
+  .stage.flow #world .pkg { display: inline; }
+  #world .pk { fill: var(--cw-brand); }
+  #world .pk.ink { fill: var(--cw-fg); }
+  .js #world .step { opacity: 0; transform-box: fill-box; transform-origin: center; transform: scale(.94); transition: opacity .6s ease, transform .6s cubic-bezier(.2, .8, .2, 1); }
+  .js #world .step.on { opacity: 1; transform: none; }
+  .js #world .loopg { opacity: 0; }
+  .js #world .loopg.on { opacity: 1; }
+  @media (prefers-reduced-motion: reduce) { #world .loop { animation: none; } .stage.flow #world .pkg { display: none; } .caret { animation: none; } }
+
+  /* THE HEADLINE: bold, glassy and sharp: no halo, no stroke, no blur */
+  .hero h1.giant { margin-bottom: 34px; transform: none; filter: none; text-shadow: none; }
+  .hero h1.giant .w, html .hero h1.giant .w { filter: none !important; transform: none; background: linear-gradient(110deg, #ffffff 0%, #e4faf6 34%, #8fd6d0 55%, #d9e2ea 78%, #ffffff 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
 
   /* EDGE FADE (2026-10-13): the plate image is sized to its own aspect (same rendered size and position as contain + object-position), so an oval mask on the image fades every side to transparent; no rectangular edge at any viewport. */
   .hero .fold .plate { -webkit-mask-image: none; mask-image: none; }
-  .hero .fold .plate img { position: absolute; left: 50%; top: 58%; width: auto; height: auto; max-width: 100%; max-height: 100%; transform: translate(-50%, -58%); -webkit-mask-image: radial-gradient(ellipse closest-side at 50% 50%, #000 45%, rgba(0,0,0,.75) 68%, rgba(0,0,0,.25) 88%, transparent 100%); mask-image: radial-gradient(ellipse closest-side at 50% 50%, #000 45%, rgba(0,0,0,.75) 68%, rgba(0,0,0,.25) 88%, transparent 100%); -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-size: 100% 100%; mask-size: 100% 100%; }
-  @media (max-width: 640px) { .hero .fold .plate { -webkit-mask-image: none; mask-image: none; } .hero .fold .plate img { top: 48%; transform: translate(-50%, -48%); } }
 </style>
 
 <nav class="top"><div class="wrap">
   <a class="mark" href="#top" aria-label="antiloki">antiloki<em>.</em></a>
   <span class="sp"></span>
+  <a class="q" href="#graphs">Graphs</a>
   <a class="q" href="#compare">Compared</a>
+  <a class="q" href="/docs.html">Docs</a>
   <a class="q" href="/blog/">Blog</a>
-  <a class="q" href="#pricing">Pricing</a>
-  <a class="btn sm ember" href="#download">Download · free 14 days</a>
+  <a class="q" href="#open">Free</a>
+  <a class="btn sm ember" href="#download">Download · free</a>
 </div></nav>
 
 <main id="top">
@@ -473,50 +554,12 @@
       <source type="image/webp" data-srcset="assets/hero-judith.webp">
       <img alt="" width="2400" height="1780" decoding="async" fetchpriority="low" data-desktop="assets/hero-judith.png" data-mobile="assets/hero-judith-mobile.png">
     </picture>
-    <span class="eyebrow">A desktop app for merging the subscriptions you have into one coding agent.<br>Windows today · the Linux build is older · macOS soon, see <a href="#download" style="color:inherit">Download</a></span>
-    <h1 style="margin-top:14px"><em>Build +590% more on your weekly limit, 6.9× cheaper, with the same code quality.</em></h1>
-    <p class="lede" style="margin-top:10px">Claude Grok, Gemini Codex — antiloki merges your existing model subscriptions into specialized coding agents. <b>No new account and no extra subscription: antiloki drives the AI providers you are already signed in to, all local and private.</b></p>
-    <div class="cta"><a class="btn ember" href="#download">Download — free for 14 days</a></div>
-    <a class="scrollcue" href="#film" aria-label="Scroll to the film"><span>scroll</span><i></i></a>
+    <span class="eyebrow">Vibe graphing IDE · an agentic graph engineering loop · free<br>Windows today · the Linux build is older · macOS soon, see <a href="#download" style="color:inherit">Download</a></span>
+    <h1 class="giant" style="margin-top:14px"><em>VIBE GRAPHING</em></h1>
+    <p class="lede hero-sub" style="margin-top:10px">antiloki is an agentic graph engineering loop IDE. Your Leader drafts the team as a graph of agents, tools, checks and gates; you edit the board, set the budget and run it on the AI subscriptions you already have. <b>Free: no account, no trial clock, no API key to paste.</b></p>
+    <div class="cta"><a class="btn ember" href="#download">Download — free</a></div>
+    <a class="scrollcue" href="#graphs" aria-label="Scroll to the graph"><span>scroll</span><i></i></a>
     </div>
-    <div class="film" id="film">
-      <canvas id="film-canvas" role="img" aria-label="A short animated film. One agent, raw Claude Opus, carries a whole task alone and finishes it in 108 seconds for $0.443. Then his friends arrive, each moving in its own way, and the cheapest one that passes, Composer, finishes the same task in 72 seconds for $0.065, 6.8 times cheaper, at 36.3 of 37 checks."></canvas>
-    </div>
-
-    <div class="bench" aria-label="cost per run on the same task">
-      <div class="brow bwin" data-team="circle|#19a89d" data-mood="happy" style="--d:0.00s">
-        <span class="bname">antiloki · routed to Composer 2.5, the seat the router picks for this task</span>
-        <span class="bfaces" aria-hidden="true"></span>
-        <span class="btrack"><span class="bfill" style="--w:11.8%"></span><span class="bnum" data-v="0.065">$0.065</span><span class="bbadge">6.8× cheaper</span></span>
-        <span class="bmeta">36.3/37 · 72 s · n=12</span>
-      </div>
-      <div class="brow braw" data-team="hex|#1e88f0" data-mood="neutral" style="--d:0.18s">
-        <span class="bname">raw Codex, one session</span>
-        <span class="bfaces" aria-hidden="true"></span>
-        <span class="btrack"><span class="bfill" style="--w:27.1%"></span><span class="bnum" data-v="0.149">$0.149</span></span>
-        <span class="bmeta">36/37 · 147 s · n=3</span>
-      </div>
-      <div class="brow braw" data-team="triangle|#f26b21" data-mood="neutral" style="--d:0.36s">
-        <span class="bname">raw Claude Sonnet, one session</span>
-        <span class="bfaces" aria-hidden="true"></span>
-        <span class="btrack"><span class="bfill" style="--w:30.2%"></span><span class="bnum" data-v="0.166">$0.166</span></span>
-        <span class="bmeta">37/37 · 91 s · n=3</span>
-      </div>
-      <div class="brow" data-team="triangle|#f26b21,circle|#19a89d,triangle|#f26b21" data-mood="neutral" style="--d:0.54s">
-        <span class="bname">antiloki · Sonnet plans, Composer writes, Opus checks (the full pipeline with the optional QA switched on)</span>
-        <span class="bfaces" aria-hidden="true"></span>
-        <span class="btrack"><span class="bfill" style="--w:47.3%"></span><span class="bnum" data-v="0.26">$0.26</span><span class="bbadge">1.7× cheaper</span></span>
-        <span class="bmeta">36.3/37 · 142–235 s · n=3</span>
-      </div>
-      <div class="brow braw" data-team="egg|#e6b31e" data-mood="tired" style="--d:0.72s">
-        <span class="bname">raw Claude Opus 5.5, one session</span>
-        <span class="bfaces" aria-hidden="true"></span>
-        <span class="btrack"><span class="bfill" style="--w:80.5%"></span><span class="bnum" data-v="0.443">$0.443</span></span>
-        <span class="bmeta">37/37 · 108 s · n=3</span>
-      </div>
-    </div>
-
-    <div class="cta"><a class="btn ember" href="#download">Download — free for 14 days</a></div>
     <span class="fine">one binary · no account · your current subscription is the engine</span>
   </div>
 
@@ -529,47 +572,250 @@
       scripts: <a href="/blog/every-run.html">Every run →</a></p>
   </section>
 
-  <section class="wrap evolve" id="evolve" aria-label="Models evolve, and antiloki evolves with them">
-    <!-- Caravaggio, Narcissus, c. 1597–99. Public-domain scan: Wikimedia Commons, File:Narcissus-Caravaggio (1594-96).jpg -->
-    <picture class="plate" aria-hidden="true">
-      <source media="(max-width: 640px)" type="image/avif" data-srcset="assets/evolve-narcissus-mobile.avif">
-      <source media="(max-width: 640px)" type="image/webp" data-srcset="assets/evolve-narcissus-mobile.webp">
-      <source type="image/avif" data-srcset="assets/evolve-narcissus.avif">
-      <source type="image/webp" data-srcset="assets/evolve-narcissus.webp">
-      <img alt="" width="1400" height="1695" decoding="async" fetchpriority="low" data-desktop="assets/evolve-narcissus.png" data-mobile="assets/evolve-narcissus-mobile.png">
-    </picture>
-    <div class="evo-wash" aria-hidden="true"></div>
-    <h2 class="evo-big"><span class="ln"><span class="w ev" style="--i:0">Model</span> <span class="w ev" style="--i:1">evolving</span></span><span class="ln"><span class="w eq" style="--i:2">=</span> <span class="w em ev" style="--i:3">antiloki</span> <span class="w ev" style="--i:4">evolving.</span></span></h2>
-    <p class="evo-sub"><span class="w" style="--i:5">They don’t compete,</span> <span class="w hl" style="--i:6">they embrace each other.</span></p>
-    <div class="evo-scene" id="evo-scene" aria-hidden="true"></div>
-  </section>
-
-  <section class="wrap compare" id="compare" aria-label="Cursor, Claude Code, and antiloki">
-    <span class="eyebrow">cursor, claude code, antiloki</span>
-    <h2>The seats, and the layer that drives them.</h2>
-    <p class="lede">Cursor is the editor. Claude Code is a terminal agent on Anthropic models, with hooks, subagents and permission modes of its own. antiloki does not replace either. It drives them, and the other seats you already signed in to.</p>
-    <div class="cmp" role="table" aria-label="Cursor, Claude Code and antiloki">
-      <div class="cmp-h" role="row"><span role="columnheader">what you want</span><span role="columnheader">Cursor</span><span role="columnheader">Claude Code</span><span role="columnheader">antiloki</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Where you edit</b><span class="seat" role="cell"><i>Cursor</i>The IDE.</span><span class="seat" role="cell"><i>Claude Code</i>The terminal.</span><span class="seat" role="cell"><i>antiloki</i>Whichever you already use. It does not take the editor.</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Multi-vendor</b><span class="seat" role="cell"><i>Cursor</i>The models Cursor offers, inside Cursor.</span><span class="seat" role="cell"><i>Claude Code</i>Anthropic models only.</span><span class="seat mark" role="cell"><i>antiloki</i>One router across Claude Code, Codex, Cursor CLI and OpenCode.<em>Cross-vendor. The same ask can change seats.</em></span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Model pairing</b><span class="seat" role="cell"><i>Cursor</i>You pick, or Auto, per request.</span><span class="seat" role="cell"><i>Claude Code</i>A Claude model, and subagents when you split the work.</span><span class="seat mark" role="cell"><i>antiloki</i>Planner × worker × QA, chosen from measured runs.<em>The pairing comes from the runs, not from the picker.</em></span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Write scope</b><span class="seat" role="cell"><i>Cursor</i>Rules, prompts and approvals.</span><span class="seat" role="cell"><i>Claude Code</i>Permission modes, and PreToolUse hooks if you add them.</span><span class="seat mark" role="cell"><i>antiloki</i>Out-of-scope edits are refused, per agent.<em>On by default, on every vendor, not only where a hook was written.</em></span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Isolation</b><span class="seat" role="cell"><i>Cursor</i>The checkout you have open, unless you split it.</span><span class="seat" role="cell"><i>Claude Code</i>A worktree when you ask for one, including a background agent.</span><span class="seat mark" role="cell"><i>antiloki</i>A git worktree and a branch per agent.<em>Isolated from the start, on every seat. You merge when you say.</em></span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Verification</b><span class="seat" role="cell"><i>Cursor</i>The model, or a check you ask it to run.</span><span class="seat" role="cell"><i>Claude Code</i>The model, or a command you ask it to run. A hook can require one.</span><span class="seat mark" role="cell"><i>antiloki</i>Your lint, test and build. A skipped gate is not a pass.<em>The repo’s gates, not the model’s say-so.</em></span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Receipts</b><span class="seat" role="cell"><i>Cursor</i>Usage, by model.</span><span class="seat" role="cell"><i>Claude Code</i>Tokens and cost for that session.</span><span class="seat mark" role="cell"><i>antiloki</i>Per task: the agent, the model, the time and the cost.<em>One record for the task, whichever seat did the work.</em></span></div>
+<section class="graphs" id="graphs" aria-label="Vibe graphing: a team drawn and run, as a film">
+  <div class="wrap">
+    <span class="eyebrow">vibe graphing</span>
+    <h2>A team is a graph. Watch one get drawn, and run.</h2>
+    <p class="lede">Scroll. The Leader drafts a team as a graph, the circuit lifts off the plane as it runs, the branches fan out, a loop runs until its check passes, and nothing ships until you say so.</p>
+  </div>
+  <div class="reel" id="reel">
+    <div class="stage" id="stage" data-view="cowork">
+      <div class="tabs" role="tablist" aria-label="screens">
+        <button type="button" role="tab" data-view="cowork" aria-pressed="true">Cowork</button>
+        <button type="button" role="tab" data-view="xray" aria-pressed="false">X-ray</button>
+        <button type="button" role="tab" data-view="sagas" aria-pressed="false">Sagas</button>
+      </div>
+      <div class="win v-cowork">
+        <section class="pane chat">
+          <header class="ph"><span class="dot"></span><b>Leader</b><span class="pill">claude · opus</span><span class="sp"></span><span>⋯</span></header>
+          <div class="log">
+            <p class="msg you" data-at=".16"><span class="who">you</span>launch a landing page: two designers' takes, a copywriter, a contrast check, and I approve before anything ships.</p>
+            <p class="msg lead" data-at="0.2"><span class="who">● leader</span>Drafting the team as a graph: a planner, two designers, a copywriter, a contrast check, QA and a gate.</p>
+            <p class="msg lead" data-at="0.37"><span class="who">● leader</span>Every node is a real step: an agent, a tool, a fork, a check, a gate.</p>
+            <p class="msg lead" data-at="0.53"><span class="who">● leader</span>Forks run side by side. Each node records its seat, model, time and cost.</p>
+            <p class="msg lead" data-at="0.73"><span class="who">● leader</span>A loop runs until its check passes, under a max count and a cost cap.</p>
+            <p class="msg lead" data-at="0.84"><span class="who">● leader</span>QA reviews the work. Nothing ships until you say so.</p>
+            <p class="msg lead" data-at="0.95"><span class="who">● leader</span>Approved, and delivered. Draw the team. Run the loop. Read the receipts.</p>
+          </div>
+          <div class="input"><span class="pr">❯</span><span id="typed"></span><i class="caret"></i></div>
+        </section>
+        <section class="pane circ">
+          <header class="ph"><span class="dot" id="pdot"></span><b>launch-a-landing-page</b><span class="tabsm"><em class="on">Run</em><em>Edit</em><em>Saga</em></span><span class="sp"></span><span>spent <b id="hud-spent">$0.00</b> of $1.00</span></header>
+          <div class="board">
+            <svg viewBox="0 -80 920 680" role="img" aria-label="An example team circuit drawn and run as a film. The Leader plans a page, forks a web search and a designer, the copywriter and designer join, a contrast check loops until it passes, QA reviews, a human gate approves, and the page is delivered.">
+              <defs>
+                <pattern id="gdots" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="1.5" cy="1.5" r="1.2" fill="rgba(255,255,255,.08)"/></pattern>
+                <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8a8078"/></marker>
+                <marker id="arrE" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#e0a07e"/></marker>
+              </defs>
+              <rect x="0" y="-80" width="920" height="680" fill="url(#gdots)"/>
+              <g id="world">
+                <path class="edge" data-edge="0.205" pathLength="1" d="M170,209 L200,209" marker-end="url(#arr)"/>
+                <path class="edge" data-edge="0.215" pathLength="1" d="M350,209 L380,209" marker-end="url(#arr)"/>
+                <path class="edge" data-edge="0.225" pathLength="1" d="M455,170 L455,108" marker-end="url(#arr)"/>
+                <path class="edge" data-edge="0.225" pathLength="1" d="M455,248 L455,310" marker-end="url(#arr)"/>
+                <path class="edge" data-edge="0.235" pathLength="1" d="M530,69 L560,69" marker-end="url(#arr)"/>
+                <path class="edge" data-edge="0.245" pathLength="1" d="M530,349 L635,349 L635,248" marker-end="url(#arr)"/>
+                <path class="edge" data-edge="0.245" pathLength="1" d="M635,108 L635,170" marker-end="url(#arr)"/>
+                <path class="edge" data-edge="0.255" pathLength="1" d="M710,209 L740,209" marker-end="url(#arr)"/>
+                <path class="edge" data-edge="0.265" pathLength="1" d="M815,248 L815,310" marker-end="url(#arr)"/>
+                <path class="edge" data-edge="0.275" pathLength="1" d="M815,388 L815,430" marker-end="url(#arr)"/>
+                <path class="edge" data-edge="0.285" pathLength="1" d="M740,469 L710,469" marker-end="url(#arr)"/>
+                <g class="step loopg" id="loop"><path class="loop" pathLength="1" d="M815,170 L815,69 L710,69" marker-end="url(#arrE)"/><text class="lbl" id="loop-lbl" x="724" y="60"></text></g>
+                <g class="step" data-node="leader" data-at="0.2" data-done="0.24" style="--c:#c97c5c">
+                  <rect class="nd" x="20" y="170" width="150" height="78" rx="8"/>
+                  <path class="pins" d="M15,178 V240 M175,178 V240"/>
+                  <text class="kind" x="32" y="188">LEADER</text>
+                  <text class="mdl" x="158" y="188" text-anchor="end">opus</text>
+                  <text class="ttl" x="32" y="209">Leader</text>
+                  <text class="sub" x="32" y="226">your terminal</text>
+                  <circle class="sd" cx="36" cy="235" r="3.2"/>
+                  <text class="stq" x="46" y="239">queued</text><text class="str" x="46" y="239">running</text><text class="std" x="46" y="239">done</text>
+                </g>
+                <g class="step" data-node="planner" data-at="0.21" data-done="0.38" data-run="0.36,0.38" style="--c:#19a89d">
+                  <rect class="nd" x="200" y="170" width="150" height="78" rx="8"/>
+                  <path class="pins" d="M195,178 V240 M355,178 V240"/>
+                  <text class="kind" x="212" y="188">AGENT</text>
+                  <text class="mdl" x="338" y="188" text-anchor="end">sonnet</text>
+                  <text class="ttl" x="212" y="209">Planner</text>
+                  <text class="sub" x="212" y="226">splits the page</text>
+                  <circle class="sd" cx="216" cy="235" r="3.2"/>
+                  <text class="stq" x="226" y="239">queued</text><text class="str" x="226" y="239">running</text><text class="std" x="226" y="239">done</text>
+                  <text class="cost" x="338" y="239" text-anchor="end">$0.02</text>
+                </g>
+                <g class="step" data-node="fork" data-at="0.22" data-done="0.4" data-run="0.38,0.4" style="--c:#a3998f">
+                  <rect class="nd" x="380" y="170" width="150" height="78" rx="8"/>
+                  <path class="pins" d="M375,178 V240 M535,178 V240"/>
+                  <text class="kind" x="392" y="188">FORK</text>
+                  <text class="ttl" x="392" y="209">Fork</text>
+                  <text class="sub" x="392" y="226">branches at once</text>
+                  <circle class="sd" cx="396" cy="235" r="3.2"/>
+                  <text class="stq" x="406" y="239">queued</text><text class="str" x="406" y="239">running</text><text class="std" x="406" y="239">done</text>
+                </g>
+                <g class="step" data-node="web" data-at="0.23" data-done="0.46" data-run="0.4,0.46" style="--c:#1e88f0">
+                  <rect class="nd" x="380" y="30" width="150" height="78" rx="8"/>
+                  <path class="pins" d="M375,38 V100 M535,38 V100"/>
+                  <text class="kind" x="392" y="48">TOOL</text>
+                  <text class="mdl" x="518" y="48" text-anchor="end">2 tools</text>
+                  <text class="ttl" x="392" y="69">Web search</text>
+                  <text class="sub" x="392" y="86">search + fetch</text>
+                  <circle class="sd" cx="396" cy="95" r="3.2"/>
+                  <text class="stq" x="406" y="99">queued</text><text class="str" x="406" y="99">running</text><text class="std" x="406" y="99">done</text>
+                </g>
+                <g class="step" data-node="designer" data-at="0.23" data-done="0.47" data-run="0.4,0.47" style="--c:#19a89d">
+                  <rect class="nd" x="380" y="310" width="150" height="78" rx="8"/>
+                  <path class="pins" d="M375,318 V380 M535,318 V380"/>
+                  <text class="kind" x="392" y="328">AGENT</text>
+                  <text class="mdl" x="518" y="328" text-anchor="end">gpt</text>
+                  <text class="ttl" x="392" y="349">Designer</text>
+                  <text class="sub" x="392" y="366">layout, type scale</text>
+                  <circle class="sd" cx="396" cy="375" r="3.2"/>
+                  <text class="stq" x="406" y="379">queued</text><text class="str" x="406" y="379">running</text><text class="std" x="406" y="379">done</text>
+                  <text class="cost" x="518" y="379" text-anchor="end">$0.03</text>
+                </g>
+                <g class="step" data-node="writer" data-at="0.24" data-done="0.66" data-run="0.52,0.64" style="--c:#19a89d">
+                  <rect class="nd" x="560" y="30" width="150" height="78" rx="8"/>
+                  <path class="pins" d="M555,38 V100 M715,38 V100"/>
+                  <text class="kind" x="572" y="48">AGENT</text>
+                  <text class="mdl" x="698" y="48" text-anchor="end">sonnet</text>
+                  <text class="ttl" x="572" y="69">Copywriter</text>
+                  <text class="sub" x="572" y="86">headline, body, CTA</text>
+                  <circle class="sd" cx="576" cy="95" r="3.2"/>
+                  <text class="stq" x="586" y="99">queued</text><text class="str" x="586" y="99">running</text><text class="std" x="586" y="99">done</text>
+                  <text class="cost" x="698" y="99" text-anchor="end">$0.02</text>
+                </g>
+                <g class="step" data-node="join" data-at="0.25" data-done="0.49" data-run="0.47,0.49" style="--c:#a3998f">
+                  <rect class="nd" x="560" y="170" width="150" height="78" rx="8"/>
+                  <path class="pins" d="M555,178 V240 M715,178 V240"/>
+                  <text class="kind" x="572" y="188">JOIN</text>
+                  <text class="ttl" x="572" y="209">Join</text>
+                  <text class="sub" x="572" y="226">waits for all</text>
+                  <circle class="sd" cx="576" cy="235" r="3.2"/>
+                  <text class="stq" x="586" y="239">queued</text><text class="str" x="586" y="239">running</text><text class="std" x="586" y="239">done</text>
+                </g>
+                <g class="step" data-node="check" data-at="0.26" data-done="0.66" data-run="0.52,0.66" style="--c:#e6b31e">
+                  <rect class="nd" x="740" y="170" width="150" height="78" rx="8"/>
+                  <path class="pins" d="M735,178 V240 M895,178 V240"/>
+                  <text class="kind" x="752" y="188">CHECK</text>
+                  <text class="ttl" id="t-check" x="752" y="209">Contrast ok?</text>
+                  <text class="sub" x="752" y="226">a check, no model</text>
+                  <circle class="sd" cx="756" cy="235" r="3.2"/>
+                  <text class="stq" x="766" y="239">queued</text><text class="str" x="766" y="239">running</text><text class="std" x="766" y="239">done</text>
+                </g>
+                <g class="step" data-node="qa" data-at="0.27" data-done="0.83" data-run="0.72,0.82" style="--c:#19a89d">
+                  <rect class="nd" x="740" y="310" width="150" height="78" rx="8"/>
+                  <path class="pins" d="M735,318 V380 M895,318 V380"/>
+                  <text class="kind" x="752" y="328">QA</text>
+                  <text class="mdl" x="878" y="328" text-anchor="end">gemini</text>
+                  <text class="ttl" x="752" y="349">QA</text>
+                  <text class="sub" x="752" y="366">fresh context</text>
+                  <circle class="sd" cx="756" cy="375" r="3.2"/>
+                  <text class="stq" x="766" y="379">queued</text><text class="str" x="766" y="379">running</text><text class="std" x="766" y="379">done</text>
+                  <text class="cost" x="878" y="379" text-anchor="end">$0.04</text>
+                </g>
+                <g class="step" data-node="gate" data-at="0.28" data-done="0.92" data-run="0.84,0.92" style="--c:#e6b31e">
+                  <rect class="nd dash" x="740" y="430" width="150" height="78" rx="8"/>
+                  <path class="pins" d="M735,438 V500 M895,438 V500"/>
+                  <text class="kind" x="752" y="448">GATE</text>
+                  <text class="ttl" x="752" y="469">You approve</text>
+                  <text class="sub" x="752" y="486">your yes or no</text>
+                  <circle class="sd" cx="756" cy="495" r="3.2"/>
+                  <text class="stq" x="766" y="499">queued</text><text class="str" x="766" y="499">running</text><text class="std" x="766" y="499">done</text>
+                </g>
+                <g class="step" data-node="deliver" data-at="0.29" data-done="0.96" data-run="0.92,0.96" style="--c:#7fc48f">
+                  <rect class="nd" x="560" y="430" width="150" height="78" rx="8"/>
+                  <path class="pins" d="M555,438 V500 M715,438 V500"/>
+                  <text class="kind" x="572" y="448">DELIVER</text>
+                  <text class="ttl" x="572" y="469">Deliver</text>
+                  <text class="sub" x="572" y="486">page + report</text>
+                  <circle class="sd" cx="576" cy="495" r="3.2"/>
+                  <text class="stq" x="586" y="499">queued</text><text class="str" x="586" y="499">running</text><text class="std" x="586" y="499">done</text>
+                </g>
+                <g class="pkg">
+                  <circle class="pk" r="4.5"><animateMotion dur="3.6s" begin="0.03s" repeatCount="indefinite" keyPoints="0;1;1" keyTimes="0;.42;1" calcMode="linear" path="M170,209 L200,209"/><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.06;.4;.5" dur="3.6s" begin="0.03s" repeatCount="indefinite"/></circle>
+                  <circle class="pk" r="4.5"><animateMotion dur="3.6s" begin="0.09s" repeatCount="indefinite" keyPoints="0;1;1" keyTimes="0;.42;1" calcMode="linear" path="M350,209 L380,209"/><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.06;.4;.5" dur="3.6s" begin="0.09s" repeatCount="indefinite"/></circle>
+                  <circle class="pk" r="4.5"><animateMotion dur="3.6s" begin="0.15s" repeatCount="indefinite" keyPoints="0;1;1" keyTimes="0;.42;1" calcMode="linear" path="M455,170 L455,108"/><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.06;.4;.5" dur="3.6s" begin="0.15s" repeatCount="indefinite"/></circle>
+                  <circle class="pk" r="4.5"><animateMotion dur="3.6s" begin="0.15s" repeatCount="indefinite" keyPoints="0;1;1" keyTimes="0;.42;1" calcMode="linear" path="M455,248 L455,310"/><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.06;.4;.5" dur="3.6s" begin="0.15s" repeatCount="indefinite"/></circle>
+                  <circle class="pk" r="4.5"><animateMotion dur="3.6s" begin="0.21s" repeatCount="indefinite" keyPoints="0;1;1" keyTimes="0;.42;1" calcMode="linear" path="M530,69 L560,69"/><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.06;.4;.5" dur="3.6s" begin="0.21s" repeatCount="indefinite"/></circle>
+                  <circle class="pk" r="4.5"><animateMotion dur="3.6s" begin="0.27s" repeatCount="indefinite" keyPoints="0;1;1" keyTimes="0;.42;1" calcMode="linear" path="M530,349 L635,349 L635,248"/><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.06;.4;.5" dur="3.6s" begin="0.27s" repeatCount="indefinite"/></circle>
+                  <circle class="pk" r="4.5"><animateMotion dur="3.6s" begin="0.27s" repeatCount="indefinite" keyPoints="0;1;1" keyTimes="0;.42;1" calcMode="linear" path="M635,108 L635,170"/><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.06;.4;.5" dur="3.6s" begin="0.27s" repeatCount="indefinite"/></circle>
+                  <circle class="pk" r="4.5"><animateMotion dur="3.6s" begin="0.33s" repeatCount="indefinite" keyPoints="0;1;1" keyTimes="0;.42;1" calcMode="linear" path="M710,209 L740,209"/><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.06;.4;.5" dur="3.6s" begin="0.33s" repeatCount="indefinite"/></circle>
+                  <circle class="pk" r="4.5"><animateMotion dur="3.6s" begin="0.39s" repeatCount="indefinite" keyPoints="0;1;1" keyTimes="0;.42;1" calcMode="linear" path="M815,248 L815,310"/><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.06;.4;.5" dur="3.6s" begin="0.39s" repeatCount="indefinite"/></circle>
+                  <circle class="pk" r="4.5"><animateMotion dur="3.6s" begin="0.45s" repeatCount="indefinite" keyPoints="0;1;1" keyTimes="0;.42;1" calcMode="linear" path="M815,388 L815,430"/><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.06;.4;.5" dur="3.6s" begin="0.45s" repeatCount="indefinite"/></circle>
+                  <circle class="pk" r="4.5"><animateMotion dur="3.6s" begin="0.51s" repeatCount="indefinite" keyPoints="0;1;1" keyTimes="0;.42;1" calcMode="linear" path="M740,469 L710,469"/><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.06;.4;.5" dur="3.6s" begin="0.51s" repeatCount="indefinite"/></circle>
+                  <circle class="pk ink" r="4"><animateMotion dur="2.8s" begin="3.4s" repeatCount="indefinite" keyPoints="0;1;1" keyTimes="0;.5;1" calcMode="linear" path="M815,170 L815,69 L710,69"/><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.06;.45;.55" dur="2.8s" begin="3.4s" repeatCount="indefinite"/></circle>
+                </g>
+              </g>
+            </svg>
+          </div>
+        </section>
+      </div>
+      <section class="pane view v-xray" aria-label="X-ray, example">
+        <div class="app-head"><h1>X-ray <span>launch-a-landing-page</span></h1><div class="app-tools"><div class="seg"><button class="on" type="button">insights</button><button type="button">files</button><button type="button">gravity</button></div></div></div>
+        <div class="xcols">
+          <div class="xcard"><div class="xlabel">the gravity map · blast radius</div><div class="gl"><span class="gn">graph/</span><span class="gb"><i style="width:91%;background:var(--c-warn)"></i></span><span class="gv">38%</span></div><div class="gl"><span class="gn">ui/</span><span class="gb"><i style="width:58%;background:var(--c-brand)"></i></span><span class="gv">24%</span></div><div class="gl"><span class="gn">store/</span><span class="gb"><i style="width:43%;background:var(--c-brand)"></i></span><span class="gv">18%</span></div><div class="gl"><span class="gn">api/</span><span class="gb"><i style="width:26%;background:var(--c-ok)"></i></span><span class="gv">11%</span></div><div class="gl"><span class="gn">cli/</span><span class="gb"><i style="width:14%;background:var(--c-ok)"></i></span><span class="gv">6%</span></div><div class="xnote">bar length = code that breaks if this level changes</div></div>
+          <div class="xcard"><div class="xlabel">the debt ledger</div><div class="dr"><code>graph/run.ts</code><span>6 TODO</span></div><div class="dr"><code>ui/panes.tsx</code><span>4 TODO</span></div><div class="dr"><code>legacy/mail.js</code><span>3 unused</span></div><div class="dr"><code>store/sync.ts</code><span>1 HACK</span></div></div>
+          <div class="xcard wide"><div class="xlabel">file scores · out of 100</div><div class="sr"><code>src/render.ts</code><span class="sbar"><i style="width:94%;background:var(--c-ok)"></i></span><b style="color:var(--c-ok)">94</b></div><div class="sr"><code>src/router.ts</code><span class="sbar"><i style="width:88%;background:var(--c-ok)"></i></span><b style="color:var(--c-ok)">88</b></div><div class="sr"><code>src/store.ts</code><span class="sbar"><i style="width:81%;background:var(--c-ok)"></i></span><b style="color:var(--c-ok)">81</b></div><div class="sr"><code>src/auth.ts</code><span class="sbar"><i style="width:72%;background:var(--c-warn)"></i></span><b style="color:var(--c-warn)">72</b></div><div class="sr"><code>src/sync.ts</code><span class="sbar"><i style="width:66%;background:var(--c-warn)"></i></span><b style="color:var(--c-warn)">66</b></div><div class="sr"><code>src/graph/board.tsx</code><span class="sbar"><i style="width:63%;background:var(--c-warn)"></i></span><b style="color:var(--c-warn)">63</b></div><div class="sr"><code>src/graph/run.ts</code><span class="sbar"><i style="width:58%;background:var(--c-bad)"></i></span><b style="color:var(--c-bad)">58</b></div><div class="sr"><code>src/ui/panes.tsx</code><span class="sbar"><i style="width:49%;background:var(--c-bad)"></i></span><b style="color:var(--c-bad)">49</b></div><div class="sr"><code>src/legacy/mail.js</code><span class="sbar"><i style="width:31%;background:var(--c-bad)"></i></span><b style="color:var(--c-bad)">31</b></div></div>
+        </div>
+      </section>
+      <section class="pane view v-sagas" aria-label="Sagas, example">
+        <div class="app-head"><h1>Sagas <span>4</span></h1><div class="app-tools"><div class="seg"><button class="on" type="button">list</button><button type="button">board</button></div><button class="primary" type="button">+ New saga</button></div></div>
+        <section class="grp"><div class="ghead"><svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="5.5" fill="none" stroke="var(--c-warn)" stroke-width="1.4"/><path d="M7 1.5 A5.5 5.5 0 0 1 7 12.5 Z" fill="var(--c-warn)"/></svg> in progress <span>1</span></div><div class="row"><span class="ic"><svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="5.5" fill="none" stroke="var(--c-warn)" stroke-width="1.4"/><path d="M7 1.5 A5.5 5.5 0 0 1 7 12.5 Z" fill="var(--c-warn)"/></svg></span><span class="rt">onboarding emails</span><span class="rp">7/9</span><span class="rc">$0.06</span><span class="ra">2m</span></div></section><section class="grp"><div class="ghead"><svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="5.5" fill="none" stroke="var(--c-muted)" stroke-width="1.4"/></svg> todo <span>1</span></div><div class="row"><span class="ic"><svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="5.5" fill="none" stroke="var(--c-muted)" stroke-width="1.4"/></svg></span><span class="rt">pricing page copy</span><span class="rp">0/6</span><span class="rc">—</span><span class="ra">1h</span></div></section><section class="grp"><div class="ghead"><svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="5.5" fill="none" stroke="var(--c-bad)" stroke-width="1.4"/><path d="M5 5 L9 9 M9 5 L5 9" stroke="var(--c-bad)" stroke-width="1.4" stroke-linecap="round"/></svg> failed <span>1</span></div><div class="row"><span class="ic"><svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="5.5" fill="none" stroke="var(--c-bad)" stroke-width="1.4"/><path d="M5 5 L9 9 M9 5 L5 9" stroke="var(--c-bad)" stroke-width="1.4" stroke-linecap="round"/></svg></span><span class="rt">weekly changelog</span><span class="rp">4/5</span><span class="rc">$0.03</span><span class="ra">18m</span></div></section><section class="grp"><div class="ghead"><svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="6" fill="var(--c-ok)"/><path d="M4.2 7.2 L6.2 9.1 L9.9 5.2" fill="none" stroke="var(--c-bg)" stroke-width="1.5" stroke-linecap="round"/></svg> done <span>1</span></div><div class="row"><span class="ic"><svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="6" fill="var(--c-ok)"/><path d="M4.2 7.2 L6.2 9.1 L9.9 5.2" fill="none" stroke="var(--c-bg)" stroke-width="1.5" stroke-linecap="round"/></svg></span><span class="rt">launch-a-landing-page</span><span class="rp">11/11</span><span class="rc">$0.11</span><span class="ra">4m</span></div></section>
+      </section>
+      <div class="hud"><span id="hud-state">waiting for you</span><span class="prog"><i id="prog"></i></span><span>nodes <b id="hud-nodes">0</b>/11</span><span>passes <b id="hud-pass">–</b></span></div>
     </div>
-    <p class="fine">One editor, or one terminal agent? Cursor or Claude Code is enough. Juggling seats? Add antiloki.</p>
+  </div>
+  <div class="wrap kinds">
+    <div style="--c:var(--ember)"><i class="mono">L</i><p><b>Leader</b><span>Your terminal agent. Designs the team with you. Exactly one per graph.</span></p></div>
+    <div style="--c:#7fd6cc"><i class="mono">A</i><p><b>Agent</b><span>Planner, worker, QA, debugger, audit, or your own agent with its own brief.</span></p></div>
+    <div style="--c:#7aa7ff"><i class="mono">T</i><p><b>Tool</b><span>Web, files or an MCP server, with an allow-list the node must name.</span></p></div>
+    <div style="--c:#9aa3ad"><i class="mono">F</i><p><b>Fork and join</b><span>Branches run side by side. The join waits for all, or for a quorum.</span></p></div>
+    <div style="--c:#e6c26a"><i class="mono">?</i><p><b>If and switch</b><span>Route on what a node said. A switch needs a default port.</span></p></div>
+    <div style="--c:#e6c26a"><i class="mono">O</i><p><b>Loop</b><span>Repeat until a condition holds. It needs a max count and a cost cap.</span></p></div>
+    <div style="--c:#9aa3ad"><i class="mono">E</i><p><b>For each</b><span>One branch per item, in parallel up to a limit you set.</span></p></div>
+    <div style="--c:#e6c26a"><i class="mono">R</i><p><b>Retry</b><span>Send a failed node round again, then take the exhausted port.</span></p></div>
+    <div style="--c:#e6c26a"><i class="mono">G</i><p><b>Gate and cost cap</b><span>A human gate waits for your yes or no. Any node can carry a cost cap.</span></p></div>
+    <div style="--c:#8fd6a0"><i class="mono">D</i><p><b>Artifact and deliver</b><span>The documents a run makes, and the end of the graph: the pack reaches you.</span></p></div>
+  </div>
+</section>
+  <section class="wrap compare" id="compare" aria-label="Compared with the tools alone">
+    <span class="eyebrow">compared with the tools alone</span>
+    <h2>On top of the tools you already use.</h2>
+    <p class="lede">antiloki runs Claude Code, Cursor, Codex, Gemini and Grok. It does not replace them.</p>
+    <div class="cmp" role="table" aria-label="What antiloki adds to the tools alone">
+      <div class="cmp-h" role="row"><span role="columnheader">what you want</span><span role="columnheader">the tools alone</span><span role="columnheader">with antiloki</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Models</b><span class="alone" role="cell">One tool’s own</span><span class="with" role="cell">All five subscriptions, as one agent</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Who does each job</b><span class="alone" role="cell">Your pick, or the tool’s router</span><span class="with" role="cell">The seat measured best, and it keeps learning</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Boundaries</b><span class="alone" role="cell">Permissions and a sandbox you set up</span><span class="with" role="cell">One fence on every seat, undo in one click</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Testing</b><span class="alone" role="cell">A browser, when you ask</span><span class="with" role="cell">One QA button on any run: your ask tested in a real browser, filmed (or against the API for backend work)</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Trust in the result</b><span class="alone" role="cell">The agent says it is done</span><span class="with" role="cell">A confidence reading with its reasons on every result, and one click to run an independent QA</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Verdict on the code</b><span class="alone" role="cell">A reviewer’s opinion</span><span class="with" role="cell">A score per file — no model, same twice</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Impact of a change</b><span class="alone" role="cell">You guess</span><span class="with" role="cell">Map, cycles and blast radius before it lands</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Your rules</b><span class="alone" role="cell">Prompt files</span><span class="with" role="cell">The agent checks its own edits against them</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Cost and limits</b><span class="alone" role="cell">Each tool’s own usage</span><span class="with" role="cell">Every turn priced, per seat, limits on screen</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">When a seat runs out</b><span class="alone" role="cell">The work stops at the wall</span><span class="with" role="cell">Routed around the seat that is out; the next best takes over until it resets</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Big asks</b><span class="alone" role="cell">One long session that loses the thread</span><span class="with" role="cell">Split into tasks that each own their files, verified one by one, then joined</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Where the work lives</b><span class="alone" role="cell">A to-do list inside one session, gone when it ends</span><span class="with" role="cell">Sagas: a list per project of goals, tasks and subtasks that stays, for you and your agents. A plan becomes a saga by itself, and the agents read it before they start</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Who did what</b><span class="alone" role="cell">Scroll back through a chat to find out</span><span class="with" role="cell">Every task shows the agent and the exact model that did it or failed it, in order, each model with its own icon</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">What a task cost</b><span class="alone" role="cell">Each tool’s own usage page, not per task</span><span class="with" role="cell">Time, cost and tokens on every task, rolled up to the saga, taken from the real run</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">The record</b><span class="alone" role="cell">Whatever the chat kept</span><span class="with" role="cell">A finished saga stays: it cannot be canceled or deleted, so the history is the history</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Project knowledge</b><span class="alone" role="cell">The agent reads your repo cold, every time</span><span class="with" role="cell">A map it can query: who imports a file, who references a symbol, which tests reach it</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Parallel work</b><span class="alone" role="cell">Terminals side by side, you keep track</span><span class="with" role="cell">Agents in boxes of their own, a branch each, merged when you say</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Design</b><span class="alone" role="cell">Looks right, you hope</span><span class="with" role="cell">Contrast, spacing, type and clipping measured on the real page</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Receipts</b><span class="alone" role="cell">You wonder what it did and cost</span><span class="with" role="cell">Every run keeps what it did, who judged it, what it cost and what it saved</span></div>
+    </div>
+    <p class="fine">One more app; the Windows build is current, the Linux build is older, and macOS is coming soon. Limits, sources and every detail: <a href="/paper.html">the technical report →</a></p>
   </section>
 
-    <div class="wrap pricing" id="pricing">
-    <h2>Test for free for 14 days, then pay once.</h2>
-    <p class="own">Own forever + 2 years of updates and premium support.</p>
-    <p class="lede" style="color:var(--dim);max-width:60ch;margin:10px auto 26px;font-size:16px;text-align:center;text-wrap:balance">Planned price: $499, once. Checkout is not open yet, so the 14-day trial is the only way in today.</p>
+    <div class="wrap pricing" id="open">
+    <h2>Free.</h2>
+    <p class="own">No trial clock. No paid tier. No account.</p>
+    <p class="lede" style="color:var(--dim);max-width:60ch;margin:10px auto 26px;font-size:16px;text-align:center;text-wrap:balance">antiloki is free to download, use, read and change. It runs on the subscriptions you already pay your model vendors, so the only bill is theirs.</p>
     <div class="plans">
-      <div class="plan"><div class="name">Test it</div><div class="price num">$0<small>14 days</small></div><ul><li><b>everything</b> — agents and X-ray</li><li>no card, no account</li><li>two weeks is real work on a real repo</li><li>your projects stay when it ends</li></ul><a class="btn ember" href="#download">Download</a></div>
-      <div class="plan"><span class="best">pay once</span><div class="name">Own it</div><div class="price num">$499<small>once, planned</small></div><ul><li><b>own it forever</b> — no yearly subscription</li><li><b>2 years of updates and premium support</b></li><li>the shipped routing table stays current for those 2 years</li><li>activated on a machine, deactivated to move it</li></ul><span class="btn soon" aria-disabled="true">Coming soon</span></div>
+      <div class="plan"><div class="name">Use it</div><div class="price num">$0<small>forever</small></div><ul><li><b>everything</b> — the graph board, team runs, agents and X-ray</li><li>no card, no account, no trial to run out</li><li>your projects stay on your machine</li></ul><a class="btn ember" href="#download">Download</a></div>
+      <div class="plan"><div class="name">Read it</div><div class="price num">soon<small>source</small></div><ul><li><b>the source is coming</b>, to be published under an open-source license</li><li>read how the graph runs, change it, send a fix back</li><li>the routing measurements are published with their scripts: <a href="/paper.html">the technical report →</a></li></ul></div>
     </div>
-    <p class="terms">Prices are USD and may change before checkout opens. The app works offline for up to 14 days between license checks, once a key is activated; the trial makes no check.</p>
+    <p class="terms">antiloki is free. Model subscriptions and API keys are billed by their own vendors, not by antiloki.</p>
   </div>
 
     <div class="wrap download" id="download">
@@ -583,27 +829,29 @@
   </div>
 
   <div class="wrap faq">
-    <details><summary>What is antiloki, in one sentence?</summary><p>A desktop workspace that <b>merges</b> the model subscriptions you already have — Claude, Codex, Cursor, Gemini, Grok — into one coding agent: the seat measured best for each job of an ask, not one model for all of them. It sends each job to the cheapest seat that passes its checks, with folder-level write enforcement, a verifier on every task, a confidence reading on every result, an optional independent QA and a full audit timeline: the control layer the agents don't ship with.</p></details>
+    <details><summary>What is vibe graphing?</summary><p>Describing the work in plain words and getting a <b>graph</b> back: the Leader drafts a team as nodes and edges (agents, tools, forks and joins, checks, loops, gates), you edit it on the board, and the loop runs it under the budget you set. Every node is visible while it works and is recorded afterwards, so the graph is both the plan and the proof of what ran.</p></details>
+    <details><summary>What is antiloki, in one sentence?</summary><p>An agentic graph engineering loop IDE: a desktop workspace where a team of coding agents is drawn as a graph and run in a loop. It runs on the model subscriptions you already have — Claude, Codex, Cursor, Gemini, Grok — and sends each job to the seat measured best for it, with folder-level write enforcement, a verifier on every task, a confidence reading on every result, an optional independent QA and a full audit timeline.</p></details>
+    <details><summary>Is it really free? What is the catch?</summary><p>There is no catch in antiloki: no paid tier, no trial that ends, no account. The only costs are the model subscriptions or API keys you choose to use, and those are billed by their vendors. We plan to publish the source, so you can check that nothing is hidden.</p></details>
     <details><summary>Does it replace Claude Code, Codex, Cursor, Gemini or Grok?</summary><p>No — it runs them, twice over: as the agent in its box, and as the engine behind antiloki's own AI (the chat, the reviews, the ultra review), each through its own vendor CLI. Keep your subscriptions; there is no API key to paste.</p></details>
     <details><summary>What does the X-ray do that a linter doesn't?</summary><p>It judges every file against your rules and its own measurements (tests, coupling, structure, change) and tells you why a file is not 100. Then the ultra review: a $0 survey of the territory, and your engine reading the worst units to report what it can verify — with the fix. The chat sees all of it, so "why is this file 81?" gets a real answer — and the intel handed to an agent says which files it could not read.</p></details>
     <details><summary>Do I need two subscriptions?</summary><p>For a <b>merge</b>, two usable seats. A merge never puts two frontier models together; it puts cheap hands under a good brain. Google's free tier is capped at a small daily number of agent requests (about twenty when we checked) — enough to try, not a seat to rely on. antiloki only offers a provider you are actually <b>signed in to</b>: it reads the seat, not the installed binary, so a CLI sitting on your machine unauthenticated is never offered as something it can bind. With one seat it runs solo — still routed per job, still tested, just not merged.</p></details>
-    <details><summary>Isn't this just worktrees and tmux?</summary><p>Worktrees are the easy part. The fence enforced where the work lands, the verifier before merge, the confidence reading with its optional QA, and the cost-per-task record are what you can't script in an afternoon — and what the trial is for.</p></details>
-    <details><summary>Why is the headline measured against Opus?</summary><p>Because Opus is the model an average developer reaches for all day, so "cheaper than what you run now" is the gap to it. The comparison is always raw Opus, one session, against the seat antiloki's router picks for the same task, both audited by the same hidden checks (list prices, per run): <b>one function</b> $0.168 vs $0.020 (8.3×, same speed, 14 vs 13 runs); <b>eight modules</b> $0.614 vs $0.060 (10.2×, 2.2× faster; the Opus figure blends this week's $0.443 with an older $1.151, newer runs weighted more, and on this week's alone it is 7.4×); <b>six screens</b> $0.644 vs $0.146 (4.4×, 1.1× faster); <b>a huge task</b> $1.83 vs $0.30 (6.2×, 1.5× faster, 1 vs 24 runs). The geometric mean is about 6.9× cheaper, with Composer 1.4× faster on average. <b>What it leaves out, said plainly:</b> the picks scored 0.95–1.00 of the checks against Opus's 1.00; the best cases route to Cursor's Composer, and without a Cursor subscription the average is about 3×; the figures are the routed model's cost, and the screening and verification antiloki adds cost a few cents on a small task and more on a large one (we are still measuring the full run end to end on the same tasks); the samples are small and from one project family. Against a cheaper raw seat the gap is smaller: raw Sonnet $0.166 and raw Codex $0.149 on the eight-module task. The full report lists every arm, including the ones that lost.</p></details>
+    <details><summary>Isn't this just worktrees and tmux?</summary><p>Worktrees are the easy part. The fence enforced where the work lands, the verifier before merge, the confidence reading with its optional QA, and the cost-per-task record are what you can't script in an afternoon — and what the graph records on every run.</p></details>
+    <details><summary>Why is the benchmark measured against Opus?</summary><p>Because Opus is the model an average developer reaches for all day, so "cheaper than what you run now" is the gap to it. The comparison is always raw Opus, one session, against the seat antiloki's router picks for the same task, both audited by the same hidden checks (list prices, per run): <b>one function</b> $0.168 vs $0.020 (8.3×, same speed, 14 vs 13 runs); <b>eight modules</b> $0.614 vs $0.060 (10.2×, 2.2× faster; the Opus figure blends this week's $0.443 with an older $1.151, newer runs weighted more, and on this week's alone it is 7.4×); <b>six screens</b> $0.644 vs $0.146 (4.4×, 1.1× faster); <b>a huge task</b> $1.83 vs $0.30 (6.2×, 1.5× faster, 1 vs 24 runs). The geometric mean is about 6.9× cheaper, with Composer 1.4× faster on average. <b>What it leaves out, said plainly:</b> the picks scored 0.95–1.00 of the checks against Opus's 1.00; the best cases route to Cursor's Composer, and without a Cursor subscription the average is about 3×; the figures are the routed model's cost, and the screening and verification antiloki adds cost a few cents on a small task and more on a large one (we are still measuring the full run end to end on the same tasks); the samples are small and from one project family. Against a cheaper raw seat the gap is smaller: raw Sonnet $0.166 and raw Codex $0.149 on the eight-module task. The full report lists every arm, including the ones that lost.</p></details>
     <details><summary>Does it make my weekly limit last longer?</summary><p>The +590 % is arithmetic on measured costs, not a reading of your vendor's limit (the vendors do not publish it, and we have not measured yours). On the same spend at list prices, a job that costs 6.9× less lets you run 6.9× as many jobs: +590 %. The 6.9× is the geometric mean, over four audited tasks, of raw Opus against the best result of the Composer seat antiloki's router picks, with recent runs weighted more than old ones (a run loses half its weight every 14 days): one function 8.3×, eight modules 10.2×, six screens 4.4×, a huge task 6.2×. It assumes your limit scales with list-price cost, and the best cases route to Cursor's Composer; without a Cursor subscription the average is about 3× (+200 %). The picks scored 0.95–1.00 of the audit checks against Opus's 1.00, which is what "the same code quality" means here: inside the product's one tolerance. An earlier figure on this page (+112 %) compared one Sonnet-planned merge with raw Sonnet and did not reproduce with current models.</p></details>
     <details><summary>More calls must mean a bigger bill.</summary><p>Sometimes they do, and the app shows it: the bill is on screen for every turn. A task that fits one cheap seat is run on that seat with one call and no planning; the router splits an ask only where splitting measured better, and a failed run reports what it spent and claims no saving. On the eight-module task the fully split pipeline cost more than raw Opus (about $0.78 against $0.44), which is why the router does not use it there.</p></details>
-    <details><summary>Can my company install it?</summary><p>One binary, local, no account, no telemetry. The network calls are: your CLIs' own calls; a license check once a day, once you have activated a key (the trial makes none); an update check against a static file on GitHub Releases; the window's fonts, fetched from Google Fonts (fonts.googleapis.com and fonts.gstatic.com) when it opens; api.openai.com or openrouter.ai only if you set up the optional OpenCode route with your own key; and GitHub only if you add a token or open a pull request. Send that to security.</p></details>
+    <details><summary>Can my company install it?</summary><p>One binary, local, no account, no telemetry. The network calls are: your CLIs' own calls; an update check against a static file on GitHub Releases; the window's fonts, fetched from Google Fonts (fonts.googleapis.com and fonts.gstatic.com) when it opens; api.openai.com or openrouter.ai only if you set up the optional OpenCode route with your own key; and GitHub only if you add a token or open a pull request. Send that to security.</p></details>
   </div>
 </main>
 
 <footer><div class="wrap">
-  <span>antiloki · agents · X-ray</span>
+  <span>antiloki · vibe graphing IDE · free</span>
   <a href="/blog/">blog</a>
   <a href="/paper.html">the benchmark</a>
   <a href="/releases.html">releases</a>
   <a href="/privacy.html">privacy</a>
   <a href="/terms.html">terms</a>
   <a href="mailto:support@antiloki.com">support@antiloki.com</a>
-  <span class="r">© 2026 antiloki · updated 2026-10-01</span>
+  <span class="r">© 2026 antiloki · updated 2026-11-12</span>
 </div></footer>
 
 <script>
@@ -682,598 +930,79 @@
   }).catch(() => { fallback(); });
 </script>
 <script>
-/* THE FILM (2026-10-07): "Carry". One agent carries a whole task alone; friends arrive; together they finish it in a fraction of the time; reunion.
-   The characters are the app's own faces (flat shapes, white slit eyes). The numbers are the measured per-run figures of 2026-10-07 (raw Claude Opus 5.5 $0.443 / 108 s; Composer 2.5 $0.065 / 72 s; 6.8x);
-   the pacing is cinematic, not a stopwatch. The picture is a pure function of time: render(t).
-   ART DIRECTION: the light tells the story - cool dusk while he is alone, the sun rising as his friends arrive, golden hour at the reunion. Layered parallax, atmosphere, soft contact shadows, lit rims, a slow camera. */
 (function () {
-  var canvas = document.getElementById("film-canvas"); if (!canvas || !canvas.getContext) return;
-  var ctx = canvas.getContext("2d");
-  var W = 960, H = 540, GY = 432, BAR = 30, TOTAL = 25.2, END_T = 22.4, VW = 1120, OX = 80;   // W = the scene; VW = what the screen shows; OX = the scene's offset in it
-  var PATHS = { circle: "M20 3a17 17 0 1 1 0 34a17 17 0 1 1 0-34z", egg: "M20 3c8 0 15 9 15 19s-6 15-15 15S5 32 5 22 12 3 20 3z", hex: "M17 3.7l14 8.1a3 3 0 0 1 1.5 2.6v11.2a3 3 0 0 1-1.5 2.6l-14 8.1a3 3 0 0 1-3 0L6 28.2a3 3 0 0 1-1.5-2.6V14.4A3 3 0 0 1 6 11.8l8-4.1a3 3 0 0 1 3 0z", drop: "M20 3c7 9 14 15 14 22a14 14 0 0 1-28 0c0-7 7-13 14-22z", arch: "M20 4c8 0 14 6 14 14v16a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3V18C6 10 12 4 20 4z", triangle: "M18.3 5.4a2 2 0 0 1 3.4 0l13.6 23.4a2 2 0 0 1-1.7 3H6.4a2 2 0 0 1-1.7-3z" };
-  var P2D = {}; try { for (var k in PATHS) P2D[k] = new Path2D(PATHS[k]); } catch (e) { return; }
-  var PAL = ["#7c5cf0", "#ec4f8f", "#f26b21", "#5b6f88", "#19a89d", "#1e88f0", "#e6b31e", "#3fae4a", "#c0392b", "#20b2d8", "#b15fd0"];
-  var INK = "#efe9e2", DIM = "#a3998f", MUTED = "#6f665e", EMBER = "#c97c5c", OK = "#7fc48f";
-  var MONO = '"JetBrains Mono", ui-monospace, Menlo, monospace', DISP = '"Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif', LOGO = '"Geist", -apple-system, system-ui, sans-serif';
-  // who is in the film: shape, colour, size, blink period
-  var OPUS = { id: "opus", name: "Claude Opus", shape: "egg", color: "#e6b31e", size: 100, tilt: 5, bp: 4.1 };
-  var SON = { id: "son", name: "Claude Sonnet", shape: "triangle", color: "#f26b21", size: 74, tilt: -7, bp: 3.7 };
-  var COMP = { id: "comp", name: "Composer 2.5", shape: "circle", color: "#19a89d", size: 74, tilt: -5, bp: 4.6 };
-  var CDX = { id: "cdx", name: "Codex", shape: "hex", color: "#1e88f0", size: 68, tilt: 6, bp: 5.2 };
-  var GEM = { id: "gem", name: "Gemini", shape: "drop", color: "#7c5cf0", size: 68, tilt: -4, bp: 3.4 };
-  var GRK = { id: "grk", name: "Grok 4.6", shape: "arch", color: "#5b6f88", size: 70, tilt: 5, bp: 4.9 };
-
-  // ---- small maths and colour
-  function clamp(x, a, b) { return Math.min(b === undefined ? 1 : b, Math.max(a === undefined ? 0 : a, x)); }
-  function seg(t, a, b) { return clamp((t - a) / (b - a)); }
-  function sm(x) { return x * x * (3 - 2 * x); }
-  function eo(x) { return 1 - Math.pow(1 - x, 3); }
-  function eob(x) { var c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); }
-  function lerp(a, b, u) { return a + (b - a) * u; }
-  function rnd(i, k) { var v = Math.sin(i * 12.9898 + k * 78.233) * 43758.5453; return v - Math.floor(v); }
-  function hex3(h) { h = h.replace("#", ""); return [parseInt(h.substr(0, 2), 16), parseInt(h.substr(2, 2), 16), parseInt(h.substr(4, 2), 16)]; }
-  function rgba(h, a) { var c = hex3(h); return "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + (a === undefined ? 1 : a) + ")"; }
-  function mixc(a, b, u, al) { var A = hex3(a), B = hex3(b); return "rgba(" + Math.round(lerp(A[0], B[0], u)) + "," + Math.round(lerp(A[1], B[1], u)) + "," + Math.round(lerp(A[2], B[2], u)) + "," + (al === undefined ? 1 : al) + ")"; }
-  function shade(h, a) { var c = hex3(h).map(function (v) { return Math.round(clamp(a > 0 ? v + (255 - v) * a : v * (1 + a), 0, 255)); }); return "rgb(" + c[0] + "," + c[1] + "," + c[2] + ")"; }
-  /** a hop: phase p in 0..1 -> height 0..h (a parabola), and the squash felt at both ends of it */
-  function hop(time, period, h, phase) {
-    var p = (((time / period) + (phase || 0)) % 1 + 1) % 1;
-    var up = h * 4 * p * (1 - p), edge = Math.min(p, 1 - p), sq = clamp(1 - edge / 0.12) * 0.22, st = (up / (h || 1)) * 0.1;
-    return { up: up, sx: 1 + sq * 0.9 - st * 0.6, sy: 1 - sq + st };
-  }
-  /** a single hop started at t0 lasting d seconds */
-  function once(t, t0, d, h) { var u = (t - t0) / d; if (u < 0 || u > 1) return 0; return h * 4 * u * (1 - u); }
-  /** the moments a periodic hop touches the ground within the last `win` seconds */
-  function lands(t, period, phase, win) { var out = [], kmax = Math.floor(t / period + (phase || 0)); for (var k = kmax; k > kmax - 12; k--) { var tk = (k - (phase || 0)) * period; if (tk <= t - win) break; if (tk <= t) out.push(tk); } return out; }
-
-  // ---- the light: 0 = cool dusk (he is alone) -> 1 = golden hour (friends, reunion). FLASH = the burst of joy at the reunion.
-  var T = { alone0: 0.9, alone1: 9.0, put: 9.3, stamp: 10.4, mourn: 10.9, friends0: 11.4, plan0: 14.3, work0: 14.9, work1: 18.1, party: 18.2, bubbles: 19.3, card: 21.0, fade: 24.5 };
-  var M = 0, FLASH = 0, S = 0;
-  function setLight(t) { M = sm(seg(t, 10.8, 15.8)); var a = t - T.party; FLASH = a >= 0 ? Math.exp(-a * 2.0) : 0; S = scroll(t); }
-
-  // ---- lights and glows (additive, so they read as light)
-  function glow(x, y, r, col, a) { if (a <= 0.003) return; ctx.save(); ctx.globalCompositeOperation = "lighter"; var g = ctx.createRadialGradient(x, y, 0, x, y, r); g.addColorStop(0, rgba(col, a)); g.addColorStop(1, rgba(col, 0)); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fill(); ctx.restore(); }
-  function rr(x, y, w, h, r) { ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(x, y, w, h, r); else ctx.rect(x, y, w, h); }
-  function glass(x, y, w, h, r, a, border) { rr(x, y, w, h, r); ctx.fillStyle = "rgba(15,12,11," + a + ")"; ctx.fill(); ctx.strokeStyle = border || "rgba(255,255,255,.09)"; ctx.lineWidth = 1; ctx.stroke(); }
-  function star(x, y, r, a, rot, col) { if (a <= 0.01) return; glow(x, y, r * 2.1, col || "#ffffff", a * 0.45); ctx.save(); ctx.globalCompositeOperation = "lighter"; ctx.globalAlpha = a; ctx.translate(x, y); ctx.rotate(rot || 0); ctx.fillStyle = col || "#ffffff"; ctx.beginPath(); for (var i = 0; i < 8; i++) { var rad = i % 2 ? r * 0.2 : r, ang = i * Math.PI / 4; ctx.lineTo(Math.cos(ang) * rad, Math.sin(ang) * rad); } ctx.closePath(); ctx.fill(); ctx.restore(); }
-  function heart(x, y, s, a) { glow(x, y - 3 * s, 14 * s, "#ec4f8f", a * 0.35); ctx.save(); ctx.globalAlpha = a; ctx.translate(x, y); ctx.scale(s, s); var g = ctx.createLinearGradient(0, -12, 0, 4); g.addColorStop(0, "#ff7fb0"); g.addColorStop(1, "#d93a7c"); ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(0, 4); ctx.bezierCurveTo(-10, -4, -6, -12, 0, -6); ctx.bezierCurveTo(6, -12, 10, -4, 0, 4); ctx.fill(); ctx.restore(); }
-  function puff(x, y, age, life, size) { if (age < 0 || age > life) return; var u = age / life, r = size * (0.7 + 1.5 * u), a = 0.34 * (1 - u) * (1 - u); var g = ctx.createRadialGradient(x, y - r * 0.5 * u, 0, x, y - r * 0.5 * u, r); g.addColorStop(0, "rgba(232,205,178," + a + ")"); g.addColorStop(1, "rgba(232,205,178,0)"); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y - r * 0.5 * u, r, 0, 7); ctx.fill(); }
-
-  // ---- a character, anchored at its feet. o: { sx, sy, rot, eye: slit|wide|tired|happy, look, alpha, up, blush }
-  function drawFace(c, x, y, o, t) {
-    o = o || {}; var s = (o.scale || 1) * c.size / 40, sx = (o.sx || 1) * s, sy = (o.sy || 1) * s, up = o.up || 0, al = o.alpha === undefined ? 1 : o.alpha;
-    // soft contact shadow, stretched away from the sun at golden hour
-    var rad = c.size * (0.58 + 0.2 * M) * (1 - Math.min(0.3, up / 220)), sh = al * (0.5 - Math.min(0.3, up / 260));
-    ctx.save(); ctx.translate(x - c.size * 0.14 * M, y + 3); ctx.scale(1, 0.2); var sg = ctx.createRadialGradient(0, 0, 0, 0, 0, rad); sg.addColorStop(0, "rgba(8,5,8," + sh + ")"); sg.addColorStop(1, "rgba(8,5,8,0)"); ctx.fillStyle = sg; ctx.beginPath(); ctx.arc(0, 0, rad, 0, 7); ctx.fill(); ctx.restore();
-    ctx.save(); ctx.globalAlpha = al;
-    ctx.translate(x, y - up); ctx.rotate((c.tilt * Math.PI / 180) + (o.rot || 0)); ctx.scale(sx, sy); ctx.translate(-20, -37);
-    ctx.fillStyle = c.color; ctx.fill(P2D[c.shape]);
-    // volume without losing the flat look: a faint light from the top-left, a faint shade at the bottom, and a warm rim on the sun's side
-    ctx.save(); ctx.clip(P2D[c.shape]);
-    var vg = ctx.createLinearGradient(6, 3, 34, 38); vg.addColorStop(0, "rgba(255,255,255,.17)"); vg.addColorStop(0.45, "rgba(255,255,255,0)"); vg.addColorStop(1, "rgba(14,6,16,.24)"); ctx.fillStyle = vg; ctx.fillRect(-2, -2, 44, 44);
-    var rim = ctx.createLinearGradient(8, 0, 38, 0); rim.addColorStop(0, "rgba(255,190,130,0)"); rim.addColorStop(1, "rgba(255,198,142," + (0.1 + 0.55 * M + 0.2 * FLASH) + ")"); ctx.strokeStyle = rim; ctx.lineWidth = 3.4; ctx.stroke(P2D[c.shape]);
-    ctx.restore();
-    var dy = c.shape === "triangle" ? 5 : c.shape === "drop" ? 4 : 0, ex = [16.6 + (o.look || 0) * 1.4, 23.4 + (o.look || 0) * 1.4], ey = 17 + dy, mode = o.eye || "slit";
-    var blink = ((t / c.bp) % 1) > 0.965 ? 0.12 : 1;
-    ctx.fillStyle = "#fff"; ctx.strokeStyle = "#fff"; ctx.lineCap = "round";
-    for (var i = 0; i < 2; i++) {
-      if (mode === "happy") { ctx.lineWidth = 1.8; ctx.beginPath(); ctx.arc(ex[i], ey + 1.5, 2.3, Math.PI * 1.08, Math.PI * 1.92); ctx.stroke(); }
-      else {
-        var w = mode === "tired" ? 3.4 : 2.1, h = (mode === "wide" ? 7.4 : mode === "tired" ? 1.5 : 5.2) * blink;
-        ctx.beginPath(); ctx.roundRect ? ctx.roundRect(ex[i] - w / 2, ey - h / 2 + (mode === "tired" ? 1.4 : 0), w, h, Math.min(w, h) / 2) : ctx.rect(ex[i] - w / 2, ey - h / 2, w, h); ctx.fill();
-      }
-    }
-    if (o.blush) { ctx.fillStyle = "rgba(255,170,190,.42)"; for (var j = 0; j < 2; j++) { ctx.beginPath(); ctx.ellipse(ex[j] + (j ? 2.2 : -2.2), ey + 6.2, 2.4, 1.4, 0, 0, 7); ctx.fill(); } }
-    ctx.restore();
-  }
-  function drawBlock(x, y, color, o) {   // a module: a small rounded block with a lit top, centred on x, resting on y
-    o = o || {}; ctx.save(); if (o.alpha !== undefined) ctx.globalAlpha = o.alpha; ctx.translate(x, y); if (o.rot) ctx.rotate(o.rot); ctx.scale(o.sx || 1, o.sy || 1);
-    var g = ctx.createLinearGradient(0, -22, 0, 0); g.addColorStop(0, shade(color, 0.2)); g.addColorStop(1, shade(color, -0.24)); ctx.fillStyle = g; rr(-21, -22, 42, 22, 5); ctx.fill();
-    ctx.strokeStyle = "rgba(0,0,0,.3)"; ctx.lineWidth = 1; ctx.stroke();
-    ctx.fillStyle = "rgba(255,255,255,.34)"; rr(-18, -20.5, 36, 3, 1.5); ctx.fill();
-    ctx.fillStyle = "rgba(255,255,255,.2)"; rr(-14, -14, 15, 2.4, 1.2); ctx.fill();
-    if (o.check) { var k = eob(clamp(o.check)); ctx.shadowColor = "rgba(0,0,0,.35)"; ctx.shadowBlur = 3; ctx.strokeStyle = "#fff"; ctx.lineWidth = 3.4; ctx.lineCap = "round"; ctx.lineJoin = "round"; ctx.beginPath(); ctx.moveTo(-9 * k, -10 * k); ctx.lineTo(-3 * k, -4 * k); ctx.lineTo(9 * k, -17 * k); ctx.stroke(); }
-    ctx.restore();
-    if (o.glow) glow(x, y - 11, 44, color, o.glow);
-  }
-  function text(str, x, y, font, color, align, alpha) { ctx.save(); ctx.font = font; ctx.fillStyle = color; ctx.textAlign = align || "left"; ctx.textBaseline = "alphabetic"; if (alpha !== undefined) ctx.globalAlpha = alpha; ctx.fillText(str, x, y); ctx.restore(); }
-
-  // ---- the world: sky and sun, clouds, three ridges of hills, trees, the ground. All of it lit by M.
-  var SEND = 700;                                  // how far the world scrolls while he carries the task
-  function scroll(t) { return SEND * sm(seg(t, 0.9, 9.0)); }
-  function ridgeY(x, par, base, amp, off) { var u = x + S * par + off; return GY - base - amp * Math.sin(u / 120) - amp * 0.5 * Math.sin(u / 47 + 1.3) - amp * 0.25 * Math.sin(u / 23 + 0.4); }
-  function drawSky(t) {
-    var m = M, g = ctx.createLinearGradient(0, 0, 0, GY);
-    g.addColorStop(0, mixc("#0b0912", "#2a1e3c", m)); g.addColorStop(0.5, mixc("#18121f", "#6f3d4e", m)); g.addColorStop(1, mixc("#3a2530", "#f3a976", m));
-    ctx.fillStyle = g; ctx.fillRect(-12, -12, VW + 24, H + 24);
-    // stars fade as the sun comes up
-    var sa = 1 - 0.92 * m;
-    if (sa > 0.02) for (var i = 0; i < 70; i++) { var span = VW + 140, sx = (((rnd(i, 1) * span) - S * 0.03 * (1 + rnd(i, 4))) % span + span) % span - 70, sy = 24 + rnd(i, 2) * 230, tw = 0.35 + 0.65 * Math.abs(Math.sin(t * (0.6 + rnd(i, 3)) + i)), r = 0.7 + rnd(i, 5) * 1.3; ctx.fillStyle = "rgba(240,232,255," + (0.5 * tw * sa).toFixed(3) + ")"; ctx.beginPath(); ctx.arc(sx, sy, r, 0, 7); ctx.fill(); if (r > 1.7) glow(sx, sy, 7, "#cfc4ff", 0.18 * tw * sa); }
-    // the sun: below the hills at dusk, rising behind the far ridge as his friends arrive
-    var sx2 = OX + 735, sy2 = lerp(GY + 80, GY - 104, eo(m));
-    glow(sx2, sy2, 600, "#ff9a62", 0.1 + 0.34 * m + 0.14 * FLASH);
-    glow(sx2, sy2, 220, "#ffc88a", 0.08 + 0.36 * m + 0.2 * FLASH);
-    ctx.save(); ctx.globalCompositeOperation = "lighter";
-    for (var r2 = 0; r2 < 7; r2++) { var ang = -Math.PI / 2 + (r2 - 3) * 0.24 + Math.sin(t * 0.25 + r2) * 0.035, len = 760, wid = 0.075; var rg = ctx.createLinearGradient(sx2, sy2, sx2 + Math.cos(ang) * len, sy2 + Math.sin(ang) * len); rg.addColorStop(0, "rgba(255,206,150," + (0.06 * m + 0.05 * FLASH) + ")"); rg.addColorStop(1, "rgba(255,206,150,0)"); ctx.fillStyle = rg; ctx.beginPath(); ctx.moveTo(sx2, sy2); ctx.lineTo(sx2 + Math.cos(ang - wid) * len, sy2 + Math.sin(ang - wid) * len); ctx.lineTo(sx2 + Math.cos(ang + wid) * len, sy2 + Math.sin(ang + wid) * len); ctx.closePath(); ctx.fill(); }
-    ctx.restore();
-    if (m > 0.02) { var dg = ctx.createRadialGradient(sx2, sy2, 0, sx2, sy2, 62); dg.addColorStop(0, "rgba(255,244,222," + m + ")"); dg.addColorStop(0.55, "rgba(255,218,168," + 0.9 * m + ")"); dg.addColorStop(1, "rgba(255,190,130,0)"); ctx.fillStyle = dg; ctx.beginPath(); ctx.arc(sx2, sy2, 62, 0, 7); ctx.fill(); }
-    // clouds: soft, drifting, lit from below by the horizon
-    for (var c = 0; c < 8; c++) {
-      var per = VW + 560, bx = rnd(c, 11) * per, cy = 60 + rnd(c, 12) * 170, cw = 170 + rnd(c, 13) * 230, par = 0.07 + 0.07 * rnd(c, 14), cx0 = (((bx - t * (3 + 5 * rnd(c, 15)) - S * par) % per) + per) % per - 280;
-      for (var j = 0; j < 5; j++) {
-        var px = cx0 + (j - 2) * cw * 0.26, py = cy + Math.sin(j * 1.7 + c) * 7, rx = cw * (0.3 + 0.05 * Math.sin(j + c)), ry = rx * 0.3;
-        ctx.save(); ctx.translate(px, py); ctx.scale(1, ry / rx); var cg = ctx.createRadialGradient(0, rx * 0.25, 0, 0, 0, rx); cg.addColorStop(0, mixc("#4a3a58", "#ffc79a", m, 0.2 + 0.1 * rnd(c, 16))); cg.addColorStop(0.6, mixc("#2c2238", "#d98a8a", m, 0.12)); cg.addColorStop(1, mixc("#2c2238", "#d98a8a", m, 0)); ctx.fillStyle = cg; ctx.beginPath(); ctx.arc(0, 0, rx, 0, 7); ctx.fill(); ctx.restore();
-      }
-    }
-  }
-  function ridge(par, base, amp, off, cTop, cBot, rimA, treeN, treeCol, treeSz) {
-    ctx.beginPath(); ctx.moveTo(-12, GY + 2); var x; for (x = -12; x <= VW + 12; x += 8) ctx.lineTo(x, ridgeY(x, par, base, amp, off)); ctx.lineTo(VW + 12, GY + 2); ctx.closePath();
-    var g = ctx.createLinearGradient(0, GY - base - amp * 1.8, 0, GY); g.addColorStop(0, cTop); g.addColorStop(1, cBot); ctx.fillStyle = g; ctx.fill();
-    if (rimA > 0.01) { ctx.beginPath(); for (x = -12; x <= VW + 12; x += 8) { var yy = ridgeY(x, par, base, amp, off); if (x === -12) ctx.moveTo(x, yy); else ctx.lineTo(x, yy); } ctx.strokeStyle = "rgba(255,196,140," + rimA + ")"; ctx.lineWidth = 1.6; ctx.stroke(); }
-    var per = VW + 240;
-    for (var k = 0; k < treeN; k++) {   // little pines along the ridge
-      var tx = ((((k * per / treeN) + rnd(k, 21) * 40 - S * par) % per) + per) % per - 120, ty = ridgeY(tx, par, base, amp, off) + 2, th = treeSz * (0.7 + rnd(k, 22) * 0.7);
-      ctx.fillStyle = treeCol; ctx.beginPath(); ctx.moveTo(tx, ty - th); ctx.lineTo(tx + th * 0.28, ty - th * 0.45); ctx.lineTo(tx + th * 0.14, ty - th * 0.45); ctx.lineTo(tx + th * 0.34, ty); ctx.lineTo(tx - th * 0.34, ty); ctx.lineTo(tx - th * 0.14, ty - th * 0.45); ctx.lineTo(tx - th * 0.28, ty - th * 0.45); ctx.closePath(); ctx.fill();
-    }
-  }
-  function haze(a, top) { var g = ctx.createLinearGradient(0, GY - top, 0, GY); g.addColorStop(0, mixc("#3a2530", "#f3a976", M, 0)); g.addColorStop(1, mixc("#3a2530", "#f3a976", M, a)); ctx.fillStyle = g; ctx.fillRect(-12, GY - top, VW + 24, top + 2); }
-  function drawGround(t) {
-    var g = ctx.createLinearGradient(0, GY, 0, H); g.addColorStop(0, mixc("#3a2e29", "#6c4c3a", M)); g.addColorStop(0.35, mixc("#2a201d", "#4a3328", M)); g.addColorStop(1, mixc("#161110", "#251a15", M));
-    ctx.fillStyle = g; ctx.fillRect(-12, GY, VW + 24, H - GY + 12);
-    ctx.fillStyle = "rgba(255,206,160," + (0.1 + 0.28 * M) + ")"; ctx.fillRect(-12, GY, VW + 24, 1.6);
-    // a worn path: two soft ruts, pebbles, and tufts, all moving with the world
-    for (var r = 0; r < 2; r++) { var rg = ctx.createLinearGradient(0, GY + 30 + r * 16, 0, GY + 36 + r * 16); rg.addColorStop(0, "rgba(0,0,0,0)"); rg.addColorStop(0.5, "rgba(0,0,0,.2)"); rg.addColorStop(1, "rgba(0,0,0,0)"); ctx.fillStyle = rg; ctx.fillRect(-12, GY + 28 + r * 16, VW + 24, 10); }
-    var per = 2000;
-    for (var i = 0; i < 48; i++) { var px = (((rnd(i, 31) * per) - S) % per + per) % per - 120, py = GY + 12 + rnd(i, 32) * 62, rx = 2.5 + rnd(i, 33) * 7; ctx.fillStyle = "rgba(0,0,0,.2)"; ctx.beginPath(); ctx.ellipse(px, py + 1, rx, rx * 0.34, 0, 0, 7); ctx.fill(); ctx.fillStyle = "rgba(255,214,176," + (0.05 + 0.1 * M) + ")"; ctx.beginPath(); ctx.ellipse(px - 0.5, py - 0.6, rx * 0.8, rx * 0.22, 0, 0, 7); ctx.fill(); }
-  }
-  function drawWorld(t) {
-    drawSky(t);
-    ridge(0.14, 118, 30, 0, mixc("#2d2433", "#85505a", M), mixc("#241c2a", "#5c3744", M), 0.1 * M, 0, "", 0); haze(0.5, 150);
-    ridge(0.3, 78, 26, 400, mixc("#261d27", "#63404a", M), mixc("#1f1822", "#4a2d36", M), 0.18 * M, 11, mixc("#1b141c", "#3a232c", M), 34); haze(0.3, 110);
-    ridge(0.55, 40, 20, 900, mixc("#1d1619", "#3d2a2c", M), mixc("#181214", "#2f2022", M), 0.22 * M, 15, mixc("#120d0f", "#271a1b", M), 46);
-    drawGround(t);
-  }
-  // the finish table: where the work ends up (it rides in from the right while the world scrolls)
-  var TAB_X = 818;
-  function tableX(t) { return TAB_X + (SEND - scroll(t)); }
-  function slot(col, row, x0) { return { x: x0 + (col ? 28 : -28), y: GY - 30 - row * 23 }; }
-  function slab(x0, t) {
-    ctx.save(); ctx.translate(x0, GY); var sg = ctx.createRadialGradient(0, 3, 0, 0, 3, 100); sg.addColorStop(0, "rgba(6,4,6,.5)"); sg.addColorStop(1, "rgba(6,4,6,0)"); ctx.save(); ctx.scale(1, 0.18); ctx.fillStyle = sg; ctx.beginPath(); ctx.arc(0, 0, 100, 0, 7); ctx.fill(); ctx.restore();
-    var g = ctx.createLinearGradient(0, -30, 0, 0); g.addColorStop(0, mixc("#66544a", "#a07a5e", M)); g.addColorStop(0.12, mixc("#4a3b33", "#7d5c47", M)); g.addColorStop(1, mixc("#2a201c", "#3e2c24", M)); ctx.fillStyle = g; rr(-82, -30, 164, 30, 6); ctx.fill();
-    ctx.fillStyle = "rgba(255,214,170," + (0.16 + 0.3 * M) + ")"; rr(-80, -30, 160, 2.6, 1.3); ctx.fill();
-    ctx.strokeStyle = "rgba(0,0,0,.22)"; ctx.lineWidth = 1; for (var s2 = -3; s2 <= 3; s2++) { ctx.beginPath(); ctx.moveTo(s2 * 26 + 6, -26); ctx.lineTo(s2 * 26 + 6, -2); ctx.stroke(); }
-    ctx.restore();
-  }
-  function drawTable(t) {
-    var x0 = tableX(t); slab(x0, t);
-    // the lantern at its left corner: a little warm light that works at dusk and fades into the sunrise
-    var fl = 0.82 + 0.1 * Math.sin(t * 17) + 0.08 * Math.sin(t * 29 + 1);
-    ctx.fillStyle = "#1a1412"; ctx.fillRect(x0 - 78, GY - 96, 3, 66); ctx.fillStyle = "#2a201c"; rr(x0 - 85, GY - 108, 17, 17, 4); ctx.fill();
-    ctx.fillStyle = mixc("#ffb86a", "#ffe2b0", 0.5 * M); rr(x0 - 82, GY - 105, 11, 11, 3); ctx.fill();
-    glow(x0 - 76, GY - 98, 130, "#ffb066", (0.36 - 0.18 * M) * fl); glow(x0 - 76, GY - 98, 34, "#ffd9a0", 0.5 * fl * (1 - 0.4 * M));
-    // the flag, waving
-    ctx.fillStyle = "#6f665e"; ctx.fillRect(x0 + 92, GY - 150, 3, 150);
-    ctx.beginPath(); var fx; for (fx = 0; fx <= 46; fx += 5) ctx.lineTo(x0 + 95 + fx, GY - 150 + Math.sin(t * 3.2 + fx * 0.16) * (1.5 + fx * 0.07)); for (fx = 46; fx >= 0; fx -= 5) ctx.lineTo(x0 + 95 + fx, GY - 124 + Math.sin(t * 3.2 + fx * 0.16 + 0.5) * (1.5 + fx * 0.07)); ctx.closePath();
-    var fg = ctx.createLinearGradient(x0 + 95, 0, x0 + 141, 0); fg.addColorStop(0, "#c97c5c"); fg.addColorStop(1, "#e89a76"); ctx.fillStyle = fg; ctx.fill();
-  }
-  var STACK_X = 124;
-  function drawStackBase(t) { slab(STACK_X, t); }
-
-  // ---- the tower Opus carries, and the blocks' journeys
-  var GRAY = "#8a7f74", TOWER_N = 8;
-  function opusState(t) {
-    var s = { x: 0, up: 0, sx: 1, sy: 1, rot: 0, eye: "slit", look: 1, scale: 1, blush: false };
-    if (t < T.alone1 + 0.2) {   // enters, then trudges (the world moves, he stays put)
-      s.x = lerp(-OX - 140, 300, eo(seg(t, 0.3, 1.7)));
-      var h = hop(t, 0.95, 5, 0); s.up = h.up; s.sx = h.sx; s.sy = h.sy; s.rot = 0.045 * Math.sin(t * 6.6); s.eye = "tired";
-    } else if (t < T.put) { s.x = lerp(300, 725, sm(seg(t, T.alone1, T.put))); var h2 = hop(t, 0.7, 6, 0); s.up = h2.up; s.sx = h2.sx; s.sy = h2.sy; s.eye = "tired"; }
-    else if (t < T.friends0 + 0.5) { s.x = 725; s.sy = 0.93 + 0.02 * Math.sin(t * 2); s.sx = 1.05; s.eye = "tired"; s.look = -0.4; }   // he sits, spent
-    else if (t < T.work1) { s.x = 725; var b = Math.sin(t * 2.2); s.sy = 0.97 + 0.02 * b; s.eye = t < 12.6 ? "wide" : "happy"; s.look = -0.9; s.blush = t > 12.6; s.up = t > T.work0 ? once(t, T.work0 + 2.4, 0.5, 14) + once(t, T.work0 + 3.2, 0.5, 18) : 0; }
-    else {   // the reunion: he is the middle of it
-      s.x = 725; var hh = hop(t, 0.62, 30, 0.1); s.up = hh.up * sm(clamp((t - T.party - 0.3) / 0.5)); s.sx = hh.sx; s.sy = hh.sy; s.eye = "happy"; s.blush = true; s.look = 0;
-    }
-    return s;
-  }
-  function drawTower(ox, oy, t) {   // the eight modules on his head, wobbling
-    var baseY = oy - OPUS.size * 0.93;
-    for (var i = 0; i < TOWER_N; i++) {
-      var left = t >= T.put + (TOWER_N - 1 - i) * 0.11;   // top block leaves first
-      if (left) continue;
-      var sway = Math.sin(t * 3.1 + i * 0.5) * (1.2 + i * 0.9), y = baseY - i * 22;
-      drawBlock(ox + sway, y, GRAY, { rot: Math.sin(t * 2.4 + i) * 0.03 * (i + 1) * 0.5 });
-    }
-  }
-  function slotOf(i) { return { col: i % 2, row: Math.floor(i / 2) }; }
-  function drawAloneBlocks(t, opX, opY) {   // after he arrives, the blocks hop down onto the table
-    for (var i = 0; i < TOWER_N; i++) {
-      var t0 = T.put + (TOWER_N - 1 - i) * 0.11, u = seg(t, t0, t0 + 0.45); if (u <= 0) continue;
-      var sl = slotOf(i), dst = slot(sl.col, sl.row, tableX(t)), srcX = opX, srcY = opY - OPUS.size * 0.93 - i * 22;
-      var x = lerp(srcX, dst.x, eo(u)), y = lerp(srcY, dst.y, u * u) - 70 * 4 * u * (1 - u);
-      if (t > 13.55) { var gone = seg(t, 13.45, 13.85); if (gone >= 1) continue; drawBlock(dst.x, dst.y, GRAY, { check: 1, alpha: 1 - gone, sx: 1 - gone * 0.4, sy: 1 - gone * 0.4 }); continue; }
-      drawBlock(x, y, GRAY, { check: u >= 1 ? (t - t0 - 0.45) / 0.25 : 0 });
-      if (u >= 1) puff(dst.x, dst.y + 2, t - t0 - 0.45, 0.5, 9);
-    }
-  }
-  // take two: the task is a stack on the left; each block flies over the writer, wakes up, and lands on the table, judged
-  var FL0 = 14.5, FSTEP = 0.36, FDUR = 0.86;
-  function blockFlight(k, t) {
-    var sl = slotOf(k), src = slot(sl.col, 3 - Math.floor(k / 2), STACK_X), dst = slot(sl.col, Math.floor(k / 2), tableX(t)), t0 = FL0 + k * FSTEP, u = seg(t, t0, t0 + FDUR);
-    return { src: src, dst: dst, t0: t0, u: u };
-  }
-  function flightPos(f, u) { return { x: lerp(f.src.x, f.dst.x, sm(u)), y: lerp(f.src.y, f.dst.y, u) - 170 * 4 * u * (1 - u) }; }
-  function drawTwoBlocks(t) {
-    if (t < 13.9 || t > 22.6) return;
-    var pop = eob(seg(t, 13.9, 14.3));
-    for (var k = 0; k < TOWER_N; k++) {
-      var f = blockFlight(k, t), x, y, col, o = {}, awake = PAL[(k * 2 + 1) % PAL.length];
-      if (f.u <= 0) { x = f.src.x; y = f.src.y; col = GRAY; o.sx = pop; o.sy = pop; }
-      else if (f.u < 1) {
-        for (var j = 4; j >= 1; j--) { var uj = f.u - j * 0.035; if (uj <= 0) continue; var pj = flightPos(f, uj); drawBlock(pj.x, pj.y, uj < 0.5 ? GRAY : awake, { alpha: 0.2 * (1 - j / 5), rot: (uj - 0.5) * 0.9 }); }   // a motion trail
-        var p = flightPos(f, f.u); x = p.x; y = p.y; col = f.u < 0.5 ? GRAY : awake; o.rot = (f.u - 0.5) * 0.9; o.sx = 1 + 0.12 * Math.sin(f.u * 6.28); if (f.u >= 0.5) o.glow = 0.5 * (1 - (f.u - 0.5) * 1.4);
-      } else { x = f.dst.x; y = f.dst.y; col = awake; var since = t - (f.t0 + FDUR); o.check = since / 0.22; o.sy = 1 - 0.16 * clamp(1 - since / 0.18); o.sx = 1 + 0.12 * clamp(1 - since / 0.18); }
-      drawBlock(x, y, col, o);
-      var w = t - (f.t0 + FDUR * 0.5), pm = flightPos(f, 0.5);   // where it wakes up over the writer: a burst of light and a ring
-      if (w > 0 && w < 0.6) { var wu = w / 0.6; glow(pm.x, pm.y - 8, 70 * (0.5 + wu), awake, 0.6 * (1 - wu)); ctx.save(); ctx.globalCompositeOperation = "lighter"; ctx.strokeStyle = rgba(awake, 0.7 * (1 - wu)); ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(pm.x, pm.y - 8, 10 + 56 * eo(wu), 0, 7); ctx.stroke(); ctx.restore(); star(pm.x, pm.y - 8, 16 * (1 - wu) + 5, 1 - wu, w * 4, "#fff4e0"); }
-      var l = t - (f.t0 + FDUR);   // and where it lands: dust and a ring
-      if (l > 0 && l < 0.7) { puff(f.dst.x - 14, f.dst.y + 1, l, 0.6, 7); puff(f.dst.x + 14, f.dst.y + 1, l, 0.6, 7); ctx.save(); ctx.globalCompositeOperation = "lighter"; ctx.strokeStyle = rgba(awake, 0.5 * (1 - l / 0.7)); ctx.lineWidth = 1.6; ctx.beginPath(); ctx.ellipse(f.dst.x, f.dst.y - 2, 12 + 44 * eo(l / 0.7), (12 + 44 * eo(l / 0.7)) * 0.35, 0, 0, 7); ctx.stroke(); ctx.restore(); }
-    }
-  }
-  // ---- the friends
-  var ARR = { comp: [T.friends0, T.friends0 + 1.7, 470], son: [T.friends0 + 0.5, T.friends0 + 2.1, 215], gem: [T.friends0 + 1.0, T.friends0 + 2.6, 300], cdx: [T.friends0 + 1.4, T.friends0 + 3.0, 385], grk: [T.friends0 + 1.8, T.friends0 + 3.5, 555] };
-  function friend(c, t) {
-    var s = { x: 0, up: 0, sx: 1, sy: 1, rot: 0, eye: "slit", look: 0, scale: 1, row: 0, vis: true, blush: false };
-    var inA = ARR[c.id];
-    var back = c === GEM || c === CDX || c === GRK; s.row = back ? -22 : 0; s.scale = back ? 0.9 : 1;
-    var u = seg(t, inA[0], inA[1]), x = lerp(-OX - 140, inA[2], eo(u)), moving = u > 0 && u < 1;
-    if (t < inA[0]) { s.vis = false; return s; }
-    s.x = x; s.look = moving ? 1 : 0;
-    if (moving) {   // each walks in its own way
-      if (c === COMP) { var h = hop(t, 0.42, 38, 0); s.up = h.up; s.sx = h.sx; s.sy = h.sy; s.rot = 0.1 * Math.sin(t * 14); }
-      else if (c === SON) { var h2 = hop(t, 0.55, 24, 0); s.up = h2.up; s.sx = h2.sx; s.sy = h2.sy; s.rot = 0.18 * Math.sin(t * 11.4); }
-      else if (c === GEM) { var h3 = hop(t, 0.5, 46, 0.2); s.up = h3.up; s.sx = h3.sx * 1.04; s.sy = h3.sy; }
-      else if (c === CDX) { s.rot = (x + OX + 140) / (c.size * 0.45); s.up = 2 + 2 * Math.sin(t * 20); }
-      else { s.up = 7 + 4 * Math.sin(t * 5); s.rot = 0.05 * Math.sin(t * 3); s.sy = 1.03; }
-    }
-    s.eye = t < inA[1] + 0.3 ? "wide" : "happy"; s.blush = t > inA[1];
-    if (t >= inA[1]) {
-      var arrived = t - inA[1];
-      if (t < T.work0) { var bb = hop(t, 0.9, 7, c.bp * 0.1); s.up = bb.up; s.sx = bb.sx; s.sy = bb.sy; if (arrived < 0.7) { s.up += once(t, inA[1], 0.45, 20); } }   // they wave hello with a hop
-    }
-    // roles in take two
-    if (t >= T.work0 - 0.6 && t < T.work1) {
-      if (c === SON) {   // plans at the stack, then dashes to the table and judges
-        var dash = seg(t, T.work0 - 0.3, T.work0 + 0.35); s.x = lerp(215, 630, sm(dash)); if (dash > 0 && dash < 1) { s.up = once(t, T.work0 - 0.3, 0.65, 26); s.look = 1; }
-        else { var bt = hop(t, 0.72, 10, 0); s.up = bt.up; s.sx = bt.sx; s.sy = bt.sy; for (var k = 0; k < TOWER_N; k++) { var fl = blockFlight(k, t); s.up += once(t, fl.t0 + FDUR, 0.3, 14); } }
-        s.eye = "wide";
-      } else if (c === COMP) {   // the writer jumps as each block passes over
-        s.x = 470; s.eye = "wide"; s.up = 0; for (var kk = 0; kk < TOWER_N; kk++) { var f2 = blockFlight(kk, t); s.up += once(t, f2.t0 + FDUR * 0.28, 0.36, 40); }
-        var base = hop(t, 0.36, 6, 0); s.up += base.up * 0.5; s.rot = 0.12 * Math.sin(t * 9);
-      } else { var cheer = hop(t, 0.72, 20, c === GEM ? 0 : c === CDX ? 0.33 : 0.66); s.up = cheer.up; s.sx = cheer.sx; s.sy = cheer.sy; s.eye = "happy"; s.rot = 0.1 * Math.sin(t * 8 + c.bp); }
-    }
-    if (t >= T.work1) {   // the reunion: they gather round him and jump together
-      var from = c === SON ? 630 : c === COMP ? 470 : c === GEM ? 300 : c === CDX ? 385 : 555, dest = from + (c === SON ? 6 : c === GRK ? 8 : c === COMP ? -6 : c === CDX ? -8 : -10);
-      var m = sm(seg(t, T.party, T.party + 1.1)); s.x = lerp(from, dest, m); s.row = lerp(s.row, back ? -6 : 0, m); s.scale = lerp(s.scale, back ? 0.96 : 1, m);
-      var pj = hop(t, 0.62, 28, (c.bp % 1) * 0.2); s.up = pj.up * sm(clamp((t - T.party - 0.15) / 0.4)); s.sx = pj.sx; s.sy = pj.sy; s.eye = "happy"; s.blush = true; s.rot = 0.14 * Math.sin(t * 9 + c.bp); s.look = 0;
-    }
-    return s;
-  }
-  // dust where feet touch the ground: his heavy steps, the friends' arrival hops, the reunion jumps
-  function drawDust(t, st) {
-    // his steps (the world slides past, so the dust is left behind)
-    if (t > 1.7 && t < T.alone1 + 0.4) lands(t, 0.95, 0, 0.7).forEach(function (tk) { if (tk > 1.7) { puff(st.opus.x - 22 - (t - tk) * 58, GY + 2, t - tk, 0.7, 10); puff(st.opus.x - 8 - (t - tk) * 40, GY + 3, t - tk, 0.55, 7); } });
-    var arrHops = { comp: [0.42, 0], son: [0.55, 0], gem: [0.5, 0.2] };
-    [COMP, SON, GEM].forEach(function (c) { var a = ARR[c.id], hp = arrHops[c.id]; if (t > a[0] && t < a[1] + 0.8) lands(t, hp[0], hp[1], 0.5).forEach(function (tk) { if (tk > a[0] && tk < a[1]) { var u = seg(tk, a[0], a[1]), px = lerp(-OX - 140, a[2], eo(u)); puff(px, GY + (c === GEM ? -22 : 0) + 2, t - tk, 0.5, 8); } }); });
-    if (t > ARR.cdx[0] && t < ARR.cdx[1]) { var cs = st.cdx; for (var j = 0; j < 5; j++) puff(cs.x - 26 - j * 14, GY - 20, (j * 0.06), 0.4, 6 + j); }   // the hexagon rolls: a trail
-    if (t > T.party + 0.35 && t < T.party + 5) [OPUS, SON, COMP, CDX, GEM, GRK].forEach(function (c) { var s = st[c.id]; if (!s || s.vis === false) return; var ph = c === OPUS ? 0.1 : (c.bp % 1) * 0.2; lands(t, 0.62, ph, 0.5).forEach(function (tk) { if (tk > T.party + 0.4) puff(s.x, GY + (s.row || 0) + 2, t - tk, 0.5, 9); }); });
-  }
-  // ---- name plates: who is the model behind each face
-  var STAG = { opus: 0, son: 1, comp: 1, cdx: 0, gem: 1, grk: 0 };
-  function roleOf(c, t, s) {
-    if (c === OPUS) return t < T.mourn ? "does it all alone" : "";
-    if (t >= T.work0 - 0.6 && t < T.work1) { if (c === COMP) return "writes"; if (c === SON) return s.x > 420 ? "judges" : "plans"; }
-    return "";
-  }
-  function drawPlate(c, s, t, hideAfter) {
-    var arrive = c === OPUS ? 1.5 : ARR[c.id][1];
-    var a = seg(t, arrive - 0.2, arrive + 0.35); if (hideAfter) a *= 1 - seg(t, T.bubbles - 0.1, T.bubbles + 0.25); if (a <= 0.01) return;
-    var role = roleOf(c, t, s), stag = c === COMP && t >= T.bubbles ? 0 : c === SON ? (s.x > 420 ? 1 : 0) : STAG[c.id], top = GY + (s.row || 0) - c.size * (s.scale || 1) * 1.02 - (s.up || 0) * 0.7 - 16 - (stag ? (role ? 46 : 36) : 0), px = s.x;
-    if (c === OPUS && t < T.mourn) { top = GY - 48; px = s.x - 112; }   // while he carries the tower the plate walks beside him
-    ctx.save(); ctx.globalAlpha = a; ctx.font = "700 15px " + DISP; var w = Math.max(ctx.measureText(c.name).width, role ? (ctx.font = "500 11px " + MONO, ctx.measureText(role).width) : 0) + 36, h = role ? 40 : 27;
-    ctx.shadowColor = "rgba(0,0,0,.5)"; ctx.shadowBlur = 10; ctx.shadowOffsetY = 3; glass(px - w / 2, top - h, w, h, 13, 0.62, rgba(c.color, 0.35)); ctx.shadowColor = "transparent";
-    ctx.fillStyle = c.color; ctx.beginPath(); ctx.arc(px - w / 2 + 14, top - h + 13.5, 4.2, 0, 7); ctx.fill();
-    ctx.textAlign = "left"; ctx.fillStyle = INK; ctx.font = "700 15px " + DISP; ctx.fillText(c.name, px - w / 2 + 24, top - h + 18.5);
-    if (role) { ctx.fillStyle = DIM; ctx.font = "500 11px " + MONO; ctx.fillText(role, px - w / 2 + 24, top - h + 33); }
-    ctx.restore();
-  }
-  // ---- effects of joy
-  function confetti(t) {
-    var t0 = T.party; if (t < t0 || t > t0 + 5.2) return;
-    var K = 1.15;
-    for (var i = 0; i < 170; i++) {
-      var src = i % 3, ts = t0 + 0.05 + rnd(i, 1) * (src === 2 ? 1.1 : 0.35), age = t - ts; if (age < 0 || age > 4.6) continue;
-      var x0, y0, vx, vy;
-      if (src === 0) { var a = -(58 + rnd(i, 2) * 26) * Math.PI / 180, v = 560 + rnd(i, 3) * 360; x0 = 40; y0 = GY - 8; vx = Math.cos(a) * v; vy = Math.sin(a) * v; }
-      else if (src === 1) { var a2 = -(122 - rnd(i, 2) * 26) * Math.PI / 180, v2 = 560 + rnd(i, 3) * 360; x0 = 920; y0 = GY - 8; vx = Math.cos(a2) * v2; vy = Math.sin(a2) * v2; }
-      else { x0 = 140 + rnd(i, 2) * 680; y0 = -20; vx = (rnd(i, 3) - 0.5) * 70; vy = 30 + rnd(i, 4) * 80; }
-      var x = x0 + vx * (1 - Math.exp(-K * age)) / K + Math.sin(age * 4.2 + i) * 9 * Math.min(1, age), y = y0 + vy * (1 - Math.exp(-K * age)) / K + 0.5 * 210 * age * age + age * 38;
-      if (y > H - BAR + 12 || x < -80 || x > W + 80) continue;
-      var col = PAL[i % PAL.length], fa = clamp((4.6 - age) / 1.1), flip = Math.cos(age * (5 + rnd(i, 6) * 8) + i), shape = i % 4;
-      ctx.save(); ctx.translate(x, y); ctx.rotate(rnd(i, 5) * 6.28 + age * (1.5 + rnd(i, 7) * 3)); ctx.globalAlpha = fa;
-      if (shape === 0 || shape === 3) { ctx.fillStyle = shade(col, flip > 0 ? 0.1 : -0.15); ctx.fillRect(-5, -3 * Math.abs(flip) - 0.3, 10, 6 * Math.abs(flip) + 0.6); }
-      else if (shape === 1) { ctx.fillStyle = col; ctx.beginPath(); ctx.arc(0, 0, 3.2, 0, 7); ctx.fill(); }
-      else { ctx.strokeStyle = col; ctx.lineWidth = 2.4; ctx.lineCap = "round"; ctx.beginPath(); ctx.moveTo(-8, 0); ctx.quadraticCurveTo(-3, -6 * flip, 0, 0); ctx.quadraticCurveTo(3, 6 * flip, 8, 0); ctx.stroke(); }
-      ctx.restore();
-      if (Math.abs(flip) > 0.985 && fa > 0.3) star(x, y, 5, 0.9 * fa, 0, "#fff6e6");   // the glint when a piece catches the sun
-    }
-  }
-  function fireworks(t) {
-    // soft spherical bursts: sparks leave at different speeds in every direction, droop under gravity, and twinkle out
-    var bursts = [[330, 150, 18.5], [600, 118, 19.0], [470, 176, 19.5], [740, 150, 19.95]];
-    bursts.forEach(function (b, bi) {
-      var age = t - b[2]; if (age < 0 || age > 2.0) return;
-      if (age < 0.22) glow(b[0], b[1], 170, "#fff2d8", 0.75 * (1 - age / 0.22));
-      glow(b[0], b[1] + 20 * age, 120 * clamp(age * 3), PAL[(bi * 3) % PAL.length], 0.16 * clamp(1 - age / 1.6));
-      ctx.save(); ctx.globalCompositeOperation = "lighter"; ctx.lineCap = "round";
-      for (var k = 0; k < 54; k++) {
-        var ang = rnd(k + bi * 77, 1) * 6.2832, sp = 55 + Math.sqrt(rnd(k + bi * 77, 2)) * 120, col = PAL[(k + bi * 3) % PAL.length], life = 1.2 + rnd(k + bi * 77, 3) * 0.7, a = Math.pow(clamp(1 - age / life), 1.4);
-        if (a <= 0.01) continue;
-        function pos(ag) { var r = sp * (1 - Math.exp(-ag * 2.5)) / 1.0; return [b[0] + Math.cos(ang) * r, b[1] + Math.sin(ang) * r + 70 * ag * ag]; }
-        var p = pos(age), q = pos(Math.max(0, age - 0.12)), tw = 0.6 + 0.4 * Math.sin(age * 40 + k);
-        var lg = ctx.createLinearGradient(q[0], q[1], p[0], p[1]); lg.addColorStop(0, rgba(col, 0)); lg.addColorStop(1, rgba(col, 0.85 * a)); ctx.strokeStyle = lg; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(q[0], q[1]); ctx.lineTo(p[0], p[1]); ctx.stroke();
-        ctx.fillStyle = rgba("#fff6e6", a * tw); ctx.beginPath(); ctx.arc(p[0], p[1], 1.5 + 1.2 * a, 0, 7); ctx.fill();
-        if (k % 6 === 0) glow(p[0], p[1], 14, col, 0.35 * a * tw);
-      }
-      ctx.restore();
+  document.documentElement.classList.add("js");
+  var reel = document.getElementById("reel"); if (!reel) return;
+  var viewBtns = [].slice.call(document.querySelectorAll(".tabs button"));
+  viewBtns.forEach(function (b) {
+    b.addEventListener("click", function () {
+      var v = b.dataset.view;
+      document.getElementById("stage").dataset.view = v;
+      viewBtns.forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
     });
-    var ring = t - 18.05; if (ring > 0 && ring < 0.9) { var tx = tableX(t); ctx.save(); ctx.globalCompositeOperation = "lighter"; ctx.strokeStyle = "rgba(255,196,140," + 0.5 * (1 - ring / 0.9) + ")"; ctx.lineWidth = 3; ctx.beginPath(); ctx.ellipse(tx, GY - 10, 30 + 520 * eo(ring / 0.9), (30 + 520 * eo(ring / 0.9)) * 0.22, 0, 0, 7); ctx.stroke(); ctx.restore(); }   // the shockwave when the last module lands
-  }
-  function hearts(t, ox, oy) { for (var i = 0; i < 9; i++) { var ts = T.party + 0.9 + i * 0.5, age = t - ts; if (age < 0 || age > 1.7) continue; heart(ox + Math.sin(age * 5 + i) * 14 + (i % 3 - 1) * 16, oy - OPUS.size - 6 - age * 62, 1.2 + (i % 3) * 0.2, 1 - age / 1.7); } }
-  function sweat(t, ox, oy) { if (t > T.put || t < T.alone0) return; for (var i = 0; i < 6; i++) { var per = 1.1, age = ((t + i * 0.37) % per); var x = ox + OPUS.size * (0.34 + 0.06 * (i % 2)), y = oy - OPUS.size * 0.8 + age * 40; ctx.save(); ctx.globalAlpha = 0.9 * (1 - age / per); var g = ctx.createLinearGradient(x, y - 5, x, y + 5); g.addColorStop(0, "#c8ecff"); g.addColorStop(1, "#7fb8e0"); ctx.fillStyle = g; ctx.beginPath(); ctx.ellipse(x, y, 3.2, 5, 0, 0, 7); ctx.fill(); ctx.restore(); } }
-  function motes(t) {   // dust and fireflies catching the light
-    var per = VW + 200;
-    for (var i = 0; i < 52; i++) {
-      var par = 0.3 + 0.9 * rnd(i, 41), bx = rnd(i, 42) * per, by = GY - 230 + rnd(i, 43) * 270, x = (((bx - S * par + Math.sin(t * 0.4 + i) * 26) % per) + per) % per - 100, y = by + Math.cos(t * 0.5 + i * 1.7) * 14 - ((t * (4 + 8 * rnd(i, 44))) % 60),
-        tw = 0.35 + 0.65 * Math.abs(Math.sin(t * (0.8 + rnd(i, 45)) + i)), r = 1.2 + rnd(i, 46) * 2.4;
-      glow(x, y, r * 4, "#ffd9a0", (0.2 + 0.28 * M) * tw * (0.4 + 0.6 * rnd(i, 47)));
-    }
-  }
-
-  // ---- text layers
-  function subtitle(str, t, a, b) {
-    var al = Math.min(seg(t, a, a + 0.35), 1 - seg(t, b - 0.35, b)); if (al <= 0) return;
-    ctx.save(); ctx.globalAlpha = al; ctx.font = "600 27px " + DISP; ctx.textAlign = "center"; ctx.shadowColor = "rgba(0,0,0,.85)"; ctx.shadowBlur = 12; ctx.shadowOffsetY = 2; ctx.fillStyle = "#f6f1ea"; ctx.fillText(str, VW / 2, H - BAR - 22); ctx.restore();
-  }
-  function fmt$(v) { return "$" + v.toFixed(3); }
-  function hudPanel(x, label, sub, val, secs, prog, col, align, a) {
-    ctx.save(); ctx.globalAlpha = a; var pw = 290, ph = 142, px = align === "right" ? x - pw : x;
-    glass(px, 56, pw, ph, 16, 0.42, "rgba(255,255,255,.08)");
-    var tx = align === "right" ? px + pw - 22 : px + 22, al = align === "right" ? "right" : "left";
-    text(label, tx, 82, "600 14px " + MONO, col === EMBER ? EMBER : MUTED, al); text(sub, tx, 104, "500 16px " + MONO, DIM, al);
-    text(val, tx, 148, "700 40px " + MONO, col === EMBER ? EMBER : INK, al); text(secs, tx, 172, "500 18px " + MONO, DIM, al);
-    ctx.fillStyle = "rgba(255,255,255,.08)"; rr(px + 22, 184, pw - 44, 3, 1.5); ctx.fill(); ctx.fillStyle = col === EMBER ? EMBER : "#bdb3a8"; rr(px + 22, 184, (pw - 44) * prog, 3, 1.5); ctx.fill();
-    ctx.restore();
-  }
-  function hud(t) {
-    var p1 = seg(t, T.alone0, T.alone1), a1 = Math.min(seg(t, 0.5, 1.0), 1 - seg(t, 20.6, 21.0)) * (t > T.friends0 ? 0.8 : 1);
-    if (a1 > 0) hudPanel(36, "ALONE", "raw Claude Opus", fmt$(0.443 * p1), Math.round(108 * p1) + " s" + (t > T.stamp ? "  ·  37/37 ✓" : ""), p1, MUTED, "left", a1);
-    var u2 = seg(t, FL0, FL0 + 7 * FSTEP + FDUR), a2 = Math.min(seg(t, 13.9, 14.4), 1 - seg(t, 20.6, 21.0));
-    if (a2 > 0) hudPanel(VW - 36, "ANTILOKI", "routes to Composer", fmt$(0.065 * u2), Math.round(72 * u2) + " s" + (u2 >= 1 ? "  ·  36.3/37 ✓" : ""), u2, EMBER, "right", a2);
-  }
-  function bubbles(t, st) {
-    // EVERY friend carries its measured number (raw, one session, the eight-module task, 2026-10-07/08), left to right so they pop in as a wave
-    var items = [[GEM, "5.6×", "$0.079"], [CDX, "3.0×", "$0.149"], [COMP, "6.8×", "$0.065"], [GRK, "0.9×", "$0.483"], [SON, "2.7×", "$0.166"]];
-    function bubble(c, bx, by, k, lines) {
-      ctx.save(); ctx.translate(bx, by); ctx.scale(k * 0.88, k * 0.88);   // a little smaller so six bubbles fit side by side
-      ctx.shadowColor = "rgba(0,0,0,.55)"; ctx.shadowBlur = 14; ctx.shadowOffsetY = 4; glass(-47, -52, 94, 80, 16, 0.7, rgba(c.color, 0.5)); ctx.shadowColor = "transparent";
-      ctx.beginPath(); ctx.moveTo(-8, 28); ctx.lineTo(0, 38); ctx.lineTo(8, 28); ctx.fillStyle = "rgba(15,12,11,.7)"; ctx.fill();
-      ctx.fillStyle = c.color; rr(-47, -52, 94, 3, 2); ctx.fill();
-      ctx.textAlign = "center"; ctx.fillStyle = INK; ctx.font = "700 13px " + DISP; ctx.fillText(c.name, 0, -33); ctx.fillStyle = c.color === "#5b6f88" ? "#9bb1cd" : c.color; ctx.font = "700 25px " + MONO; ctx.fillText(lines[0], 0, -6); ctx.fillStyle = DIM; ctx.font = "500 14px " + MONO; ctx.fillText(lines[1], 0, 16); ctx.restore();
-    }
-    for (var i = 0; i < items.length; i++) {
-      var c = items[i][0], s = st[c.id], k = eob(seg(t, T.bubbles + i * 0.22, T.bubbles + i * 0.22 + 0.4)); if (k <= 0.01) continue;
-      var raise = (c === COMP || c === SON) ? 58 : 0,   // two rows: the neighbours of a close pair (Grok-Sonnet, Codex-Composer) never share a height, and Composer clears its own name tag
-          bx = s.x + (c === GRK ? 12 : 0), by = GY + s.row - c.size * (s.scale || 1) - 34 - s.up * 0.6 - raise;
-      bubble(c, bx, by, k, [items[i][1], items[i][2]]);
-    }
-    var ko = eob(seg(t, T.bubbles - 0.2, T.bubbles + 0.2)); if (ko > 0.01) { var so = st.opus; bubble(OPUS, so.x + 14, GY - OPUS.size - 36 - so.up * 0.6 - 24, ko, ["$0.443", "alone"]); }
-  }
-  function endCard(t) {
-    var a = seg(t, T.card, T.card + 0.6) * (1 - seg(t, T.fade - 0.4, T.fade)); if (a <= 0) return;
-    ctx.save(); ctx.globalAlpha = a * 0.9; var g = ctx.createLinearGradient(0, BAR, 0, 270); g.addColorStop(0, "rgba(10,8,7,.85)"); g.addColorStop(1, "rgba(10,8,7,0)"); ctx.fillStyle = g; ctx.fillRect(0, BAR, VW, 240); ctx.restore();
-    glow(VW / 2, 112, 340, "#c97c5c", 0.2 * a);
-    ctx.save(); ctx.globalAlpha = a; ctx.textAlign = "center"; ctx.shadowColor = "rgba(0,0,0,.6)"; ctx.shadowBlur = 16;
-    ctx.font = "800 52px " + DISP; var tw = ctx.measureText("6.8× cheaper.").width, sx = VW / 2 - tw / 2 + ((t * 260) % (tw + 300)) - 150, sg = ctx.createLinearGradient(sx - 90, 0, sx + 90, 0);   // a slow shimmer runs through the number
-    sg.addColorStop(0, "#c97c5c"); sg.addColorStop(0.5, "#ffd2b0"); sg.addColorStop(1, "#c97c5c"); var fg = ctx.createLinearGradient(VW / 2 - tw / 2, 0, VW / 2 + tw / 2, 0); fg.addColorStop(0, "#c97c5c"); fg.addColorStop(1, "#c97c5c");
-    ctx.fillStyle = fg; ctx.fillText("6.8× cheaper.", VW / 2, 114); ctx.shadowColor = "transparent"; ctx.fillStyle = sg; ctx.globalCompositeOperation = "source-atop"; ctx.fillText("6.8× cheaper.", VW / 2, 114); ctx.globalCompositeOperation = "source-over";
-    ctx.shadowColor = "rgba(0,0,0,.6)"; ctx.shadowBlur = 12; ctx.font = "600 30px " + DISP; ctx.fillStyle = INK; ctx.fillText("72 s, not 108 s.  36.3 of 37 checks, not 37.", VW / 2, 160);
-    ctx.shadowColor = "transparent"; ctx.font = "500 16px " + MONO; ctx.fillStyle = DIM; ctx.fillText("each job on the cheapest model that passes", VW / 2, 192);
-    ctx.restore();
-    var la = seg(t, T.card + 0.5, T.card + 1.2) * (1 - seg(t, T.fade - 0.4, T.fade)); if (la > 0) { ctx.save(); ctx.globalAlpha = la; ctx.textAlign = "center"; ctx.font = "700 26px " + LOGO; var lw = ctx.measureText("antiloki").width; ctx.fillStyle = INK; ctx.fillText("antiloki", VW / 2 - 4, H - BAR - 24); ctx.fillStyle = EMBER; ctx.textAlign = "left"; ctx.fillText(".", VW / 2 - 4 + lw / 2, H - BAR - 24); ctx.restore(); }
-  }
-  // ---- the finish: grade, vignette, lens bokeh, grain, the black bars
-  var GR = null, GRP = null, QUAL = 1, LITE = false;   // adaptive quality: a slow device renders smaller and skips the costliest finishing touches
-  function grain() { if (GR) return; try { GR = document.createElement("canvas"); GR.width = GR.height = 128; var g = GR.getContext("2d"), d = g.createImageData(128, 128); for (var i = 0; i < d.data.length; i += 4) { var v = Math.random() * 255; d.data[i] = d.data[i + 1] = d.data[i + 2] = v; d.data[i + 3] = 255; } g.putImageData(d, 0, 0); GRP = ctx.createPattern(GR, "repeat"); } catch (e) { GR = null; } }
-  function finish(t) {
-    // colour grade: cool shadows up top, warm light at the bottom as the day arrives
-    if (!LITE) { var gg = ctx.createLinearGradient(0, 0, 0, H); gg.addColorStop(0, "rgba(40,50,110," + (0.1 * (1 - M)) + ")"); gg.addColorStop(1, "rgba(150,70,20," + (0.05 + 0.1 * M) + ")"); ctx.save(); ctx.globalCompositeOperation = "soft-light"; ctx.fillStyle = gg; ctx.fillRect(0, 0, VW, H); ctx.restore(); }
-    // out-of-focus lights in the corners, like a lens
-    if (!LITE) { ctx.save(); ctx.globalCompositeOperation = "lighter"; [[60, 470, 46, 0.06], [140, 505, 28, 0.05], [VW - 70, 480, 50, 0.07], [VW - 170, 510, 26, 0.05], [VW - 40, 120, 34, 0.04]].forEach(function (b, i) { var tw = 0.7 + 0.3 * Math.sin(t * 0.7 + i); var g = ctx.createRadialGradient(b[0], b[1], 0, b[0], b[1], b[2]); g.addColorStop(0, "rgba(255,196,140," + b[3] * (0.6 + 0.8 * M) * tw + ")"); g.addColorStop(0.85, "rgba(255,196,140," + b[3] * (0.6 + 0.8 * M) * tw * 0.7 + ")"); g.addColorStop(1, "rgba(255,196,140,0)"); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(b[0], b[1], b[2], 0, 7); ctx.fill(); }); ctx.restore(); }
-    var vg = ctx.createRadialGradient(VW / 2, H * 0.55, H * 0.35, VW / 2, H * 0.55, VW * 0.62); vg.addColorStop(0, "rgba(0,0,0,0)"); vg.addColorStop(1, "rgba(0,0,0," + (0.55 - 0.12 * M) + ")"); ctx.fillStyle = vg; ctx.fillRect(0, 0, VW, H);
-    if (!LITE) grain(); if (GRP && !LITE) { var fr = Math.floor(t * 24); ctx.save(); ctx.translate((fr * 37) % 128, (fr * 91) % 128); ctx.globalAlpha = 0.05; ctx.fillStyle = GRP; ctx.fillRect(-128, -128, VW + 256, H + 256); ctx.restore(); }
-  }
-  function letterbox(t) { ctx.fillStyle = "#000"; ctx.fillRect(0, 0, VW, BAR); ctx.fillRect(0, H - BAR, VW, BAR); var f = 1 - seg(t, 0, 0.7), o = seg(t, T.fade, TOTAL - 0.1); if (f > 0 || o > 0) { ctx.save(); ctx.globalAlpha = Math.max(f, o); ctx.fillStyle = "#000"; ctx.fillRect(0, 0, VW, H); ctx.restore(); } }
-  function cam(t) { return { z: 1 + 0.05 * sm(seg(t, 0.5, 10.5)) - 0.05 * sm(seg(t, 10.6, 12.8)) + 0.035 * sm(seg(t, 14.0, 19.5)), x: Math.sin(t * 0.45) * 1.6, y: Math.cos(t * 0.37) * 0.9 }; }
-
-  // ---- one frame, as a pure function of time
-  function render(t) {
-    ctx.clearRect(0, 0, VW, H);
-    setLight(t);
-    var cm = cam(t), cx = VW / 2, cy = GY - 40;
-    ctx.save(); ctx.translate(cx + cm.x, cy + cm.y); ctx.scale(cm.z, cm.z); ctx.translate(-cx, -cy);
-    drawWorld(t);
-    ctx.save(); ctx.translate(OX, 0);
-    drawTable(t);
-    if (t > 13.8) drawStackBase(t);
-    fireworks(t);
-    var os = opusState(t), st = { opus: os };
-    [SON, COMP, CDX, GEM, GRK].forEach(function (c) { st[c.id] = friend(c, t); });
-    drawDust(t, st);
-    // the back row first, then the front, so nobody is hidden by a friend who is behind them
-    var all = [{ c: OPUS, s: os, row: 0 }, { c: SON, s: st.son }, { c: COMP, s: st.comp }, { c: CDX, s: st.cdx }, { c: GEM, s: st.gem }, { c: GRK, s: st.grk }].filter(function (e) { return e.s.vis !== false; });
-    all.sort(function (a, b) { return (a.s.row || 0) - (b.s.row || 0); });
-    all.forEach(function (e) {
-      var y = GY + (e.s.row || 0);
-      drawFace(e.c, e.s.x, y, e.s, t);
-      if (e.c === OPUS) { sweat(t, e.s.x, y - e.s.up); if (t < T.put + 1.1) drawTower(e.s.x, y - e.s.up, t); if (t < 13.9) drawAloneBlocks(t, T.put > t ? e.s.x : 725, y - e.s.up); }
-    });
-    drawTwoBlocks(t);
-    all.forEach(function (e) { drawPlate(e.c, e.s, t, e.c !== COMP); });
-    if (t > T.stamp && t < 13.4) { var k = eob(seg(t, T.stamp, T.stamp + 0.35)) * (1 - seg(t, 13.1, 13.4)), x0 = tableX(t); ctx.save(); ctx.translate(x0, GY - 172); ctx.scale(k, k); ctx.rotate(-0.08); ctx.shadowColor = "rgba(0,0,0,.5)"; ctx.shadowBlur = 12; glass(-72, -28, 144, 48, 12, 0.78, "rgba(127,196,143,.45)"); ctx.shadowColor = "transparent"; ctx.fillStyle = OK; ctx.textAlign = "center"; ctx.font = "700 27px " + MONO; ctx.fillText("37/37 ✓", 0, 6); ctx.restore(); glow(x0, GY - 172, 90, "#7fc48f", 0.14 * k); }
-    if (t > 13.4 && t < 14.0) { var w = seg(t, 13.45, 13.85); if (w > 0) { var x1 = tableX(t), a3 = 1 - w; for (var q = 0; q < 6; q++) star(x1 - 60 + q * 24, GY - 70 - 20 * Math.sin(q * 2 + w * 6), 12 * a3 + 3, a3, w * 5 + q, "#ffe9c8"); } }
-    confetti(t); if (t > T.party) hearts(t, os.x, GY - os.up);
-    if (t > T.bubbles) bubbles(t, st);
-    ctx.restore();
-    motes(t);
-    ctx.restore();
-    // the foreground: tall grass swaying at the very edge of the frame, drawn over everything for depth
-    ctx.save(); ctx.translate(cm.x * 1.6, 0); var per = VW + 200;
-    for (var gi = 0; gi < 64; gi++) { var gx = (((gi * per / 64 + rnd(gi, 51) * 14 - S * 1.5) % per) + per) % per - 100, gh = 12 + rnd(gi, 52) * 26, sw = Math.sin(t * 1.7 + gi * 0.9) * 3.5; ctx.fillStyle = mixc("#0c0809", "#1a0f0c", M); ctx.beginPath(); ctx.moveTo(gx - 3.5, H - BAR + 2); ctx.quadraticCurveTo(gx + sw * 0.3, H - BAR - gh * 0.6, gx + sw, H - BAR - gh); ctx.quadraticCurveTo(gx + 1 + sw * 0.4, H - BAR - gh * 0.55, gx + 3.5, H - BAR + 2); ctx.fill(); }
-    ctx.restore();
-    // a soft scrim so the captions always read
-    var sc = ctx.createLinearGradient(0, H - BAR - 120, 0, H - BAR); sc.addColorStop(0, "rgba(0,0,0,0)"); sc.addColorStop(1, "rgba(0,0,0,.45)"); ctx.fillStyle = sc; ctx.fillRect(0, H - BAR - 120, VW, 120);
-    finish(t);
-    hud(t);
-    // captions, like a film's
-    subtitle("One agent. One task. Eight modules.", t, 1.0, 4.6); subtitle("He carries it all by himself.", t, 5.2, 8.8); subtitle("What if he didn’t have to?", t, 11.0, 13.9);
-    subtitle("Plan. Write. Judge. Together.", t, 14.3, 18.0); subtitle("The same checks, at a fraction of the cost.", t, 18.4, 20.8);
-    endCard(t); letterbox(t);
-  }
-
-  // ---- the player
-  var wrap = document.getElementById("film"), t0 = null, running = false, visible = true, raf = 0, paused = false, cw = 0;
-  function fit() { var r = canvas.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio || 1, 2), w = Math.max(1, Math.min(1800, Math.round(r.width * dpr * QUAL))); VW = r.width < 700 ? 960 : 1120; OX = (VW - W) / 2; if (w !== cw || canvas.height !== Math.round(w * H / VW)) { cw = w; canvas.width = w; canvas.height = Math.round(w * H / VW); } ctx.setTransform(canvas.width / VW, 0, 0, canvas.width / VW, 0, 0); }
-  var cur = 0;
-  function draw(t) { cur = t; fit(); render(t); }
-  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var lastNow = 0, slow = 0, fast = 0;
-  function frame(now) {
-    if (!running) return; if (t0 === null) t0 = now - cur * 1000; var t = ((now - t0) / 1000) % TOTAL; draw(t);
-    if (lastNow) { var dt = now - lastNow; if (dt > 38 && dt < 400) slow++; else if (dt < 25) fast++; if (slow >= 24) { slow = 0; if (QUAL > 0.55) { QUAL = Math.max(0.55, QUAL - 0.2); LITE = QUAL < 0.9; } } if (slow > 0 && fast > 40) { slow = 0; fast = 0; } }
-    lastNow = now; raf = requestAnimationFrame(frame);
-  }
-  function start() { if (running || !visible || document.hidden || paused || reduce) return; running = true; t0 = null; lastNow = 0; raf = requestAnimationFrame(frame); }
-  function stop() { running = false; cancelAnimationFrame(raf); }
-  function boot() { draw(reduce ? END_T : 0.4); if (reduce) return; if ("IntersectionObserver" in window) new IntersectionObserver(function (e) { visible = e[0].isIntersecting; if (visible) start(); else stop(); }, { threshold: 0.2 }).observe(wrap || canvas); else start(); document.addEventListener("visibilitychange", function () { if (document.hidden) stop(); else start(); }); }
-  if (window.ResizeObserver) new ResizeObserver(function () { draw(cur); }).observe(canvas);
-  window.__antilokiFilm = { seek: function (t) { paused = true; stop(); draw(t); }, total: TOTAL };
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(boot, boot); else boot();
-})();
-</script>
-<script>
-/* THE COST ROWS: the app's faces beside each bar. When the rows scroll into view the bars grow, the numbers count up, each team walks in, and the four merges cheer when their bar lands (raw Opus stays tired, with a sweat drop). Replays on re-entry. */
-(function () {
-  var bench = document.querySelector(".bench"); if (!bench) return;
-  var P = { circle: "M20 3a17 17 0 1 1 0 34a17 17 0 1 1 0-34z", egg: "M20 3c8 0 15 9 15 19s-6 15-15 15S5 32 5 22 12 3 20 3z", hex: "M17 3.7l14 8.1a3 3 0 0 1 1.5 2.6v11.2a3 3 0 0 1-1.5 2.6l-14 8.1a3 3 0 0 1-3 0L6 28.2a3 3 0 0 1-1.5-2.6V14.4A3 3 0 0 1 6 11.8l8-4.1a3 3 0 0 1 3 0z", drop: "M20 3c7 9 14 15 14 22a14 14 0 0 1-28 0c0-7 7-13 14-22z", arch: "M20 4c8 0 14 6 14 14v16a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3V18C6 10 12 4 20 4z", triangle: "M18.3 5.4a2 2 0 0 1 3.4 0l13.6 23.4a2 2 0 0 1-1.7 3H6.4a2 2 0 0 1-1.7-3z" };
-  var TILT = [-7, 5, -4, 6, -5, 4];
-  function face(shape, color, i, eye) {
-    var dy = shape === "triangle" ? 5 : shape === "drop" ? 4 : 0;
-    return '<svg class="bface" viewBox="0 0 40 40" data-eye="' + eye + '" style="--fp:' + (4.6 + (i % 4) * 0.7) + 's;--fd:' + (i % 5) * 0.5 + 's;--bp:' + (3.8 + (i % 5) * 0.6) + 's;--bd:' + (i % 7) * 0.4 + 's"><g style="transform:rotate(' + TILT[i % 6] + 'deg);transform-origin:20px 21px"><g class="bbody"><path d="' + P[shape] + '" fill="' + color + '"/><g class="eyes">' +
-      '<g class="e-slit"><rect class="eye" x="15.55" y="' + (14.4 + dy) + '" width="2.1" height="5.2" rx="1.05" fill="#fff"/><rect class="eye" x="22.35" y="' + (14.4 + dy) + '" width="2.1" height="5.2" rx="1.05" fill="#fff"/></g>' +
-      '<g class="e-happy" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"><path d="M14.4 ' + (18.4 + dy) + 'q2.2-3.2 4.4 0"/><path d="M21.2 ' + (18.4 + dy) + 'q2.2-3.2 4.4 0"/></g>' +
-      '<g class="e-tired" fill="#fff"><rect x="14.9" y="' + (17.6 + dy) + '" width="3.4" height="1.5" rx=".75"/><rect x="21.7" y="' + (17.6 + dy) + '" width="3.4" height="1.5" rx=".75"/></g>' +
-      '<g class="blush" fill="rgba(255,170,190,.45)"><ellipse cx="14.4" cy="' + (23.2 + dy) + '" rx="2.4" ry="1.4"/><ellipse cx="25.6" cy="' + (23.2 + dy) + '" rx="2.4" ry="1.4"/></g></g></g></g><ellipse class="sweat" cx="31" cy="12" rx="2" ry="3"/></svg>';
-  }
-  var rows = [].map.call(bench.querySelectorAll(".brow"), function (el, i) {
-    var team = (el.getAttribute("data-team") || "").split(","), mood = el.getAttribute("data-mood") || "neutral", holder = el.querySelector(".bfaces"), eye = mood === "tired" ? "tired" : "slit";
-    if (holder) holder.innerHTML = team.map(function (t, k) { var p = t.split("|"); return face(p[0], p[1], i * 3 + k, eye); }).join("");
-    var num = el.querySelector(".bnum"), v = parseFloat(num.getAttribute("data-v")) || 0, d = parseFloat(getComputedStyle(el).getPropertyValue("--d")) || 0;
-    return { el: el, num: num, v: v, d: d, mood: mood, faces: [].slice.call(el.querySelectorAll(".bface")) };
   });
-  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (reduce) { rows.forEach(function (r) { if (r.mood === "happy") r.faces.forEach(function (f) { f.setAttribute("data-eye", "happy"); }); r.el.classList.add("done"); }); return; }
-  var timers = [], raf = 0, state = "idle";
-  function clear() { timers.forEach(clearTimeout); timers = []; cancelAnimationFrame(raf); }
-  function reset() {
-    clear(); state = "idle"; bench.classList.remove("play"); bench.classList.add("arm");
-    rows.forEach(function (r) { r.el.classList.remove("done"); r.num.textContent = "$" + r.v.toFixed(3); r.faces.forEach(function (f) { f.setAttribute("data-eye", r.mood === "tired" ? "tired" : "slit"); }); });
-  }
-  function play() {
-    if (state === "playing") return; reset(); state = "playing";
-    void bench.offsetWidth; bench.classList.remove("arm"); bench.classList.add("play");
-    var t0 = performance.now();
-    function tick(now) {   // the numbers count up with their bars (the bar's own transition runs d + .35 s .. d + 1.7 s)
-      var all = true;
-      rows.forEach(function (r) { var p = Math.min(1, Math.max(0, ((now - t0) / 1000 - r.d - 0.35) / 1.35)), e = 1 - Math.pow(1 - p, 3); r.num.textContent = "$" + (r.v * e).toFixed(3); if (p < 1) all = false; });
-      if (!all) raf = requestAnimationFrame(tick);
+  var stage = document.getElementById("stage"), world = document.getElementById("world");
+  var nodes = [].slice.call(document.querySelectorAll("[data-node]")).map(function (g) {
+    return { g: g, at: +g.dataset.at, done: +g.dataset.done, run: g.dataset.run ? g.dataset.run.split(",").map(Number) : null };
+  });
+  var edges = [].slice.call(document.querySelectorAll("[data-edge]")).map(function (e) { return { el: e, at: +e.dataset.edge }; });
+  var msgs = [].slice.call(document.querySelectorAll(".msg")).map(function (m) { return { el: m, at: +m.dataset.at }; });
+  var loop = document.getElementById("loop"), loopLbl = document.getElementById("loop-lbl"), checkT = document.getElementById("t-check");
+  var typed = document.getElementById("typed"), prog = document.getElementById("prog"), pdot = document.getElementById("pdot");
+  var spentEl = document.getElementById("hud-spent"), nodesEl = document.getElementById("hud-nodes"), passEl = document.getElementById("hud-pass"), stateEl = document.getElementById("hud-state");
+  var PROMPT = "launch a landing page: two designers' takes, a copywriter, a contrast check, and I approve before anything ships.";
+  // the camera: [progress, zoom, focus x, focus y] in the board's coordinates
+  var CAM = [[0, 1.3, 150, 250], [.2, 1, 460, 260], [.5, 1, 460, 260], [.6, 1.5, 720, 150], [.8, 1.35, 700, 330], [.95, 1, 460, 260], [1, 1, 460, 260]];
+  function clamp(v, a, b) { return Math.min(b, Math.max(a, v)); }
+  function smooth(t) { t = clamp(t, 0, 1); return t * t * (3 - 2 * t); }
+  function camAt(p) {
+    for (var i = 0; i < CAM.length - 1; i++) {
+      var a = CAM[i], b = CAM[i + 1];
+      if (p <= b[0]) { var t = smooth((p - a[0]) / (b[0] - a[0])); return [a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t, a[3] + (b[3] - a[3]) * t]; }
     }
-    raf = requestAnimationFrame(tick);
-    rows.forEach(function (r) { timers.push(setTimeout(function () { r.el.classList.add("done"); if (r.mood === "happy") r.faces.forEach(function (f) { f.setAttribute("data-eye", "happy"); }); }, (r.d + 1.75) * 1000)); });
+    var l = CAM[CAM.length - 1]; return [l[1], l[2], l[3]];
   }
-  reset();
-  if ("IntersectionObserver" in window) {
-    new IntersectionObserver(function (e) { var en = e[0]; if (en.isIntersecting && en.intersectionRatio >= 0.45) play(); else if (!en.isIntersecting) reset(); }, { threshold: [0, 0.45] }).observe(bench);
-  } else { bench.classList.remove("arm"); bench.classList.add("play"); rows.forEach(function (r) { r.el.classList.add("done"); }); }
-})();
-</script>
-<script>
-/* THE EMBRACE: models evolve, antiloki evolves with them, and they huddle. One 10 s cycle driven by a single clock. The words reveal once, the scene loops while it is on screen. */
-(function () {
-  var sec = document.getElementById("evolve"), scene = document.getElementById("evo-scene"); if (!sec || !scene) return;
-  var P = { circle: "M20 3a17 17 0 1 1 0 34a17 17 0 1 1 0-34z", egg: "M20 3c8 0 15 9 15 19s-6 15-15 15S5 32 5 22 12 3 20 3z", hex: "M17 3.7l14 8.1a3 3 0 0 1 1.5 2.6v11.2a3 3 0 0 1-1.5 2.6l-14 8.1a3 3 0 0 1-3 0L6 28.2a3 3 0 0 1-1.5-2.6V14.4A3 3 0 0 1 6 11.8l8-4.1a3 3 0 0 1 3 0z", drop: "M20 3c7 9 14 15 14 22a14 14 0 0 1-28 0c0-7 7-13 14-22z", arch: "M20 4c8 0 14 6 14 14v16a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3V18C6 10 12 4 20 4z" };
-  var CAST = [{ n: "Claude", shape: "egg", color: "#e6b31e", tilt: 5 }, { n: "Codex", shape: "hex", color: "#1e88f0", tilt: 6 }, { n: "Cursor", shape: "circle", color: "#19a89d", tilt: -5 }, { n: "Gemini", shape: "drop", color: "#7c5cf0", tilt: -4 }, { n: "Grok", shape: "arch", color: "#5b6f88", tilt: 5 }];
-  function face(c, i) {
-    var dy = c.shape === "drop" ? 4 : 0;
-    return '<svg class="bface" viewBox="0 0 40 40" data-eye="slit" style="--fp:' + (4.6 + (i % 4) * 0.7) + 's;--fd:' + i * 0.4 + 's;--bp:' + (3.8 + i * 0.6) + 's;--bd:' + i * 0.5 + 's"><g style="transform:rotate(' + c.tilt + 'deg);transform-origin:20px 21px"><g class="bbody"><path d="' + P[c.shape] + '" fill="' + c.color + '"/><g class="eyes">' +
-      '<g class="e-slit"><rect class="eye" x="15.55" y="' + (14.4 + dy) + '" width="2.1" height="5.2" rx="1.05" fill="#fff"/><rect class="eye" x="22.35" y="' + (14.4 + dy) + '" width="2.1" height="5.2" rx="1.05" fill="#fff"/></g>' +
-      '<g class="e-happy" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"><path d="M14.4 ' + (18.4 + dy) + 'q2.2-3.2 4.4 0"/><path d="M21.2 ' + (18.4 + dy) + 'q2.2-3.2 4.4 0"/></g>' +
-      '<g class="blush" fill="rgba(255,170,190,.45)"><ellipse cx="14.4" cy="' + (23.2 + dy) + '" rx="2.4" ry="1.4"/><ellipse cx="25.6" cy="' + (23.2 + dy) + '" rx="2.4" ry="1.4"/></g></g></g></g></svg>';
+  function stateOf(p) {
+    if (p < .16) return "waiting for you";
+    if (p < .36) return "drafting the team";
+    if (p < .72) return "running";
+    if (p < .92) return "reviewing";
+    return "delivered";
   }
-  scene.innerHTML = '<div class="evo-row">' + CAST.map(function (c, i) { return '<div class="evo-f" data-k="' + (i - 2) + '">' + face(c, i) + '<span class="evo-n">' + c.n + '</span></div>'; }).join("") + '</div><div class="evo-pill" id="evo-pill"><span>antiloki</span><b>.</b></div><div class="evo-fx" id="evo-fx"></div>';
-  var row = scene.querySelector(".evo-row"), pill = document.getElementById("evo-pill"), fx = document.getElementById("evo-fx");
-  var fs = [].slice.call(scene.querySelectorAll(".evo-f")), svgs = fs.map(function (f) { return f.querySelector(".bface"); });
-  var sparks = fs.map(function () { var e = document.createElement("i"); e.className = "evo-spark"; e.innerHTML = '<svg viewBox="-10 -10 20 20"><path d="M0-9L2 -2L9 0L2 2L0 9L-2 2L-9 0L-2 -2Z" fill="#fff4e0"/></svg>'; fx.appendChild(e); return e; });
-  var rings = fs.map(function () { var e = document.createElement("i"); e.className = "evo-ring"; fx.appendChild(e); return e; });
-  var ups = fs.map(function () { var e = document.createElement("i"); e.className = "evo-up"; e.textContent = "↑"; fx.appendChild(e); return e; });
-  var hearts = []; for (var h = 0; h < 10; h++) { var he = document.createElement("i"); he.className = "evo-heart"; he.innerHTML = '<svg viewBox="-12 -12 24 22"><path d="M0 8C-12 0-8-11 0-5C8-11 12 0 0 8Z" fill="#ec4f8f"/></svg>'; fx.appendChild(he); hearts.push(he); }
-  function clamp(x) { return Math.max(0, Math.min(1, x)); }
-  function seg(t, a, b) { return clamp((t - a) / (b - a)); }
-  function sm(x) { return x * x * (3 - 2 * x); }
-  function eo(x) { return 1 - Math.pow(1 - x, 3); }
-  function eob(x) { var c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); }
-  var CYCLE = 10, PULSE0 = 1.2, PULSE_STEP = 0.9, HUG0 = 6.2, HUG1 = 9.1;
-  function frame(t) {   // t in [0, CYCLE)
-    var rw = row.getBoundingClientRect(), sc = scene.getBoundingClientRect(), pull = Math.max(10, Math.min(44, rw.width * 0.045)), glow = 0;
-    var hug = sm(seg(t, HUG0, HUG0 + 1.2)) * (1 - sm(seg(t, HUG1, HUG1 + 0.7)));
-    fs.forEach(function (f, i) {
-      var k = i - 2, t0 = PULSE0 + i * PULSE_STEP, u = seg(t, t0, t0 + 0.85), sc2 = 1, up = 0;
-      if (u > 0 && u < 1) { sc2 = 1 + 0.2 * Math.sin(u * Math.PI) * (u < 0.5 ? eo(u * 2) : 1); up = 14 * Math.sin(u * Math.PI); glow = Math.max(glow, Math.sin(clamp((t - t0 - 0.2) / 0.7) * Math.PI)); }
-      var hop = hug > 0.95 ? Math.abs(Math.sin((t - HUG0 - 1.2) * 5)) * 7 * hug : 0;   // they bounce a little in the huddle
-      f.style.transform = "translate(" + (-k * pull * hug).toFixed(1) + "px," + (-(up + hop)).toFixed(1) + "px) scale(" + sc2.toFixed(3) + ")"; svgs[i].style.transform = "rotate(" + (-k * 4.5 * hug).toFixed(2) + "deg)";
-      var happy = hug > 0.5, eye = happy ? "happy" : "slit"; if (svgs[i].getAttribute("data-eye") !== eye) svgs[i].setAttribute("data-eye", eye);
-      // the level-up: a spark, a ring and an arrow over the face
-      var fr = f.getBoundingClientRect(), cx = fr.left - sc.left + fr.width / 2, top = svgs[i].getBoundingClientRect().top - sc.top;
-      var su = seg(t, t0, t0 + 0.8), s = sparks[i]; s.style.opacity = su > 0 && su < 1 ? Math.sin(su * Math.PI) : 0; s.style.transform = "translate(" + (cx + 26 - 12) + "px," + (top - 6 - su * 14) + "px) scale(" + (0.4 + 1.0 * eob(su)) + ") rotate(" + (su * 140) + "deg)";
-      var r = rings[i], ru = seg(t, t0 + 0.1, t0 + 0.9); r.style.opacity = ru > 0 && ru < 1 ? 0.7 * (1 - ru) : 0; r.style.transform = "translate(" + (cx - 40) + "px," + (top + svgs[i].getBoundingClientRect().height / 2 - 40) + "px) scale(" + (0.5 + 1.1 * eo(ru)) + ")";
-      var a = ups[i], au = seg(t, t0 + 0.3, t0 + 1.4); a.style.opacity = au > 0 && au < 1 ? Math.sin(au * Math.PI) : 0; var pr = pill.getBoundingClientRect(); a.style.transform = "translate(" + (pr.left - sc.left + pr.width * (0.2 + 0.15 * i) - 6) + "px," + (pr.top - sc.top - 4 - au * 26) + "px)";
+  function render(p) {
+    var c = camAt(p), z = c[0], tx = 460 - z * c[1], ty = 260 - z * c[2];
+    world.setAttribute("transform", "translate(" + tx.toFixed(1) + " " + ty.toFixed(1) + ") scale(" + z.toFixed(3) + ")");
+    nodes.forEach(function (n) {
+      n.g.classList.toggle("on", p >= n.at);
+      n.g.classList.toggle("run", !!n.run && p >= n.run[0] && p < n.run[1]);
+      n.g.classList.toggle("done", p >= n.done);
     });
-    var embrace = hug > 0.2 ? hug : 0; pill.style.setProperty("--g", Math.max(glow * 0.9, embrace * 0.65).toFixed(3)); pill.style.transform = "scale(" + (1 + 0.015 * glow + 0.02 * Math.sin((t - HUG0) * 5) * embrace).toFixed(4) + ")";
-    hearts.forEach(function (he, j) {
-      var ts = HUG0 + 1.0 + j * 0.28, age = t - ts, op = 0, x = 0, y = 0;
-      if (age > 0 && age < 1.5) { op = Math.sin(age / 1.5 * Math.PI) * 0.95; x = rw.width / 2 + (Math.sin(age * 4 + j) * 26) + ((j % 5) - 2) * 30; y = rw.top - sc.top + 6 - age * 54; }
-      he.style.opacity = op; he.style.transform = "translate(" + (x - 12) + "px," + (y - 12) + "px) scale(" + (0.7 + 0.5 * ((j % 3) / 2)) + ")";
-    });
+    edges.forEach(function (e) { e.el.style.strokeDashoffset = (1 - clamp((p - e.at) / .02, 0, 1)).toFixed(3); });
+    msgs.forEach(function (m) { m.el.classList.toggle("in", p >= m.at); });
+    loop.classList.toggle("on", p >= .52);
+    var pass = p >= .52 ? Math.min(3, Math.floor((p - .52) / .06) + 1) : 0;
+    loopLbl.textContent = pass ? "loop · pass " + pass + "/3 · cap $1" : "";
+    passEl.textContent = pass ? pass + "/3" : "–";
+    checkT.textContent = p >= .64 ? "Contrast ok? yes" : "Contrast ok? no";
+    spentEl.textContent = "$" + (0.11 * smooth((p - .36) / .54)).toFixed(2);
+    nodesEl.textContent = nodes.filter(function (n) { return p >= n.done; }).length;
+    stateEl.textContent = stateOf(p);
+    prog.style.width = (p * 100).toFixed(1) + "%";
+    pdot.classList.toggle("run", p >= .36 && p < .92);
+    stage.classList.toggle("flow", p >= .36 && p < .94);
+    typed.textContent = p < .16 ? PROMPT.slice(0, Math.floor(clamp((p - .02) / .14, 0, 1) * PROMPT.length)) : "";
   }
-  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
-  sec.classList.add("armed");
-  function reveal() { sec.classList.add("in"); }
-  var running = false, raf = 0, t0 = null, shown = false;
-  function loop(now) { if (!running) return; if (t0 === null) t0 = now; frame(((now - t0) / 1000) % CYCLE); raf = requestAnimationFrame(loop); }
-  function start() { if (running || reduce) return; running = true; t0 = null; raf = requestAnimationFrame(loop); }
-  function stop() { running = false; cancelAnimationFrame(raf); }
-  if (reduce) { reveal(); frame(HUG0 + 2); }
-  else if ("IntersectionObserver" in window) new IntersectionObserver(function (e) { var v = e[0].isIntersecting; if (v) { if (!shown) { shown = true; reveal(); } start(); } else stop(); }, { threshold: 0.25 }).observe(sec);
-  else { reveal(); start(); }
-  frame(0);
-  window.__antilokiEvo = { seek: function (t) { stop(); reveal(); frame(t); } };
+  if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    reel.classList.add("static"); render(1); return;
+  }
+  var ticking = false;
+  function update() {
+    ticking = false;
+    var r = reel.getBoundingClientRect(), total = reel.offsetHeight - window.innerHeight;
+    render(clamp(-r.top / Math.max(1, total), 0, 1));
+  }
+  window.addEventListener("scroll", function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+  window.addEventListener("resize", update);
+  update();
 })();
 </script>
