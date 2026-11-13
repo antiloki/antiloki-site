@@ -359,10 +359,10 @@
   .graphs .lede { max-width: 62ch; }
   /* the wallpaper, from the Cowork screen: a maroon glow up top, blue-black below */
   body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; background:
-    radial-gradient(70vmax 48vmax at 46% 4%, rgba(92, 30, 40, .85), transparent 62%),
-    radial-gradient(60vmax 40vmax at 62% 26%, rgba(60, 20, 28, .55), transparent 65%),
+    radial-gradient(70vmax 48vmax at 46% 4%, rgba(44, 48, 58, .8), transparent 62%),
+    radial-gradient(60vmax 40vmax at 62% 26%, rgba(36, 40, 48, .5), transparent 65%),
     radial-gradient(70vmax 60vmax at 80% 100%, rgba(18, 36, 46, .9), transparent 62%),
-    linear-gradient(180deg, #120c0e 0%, #0e1218 60%, #0a0e12 100%); }
+    linear-gradient(180deg, #0f1114 0%, #0e1218 60%, #0a0e12 100%); }
 
   /* THE COWORK WINDOW: a stage with the Leader chat on the left, the circuit on the right, both as glass panes over the wallpaper */
   .reel { position: relative; height: 420vh; margin-top: 36px; }
@@ -437,11 +437,11 @@
   }
   .pane, .xf { background: rgba(255, 255, 255, .04); border-color: rgba(255, 255, 255, .16); backdrop-filter: blur(22px) saturate(150%); -webkit-backdrop-filter: blur(22px) saturate(150%); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .12); }
   body::before { background:
-    radial-gradient(70vmax 48vmax at 46% 4%, rgba(92, 30, 40, .85), transparent 62%),
-    radial-gradient(60vmax 40vmax at 62% 26%, rgba(60, 20, 28, .55), transparent 65%),
+    radial-gradient(70vmax 48vmax at 46% 4%, rgba(44, 48, 58, .8), transparent 62%),
+    radial-gradient(60vmax 40vmax at 62% 26%, rgba(36, 40, 48, .5), transparent 65%),
     radial-gradient(70vmax 60vmax at 80% 100%, rgba(18, 36, 46, .9), transparent 62%),
     radial-gradient(50vmax 40vmax at 14% 72%, rgba(40, 64, 88, .45), transparent 65%),
-    linear-gradient(180deg, #120c0e 0%, #0e1218 60%, #0a0e12 100%); }
+    linear-gradient(180deg, #0f1114 0%, #0e1218 60%, #0a0e12 100%); }
 
   /* THE X-RAY AND SAGAS SCREENS: the app's own design - its ember graphite tokens and its system font */
   .v-xray, .v-sagas {
@@ -539,7 +539,7 @@
   <a class="q" href="/docs.html">Docs</a>
   <a class="q" href="/blog/">Blog</a>
   <a class="q" href="#open">Free</a>
-  <a class="btn sm ember" href="#download">Download · free</a>
+  <span class="btn sm soon" aria-disabled="true">Coming soon</span>
 </div></nav>
 
 <main id="top">
@@ -554,10 +554,10 @@
       <source type="image/webp" data-srcset="assets/hero-judith.webp">
       <img alt="" width="2400" height="1780" decoding="async" fetchpriority="low" data-desktop="assets/hero-judith.png" data-mobile="assets/hero-judith-mobile.png">
     </picture>
-    <span class="eyebrow">Vibe graphing IDE · an agentic graph engineering loop · free<br>Windows today · the Linux build is older · macOS soon, see <a href="#download" style="color:inherit">Download</a></span>
+    <span class="eyebrow">Vibe graphing IDE · an agentic graph engineering loop · free<br>Windows today · the Linux build is older · macOS soon</span>
     <h1 class="giant" style="margin-top:14px"><em>VIBE GRAPHING</em></h1>
     <p class="lede hero-sub" style="margin-top:10px">antiloki is an agentic graph engineering loop IDE. Your Leader drafts the team as a graph of agents, tools, checks and gates; you edit the board, set the budget and run it on the AI subscriptions you already have. <b>Free: no account, no trial clock, no API key to paste.</b></p>
-    <div class="cta"><a class="btn ember" href="#download">Download — free</a></div>
+    <div class="cta"><span class="btn soon" aria-disabled="true">Coming soon</span></div>
     <a class="scrollcue" href="#graphs" aria-label="Scroll to the graph"><span>scroll</span><i></i></a>
     </div>
     <span class="fine">one binary · no account · your current subscription is the engine</span>
@@ -810,22 +810,17 @@
     <div class="wrap pricing" id="open">
     <h2>Free.</h2>
     <p class="own">No trial clock. No paid tier. No account.</p>
-    <p class="lede" style="color:var(--dim);max-width:60ch;margin:10px auto 26px;font-size:16px;text-align:center;text-wrap:balance">antiloki is free to download, use, read and change. It runs on the subscriptions you already pay your model vendors, so the only bill is theirs.</p>
+    <p class="lede" style="color:var(--dim);max-width:60ch;margin:10px auto 26px;font-size:16px;text-align:center;text-wrap:balance">antiloki is free to use, read and change. It runs on the subscriptions you already pay your model vendors, so the only bill is theirs.</p>
     <div class="plans">
-      <div class="plan"><div class="name">Use it</div><div class="price num">$0<small>forever</small></div><ul><li><b>everything</b> — the graph board, team runs, agents and X-ray</li><li>no card, no account, no trial to run out</li><li>your projects stay on your machine</li></ul><a class="btn ember" href="#download">Download</a></div>
+      <div class="plan"><div class="name">Use it</div><div class="price num">$0<small>forever</small></div><ul><li><b>everything</b> — the graph board, team runs, agents and X-ray</li><li>no card, no account, no trial to run out</li><li>your projects stay on your machine</li></ul><span class="btn soon" aria-disabled="true">Coming soon</span></div>
       <div class="plan"><div class="name">Read it</div><div class="price num">soon<small>source</small></div><ul><li><b>the source is coming</b>, to be published under an open-source license</li><li>read how the graph runs, change it, send a fix back</li><li>the routing measurements are published with their scripts: <a href="/paper.html">the technical report →</a></li></ul></div>
     </div>
     <p class="terms">antiloki is free. Model subscriptions and API keys are billed by their own vendors, not by antiloki.</p>
   </div>
 
     <div class="wrap download" id="download">
-    <h2>Install. Open a repo. Ask.</h2>
-    <div class="dl">
-      <div class="os soon" data-os="mac" aria-disabled="true"><b>macOS</b><span>Apple silicon · coming soon</span><em>Soon</em></div>
-      <a class="os" data-os="win" href="/releases.html"><b>Windows</b><span>.exe · x64 · installer</span><em>Download ↓</em></a>
-      <a class="os" data-os="linux" href="/releases.html"><b>Linux</b><span>.deb from v0.1.4 · needs glibc 2.44 or newer (Arch and other recent rolling distributions); wider support is in progress</span><em>Download ↓</em></a>
-    </div>
-    <p class="needs"><a href="/releases.html">All versions, install notes and release notes →</a><br>needs git and at least one of <b>Claude</b> · <b>Codex</b> · <b>Cursor</b> · <b>Gemini</b> · <b>Grok</b> <em>signed in</em>; the optional browser QA needs Chrome or Chromium — antiloki reads the seat, not the binary, so an unauthenticated CLI is never offered, and the setup wizard shows which seats it found and the command to fix the rest. A <b>merge</b> wants two usable seats: one for the brain and a cheap one for the hands. With one it runs solo, still routed per job. OpenCode, and the Zen and open models behind it, are optional and off by default.</p>
+    <h2>Coming soon.</h2>
+    <p class="needs">antiloki is not downloadable yet.</p>
   </div>
 
   <div class="wrap faq">
@@ -847,7 +842,6 @@
   <span>antiloki · vibe graphing IDE · free</span>
   <a href="/blog/">blog</a>
   <a href="/paper.html">the benchmark</a>
-  <a href="/releases.html">releases</a>
   <a href="/privacy.html">privacy</a>
   <a href="/terms.html">terms</a>
   <a href="mailto:support@antiloki.com">support@antiloki.com</a>
@@ -906,28 +900,6 @@
     const cut = () => { settle(); for (const ev of ["wheel", "touchstart", "keydown", "pointerdown"]) window.removeEventListener(ev, cut); };
     for (const ev of ["wheel", "touchstart", "keydown", "pointerdown"]) window.addEventListener(ev, cut, { passive: true });
   }
-  const ua = navigator.userAgent, os = /Mac/.test(ua) ? "mac" : /Win/.test(ua) ? "win" : /Linux/.test(ua) ? "linux" : null;
-  if (os && os !== "mac") document.querySelector(`.os[data-os="${os}"]`)?.classList.add("me");
-  const RELEASES = "danilosilvadev/antiloki-releases";
-  const PICK = { win: [/-setup\.exe$/, /\.msi$/], linux: [/\.AppImage$/, /\.deb$/] };
-  const LIST = "/releases.html";
-  const fallback = () => { for (const key of ["win", "linux"]) { const a = document.querySelector(`.os[data-os="${key}"]`); if (a) a.href = LIST; } };
-  fetch(`https://api.github.com/repos/${RELEASES}/releases?per_page=10`, { headers: { accept: "application/vnd.github+json" } }).then((r) => (r.ok ? r.json() : null)).then((rels) => {
-    if (!Array.isArray(rels)) { fallback(); return; }
-    const newest = rels.find((x) => !x.draft && !x.prerelease) || rels.find((x) => !x.draft);
-    for (const [key, pats] of Object.entries(PICK)) {
-      const a = document.querySelector(`.os[data-os="${key}"]`); if (!a) continue;
-      for (const rel of rels) {
-        if (rel.draft || !Array.isArray(rel.assets)) continue;
-        const asset = pats.map((re) => rel.assets.find((x) => re.test(x.name))).find(Boolean);
-        if (!asset) continue;
-        a.href = asset.browser_download_url; a.querySelector("em").textContent = `Download ${rel.tag_name} ↓`; a.title = `${asset.name} · ${(asset.size / 1048576).toFixed(0)} MB`;
-        const note = a.querySelector("span");
-        if (note && key !== "win") { note.textContent = note.textContent.replace(/v\d+\.\d+\.\d+/, rel.tag_name); if (rel === newest) note.textContent = note.textContent.replace(" (older build)", ""); }
-        break;
-      }
-    }
-  }).catch(() => { fallback(); });
 </script>
 <script>
 (function () {
