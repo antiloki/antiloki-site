@@ -3,41 +3,52 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>antiloki docs — teams, MCP, Cowork, X-ray and Sagas</title>
-<meta name="description" content="How antiloki works: the Cowork screen, teams as graphs, MCP, web apps, the X-ray and Sagas.">
+<title>antiloki docs: Cowork, teams, MCP, web apps, X-ray and Sagas</title>
+<meta name="description" content="The antiloki docs: the Cowork screen, teams as graphs, the validator, budgets and gates, MCP tools, web apps, the X-ray lenses, Sagas, and your AI seats.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
 <style>
-  :root { --bg: #0c0e12; --ink: #f2f4f7; --dim: #aab1bb; --muted: #7f8691; --line: rgba(255,255,255,.12); --accent: oklch(0.8 0.09 195); --glass: rgba(255,255,255,.05); --display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif; --body: "IBM Plex Sans", -apple-system, "Segoe UI", sans-serif; --mono: "JetBrains Mono", ui-monospace, Menlo, monospace; }
+  :root { --bg: #0c0e12; --ink: #f2f4f7; --dim: #aab1bb; --muted: #7f8691; --line: rgba(255,255,255,.12); --accent: oklch(0.8 0.09 195); --glass: rgba(255,255,255,.05); --ok: oklch(0.74 0.13 150); --warn: oklch(0.8 0.14 80); --bad: oklch(0.64 0.19 25); --display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif; --body: "IBM Plex Sans", -apple-system, "Segoe UI", sans-serif; --mono: "JetBrains Mono", ui-monospace, Menlo, monospace; }
   html { background: var(--bg); scroll-behavior: smooth; }
-  body { margin: 0; color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.6; background: radial-gradient(60vmax 40vmax at 10% 0%, rgba(44,48,58,.8), transparent 60%), var(--bg); min-height: 100vh; }
+  body { margin: 0; color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.65; background: radial-gradient(60vmax 40vmax at 10% 0%, rgba(44,48,58,.8), transparent 60%), radial-gradient(50vmax 40vmax at 95% 100%, rgba(18,36,46,.6), transparent 60%), var(--bg); min-height: 100vh; }
   a { color: var(--accent); }
   .top { position: sticky; top: 0; z-index: 5; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); background: rgba(12,14,18,.55); border-bottom: 1px solid var(--line); }
-  .top .in { max-width: 1120px; margin: 0 auto; padding: 0 24px; height: 58px; display: flex; align-items: center; gap: 22px; }
+  .top .in { max-width: 1160px; margin: 0 auto; padding: 0 24px; height: 58px; display: flex; align-items: center; gap: 22px; }
   .top .mark { font-family: var(--display); font-weight: 800; color: var(--ink); text-decoration: none; font-size: 18px; }
   .top .sp { flex: 1; }
   .top a.q { color: var(--dim); text-decoration: none; font-size: 14px; }
   .top a.q:hover { color: var(--ink); }
-  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 48px; }
-  .toc { position: sticky; top: 90px; align-self: start; padding: 36px 0; font-size: 14px; }
+  .wrap { max-width: 1160px; margin: 0 auto; padding: 0 24px; display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 56px; }
+  .toc { position: sticky; top: 90px; align-self: start; padding: 36px 0; font-size: 14px; max-height: calc(100vh - 110px); overflow: auto; }
   .toc .h { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
-  .toc a { display: block; color: var(--dim); text-decoration: none; padding: 5px 0; }
+  .toc a { display: block; color: var(--dim); text-decoration: none; padding: 4px 0; }
   .toc a:hover { color: var(--ink); }
+  .toc a.sub { padding-left: 14px; font-size: 13px; color: var(--muted); }
   main { padding: 36px 0 96px; min-width: 0; }
-  h1 { font-family: var(--display); font-size: clamp(36px, 5vw, 56px); line-height: 1.05; margin: 0 0 14px; letter-spacing: -.02em; }
-  h2 { font-family: var(--display); font-size: clamp(24px, 2.6vw, 32px); margin: 56px 0 10px; letter-spacing: -.01em; scroll-margin-top: 90px; }
-  h3 { font-size: 17px; margin: 22px 0 6px; }
+  h1 { font-family: var(--display); font-size: clamp(38px, 5vw, 60px); line-height: 1.02; margin: 0 0 16px; letter-spacing: -.02em; }
+  h2 { font-family: var(--display); font-size: clamp(25px, 2.6vw, 34px); margin: 64px 0 12px; letter-spacing: -.01em; scroll-margin-top: 90px; padding-top: 6px; border-top: 1px solid var(--line); }
+  h3 { font-family: var(--display); font-size: 20px; margin: 30px 0 8px; scroll-margin-top: 90px; }
+  h4 { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 22px 0 6px; font-weight: 600; }
   p, li { color: var(--dim); }
   p { margin: 10px 0; }
-  .lede { font-size: 18px; color: var(--ink); max-width: 62ch; }
-  code { font-family: var(--mono); font-size: 13px; color: var(--ink); background: rgba(255,255,255,.06); padding: 1px 6px; border-radius: 5px; }
-  .card { background: var(--glass); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; margin: 14px 0; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
-  .card b { color: var(--ink); }
-  ul { padding-left: 20px; } li { margin: 6px 0; }
+  .lede { font-size: 18px; color: var(--ink); max-width: 66ch; }
+  code { font-family: var(--mono); font-size: 13px; color: var(--ink); background: rgba(255,255,255,.07); padding: 1px 6px; border-radius: 5px; white-space: nowrap; }
+  pre { font-family: var(--mono); font-size: 13px; color: var(--ink); background: rgba(10,12,15,.6); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; overflow: auto; line-height: 1.55; }
+  ul, ol { padding-left: 22px; } li { margin: 6px 0; }
+  li b, td b { color: var(--ink); font-weight: 600; }
+  .card { background: var(--glass); border: 1px solid var(--line); border-radius: 12px; padding: 16px 20px; margin: 16px 0; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+  .card h4 { margin-top: 0; }
   .note { font-family: var(--mono); font-size: 12px; color: var(--muted); }
-  footer { max-width: 1120px; margin: 0 auto; padding: 24px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+  .tip { border-left: 2px solid var(--accent); padding: 4px 0 4px 14px; margin: 16px 0; color: var(--dim); }
+  table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 14.5px; background: var(--glass); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; display: block; overflow-x: auto; }
+  th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+  tr:last-child td { border-bottom: 0; }
+  td code { font-size: 12.5px; }
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+  footer { max-width: 1160px; margin: 0 auto; padding: 24px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
   footer a { color: var(--dim); margin-right: 16px; }
-  @media (max-width: 820px) { .wrap { grid-template-columns: 1fr; gap: 0; } .toc { display: none; } }
+  @media (max-width: 860px) { .wrap { grid-template-columns: 1fr; gap: 0; } .toc { display: none; } }
 </style>
 </head>
 <body>
@@ -53,96 +64,255 @@
   <aside class="toc">
     <div class="h">contents</div>
     <a href="#start">1. Start here</a>
+    <a class="sub" href="#install-run">Run it on a project</a>
+    <a class="sub" href="#the-loop">How a run goes</a>
     <a href="#cowork">2. The Cowork screen</a>
+    <a class="sub" href="#panes">Panes and the Studio</a>
+    <a class="sub" href="#threads">Threads and worktrees</a>
+    <a class="sub" href="#side">Side questions</a>
     <a href="#teams">3. Teams and graphs</a>
+    <a class="sub" href="#nodes">The nodes</a>
+    <a class="sub" href="#validator">What the validator refuses</a>
+    <a class="sub" href="#artifacts">Artifacts and skills</a>
     <a href="#budgets">4. Budgets and gates</a>
     <a href="#mcp">5. MCP</a>
-    <a href="#webapps">6. Web apps</a>
+    <a class="sub" href="#mcp-tools">The tools</a>
+    <a class="sub" href="#mcp-client">Connecting a client</a>
+    <a href="#webapps">6. Web apps and the web node</a>
     <a href="#xray">7. The X-ray</a>
+    <a class="sub" href="#xray-verdict">The verdict row</a>
+    <a class="sub" href="#xray-lenses">The lenses</a>
+    <a class="sub" href="#xray-rebuild">Rebuilding</a>
     <a href="#sagas">8. Sagas</a>
     <a href="#seats">9. Your AI seats</a>
     <a href="#install">10. Install and status</a>
-    <a href="#privacy">11. Privacy</a>
+    <a href="#privacy">11. Privacy and network</a>
     <a href="#support">12. Support</a>
   </aside>
 
   <main>
     <h1>Docs</h1>
-    <p class="lede">antiloki is a free vibe graphing IDE: you describe the work, the Leader draws the team as a graph, and the loop runs it on the AI subscriptions you already have. These pages describe what the app does today.</p>
+    <p class="lede">antiloki is a free vibe graphing IDE. You describe the work, the Leader draws the team as a graph, and the loop runs it on the AI subscriptions you already have. These pages describe what the app does today, and say where something is not yet built.</p>
 
     <h2 id="start">1. Start here</h2>
-    <p>Open a project folder, then ask the Leader for what you want. The Leader drafts a team as a graph of agents, tools, checks and gates. You edit the graph on the board, set the budget, and run it. Every node records what it did, with its agent, model, time and cost.</p>
-    <p class="note">Antiloki runs on the CLIs you are already signed in to: Claude Code, Codex, Cursor, Gemini and Grok.</p>
+    <p>antiloki works on a project folder. Open one, and the Cowork screen shows that project's agents, threads and sagas. Ask the Leader for what you want, and it drafts a team as a graph. You edit the graph, set its budget, and run it.</p>
+
+    <h3 id="install-run">Run it on a project</h3>
+    <ol>
+      <li>Open a project folder. The project needs to be a git repository for threads and worktrees to work.</li>
+      <li>Sign in to at least one AI CLI (see <a href="#seats">your AI seats</a>). Antiloki only offers the ones you are signed in to.</li>
+      <li>Ask the Leader in the Cowork chat, or draw a team on the board yourself.</li>
+      <li>Set the budget on the run, then start it. Watch the nodes change state as they run.</li>
+      <li>Read the results: the artifacts the run produced, the saga it was recorded in, and the cost of every node.</li>
+    </ol>
+
+    <h3 id="the-loop">How a run goes</h3>
+    <p>A run goes through four stages, and you can see each one on the board:</p>
+    <table>
+      <tr><th>Stage</th><th>What happens</th></tr>
+      <tr><td><b>Ask</b></td><td>The Leader drafts the graph from your words, or you draw it. The Leader is the only terminal agent in the graph.</td></tr>
+      <tr><td><b>Check</b></td><td>The validator refuses shapes that cannot run safely. Nothing starts until the graph passes. See <a href="#validator">what the validator refuses</a>.</td></tr>
+      <tr><td><b>Run</b></td><td>Each node runs on the seat it names, or the seat the tier picks. Forks run side by side. Each node records its agent, exact model, time and cost. A run stops when it reaches its budget.</td></tr>
+      <tr><td><b>Judge</b></td><td>QA and audit nodes judge the work. A human gate waits for your yes or no before anything leaves the project.</td></tr>
+    </table>
 
     <h2 id="cowork">2. The Cowork screen</h2>
-    <p>Cowork is where you work. Each agent runs in a real terminal pane, and you can split and arrange the panes. The Leader and the team's graph sit beside them.</p>
+    <p>Cowork is where you work. The left side holds the chat with the Leader. The main area holds the panes, and each agent in a pane runs in a real terminal, not a simulation.</p>
+
+    <h3 id="panes">Panes and the Studio</h3>
+    <p>Panes sit side by side in the main area. You can fold a pane to a thin strip to keep it without losing its place. A pane can hold a terminal, a frame, a diff, a preview, or one of the Studio tools.</p>
+    <p>The Studio, on the right, opens the other tools of the app. Some of them, and what each shows:</p>
+    <table>
+      <tr><th>Tool</th><th>What it shows</th></tr>
+      <tr><td>Terminal</td><td>A real terminal, for an agent or for you.</td></tr>
+      <tr><td>Diff and review</td><td>What changed, for a thread or a run.</td></tr>
+      <tr><td>Frames</td><td>Mockups made by agents, as editable frames. The content is cleaned first: scripts, event handlers, iframes and network addresses are removed.</td></tr>
+      <tr><td>X-ray</td><td>The health view of the repo. See <a href="#xray">the X-ray</a>.</td></tr>
+      <tr><td>Sagas</td><td>The goals and their runs. See <a href="#sagas">Sagas</a>.</td></tr>
+      <tr><td>Skill library</td><td>The skills agents use, and the drafts waiting for your approval.</td></tr>
+      <tr><td>Code graph, System design, Design canvas, Design system, Authors, Constitution, Git graph, Issues, Notes, Brainstorm</td><td>The other tools in the Studio, each opened from its tile.</td></tr>
+    </table>
+
+    <h3 id="threads">Threads and worktrees</h3>
+    <p>A thread is a line of work with its own git branch and its own worktree folder. Two threads can change the same file without clashing until you bring them together.</p>
     <ul>
-      <li><b>Threads</b> give each line of work its own git branch and worktree. Agents in a thread work on that branch, and you land the thread when you are ready.</li>
-      <li><b>Side questions</b> open a read-only helper beside an agent, so you can ask about its work without interrupting it.</li>
-      <li>The Studio (the grid on the right) opens the other tools: Terminal, Brainstorm, Diff and review, Issues, Notes, Frames, Design system, Code graph, System design, Authors, X-ray, Constitution, Skill library, Code and Git graph.</li>
+      <li><b>Integrate</b> commits each agent's work on its own branch, then merges it into the thread's branch. If a merge conflicts, it is reported and undone. Nothing is forced.</li>
+      <li><b>Land</b> merges the thread's branch into the workspace. It only runs when the workspace has no uncommitted changes, so your own unsaved work is never mixed in.</li>
+      <li><b>Discard</b> throws the thread's branch and worktree away.</li>
     </ul>
+    <p class="tip">The Main thread is the workspace itself. Integrate, land and discard apply to the other threads.</p>
+
+    <h3 id="side">Side questions</h3>
+    <p>A side question is a read-only helper pane bound to one agent. Use it to ask about that agent's work, such as what it changed or why, without sending the agent a message. There is one side question per agent at a time.</p>
 
     <h2 id="teams">3. Teams and graphs</h2>
-    <p>A team is a graph of nodes and edges, edited on the board. The Leader is the one terminal agent in the graph, and there is exactly one per graph. The validator refuses a graph that cannot run safely: no Leader, a switch with no default port, or a loop with no cost cap.</p>
-    <div class="card">
-      <b>Nodes</b>
-      <ul>
-        <li><b>Agent:</b> planner, worker, QA, debugger, audit, or your own agent with its own brief, skills and tools.</li>
-        <li><b>Tool:</b> web search or page reading, or one of this app's own tools. Each tool node has an allow-list that names the tools it may use.</li>
-        <li><b>Fork and join:</b> branches run side by side. The join waits for all of them, or for a quorum you set.</li>
-        <li><b>If and switch:</b> route on what a node said. A switch needs a default port.</li>
-        <li><b>Loop:</b> repeat a body until a condition holds. It needs a max count and a cost cap. Each pass is its own episode.</li>
-        <li><b>For each, retry:</b> one branch per item, in parallel up to a limit; a failed node is sent round again, then takes its exhausted port.</li>
-        <li><b>Human gate:</b> waits for your yes or no, with a timeout.</li>
-        <li><b>Artifact and deliver:</b> artifacts are documents the run makes (a report, a draft). Deliver is the end of the graph.</li>
-      </ul>
-    </div>
-    <h3>Artifacts and skills</h3>
-    <p>Artifacts are written to the project's <code>.antiloki</code> folder, and the next node reads them. Agents can propose changes to their skills. A proposal arrives as a draft, and nothing changes until you approve it.</p>
+    <p>A team is a graph of nodes and edges, edited on the board. Each run of the team is recorded in a saga, and each pass of a loop is its own episode in that saga.</p>
+
+    <h3 id="nodes">The nodes</h3>
+    <table>
+      <tr><th>Node</th><th>What it does</th><th>What you set</th></tr>
+      <tr><td><b>Leader</b></td><td>Your terminal agent. It designs the team with you and watches the budget.</td><td>Exactly one per graph.</td></tr>
+      <tr><td><b>Agent</b></td><td>A planner, worker, QA, debugger, audit, or your own custom agent.</td><td>Its brief, its skills, its tools, and the seat it runs on (<code>engine:model</code>).</td></tr>
+      <tr><td><b>Tool</b></td><td>Web search, page reading, or one of this app's own tools.</td><td>An allow-list. The node may use only the tools it names.</td></tr>
+      <tr><td><b>Fork</b></td><td>Starts branches that run side by side.</td><td>The branches it starts.</td></tr>
+      <tr><td><b>Join</b></td><td>Waits for its branches.</td><td>All of them, or a quorum.</td></tr>
+      <tr><td><b>If</b> and <b>switch</b></td><td>Route the run on what a node said.</td><td>A condition. A switch needs a default port, so nothing falls through.</td></tr>
+      <tr><td><b>Loop</b></td><td>Repeats its body until a condition holds.</td><td>A max count and a cost cap. Each pass is its own episode.</td></tr>
+      <tr><td><b>For each</b></td><td>One branch per item, in parallel up to a limit.</td><td>The list it walks over, and the limit.</td></tr>
+      <tr><td><b>Retry</b></td><td>Sends a failed node round again.</td><td>How many times, then the exhausted port.</td></tr>
+      <tr><td><b>Human gate</b></td><td>Waits for your yes or no.</td><td>A timeout, and the port taken when it runs out.</td></tr>
+      <tr><td><b>Cost cap</b></td><td>The most a node, or a whole loop, may spend.</td><td>A number in USD.</td></tr>
+      <tr><td><b>Artifact</b></td><td>A document the run makes, such as a report or a draft.</td><td>A name and a format. It is written to <code>.antiloki/artifacts/</code>.</td></tr>
+      <tr><td><b>Deliver</b></td><td>The end of the graph. The finished pack reaches you.</td><td>Nothing. Every graph ends in one.</td></tr>
+    </table>
+
+    <h3 id="validator">What the validator refuses</h3>
+    <p>The validator checks the graph before anything runs. It refuses a graph that has any of these problems, and it names the problem so you can fix it on the board:</p>
+    <table>
+      <tr><th>Code</th><th>What it means</th></tr>
+      <tr><td><code>no_leader</code></td><td>The graph has no Leader.</td></tr>
+      <tr><td><code>many_leaders</code></td><td>The graph has more than one Leader.</td></tr>
+      <tr><td><code>no_name</code></td><td>The graph or a node has no name.</td></tr>
+      <tr><td><code>no_entry</code></td><td>Nothing starts the graph.</td></tr>
+      <tr><td><code>no_delivery</code></td><td>The graph has no Deliver, so the run has no end.</td></tr>
+      <tr><td><code>unreachable</code></td><td>A node cannot be reached from the start.</td></tr>
+      <tr><td><code>dead_end</code></td><td>A node leads nowhere and is not a Deliver.</td></tr>
+      <tr><td><code>edge_to_nowhere</code></td><td>An edge points at a node that does not exist.</td></tr>
+      <tr><td><code>bad_port</code></td><td>An edge uses a port the node does not have.</td></tr>
+      <tr><td><code>bad_condition</code></td><td>A condition on an if or switch cannot be read.</td></tr>
+      <tr><td><code>switch_no_default</code></td><td>A switch has no default port.</td></tr>
+      <tr><td><code>loop_no_cap</code></td><td>A loop has no cost cap.</td></tr>
+      <tr><td><code>loop_unbounded</code></td><td>A loop has no maximum count.</td></tr>
+      <tr><td><code>unbounded_cycle</code></td><td>The graph loops back on itself without a loop node that bounds it.</td></tr>
+      <tr><td><code>silent_failure_edge</code></td><td>A failure path goes nowhere, so a failure would disappear.</td></tr>
+    </table>
+
+    <h3 id="artifacts">Artifacts and skills</h3>
+    <p>An artifact is a document a run produces. Artifacts are written inside the project's <code>.antiloki</code> folder, and the next node in the graph reads them. You can open them from the run.</p>
+    <p>Agents can propose changes to their skills, the instructions and tools they carry. A proposal arrives as a draft in the skill library. Nothing changes until you approve it.</p>
 
     <h2 id="budgets">4. Budgets and gates</h2>
-    <p>Every loop needs a cost cap, and any node can carry its own. A run stops when it reaches its budget. Anything that leaves the project waits at a gate for your yes or no: a commit to your branch, a publish, a message to someone outside.</p>
-    <p>Agents only write inside the folders their node is allowed to touch.</p>
+    <p>Money and writes are limited in three places:</p>
+    <ul>
+      <li><b>A loop's cost cap.</b> Every loop must have one. When the loop's body reaches it, the loop stops.</li>
+      <li><b>A node's cost cap.</b> Any node can carry one. Its own spend is checked against it.</li>
+      <li><b>The run's budget.</b> When a run reaches its budget, it is stopped. The saga keeps what was spent up to that point.</li>
+    </ul>
+    <p>Writes are fenced by folder. An agent can write only inside the folders its node is allowed to touch. A commit to your branch, a publish, or a message sent outside the project waits at a human gate for your yes or no.</p>
 
     <h2 id="mcp">5. MCP</h2>
-    <p>Antiloki is an MCP server. An MCP client such as Claude Code can drive it through these tool families:</p>
-    <ul>
-      <li><b>Threads and panes:</b> <code>antiloki_threads</code>, <code>antiloki_panes</code>, <code>antiloki_pane_open</code>, <code>antiloki_pane_read</code>, <code>antiloki_pane_send</code>.</li>
-      <li><b>Teams:</b> <code>antiloki_teams</code>, <code>antiloki_team_design</code>, <code>antiloki_team_status</code>, <code>antiloki_team_simulate</code>.</li>
-      <li><b>Sagas:</b> <code>antiloki_sagas</code>, <code>antiloki_saga_add</code>, <code>antiloki_episode_add</code>, <code>antiloki_episode_update</code>.</li>
-      <li><b>X-ray:</b> <code>antiloki_xray</code>, <code>antiloki_xray_rebuild</code>, <code>antiloki_xray_open</code>.</li>
-      <li><b>Other:</b> <code>antiloki_delegate</code>, <code>antiloki_worktrees</code>, <code>antiloki_frame_create</code>, <code>antiloki_rules</code>, <code>antiloki_qa</code>.</li>
-    </ul>
-    <p class="note">Tool names are as the server registers them today. Ask the client to list the tools to see the full set.</p>
+    <p>Antiloki is also an MCP server. Any MCP client can drive it: open threads and panes, read and add sagas, rebuild the X-ray, and design and run teams. Your agents use the same tools, so what an agent does in a pane is visible to you in the app.</p>
 
-    <h2 id="webapps">6. Web apps</h2>
-    <p>Web apps open in their own pane, from a store, beside your agents. A graph can also use the web node, which searches the web and reads a page for the agent that asked.</p>
+    <h3 id="mcp-tools">The tools</h3>
+    <p>The names below are the tools the server registers today. Ask the client to list them to see the full set.</p>
+    <table>
+      <tr><th>Family</th><th>Tools</th></tr>
+      <tr><td>Threads and spaces</td><td><code>antiloki_threads</code>, <code>antiloki_spaces</code>, <code>antiloki_worktrees</code></td></tr>
+      <tr><td>Panes</td><td><code>antiloki_panes</code>, <code>antiloki_pane_open</code>, <code>antiloki_pane_read</code>, <code>antiloki_pane_send</code>, <code>antiloki_pane_view</code>, <code>antiloki_pane_act</code>, <code>antiloki_pane_arrange</code>, <code>antiloki_pane_close</code></td></tr>
+      <tr><td>Teams</td><td><code>antiloki_teams</code>, <code>antiloki_team_design</code>, <code>antiloki_team_status</code>, <code>antiloki_team_simulate</code></td></tr>
+      <tr><td>Sagas</td><td><code>antiloki_sagas</code>, <code>antiloki_saga_add</code>, <code>antiloki_episode_add</code>, <code>antiloki_episode_update</code></td></tr>
+      <tr><td>X-ray</td><td><code>antiloki_xray</code>, <code>antiloki_xray_rebuild</code>, <code>antiloki_xray_open</code></td></tr>
+      <tr><td>Delegation and checks</td><td><code>antiloki_delegate</code>, <code>antiloki_qa</code>, <code>antiloki_rules</code>, <code>antiloki_query</code>, <code>antiloki_look</code></td></tr>
+      <tr><td>Frames, screen and themes</td><td><code>antiloki_frame_create</code>, <code>antiloki_screen</code>, <code>antiloki_themes</code></td></tr>
+    </table>
+
+    <h3 id="mcp-client">Connecting a client</h3>
+    <p>Antiloki's MCP server runs with the app. Connection steps for each MCP client will come with the first download, so check back then.</p>
+
+    <h2 id="webapps">6. Web apps and the web node</h2>
+    <p>Web apps open in their own pane, from a store, beside your agents. You can keep the apps you use, and open one with a click.</p>
+    <p>A graph has a web node for research. It works with no model and no key: it searches the web or reads one page, and the nodes after it are told what it found.</p>
+    <div class="card">
+      <h4>What the web node does</h4>
+      <ul>
+        <li><b>Search order:</b> a Brave key, if you have set one. Otherwise the seat's own web search. Otherwise DuckDuckGo, which needs no key.</li>
+        <li><b>Read only:</b> it makes GET requests for text pages. It has a size cap and a timeout.</li>
+        <li><b>Address guard:</b> it never reads an address inside this machine or its network, so a graph cannot be used to reach a router, a metadata service or the app itself.</li>
+        <li><b>Your own search:</b> <code>ANTILOKI_WEB_SEARCH_URL</code> can name another search, as a template with <code>{q}</code>.</li>
+      </ul>
+    </div>
 
     <h2 id="xray">7. The X-ray</h2>
-    <p>The X-ray is a health view of the repo, built from the codebase itself.</p>
+    <p>The X-ray is a health view of the repo, built from the code itself. The panels are below.</p>
+
+    <h3 id="xray-verdict">The verdict row</h3>
+    <table>
+      <tr><th>Field</th><th>What it counts</th></tr>
+      <tr><td>health</td><td>The overall health score, out of 100. Higher is better.</td></tr>
+      <tr><td>risk</td><td>How likely the next change is to break something.</td></tr>
+      <tr><td>files</td><td>The source files judged. Tests are not counted here.</td></tr>
+      <tr><td>coverage</td><td>The share of executed lines, when a test run has measured it.</td></tr>
+      <tr><td>solo-owned</td><td>The share of files written mostly by one person. A high share is a knowledge risk.</td></tr>
+      <tr><td>vulnerable deps</td><td>Dependencies with a known vulnerability, counted by severity.</td></tr>
+    </table>
+
+    <h3>The panels</h3>
     <ul>
-      <li><b>Verdict row:</b> health, risk, files judged, test coverage, the share of files one person owns, and vulnerable dependencies.</li>
-      <li><b>Health over time:</b> health and risk per snapshot.</li>
-      <li><b>Hotspots:</b> files plotted by gravity (how much code leans on them) and churn (how often they change), coloured by health.</li>
-      <li><b>The codebase:</b> every file is a box, sized by its mass. Pick a lens to colour the map: health, cascade (what breaks with it), ownership, debt, heat, or runtime coverage.</li>
-      <li><b>Laws broken most</b> and <b>movers since the previous snapshot</b>.</li>
+      <li><b>Health over time:</b> health and risk per snapshot, so you can see whether the repo is getting better or worse.</li>
+      <li><b>Hotspots:</b> each file is a point. The horizontal position is its gravity, how much other code leans on it. The vertical position is its churn, how often it changes. The colour is its health. A file far up and to the right needs attention first.</li>
+      <li><b>The codebase:</b> every file is a box. The area of the box is its mass, and the colour is the lens you picked. The lenses are below.</li>
+      <li><b>Laws broken most:</b> the project's rules, ranked by how much they are broken, weighted by the rule.</li>
+      <li><b>Movers since the previous snapshot:</b> the files whose health moved the most, up or down.</li>
+      <li><b>Activity, coverage distribution:</b> the commit history and the coverage spread across files.</li>
     </ul>
-    <p>Rebuild the X-ray after large changes. The Leader can read it, so "why is this file scored low?" gets a real answer.</p>
+
+    <h3 id="xray-lenses">The lenses</h3>
+    <p>A lens recolours the same map so that you can read a different question from it:</p>
+    <table>
+      <tr><th>Lens</th><th>Question it answers</th><th>Red means</th></tr>
+      <tr><td><b>health</b></td><td>Which files are sick?</td><td>Dense branching, code that is untested under load, and churn.</td></tr>
+      <tr><td><b>cascade</b></td><td>If this file breaks, what else breaks?</td><td>Many files depend on it, through their imports, directly or not.</td></tr>
+      <tr><td><b>ownership</b></td><td>Who knows this code?</td><td>Recent commits come from a single author. That is a knowledge risk.</td></tr>
+      <tr><td><b>debt</b></td><td>What is waiting to be done in the code?</td><td>TODO, HACK and unused markers. Ten or more is full red.</td></tr>
+      <tr><td><b>heat</b></td><td>What changes most?</td><td>How often the file changed in the last 500 commits.</td></tr>
+      <tr><td><b>runtime</b></td><td>What do the tests actually run?</td><td>Grey means no runtime signal. Otherwise the colour shows how much of the file your tests execute.</td></tr>
+    </table>
+    <p class="tip">Each file has a "why" line in the lens view. It names the raw driver behind its colour, so a red box is never just a number.</p>
+
+    <h3 id="xray-rebuild">Rebuilding</h3>
+    <p>The X-ray reads the code as it was when it was last built. Rebuild it after large changes, or from the MCP tool <code>antiloki_xray_rebuild</code>. A rebuild re-reads the active workspace's own codebase.</p>
+    <p>The chat in Cowork can read the X-ray, so you can ask about a score in plain words.</p>
 
     <h2 id="sagas">8. Sagas</h2>
-    <p>A saga is a goal and the episodes that get it done. Sagas are listed by project, as a list or a board, and grouped by status: in progress, todo, failed and done. Each row shows the progress, the cost and when it last changed. A finished saga stays on the record, so the history cannot be deleted.</p>
+    <p>A saga is a goal and the episodes that get it done. Sagas are listed per project, as a list or a board. Each row shows the progress, the cost, and when it last changed.</p>
+    <table>
+      <tr><th>Status</th><th>Meaning</th></tr>
+      <tr><td><span class="dot" style="background:var(--muted)"></span><b>todo</b></td><td>Not started.</td></tr>
+      <tr><td><span class="dot" style="background:var(--warn)"></span><b>in progress</b></td><td>Work is running on it.</td></tr>
+      <tr><td><span class="dot" style="background:var(--ok)"></span><b>done</b></td><td>Finished, with its record kept.</td></tr>
+      <tr><td><span class="dot" style="background:var(--bad)"></span><b>failed</b></td><td>A step in it failed.</td></tr>
+      <tr><td><span class="dot" style="background:var(--muted)"></span><b>canceled</b></td><td>Stopped on purpose. Kept on the record.</td></tr>
+    </table>
+    <p>On the board you move a saga between columns. Moving a saga to done marks its open episodes done; moving it back to todo reopens it. A finished saga stays on the record and cannot be deleted, so the history is the history.</p>
+    <p>A saga also keeps who did each step: the agent, the exact model, the time, and the cost, taken from the real run.</p>
 
     <h2 id="seats">9. Your AI seats</h2>
-    <p>Antiloki offers only the providers you are actually signed in to. It reads the seat, not the installed binary, so a CLI on your machine that is not signed in is never offered. One subscription is enough. A team can use more than one seat, for example a planner on one and workers on another.</p>
+    <p>A seat is one AI tool you are signed in to. Antiloki reads the seat, not the installed program, so a tool that is installed but not signed in is never offered.</p>
+    <table>
+      <tr><th>Seat</th><th>Notes</th></tr>
+      <tr><td>Claude Code</td><td>The Leader's chat in Cowork is a Claude Code seat.</td></tr>
+      <tr><td>Codex</td><td></td></tr>
+      <tr><td>Gemini</td><td>Antigravity is preferred when it is present, and Gemini is the fallback.</td></tr>
+      <tr><td>Grok</td><td></td></tr>
+      <tr><td>Cursor</td><td>The agent that runs in the terminal, not the Cursor editor.</td></tr>
+      <tr><td>OpenCode</td><td>Optional, off by default.</td></tr>
+    </table>
+    <p>One seat is enough. A team can use more than one, for example a planner on one and workers on another. A node names its seat as <code>engine:model</code>. A node that names no seat uses the one its tier picks.</p>
 
     <h2 id="install">10. Install and status</h2>
     <p>Downloads are coming soon for Windows, Linux and macOS. Nothing here needs an account.</p>
 
-    <h2 id="privacy">11. Privacy</h2>
-    <p>There is no account and no telemetry. The network calls are your CLIs' own calls, an update check against a static file on GitHub Releases, and the fonts this page loads from Google Fonts.</p>
+    <h2 id="privacy">11. Privacy and network</h2>
+    <p>There is no account and no telemetry. The network calls are:</p>
+    <ul>
+      <li>Your CLIs' own calls to their vendors.</li>
+      <li>An update check against a static file on GitHub Releases.</li>
+      <li>The fonts the window loads from Google Fonts.</li>
+      <li>The web node, only when a graph uses it, and only to the search you chose.</li>
+    </ul>
 
     <h2 id="support">12. Support</h2>
-    <p>Write to <a href="mailto:support@antiloki.com">support@antiloki.com</a>.</p>
+    <p>Write to <a href="mailto:support@antiloki.com">support@antiloki.com</a>. Include the project's screen and the node or saga it is about, if you can.</p>
   </main>
 </div>
 
