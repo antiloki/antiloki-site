@@ -529,6 +529,33 @@
 
   /* EDGE FADE (2026-10-13): the plate image is sized to its own aspect (same rendered size and position as contain + object-position), so an oval mask on the image fades every side to transparent; no rectangular edge at any viewport. */
   .hero .fold .plate { -webkit-mask-image: none; mask-image: none; }
+
+  /* THE X-RAY, AS THE APP SHOWS IT: the repo dashboard's verdict row, panels and codebase map */
+  .xr-verdict { display: flex; gap: 16px; flex-wrap: wrap; font-family: ui-monospace, "JetBrains Mono", Menlo, monospace; font-size: 11.5px; color: var(--c-dim); padding: 2px 0 12px; border-bottom: 1px solid var(--c-border); margin-bottom: 14px; }
+  .xr-verdict b { font-weight: 600; } .xr-verdict em { font-style: normal; color: var(--c-muted); }
+  .xr-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .xr-card { border: 1px solid var(--c-border); border-radius: 10px; background: var(--c-panel); padding: 14px 16px; min-width: 0; }
+  .xr-card.wide { grid-column: 1 / -1; }
+  .xr-h { font-size: 13.5px; font-weight: 600; color: var(--c-fg); }
+  .xr-s { font-family: ui-monospace, "JetBrains Mono", Menlo, monospace; font-size: 10px; color: var(--c-muted); margin: 2px 0 10px; }
+  .xr-lenses { display: flex; gap: 4px; margin-bottom: 10px; flex-wrap: wrap; }
+  .xr-lenses button { font: inherit; font-family: ui-monospace, "JetBrains Mono", Menlo, monospace; font-size: 10.5px; background: none; border: 1px solid var(--c-border); color: var(--c-dim); border-radius: 6px; padding: 3px 9px; cursor: pointer; }
+  .xr-lenses button.on { background: var(--c-hover); color: var(--c-fg); }
+  .xr-map { display: grid; grid-template-columns: repeat(12, 1fr); grid-auto-rows: 26px; grid-auto-flow: dense; gap: 3px; }
+  .xr-map > div { border-radius: 4px; padding: 4px 6px; overflow: hidden; background: color-mix(in srgb, var(--c) 22%, var(--c-panel)); border: 1px solid color-mix(in srgb, var(--c) 45%, transparent); display: flex; justify-content: space-between; gap: 4px; align-items: flex-start; min-width: 0; }
+  .xr-map > div span { font-family: ui-monospace, "JetBrains Mono", Menlo, monospace; font-size: 9.5px; color: var(--c-fg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .xr-map > div b { font-family: ui-monospace, "JetBrains Mono", Menlo, monospace; font-size: 9.5px; color: var(--c); font-weight: 600; flex: 0 0 auto; }
+  .xr-bar { display: grid; grid-template-columns: 150px 1fr 28px; gap: 10px; align-items: center; font-family: ui-monospace, "JetBrains Mono", Menlo, monospace; font-size: 11.5px; margin-bottom: 8px; }
+  .xr-bar span { color: var(--c-fg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .xr-bar i { display: block; height: 6px; border-radius: 3px; background: var(--c-warn); }
+  .xr-bar b { text-align: right; color: var(--c-dim); font-weight: 600; }
+  .xr-mov { display: grid; grid-template-columns: 1fr auto 40px; gap: 10px; align-items: center; font-family: ui-monospace, "JetBrains Mono", Menlo, monospace; font-size: 11.5px; padding: 6px 0; border-bottom: 1px solid var(--c-border); }
+  .xr-mov code { color: var(--c-fg); } .xr-mov span { color: var(--c-dim); } .xr-mov b { text-align: right; font-weight: 600; }
+  @media (max-width: 820px) { .xr-grid { grid-template-columns: 1fr; } .xr-map { grid-template-columns: repeat(6, 1fr); } }
+  .teams { padding-top: 120px; }
+  .teams h2 { font-size: clamp(30px, 3.6vw, 44px); font-weight: 700; max-width: 24ch; }
+  .teams .lede { max-width: 62ch; }
+  .teams-kinds { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); margin-top: 28px; }
 </style>
 
 <nav class="top"><div class="wrap">
@@ -537,7 +564,6 @@
   <a class="q" href="#graphs">Graphs</a>
   <a class="q" href="#compare">Compared</a>
   <a class="q" href="/docs.html">Docs</a>
-  <a class="q" href="/blog/">Blog</a>
   <a class="q" href="#open">Free</a>
   <span class="btn sm soon" aria-disabled="true">Coming soon</span>
 </div></nav>
@@ -554,7 +580,7 @@
       <source type="image/webp" data-srcset="assets/hero-judith.webp">
       <img alt="" width="2400" height="1780" decoding="async" fetchpriority="low" data-desktop="assets/hero-judith.png" data-mobile="assets/hero-judith-mobile.png">
     </picture>
-    <span class="eyebrow">Vibe graphing IDE · an agentic graph engineering loop · free<br>Windows today · the Linux build is older · macOS soon</span>
+    <span class="eyebrow">Vibe graphing IDE · an agentic graph engineering loop · free<br>Teams · MCP · web apps · X-ray · Sagas · coming soon for Windows, Linux and macOS</span>
     <h1 class="giant" style="margin-top:14px"><em>VIBE GRAPHING</em></h1>
     <p class="lede hero-sub" style="margin-top:10px">antiloki is an agentic graph engineering loop IDE. Your Leader drafts the team as a graph of agents, tools, checks and gates; you edit the board, set the budget and run it on the AI subscriptions you already have. <b>Free: no account, no trial clock, no API key to paste.</b></p>
     <div class="cta"><span class="btn soon" aria-disabled="true">Coming soon</span></div>
@@ -564,12 +590,7 @@
   </div>
 
   <section class="wrap" aria-label="How antiloki works" style="padding-top:8px">
-    <p class="method-link">How a merge is actually made — every run measured, the combinations ranked, the winner
-      bound to a role, and what is deterministic versus what is a model's opinion:
-      <a href="/blog/how-a-merge-is-made.html">Compiled, not trained →</a><br>
-      The numbers on this page, the cells behind them and the losses, measured on the five seats:
-      <a href="/paper.html">the technical report, fourth edition →</a> — and the first edition's arms, with their
-      scripts: <a href="/blog/every-run.html">Every run →</a></p>
+    <p class="method-link">Teams, MCP, web apps, the X-ray and Sagas, each with its own page in the docs: <a href="/docs.html">read the docs →</a></p>
   </section>
 
 <section class="graphs" id="graphs" aria-label="Vibe graphing: a team drawn and run, as a film">
@@ -696,9 +717,9 @@
                 <g class="step" data-node="check" data-at="0.26" data-done="0.66" data-run="0.52,0.66" style="--c:#e6b31e">
                   <rect class="nd" x="740" y="170" width="150" height="78" rx="8"/>
                   <path class="pins" d="M735,178 V240 M895,178 V240"/>
-                  <text class="kind" x="752" y="188">CHECK</text>
+                  <text class="kind" x="752" y="188">IF</text>
                   <text class="ttl" id="t-check" x="752" y="209">Contrast ok?</text>
-                  <text class="sub" x="752" y="226">a check, no model</text>
+                  <text class="sub" x="752" y="226">routes on the result</text>
                   <circle class="sd" cx="756" cy="235" r="3.2"/>
                   <text class="stq" x="766" y="239">queued</text><text class="str" x="766" y="239">running</text><text class="std" x="766" y="239">done</text>
                 </g>
@@ -751,11 +772,18 @@
         </section>
       </div>
       <section class="pane view v-xray" aria-label="X-ray, example">
-        <div class="app-head"><h1>X-ray <span>launch-a-landing-page</span></h1><div class="app-tools"><div class="seg"><button class="on" type="button">insights</button><button type="button">files</button><button type="button">gravity</button></div></div></div>
-        <div class="xcols">
-          <div class="xcard"><div class="xlabel">the gravity map · blast radius</div><div class="gl"><span class="gn">graph/</span><span class="gb"><i style="width:91%;background:var(--c-warn)"></i></span><span class="gv">38%</span></div><div class="gl"><span class="gn">ui/</span><span class="gb"><i style="width:58%;background:var(--c-brand)"></i></span><span class="gv">24%</span></div><div class="gl"><span class="gn">store/</span><span class="gb"><i style="width:43%;background:var(--c-brand)"></i></span><span class="gv">18%</span></div><div class="gl"><span class="gn">api/</span><span class="gb"><i style="width:26%;background:var(--c-ok)"></i></span><span class="gv">11%</span></div><div class="gl"><span class="gn">cli/</span><span class="gb"><i style="width:14%;background:var(--c-ok)"></i></span><span class="gv">6%</span></div><div class="xnote">bar length = code that breaks if this level changes</div></div>
-          <div class="xcard"><div class="xlabel">the debt ledger</div><div class="dr"><code>graph/run.ts</code><span>6 TODO</span></div><div class="dr"><code>ui/panes.tsx</code><span>4 TODO</span></div><div class="dr"><code>legacy/mail.js</code><span>3 unused</span></div><div class="dr"><code>store/sync.ts</code><span>1 HACK</span></div></div>
-          <div class="xcard wide"><div class="xlabel">file scores · out of 100</div><div class="sr"><code>src/render.ts</code><span class="sbar"><i style="width:94%;background:var(--c-ok)"></i></span><b style="color:var(--c-ok)">94</b></div><div class="sr"><code>src/router.ts</code><span class="sbar"><i style="width:88%;background:var(--c-ok)"></i></span><b style="color:var(--c-ok)">88</b></div><div class="sr"><code>src/store.ts</code><span class="sbar"><i style="width:81%;background:var(--c-ok)"></i></span><b style="color:var(--c-ok)">81</b></div><div class="sr"><code>src/auth.ts</code><span class="sbar"><i style="width:72%;background:var(--c-warn)"></i></span><b style="color:var(--c-warn)">72</b></div><div class="sr"><code>src/sync.ts</code><span class="sbar"><i style="width:66%;background:var(--c-warn)"></i></span><b style="color:var(--c-warn)">66</b></div><div class="sr"><code>src/graph/board.tsx</code><span class="sbar"><i style="width:63%;background:var(--c-warn)"></i></span><b style="color:var(--c-warn)">63</b></div><div class="sr"><code>src/graph/run.ts</code><span class="sbar"><i style="width:58%;background:var(--c-bad)"></i></span><b style="color:var(--c-bad)">58</b></div><div class="sr"><code>src/ui/panes.tsx</code><span class="sbar"><i style="width:49%;background:var(--c-bad)"></i></span><b style="color:var(--c-bad)">49</b></div><div class="sr"><code>src/legacy/mail.js</code><span class="sbar"><i style="width:31%;background:var(--c-bad)"></i></span><b style="color:var(--c-bad)">31</b></div></div>
+        <div class="app-head"><h1>X-ray <span>launch-a-landing-page · example</span></h1><div class="app-tools"><div class="seg"><button class="on" type="button">overview</button><button type="button">files</button><button type="button">gravity</button></div></div></div>
+        <div class="xr-verdict"><span style="color:var(--c-ok)">♥ <b>82</b> <em>health</em></span><span style="color:var(--c-ok)">⚠ <b>18</b> <em>risk</em></span><span style="color:var(--c-fg)">▤ <b>214</b> <em>files</em></span><span style="color:var(--c-warn)">⚗ <b>61%</b> <em>coverage</em></span><span style="color:var(--c-fg)">◉ <b>34%</b> <em>solo-owned</em></span><span style="color:var(--c-ok)">⛨ <b>0</b> <em>vulnerable deps</em></span></div>
+        <div class="xr-grid">
+          <div class="xr-card"><div class="xr-h">Health over time</div><div class="xr-s">health and risk per snapshot · last 12</div>
+            <svg viewBox="0 0 430 150" width="100%" role="img" aria-label="health over time, rising from 71 to 82"><line x1="20" x2="420" y1="110.0" y2="110.0" stroke="var(--c-border)" stroke-dasharray="2 4"/><text x="0" y="113.0" font-size="9" fill="var(--c-muted)">70</text><line x1="20" x2="420" y1="74.0" y2="74.0" stroke="var(--c-border)" stroke-dasharray="2 4"/><text x="0" y="77.0" font-size="9" fill="var(--c-muted)">80</text><polyline points="20.0,106.4 56.4,99.2 92.7,102.8 129.1,88.4 165.5,81.2 201.8,84.8 238.2,74.0 274.5,70.4 310.9,74.0 347.3,66.8 383.6,63.2 420.0,66.8" fill="none" stroke="var(--c-ok)" stroke-width="2"/></svg></div>
+          <div class="xr-card"><div class="xr-h">Hotspots</div><div class="xr-s">x: gravity (how much code leans on it) · y: churn (how often it changes) · colour: health</div>
+            <svg viewBox="0 0 430 150" width="100%" role="img" aria-label="hotspot scatter of files by gravity and churn"><line x1="34" x2="34" y1="6" y2="128" stroke="var(--c-border)"/><line x1="34" x2="422" y1="128" y2="128" stroke="var(--c-border)"/><circle cx="159.7" cy="109.9" r="3.5" fill="var(--c-ok)" fill-opacity=".75"/><circle cx="61.9" cy="63.7" r="3.2" fill="var(--c-warn)" fill-opacity=".75"/><circle cx="56.5" cy="67.1" r="3.2" fill="var(--c-ok)" fill-opacity=".75"/><circle cx="202.3" cy="119.6" r="3.8" fill="var(--c-ok)" fill-opacity=".75"/><circle cx="198.7" cy="28.8" r="3.7" fill="var(--c-warn)" fill-opacity=".75"/><circle cx="120.5" cy="52.7" r="3.3" fill="var(--c-warn)" fill-opacity=".75"/><circle cx="257.9" cy="80.4" r="4.2" fill="var(--c-warn)" fill-opacity=".75"/><circle cx="51.6" cy="25.0" r="3.2" fill="var(--c-warn)" fill-opacity=".75"/><circle cx="90.1" cy="113.9" r="3.3" fill="var(--c-ok)" fill-opacity=".75"/><circle cx="350.6" cy="106.3" r="5.2" fill="var(--c-warn)" fill-opacity=".75"/><circle cx="281.9" cy="83.3" r="4.4" fill="var(--c-warn)" fill-opacity=".75"/><circle cx="58.1" cy="120.8" r="3.2" fill="var(--c-ok)" fill-opacity=".75"/><circle cx="298.0" cy="76.7" r="4.6" fill="var(--c-warn)" fill-opacity=".75"/><circle cx="261.2" cy="73.6" r="4.2" fill="var(--c-warn)" fill-opacity=".75"/><circle cx="342.2" cy="44.1" r="5.1" fill="var(--c-bad)" fill-opacity=".75"/><circle cx="256.9" cy="65.0" r="4.2" fill="var(--c-warn)" fill-opacity=".75"/><circle cx="317.1" cy="93.4" r="4.8" fill="var(--c-warn)" fill-opacity=".75"/><circle cx="79.8" cy="77.8" r="3.2" fill="var(--c-warn)" fill-opacity=".75"/><circle cx="93.1" cy="69.3" r="3.3" fill="var(--c-ok)" fill-opacity=".75"/><circle cx="293.2" cy="36.3" r="4.5" fill="var(--c-bad)" fill-opacity=".75"/><circle cx="373.7" cy="90.4" r="5.5" fill="var(--c-warn)" fill-opacity=".75"/><circle cx="264.6" cy="58.4" r="4.3" fill="var(--c-warn)" fill-opacity=".75"/><circle cx="359.9" cy="14.6" r="5.3" fill="var(--c-bad)" fill-opacity=".75"/><circle cx="291.7" cy="120.7" r="4.5" fill="var(--c-warn)" fill-opacity=".75"/><circle cx="285.1" cy="8.8" r="4.5" fill="var(--c-bad)" fill-opacity=".75"/><circle cx="144.4" cy="81.7" r="3.4" fill="var(--c-warn)" fill-opacity=".75"/><circle cx="42.8" cy="72.6" r="3.2" fill="var(--c-ok)" fill-opacity=".75"/><circle cx="79.3" cy="120.9" r="3.2" fill="var(--c-ok)" fill-opacity=".75"/><circle cx="84.2" cy="98.3" r="3.3" fill="var(--c-ok)" fill-opacity=".75"/><circle cx="372.1" cy="118.3" r="5.5" fill="var(--c-warn)" fill-opacity=".75"/><circle cx="247.2" cy="22.0" r="4.1" fill="var(--c-bad)" fill-opacity=".75"/><circle cx="369.2" cy="94.6" r="5.4" fill="var(--c-warn)" fill-opacity=".75"/><circle cx="173.1" cy="21.9" r="3.6" fill="var(--c-bad)" fill-opacity=".75"/><circle cx="92.4" cy="106.9" r="3.3" fill="var(--c-ok)" fill-opacity=".75"/></svg></div>
+          <div class="xr-card wide"><div class="xr-h">The codebase</div><div class="xr-s">every file is a box · area = mass · colour = the lens</div>
+            <div class="xr-lenses"><button type="button" class="on">health</button><button type="button" class="">cascade</button><button type="button" class="">ownership</button><button type="button" class="">debt</button><button type="button" class="">heat</button><button type="button" class="">runtime</button></div>
+            <div class="xr-map"><div style="grid-column:span 4;grid-row:span 3;--c:var(--c-bad)" title="graph/run.ts · 58/100"><span>graph/run.ts</span><b>58</b></div><div style="grid-column:span 3;grid-row:span 2;--c:var(--c-warn)" title="graph/board.tsx · 63/100"><span>graph/board.tsx</span><b>63</b></div><div style="grid-column:span 3;grid-row:span 3;--c:var(--c-bad)" title="ui/panes.tsx · 49/100"><span>ui/panes.tsx</span><b>49</b></div><div style="grid-column:span 2;grid-row:span 2;--c:var(--c-warn)" title="store/sync.ts · 66/100"><span>store/sync.ts</span><b>66</b></div><div style="grid-column:span 2;grid-row:span 2;--c:var(--c-ok)" title="store/db.ts · 81/100"><span>store/db.ts</span><b>81</b></div><div style="grid-column:span 3;grid-row:span 2;--c:var(--c-ok)" title="api/routes.ts · 86/100"><span>api/routes.ts</span><b>86</b></div><div style="grid-column:span 2;grid-row:span 1;--c:var(--c-warn)" title="auth.ts · 72/100"><span>auth.ts</span><b>72</b></div><div style="grid-column:span 2;grid-row:span 2;--c:var(--c-ok)" title="render.ts · 94/100"><span>render.ts</span><b>94</b></div><div style="grid-column:span 2;grid-row:span 2;--c:var(--c-ok)" title="router.ts · 88/100"><span>router.ts</span><b>88</b></div><div style="grid-column:span 2;grid-row:span 1;--c:var(--c-warn)" title="cli/main.ts · 70/100"><span>cli/main.ts</span><b>70</b></div><div style="grid-column:span 2;grid-row:span 1;--c:var(--c-bad)" title="legacy/mail.js · 31/100"><span>legacy/mail.js</span><b>31</b></div><div style="grid-column:span 1;grid-row:span 1;--c:var(--c-ok)" title="util/time.ts · 98/100"><span>util/time.ts</span><b>98</b></div><div style="grid-column:span 2;grid-row:span 1;--c:var(--c-ok)" title="ui/theme.ts · 91/100"><span>ui/theme.ts</span><b>91</b></div><div style="grid-column:span 2;grid-row:span 1;--c:var(--c-warn)" title="store/migrate.ts · 77/100"><span>store/migrate.ts</span><b>77</b></div></div></div>
+          <div class="xr-card"><div class="xr-h">Laws broken most</div><div class="xr-s">mass = violations, weighted by the law</div><div class="xr-bar"><span>no import cycles</span><i style="width:90%"></i><b>9</b></div><div class="xr-bar"><span>one owner per module</span><i style="width:60%"></i><b>6</b></div><div class="xr-bar"><span>no file over 800 lines</span><i style="width:40%"></i><b>4</b></div><div class="xr-bar"><span>every API route tested</span><i style="width:20%"></i><b>2</b></div></div>
+          <div class="xr-card"><div class="xr-h">Movers since the previous snapshot</div><div class="xr-s">files whose health moved the most</div><div class="xr-mov"><code>graph/run.ts</code><span>76 → 64</span><b style="color:var(--c-bad)">-12</b></div><div class="xr-mov"><code>api/routes.ts</code><span>79 → 86</span><b style="color:var(--c-ok)">+7</b></div><div class="xr-mov"><code>legacy/mail.js</code><span>40 → 31</span><b style="color:var(--c-bad)">-9</b></div></div>
         </div>
       </section>
       <section class="pane view v-sagas" aria-label="Sagas, example">
@@ -768,7 +796,7 @@
   <div class="wrap kinds">
     <div style="--c:var(--ember)"><i class="mono">L</i><p><b>Leader</b><span>Your terminal agent. Designs the team with you. Exactly one per graph.</span></p></div>
     <div style="--c:#7fd6cc"><i class="mono">A</i><p><b>Agent</b><span>Planner, worker, QA, debugger, audit, or your own agent with its own brief.</span></p></div>
-    <div style="--c:#7aa7ff"><i class="mono">T</i><p><b>Tool</b><span>Web, files or an MCP server, with an allow-list the node must name.</span></p></div>
+    <div style="--c:#7aa7ff"><i class="mono">T</i><p><b>Tool</b><span>Web search and page reading, and this app's own tools, each with an allow-list the node must name.</span></p></div>
     <div style="--c:#9aa3ad"><i class="mono">F</i><p><b>Fork and join</b><span>Branches run side by side. The join waits for all, or for a quorum.</span></p></div>
     <div style="--c:#e6c26a"><i class="mono">?</i><p><b>If and switch</b><span>Route on what a node said. A switch needs a default port.</span></p></div>
     <div style="--c:#e6c26a"><i class="mono">O</i><p><b>Loop</b><span>Repeat until a condition holds. It needs a max count and a cost cap.</span></p></div>
@@ -778,33 +806,37 @@
     <div style="--c:#8fd6a0"><i class="mono">D</i><p><b>Artifact and deliver</b><span>The documents a run makes, and the end of the graph: the pack reaches you.</span></p></div>
   </div>
 </section>
+  <section class="wrap teams" id="teams" aria-label="Teams and MCP">
+    <span class="eyebrow">teams and mcp</span>
+    <h2>Teams are graphs. Antiloki is an MCP server.</h2>
+    <p class="lede">A team is a graph you can see and edit. Antiloki also speaks MCP, so the tools you already use can drive it: its threads and panes, its sagas, its X-ray and its teams.</p>
+    <div class="kinds teams-kinds">
+      <div style="--c:#c97c5c"><i class="mono">T</i><p><b>Teams, drawn</b><span>The Leader designs the team with you on the board. A driver runs it node by node, under its budget.</span></p></div>
+      <div style="--c:#19a89d"><i class="mono">S</i><p><b>Skills, proposed</b><span>Agents propose changes to their skills as drafts. Nothing changes until you approve it.</span></p></div>
+      <div style="--c:#1e88f0"><i class="mono">A</i><p><b>Artifacts</b><span>The documents a run produces, such as a report or a draft. The next node reads them, and you can open them.</span></p></div>
+      <div style="--c:#e6b31e"><i class="mono">M</i><p><b>MCP</b><span>An MCP client can open threads and panes, read and add sagas, rebuild and open the X-ray, and design and run teams (antiloki_team_design, antiloki_team_status, antiloki_sagas, antiloki_xray).</span></p></div>
+    </div>
+  </section>
+
   <section class="wrap compare" id="compare" aria-label="Compared with the tools alone">
     <span class="eyebrow">compared with the tools alone</span>
     <h2>On top of the tools you already use.</h2>
     <p class="lede">antiloki runs Claude Code, Cursor, Codex, Gemini and Grok. It does not replace them.</p>
     <div class="cmp" role="table" aria-label="What antiloki adds to the tools alone">
       <div class="cmp-h" role="row"><span role="columnheader">what you want</span><span role="columnheader">the tools alone</span><span role="columnheader">with antiloki</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Models</b><span class="alone" role="cell">One tool’s own</span><span class="with" role="cell">All five subscriptions, as one agent</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Who does each job</b><span class="alone" role="cell">Your pick, or the tool’s router</span><span class="with" role="cell">The seat measured best, and it keeps learning</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Boundaries</b><span class="alone" role="cell">Permissions and a sandbox you set up</span><span class="with" role="cell">One fence on every seat, undo in one click</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Testing</b><span class="alone" role="cell">A browser, when you ask</span><span class="with" role="cell">One QA button on any run: your ask tested in a real browser, filmed (or against the API for backend work)</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Trust in the result</b><span class="alone" role="cell">The agent says it is done</span><span class="with" role="cell">A confidence reading with its reasons on every result, and one click to run an independent QA</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Verdict on the code</b><span class="alone" role="cell">A reviewer’s opinion</span><span class="with" role="cell">A score per file — no model, same twice</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Impact of a change</b><span class="alone" role="cell">You guess</span><span class="with" role="cell">Map, cycles and blast radius before it lands</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Your rules</b><span class="alone" role="cell">Prompt files</span><span class="with" role="cell">The agent checks its own edits against them</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Cost and limits</b><span class="alone" role="cell">Each tool’s own usage</span><span class="with" role="cell">Every turn priced, per seat, limits on screen</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">When a seat runs out</b><span class="alone" role="cell">The work stops at the wall</span><span class="with" role="cell">Routed around the seat that is out; the next best takes over until it resets</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Big asks</b><span class="alone" role="cell">One long session that loses the thread</span><span class="with" role="cell">Split into tasks that each own their files, verified one by one, then joined</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Where the work lives</b><span class="alone" role="cell">A to-do list inside one session, gone when it ends</span><span class="with" role="cell">Sagas: a list per project of goals, tasks and subtasks that stays, for you and your agents. A plan becomes a saga by itself, and the agents read it before they start</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Who did what</b><span class="alone" role="cell">Scroll back through a chat to find out</span><span class="with" role="cell">Every task shows the agent and the exact model that did it or failed it, in order, each model with its own icon</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">What a task cost</b><span class="alone" role="cell">Each tool’s own usage page, not per task</span><span class="with" role="cell">Time, cost and tokens on every task, rolled up to the saga, taken from the real run</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Teams</b><span class="alone" role="cell">One agent in one chat</span><span class="with" role="cell">A team drawn as a graph: planner, workers, QA and gates, edited on the board and run in a loop</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Tools</b><span class="alone" role="cell">Each tool's own built-in tools</span><span class="with" role="cell">Web search and page reading as nodes, and an MCP server, each with an allow-list the node must name</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Web apps</b><span class="alone" role="cell">A browser tab, when you need it</span><span class="with" role="cell">Web apps open in their own pane, from a store, beside your agents</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Parallel work</b><span class="alone" role="cell">Terminals side by side, you keep track</span><span class="with" role="cell">Real terminals in Cowork panes; each thread gets its own git branch and worktree</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Where the work lives</b><span class="alone" role="cell">A to-do list inside one session, gone when it ends</span><span class="with" role="cell">Sagas: a list per project of goals, tasks and runs, for you and your agents</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Who did what</b><span class="alone" role="cell">Scroll back through a chat to find out</span><span class="with" role="cell">Every node records its agent, exact model, time and cost, in order</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Your codebase</b><span class="alone" role="cell">The agent reads your repo cold, every time</span><span class="with" role="cell">The X-ray: a health view with a codebase map, hotspots, laws broken and what moved since the last snapshot</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Boundaries</b><span class="alone" role="cell">Permissions and a sandbox you set up</span><span class="with" role="cell">Each node writes only inside its folders; a commit or a publish waits at a gate for your yes</span></div>
+      <div class="cmp-r" role="row"><b role="rowheader">Budget</b><span class="alone" role="cell">Each tool's own usage page</span><span class="with" role="cell">A cost cap on every loop and on any node; a run stops at its budget</span></div>
       <div class="cmp-r" role="row"><b role="rowheader">The record</b><span class="alone" role="cell">Whatever the chat kept</span><span class="with" role="cell">A finished saga stays: it cannot be canceled or deleted, so the history is the history</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Project knowledge</b><span class="alone" role="cell">The agent reads your repo cold, every time</span><span class="with" role="cell">A map it can query: who imports a file, who references a symbol, which tests reach it</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Parallel work</b><span class="alone" role="cell">Terminals side by side, you keep track</span><span class="with" role="cell">Agents in boxes of their own, a branch each, merged when you say</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Design</b><span class="alone" role="cell">Looks right, you hope</span><span class="with" role="cell">Contrast, spacing, type and clipping measured on the real page</span></div>
-      <div class="cmp-r" role="row"><b role="rowheader">Receipts</b><span class="alone" role="cell">You wonder what it did and cost</span><span class="with" role="cell">Every run keeps what it did, who judged it, what it cost and what it saved</span></div>
+      
     </div>
-    <p class="fine">One more app; the Windows build is current, the Linux build is older, and macOS is coming soon. Limits, sources and every detail: <a href="/paper.html">the technical report →</a></p>
+    <p class="fine">Coming soon for Windows, Linux and macOS. The docs cover every screen: <a href="/docs.html">read the docs →</a></p>
   </section>
 
     <div class="wrap pricing" id="open">
@@ -812,8 +844,8 @@
     <p class="own">No trial clock. No paid tier. No account.</p>
     <p class="lede" style="color:var(--dim);max-width:60ch;margin:10px auto 26px;font-size:16px;text-align:center;text-wrap:balance">antiloki is free to use, read and change. It runs on the subscriptions you already pay your model vendors, so the only bill is theirs.</p>
     <div class="plans">
-      <div class="plan"><div class="name">Use it</div><div class="price num">$0<small>forever</small></div><ul><li><b>everything</b> — the graph board, team runs, agents and X-ray</li><li>no card, no account, no trial to run out</li><li>your projects stay on your machine</li></ul><span class="btn soon" aria-disabled="true">Coming soon</span></div>
-      <div class="plan"><div class="name">Read it</div><div class="price num">soon<small>source</small></div><ul><li><b>the source is coming</b>, to be published under an open-source license</li><li>read how the graph runs, change it, send a fix back</li><li>the routing measurements are published with their scripts: <a href="/paper.html">the technical report →</a></li></ul></div>
+      <div class="plan"><div class="name">Use it</div><div class="price num">$0<small>forever</small></div><ul><li><b>everything</b> — the graph board, teams, Cowork, Sagas, the X-ray and MCP</li><li>no card, no account, no trial to run out</li><li>your projects stay on your machine</li></ul><span class="btn soon" aria-disabled="true">Coming soon</span></div>
+      <div class="plan"><div class="name">Read it</div><div class="price num">soon<small>source</small></div><ul><li><b>the source is coming</b>, to be published under an open-source license</li><li>read how the graph runs, change it, send a fix back</li><li>the team and graph format is in <a href="/docs.html">the docs →</a></li></ul></div>
     </div>
     <p class="terms">antiloki is free. Model subscriptions and API keys are billed by their own vendors, not by antiloki.</p>
   </div>
@@ -824,24 +856,27 @@
   </div>
 
   <div class="wrap faq">
+    <details><summary>What is antiloki?</summary><p>A free vibe graphing IDE. You describe the work in plain words, the Leader drafts a team as a graph of agents, tools, checks and gates, you edit it on the board, and the loop runs it on the AI subscriptions you already have. Antiloki is also an MCP server, so the tools you use can drive its threads, sagas, X-ray and teams.</p></details>
     <details><summary>What is vibe graphing?</summary><p>Describing the work in plain words and getting a <b>graph</b> back: the Leader drafts a team as nodes and edges (agents, tools, forks and joins, checks, loops, gates), you edit it on the board, and the loop runs it under the budget you set. Every node is visible while it works and is recorded afterwards, so the graph is both the plan and the proof of what ran.</p></details>
-    <details><summary>What is antiloki, in one sentence?</summary><p>An agentic graph engineering loop IDE: a desktop workspace where a team of coding agents is drawn as a graph and run in a loop. It runs on the model subscriptions you already have — Claude, Codex, Cursor, Gemini, Grok — and sends each job to the seat measured best for it, with folder-level write enforcement, a verifier on every task, a confidence reading on every result, an optional independent QA and a full audit timeline.</p></details>
+    <details><summary>What are the nodes of a graph?</summary><p>A graph is built from nodes you can see, edit and run: the Leader (your terminal agent, exactly one per graph); agents (a planner, worker, QA, debugger, audit, or your own agent with its own brief and tools); tools (web search and page reading, and this app's own tools, each with an allow-list); fork and join to run branches side by side; if and switch to route on a result; loops with a max count and a cost cap; for-each, retry, a human gate that waits for your yes or no, artifacts (documents the run makes) and deliver.</p></details>
+    <details><summary>How does a run stay within budget?</summary><p>Every loop needs a max count and a cost cap, and any node can carry its own cost cap. A run is stopped when it reaches its budget. Every node records its agent, exact model, time and cost, in order, on the saga.</p></details>
+    <details><summary>What are teams?</summary><p>A team is a graph you draw and edit. The Leader designs it with you, a driver runs it node by node, and each run leaves artifacts (documents the next node reads and you can open). Agents can propose changes to their skills, but as drafts: nothing changes until you approve it.</p></details>
+    <details><summary>Is antiloki an MCP server?</summary><p>Yes. An MCP client such as Claude Code can open threads and panes, read and add sagas, rebuild and open the X-ray, and design and run teams through antiloki's MCP tools (for example antiloki_team_design, antiloki_sagas and antiloki_xray). A node in a graph can use only the tools it names.</p></details>
+    <details><summary>What is the Cowork screen?</summary><p>Your agents' real terminals, side by side in panes, with the Leader and the team's graph beside them. Web apps open in their own pane from a store. Threads give each line of work its own git branch and worktree, so agents can work on different things at once and land them when you say.</p></details>
+    <details><summary>What are Sagas?</summary><p>A list per project of goals, tasks and their runs. A saga keeps who did each step, the exact model, the time and the cost, and a finished saga stays on the record.</p></details>
+    <details><summary>What is the X-ray?</summary><p>The X-ray is a health view of your repo: a verdict row (health, risk, coverage, solo-owned files, vulnerable dependencies), health over time, hotspots by gravity and churn, a codebase map that colours every file by the lens you pick (health, cascade, ownership, debt, heat or runtime coverage), the laws broken most, and what moved since the last snapshot. The chat sees all of it, so "why is this file 81?" gets a real answer.</p></details>
+    <details><summary>Are web apps supported?</summary><p>Yes. Web apps open in their own pane from a store, next to your agents. A graph can also use the web node, which searches the web and reads a page for the agent that asked.</p></details>
     <details><summary>Is it really free? What is the catch?</summary><p>There is no catch in antiloki: no paid tier, no trial that ends, no account. The only costs are the model subscriptions or API keys you choose to use, and those are billed by their vendors. We plan to publish the source, so you can check that nothing is hidden.</p></details>
     <details><summary>Does it replace Claude Code, Codex, Cursor, Gemini or Grok?</summary><p>No — it runs them, twice over: as the agent in its box, and as the engine behind antiloki's own AI (the chat, the reviews, the ultra review), each through its own vendor CLI. Keep your subscriptions; there is no API key to paste.</p></details>
-    <details><summary>What does the X-ray do that a linter doesn't?</summary><p>It judges every file against your rules and its own measurements (tests, coupling, structure, change) and tells you why a file is not 100. Then the ultra review: a $0 survey of the territory, and your engine reading the worst units to report what it can verify — with the fix. The chat sees all of it, so "why is this file 81?" gets a real answer — and the intel handed to an agent says which files it could not read.</p></details>
-    <details><summary>Do I need two subscriptions?</summary><p>For a <b>merge</b>, two usable seats. A merge never puts two frontier models together; it puts cheap hands under a good brain. Google's free tier is capped at a small daily number of agent requests (about twenty when we checked) — enough to try, not a seat to rely on. antiloki only offers a provider you are actually <b>signed in to</b>: it reads the seat, not the installed binary, so a CLI sitting on your machine unauthenticated is never offered as something it can bind. With one seat it runs solo — still routed per job, still tested, just not merged.</p></details>
-    <details><summary>Isn't this just worktrees and tmux?</summary><p>Worktrees are the easy part. The fence enforced where the work lands, the verifier before merge, the confidence reading with its optional QA, and the cost-per-task record are what you can't script in an afternoon — and what the graph records on every run.</p></details>
-    <details><summary>Why is the benchmark measured against Opus?</summary><p>Because Opus is the model an average developer reaches for all day, so "cheaper than what you run now" is the gap to it. The comparison is always raw Opus, one session, against the seat antiloki's router picks for the same task, both audited by the same hidden checks (list prices, per run): <b>one function</b> $0.168 vs $0.020 (8.3×, same speed, 14 vs 13 runs); <b>eight modules</b> $0.614 vs $0.060 (10.2×, 2.2× faster; the Opus figure blends this week's $0.443 with an older $1.151, newer runs weighted more, and on this week's alone it is 7.4×); <b>six screens</b> $0.644 vs $0.146 (4.4×, 1.1× faster); <b>a huge task</b> $1.83 vs $0.30 (6.2×, 1.5× faster, 1 vs 24 runs). The geometric mean is about 6.9× cheaper, with Composer 1.4× faster on average. <b>What it leaves out, said plainly:</b> the picks scored 0.95–1.00 of the checks against Opus's 1.00; the best cases route to Cursor's Composer, and without a Cursor subscription the average is about 3×; the figures are the routed model's cost, and the screening and verification antiloki adds cost a few cents on a small task and more on a large one (we are still measuring the full run end to end on the same tasks); the samples are small and from one project family. Against a cheaper raw seat the gap is smaller: raw Sonnet $0.166 and raw Codex $0.149 on the eight-module task. The full report lists every arm, including the ones that lost.</p></details>
-    <details><summary>Does it make my weekly limit last longer?</summary><p>The +590 % is arithmetic on measured costs, not a reading of your vendor's limit (the vendors do not publish it, and we have not measured yours). On the same spend at list prices, a job that costs 6.9× less lets you run 6.9× as many jobs: +590 %. The 6.9× is the geometric mean, over four audited tasks, of raw Opus against the best result of the Composer seat antiloki's router picks, with recent runs weighted more than old ones (a run loses half its weight every 14 days): one function 8.3×, eight modules 10.2×, six screens 4.4×, a huge task 6.2×. It assumes your limit scales with list-price cost, and the best cases route to Cursor's Composer; without a Cursor subscription the average is about 3× (+200 %). The picks scored 0.95–1.00 of the audit checks against Opus's 1.00, which is what "the same code quality" means here: inside the product's one tolerance. An earlier figure on this page (+112 %) compared one Sonnet-planned merge with raw Sonnet and did not reproduce with current models.</p></details>
-    <details><summary>More calls must mean a bigger bill.</summary><p>Sometimes they do, and the app shows it: the bill is on screen for every turn. A task that fits one cheap seat is run on that seat with one call and no planning; the router splits an ask only where splitting measured better, and a failed run reports what it spent and claims no saving. On the eight-module task the fully split pipeline cost more than raw Opus (about $0.78 against $0.44), which is why the router does not use it there.</p></details>
+    <details><summary>Can an agent change my files without asking?</summary><p>No. An agent can only write inside the folders its node is allowed to touch. Anything that leaves the project, such as a commit to your branch or a publish, waits at a gate for your yes or no.</p></details>
+    <details><summary>Do I need two subscriptions?</summary><p>No. One subscription is enough: antiloki runs on whichever CLI you are signed in to. A team can use more than one seat, a planner on one and workers on another, if you have them. It only offers a provider you are actually signed in to: it reads the seat, not the installed binary.</p></details>
+    <details><summary>Isn't this just worktrees and tmux?</summary><p>Worktrees are the easy part. The fence enforced where the work lands, the gate before anything leaves the project, the sagas that keep the record, the X-ray that knows the repo, and the cost-per-run record are what you can't script in an afternoon.</p></details>
     <details><summary>Can my company install it?</summary><p>One binary, local, no account, no telemetry. The network calls are: your CLIs' own calls; an update check against a static file on GitHub Releases; the window's fonts, fetched from Google Fonts (fonts.googleapis.com and fonts.gstatic.com) when it opens; api.openai.com or openrouter.ai only if you set up the optional OpenCode route with your own key; and GitHub only if you add a token or open a pull request. Send that to security.</p></details>
   </div>
 </main>
 
 <footer><div class="wrap">
   <span>antiloki · vibe graphing IDE · free</span>
-  <a href="/blog/">blog</a>
-  <a href="/paper.html">the benchmark</a>
   <a href="/privacy.html">privacy</a>
   <a href="/terms.html">terms</a>
   <a href="mailto:support@antiloki.com">support@antiloki.com</a>
