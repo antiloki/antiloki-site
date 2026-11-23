@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Every run behind antiloki's numbers: one planner, one worker, with and without the QA gate, against raw Claude Opus on the same task — the wins, the losses, and the two runs that failed because of antiloki.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23211e1b'/%3E%3Ctext x='10' y='47' font-family='Geist,Helvetica,Arial,sans-serif' font-weight='700' font-size='40' fill='%23efe9e2' letter-spacing='-2'%3Ea%3Ctspan fill='%23c97c5c'%3E.%3C/tspan%3E%3C/text%3E%3C/svg%3E">
+<title>Every Run, With the Scripts — antiloki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="post.css">
+<style>
+/* THE NEW LOOK (2026-11-23): the landing's identity: a picture behind, dark glass on top, Geist, the app's tokens. Print keeps the old plain style. */
+@media screen {
+:root{--bg:#0c0b0a;--text:#d9d4cf;--ink:#fff;--dim:#a8a29c;--muted:#7d7771;--rule:rgba(236,233,230,.11);--panel:rgba(236,233,230,.05);--code:rgba(236,233,230,.09);--ember:#e8825a;--ember-soft:rgba(232,130,90,.12);--display:"Geist",system-ui,sans-serif;--body:"Geist",system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,monospace;color-scheme:dark}
+html{background:#0c0b0a}
+body{background:transparent!important;font-family:"Geist",system-ui,sans-serif;font-size:16px;line-height:1.7;position:relative;z-index:0}
+body::before{content:"";position:fixed;inset:-3%;z-index:-2;background:url("data:image/webp;base64,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") center/cover;animation:dk 40s ease-in-out infinite alternate}
+body::after{content:"";position:fixed;inset:0;z-index:-1;background:linear-gradient(to bottom,rgba(9,8,8,.62),rgba(9,8,8,.74))}
+@keyframes dk{from{transform:scale(1.02)}to{transform:scale(1.09) translate(-1%,-.8%)}}
+nav.top{background:rgba(11,10,9,.62)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:0!important;box-shadow:inset 0 -1px 0 rgba(255,255,255,.07)}
+.mark{gap:9px;font-size:18px;letter-spacing:-.02em;color:#fff}
+.mark::before{content:"a.";display:grid;place-items:center;width:26px;height:26px;border-radius:50%;font:700 12px "Geist",sans-serif;color:#fff;letter-spacing:-.5px;background:radial-gradient(circle,#171514 0 62%,transparent 63%),conic-gradient(from 200deg,#e8825a,#e6b84a,#3fc7b5,#4d8dff,#a98bff,#e8825a)}
+.mark em{display:none}
+nav.top a.q{color:var(--dim)}nav.top a.q:hover,nav.top a.q[aria-current]{color:#fff}
+.btn{border-radius:12px}.btn.ember{background:#c97c5c;border-color:#c97c5c;color:#fff}
+.pwrap{max-width:1240px;column-gap:28px}
+.toc{background:rgba(17,16,15,.66);backdrop-filter:blur(20px) saturate(1.25);-webkit-backdrop-filter:blur(20px) saturate(1.25);border-radius:16px;padding:18px 14px 14px 18px;box-shadow:inset 0 1px 0 rgba(255,255,255,.1),inset 0 0 0 1px rgba(255,255,255,.06)}
+.toc ol{border-left-color:var(--rule)}
+article.paper{max-width:840px;background:rgba(17,16,15,.7);backdrop-filter:blur(22px) saturate(1.25);-webkit-backdrop-filter:blur(22px) saturate(1.25);border-radius:20px;padding:46px 52px 40px;box-shadow:inset 0 1px 0 rgba(255,255,255,.1),inset 0 0 0 1px rgba(255,255,255,.06),0 30px 90px rgba(0,0,0,.4)}
+h1{font-weight:800;letter-spacing:-.05em;color:#fff}
+h1 em{background:linear-gradient(100deg,#ffb690,#ff7a9c 40%,#8f9fff 70%,#7fe3d3);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-weight:700;letter-spacing:-.04em;color:#fff;border-top:0!important}
+h2 .n,.eyebrow{color:var(--ember)}
+h3{font-weight:600;letter-spacing:-.02em;color:#f1ede9}
+a{color:#f0a98a}a:hover{color:#ffc7ae}
+code,.k{background:var(--code)!important;color:#f3d9cc!important;border-radius:6px;font-family:"JetBrains Mono",monospace}
+pre{background:rgba(0,0,0,.35)!important;border:0!important;border-radius:12px}
+.callout,.abstract,.editions,.tbl,dl.defs,.flow>div,.byline span,.byline{background:var(--panel)!important;border-color:var(--rule)!important;border-radius:12px}
+.abstract{border-left-color:var(--ember)!important}
+table{border-collapse:collapse}th,td{border-color:var(--rule)!important}
+hr{border-color:var(--rule)}
+footer{background:transparent!important;border-top:0!important;color:var(--muted)}footer a{color:var(--dim)}
+@media (max-width:900px){article.paper{padding:26px 18px;border-radius:16px}.toc{display:none}body::before{animation:none}nav.top,.toc,article.paper{backdrop-filter:none;-webkit-backdrop-filter:none}article.paper{background:rgba(17,16,15,.84)}}
+@media (max-width:900px){html,body{overflow-x:hidden;max-width:100%}body::before{inset:0!important;animation:none!important}nav.top .wrap{padding:0 14px;gap:12px}nav.top a.q:not([aria-current]):not(:nth-of-type(n+3)){display:none}.pwrap{display:block;padding:20px 14px 60px}dl.defs,dl.defs>div{display:block!important}dl.defs dt{margin-top:12px;white-space:normal!important;overflow-wrap:anywhere}dl.defs dd{margin:2px 0 0!important;min-width:0}article.paper,article.paper *{min-width:0;overflow-wrap:anywhere}table{display:block;overflow-x:auto}pre{overflow-x:auto}}
+@media (prefers-reduced-motion:reduce){body::before{animation:none}}
+}
+</style>
+</head><body>
+<nav class="top"><div class="wrap">
+  <a class="mark" href="/" aria-label="antiloki">antiloki<em>.</em></a>
+  <span class="sp"></span>
+  <a class="q" href="/docs.html">Docs</a>
+  <a class="q" href="/blog/">Blog</a>
+  <a class="q" href="https://github.com/antiloki/antiloki-app">GitHub</a>
+  <a class="q" href="https://patreon.com/danjindev">Support</a>
+  <a class="btn sm ember" href="https://github.com/antiloki/antiloki-releases/releases/latest">Download</a>
+</div></nav>
+<main class="pwrap">
+  <nav class="toc" aria-label="Contents"><details id="toc-d" open><summary class="eyebrow">contents</summary><ol>
+      <li><a href="#s-what-was-measured"><i>1</i>What was measured</a></li>
+      <li><a href="#s-how-a-run-was-scored"><i>2</i>How a run was scored</a></li>
+      <li><a href="#s-l-eight-modules-the-main-result"><i>3</i>L — eight modules, the main result</a></li>
+      <li><a href="#s-s-one-function-where-the-shape-loses"><i>4</i>S — one function, where the shape loses</a></li>
+      <li><a href="#s-what-the-numbers-actually-say"><i>5</i>What the numbers actually say</a></li>
+      <li><a href="#s-the-two-runs-that-failed-and-why-they-we"><i>6</i>The two runs that failed, and why they were ours</a></li>
+      <li><a href="#s-running-it-yourself"><i>7</i>Running it yourself</a></li>
+    </ol></details></nav>
+  <article class="paper">
+
+  <span class="eyebrow">antiloki · the benchmark</span>
+  <h1>Every run, <em>with the scripts.</em></h1>
+  <p class="sub">One planner, one worker, with and without the QA gate, against raw Claude Opus on the same task — including the two runs that failed because of antiloki.</p>
+
+  <div class="byline">
+    <span>Measured <b>2026-09-22, 21:11–21:48 UTC</b></span>
+    <span>One box, quiet</span>
+    <span>Fresh clone per arm</span>
+    <span><a href="/">← antiloki</a></span>
+  </div>
+
+  <div class="callout"><p><b>First edition — kept as history (2026-10-01).</b> Every arm on this page ran on 2026-09-22 with Claude as the brain and a DeepSeek model reached through OpenCode Zen as the hands. The product no longer sells that configuration: it is five subscription seats now (Claude, Codex, Cursor, Gemini, Grok), Zen and the Chinese models are optional and off by default, QA is obligatory and its placeholder-claim fault described below is fixed. The same eight-module task,.</p></div>
+
+  <div class="abstract">
+    <span class="eyebrow">why this page exists</span>
+    <p>A benchmark you cannot inspect is an advertisement. This is every arm we ran, in the order we ran it, with
+      the losses kept in — the shape loses on small tasks, the QA gate measured nothing the day we took these
+      numbers, and two of the biggest runs failed for reasons that were ours. If a number on the front page looks
+      good, the run behind it is on this page.</p>
+  </div>
+
+  <h2 id="s-what-was-measured"><span class="n">01</span>What was measured</h2>
+  <p>Two tasks against <code>ministore</code>, a small but real Vite + React + TypeScript store.</p>
+  <p><b>S — one function changed in one file.</b> A money formatter with a rounding rule. Small enough that the
+    overhead of planning is visible.</p>
+  <p><b>L — eight independent feature modules</b>, each in its own new file under <code>src/features/</code>, with
+    no changes to any existing file: fuzzy accent-insensitive product search; a stable non-mutating sort;
+    a <code>useWishlist</code> hook persisted to localStorage that survives a corrupt stored value; validated,
+    versioned cart storage; money formatting through <code>Intl.NumberFormat</code> with two discount codes;
+    a <code>QuantityStepper</code> component with bounds, keyboard steps and clamp-on-blur; checkout validation
+    with a Luhn card check and an expiry in the future; and a capped <code>useRecentlyViewed</code>. Strict
+    TypeScript, no <code>any</code>, JSDoc on every export, no new dependencies, and
+    <code>tsc -b &amp;&amp; vite build</code> must pass at the end.</p>
+
+  <h2 id="s-how-a-run-was-scored"><span class="n">02</span>How a run was scored</h2>
+  <p>Three numbers per run, none of them a model's opinion.</p>
+  <p><b>Quality</b> is a behavioural audit: 37 checks that import the finished modules and exercise them —
+    does the search match "blue mug" against "Mug, blue", does the sort leave the input untouched, does
+    <code>applyDiscount</code> refuse to go below zero, does the Luhn check reject a transposed digit. The same
+    script grades every arm, including raw Opus.</p>
+  <p><b>Cost</b> is deterministic: every call the serve made for that arm — planner, worker, verifier, gate —
+    priced at published list rates, cache reads at a tenth. Raw Opus is the CLI's own
+    <code>total_cost_usd</code>. A subscription pays none of this; the dollar figure is the API-equivalent, which
+    is the only yardstick that compares two different arrangements of the same work.</p>
+  <p><b>Time</b> is a wall clock around the whole arm, not the sum of the model calls.</p>
+
+  <h2 id="s-l-eight-modules-the-main-result"><span class="n">03</span>L — eight modules, the main result</h2>
+  <div class="scrollx"><table class="runs">
+    <thead><tr><th>arm</th><th class="n">wall</th><th class="n">cost</th><th class="n">calls</th><th class="n">audit</th><th>note</th></tr></thead>
+    <tbody>
+      <tr class="raw"><td>raw Claude Opus, one session</td><td class="n">303 s</td><td class="n">$1.28</td><td class="n">26 turns</td><td class="n"><b>37/37</b></td><td>the day before, the same goal took it 112 s and $0.61 — same-day is the fair row</td></tr>
+      <tr class="best"><td>Opus plans · DeepSeek Flash writes · QA off</td><td class="n">249 s</td><td class="n"><b>$0.25</b></td><td class="n">3</td><td class="n"><b>37/37</b></td><td>worker 185 s, 24 tools, first pass</td></tr>
+      <tr><td>Sonnet plans · Flash writes · QA off</td><td class="n">266 s</td><td class="n">$0.31</td><td class="n">5</td><td class="n">35/37</td><td>worker rejected for missing JSDoc on exports → 55 s retry → pass</td></tr>
+      <tr><td>Sonnet · Flash · QA on</td><td class="n"><b>179 s</b></td><td class="n">$0.42</td><td class="n">4</td><td class="n">36/37</td><td>first pass · gate 13 s / $0.18</td></tr>
+      <tr><td>Opus · Flash · QA on</td><td class="n">311 s</td><td class="n">$0.54</td><td class="n">6</td><td class="n">36/37</td><td>worker retried once · gate 11 s / $0.16</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">The cheapest arm matches raw Opus on all 37 checks, 54 seconds faster, at a fifth of the price.
+    One run per arm — not a best-of-N. Raw Opus moves between days by more than the gap between our arms, which is
+    why the row above carries the previous day's figure instead of hiding it.</p>
+
+  <h2 id="s-s-one-function-where-the-shape-loses"><span class="n">04</span>S — one function, where the shape loses</h2>
+  <div class="scrollx"><table class="runs">
+    <thead><tr><th>arm</th><th class="n">wall</th><th class="n">cost</th><th class="n">calls</th><th>note</th></tr></thead>
+    <tbody>
+      <tr class="raw"><td>raw Claude Opus, one session</td><td class="n"><b>24 s</b></td><td class="n">$0.18</td><td class="n">5 turns</td><td></td></tr>
+      <tr><td>Sonnet plans · Flash writes · QA off</td><td class="n">44 s</td><td class="n"><b>$0.12</b></td><td class="n">3</td><td></td></tr>
+      <tr><td>Sonnet · Flash · QA on</td><td class="n">212 s</td><td class="n">$0.34</td><td class="n">6</td><td>the verifier caught <code>18.5 → "$18.5"</code> and sent it back</td></tr>
+      <tr><td>Opus plans · Flash · QA off</td><td class="n">414 s</td><td class="n">$0.12</td><td class="n">3</td><td>planner 12 s · <b>worker stalled 393 s</b> — OpenCode tail latency on a one-line edit</td></tr>
+      <tr><td>Opus · Flash · QA on</td><td class="n">48 s</td><td class="n">$0.24</td><td class="n">4</td><td>gate 10 s / $0.12</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">A planner call is pure overhead on a one-line edit. This is the row the product had to obey rather
+    than explain: <b>on a one-file change the benchmark says don't merge, and the router sends the ask straight to
+    one model.</b> A benchmark that only ever agreed with the product would not be worth running.</p>
+
+  <h2 id="s-what-the-numbers-actually-say"><span class="n">05</span>What the numbers actually say</h2>
+  <p><b>The planner's model barely moves quality.</b> Opus planning scored 37 and 36; Sonnet planning scored 35 and
+    36; raw Opus scored 37. The worker was the same cheap model in every antiloki row. What closes the gap is the
+    verifier — and both of its rejections were real: missing JSDoc, and a money format that printed
+    <code>$18.5</code>.</p>
+  <p><b>The bill is the planner.</b> On the best L arm: planner ≈ $0.20, worker ≈ $0.02, verifier ≈ $0.03. Almost
+    all of the saving comes from moving the writing off the frontier model, and almost all of the remaining cost is
+    the thinking you kept there.</p>
+  <p><b>The QA gate measured nothing that day.</b> Every gate run produced one placeholder claim and returned
+    <code>unproven</code> in 10–13 s for $0.12–0.18. The always-branch was discarding the planner's acceptance
+    lines, so the switch bought a bill and no verdict. It is on this page because it happened, and the QA-on rows
+    in the table above are not slower <em>because</em> of QA — that is the worker's retry noise.</p>
+  <p><b>The worker's variance is the runtime, not the model.</b> Same worker, same one-line task: 30 s once, 393 s
+    another time.</p>
+
+  <h2 id="s-the-two-runs-that-failed-and-why-they-we"><span class="n">06</span>The two runs that failed, and why they were ours</h2>
+  <div class="scrollx"><table class="runs">
+    <thead><tr><th>arm (XXL, same day)</th><th class="n">wall</th><th class="n">cost</th><th>result</th></tr></thead>
+    <tbody>
+      <tr class="raw"><td>raw Opus</td><td class="n">795 s</td><td class="n">$5.30</td><td>169 tests, build ✓</td></tr>
+      <tr><td>Opus plans · Sonnet writes, one worker</td><td class="n">921 s</td><td class="n">$2.64</td><td>112 tests, build ✓</td></tr>
+      <tr><td>Sonnet · Haiku, a wave of 8</td><td class="n">failed 327 s</td><td class="n">$1.30</td><td>3 of 8 — Haiku's id generator could not pass the verifier twice</td></tr>
+      <tr><td>Sonnet · Flash, a wave of 8, floor off</td><td class="n">failed 1 884 s</td><td class="n">$0.18</td><td>7 of 8 — the plan was a five-deep chain and nobody installed the test runner</td></tr>
+    </tbody>
+  </table></div>
+  <p>Neither failure was the models'. The first was a plan whose dependency chain the projection did not fold into
+    its wave count; the second was an orchestrator that let a goal ask for tests without installing a test runner.
+    Both are fixed, and both are the reason this section exists: the interesting number in a benchmark is usually
+    the one that went wrong.</p>
+
+  <h2 id="s-running-it-yourself"><span class="n">07</span>Running it yourself</h2>
+  <p>Every arm above is one shell script against a fresh clone, with its own serve on its own port and its own
+    <code>ANTILOKI_HOME</code>, so no arm inherits another's history or its learned rankings. The shape is always
+    the same four steps:</p>
+  <p class="note">1 · clone <code>ministore</code> into a scratch directory · 2 · start a serve with an empty home
+    on a free port · 3 · post the goal with the arm's planner, worker and gate setting · 4 · when it finishes, run
+    <code>audit.mjs</code> over the result and record wall time, dollars and the audit score in one row.</p>
+  <p>The same measurement runs inside the product: every run you do is scored on your machine and filed in a table
+    that grows with use, which the router reads when it picks a merge for the next job. Ours ships as the
+    starting point; your runs adjust its scores, by at most a third, and none of it leaves the machine.</p>
+
+  <p class="postnav"><a href="/blog/">← more from the antiloki blog</a></p>
+  </article>
+</main>
+<footer><div class="wrap">
+  <span>antiloki · free and open source</span>
+  <a href="/docs.html">docs</a>
+  <a href="/privacy.html">privacy</a>
+  <a href="/terms.html">terms</a>
+  <a href="/blog/">blog</a>
+  <a href="https://github.com/antiloki/antiloki-app">github</a>
+  <a href="https://patreon.com/danjindev">patreon</a>
+  <a href="https://www.buymeacoffee.com/danjindev">coffee</a>
+  <a href="mailto:support@antiloki.com">support@antiloki.com</a>
+  <span class="r">© 2026 antiloki</span>
+</div></footer>
+<script>
+/* the contents list follows the section you are reading */
+(function () {
+  var d = document.getElementById("toc-d");
+  if (d && window.matchMedia) { var mq = matchMedia("(max-width: 1000px)"), fit = function () { if (mq.matches) d.removeAttribute("open"); else d.setAttribute("open", ""); }; fit(); (mq.addEventListener ? mq.addEventListener("change", fit) : mq.addListener(fit)); }
+  document.querySelectorAll(".toc a").forEach(function (a) { a.addEventListener("click", function () { if (d && window.matchMedia && matchMedia("(max-width: 1000px)").matches) d.removeAttribute("open"); }); });
+  var links = [].slice.call(document.querySelectorAll(".toc a")), map = {};
+  links.forEach(function (a) { map[a.getAttribute("href").slice(1)] = a; });
+  var heads = links.map(function (a) { return document.getElementById(a.getAttribute("href").slice(1)); }).filter(Boolean);
+  if (!heads.length || !("IntersectionObserver" in window)) return;
+  var cur = null;
+  var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { if (cur) cur.classList.remove("on"); cur = map[e.target.id]; if (cur) cur.classList.add("on"); } }); }, { rootMargin: "-84px 0px -72% 0px", threshold: 0 });
+  heads.forEach(function (h) { io.observe(h); });
+})();
+</script>
+</body></html>
